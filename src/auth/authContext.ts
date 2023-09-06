@@ -1,8 +1,4 @@
 import { createContext } from 'react'
+import type { Nullable, IAuth } from '../types'
 
-export interface IAuth {
-  token : string | null,
-  setToken: (token: string) => void
-}
-
-export const AuthContext = createContext<IAuth | null>(null)
+export const AuthContext = createContext<Nullable<IAuth>>(null)

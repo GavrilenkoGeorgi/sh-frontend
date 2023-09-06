@@ -1,12 +1,21 @@
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 
-export type post = {
-  _id: string,
-  title: string,
-  pubDate?: string,
-  link: string
+export type Nullable<T> = T | null
+
+// export type State = ReturnType<typeof rootReducer>
+
+// interfaces
+export interface IUser {
+  _id: string
+  name: string
+  email: string
 }
 
-export type AuthProviderProps = {
+export interface AuthProviderProps {
   children: ReactNode
+}
+
+export interface IAuth {
+  token: string | null
+  setToken: (token: string) => void
 }

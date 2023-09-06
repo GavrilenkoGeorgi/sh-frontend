@@ -2,7 +2,7 @@ import React from 'react'
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  Route,
+  Route
 } from 'react-router-dom'
 
 import LoginPage from '../pages/Login'
@@ -21,4 +21,3 @@ const router = createBrowserRouter(
 )
 
 export default router
-

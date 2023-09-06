@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { type FC } from 'react'
 
-const MainPage = () => {
+const MainPage: FC = () => {
   return <section>
     <h1>mainpage</h1>
 

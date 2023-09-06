@@ -1,20 +1,21 @@
+import React, { type FC } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+
+import { type RootState } from '../store'
 import { useLogoutMutation } from '../store/slices/userApiSlice'
 import { logout } from '../store/slices/authSlice'
 
-import React, { FC } from 'react'
-import { RootState } from '../store'
-
 const Logout: FC = () => {
 
+  // eslint-disable-next-line
   const { userInfo } = useSelector((state: RootState) => state.auth)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [logoutApiCall] = useLogoutMutation()
 
-  const logoutHandler = async () => {
+  const logoutHandler = async (): Promise<void> => {
     try {
       await logoutApiCall({}).unwrap()
       dispatch(logout({}))
@@ -25,7 +26,7 @@ const Logout: FC = () => {
   }
 
   return <>
-    <button onClick={logoutHandler}>
+    <button onClick={() => { void logoutHandler }}>
       Logout
     </button>
   </>

@@ -1,18 +1,18 @@
-import React, { FC, useContext, useMemo, useState } from 'react'
+import React, { type FC, useContext, useMemo, useState } from 'react'
 import { AuthContext } from './authContext'
-import { AuthProviderProps } from '../types'
+import type { Nullable, IAuth, AuthProviderProps } from '../types'
 
-const AuthProvider:FC<AuthProviderProps> = ({ children }) => {
+const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   const [token, setToken_] = useState(localStorage.getItem('token'))
-  const setToken = (newToken: string) => {
+  const setToken = (newToken: string): void => {
     setToken_(newToken)
   }
 
   const contextValue = useMemo(
     () => ({
       token,
-      setToken,
+      setToken
     }),
     [token]
   )
@@ -24,7 +24,7 @@ const AuthProvider:FC<AuthProviderProps> = ({ children }) => {
   )
 }
 
-export const useAuth = () => {
+export const useAuth = (): Nullable<IAuth> => {
   return useContext(AuthContext)
 }
 

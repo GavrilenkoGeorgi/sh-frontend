@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { type FC } from 'react'
 import { Outlet } from 'react-router-dom'
 
-const App = () => {
+const App: FC = () => {
   return <Outlet />
 }
 
