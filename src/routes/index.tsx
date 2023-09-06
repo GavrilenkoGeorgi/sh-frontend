@@ -1,53 +1,24 @@
 import React from 'react'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { useAuth } from '../auth/authProvider'
-import { ProtectedRoute } from './ProtectedRoute'
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+} from 'react-router-dom'
 
-import MainPage from '../pages/MainPage'
+import LoginPage from '../pages/Login'
+import LogoutPage from '../components/Logout'
+import MainPage from '../pages/Main'
+import App from '../App'
 
-const Routes = () => {
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path='/' element={<App />}>
+      <Route index={true} path='/' element={<MainPage />} />
+      <Route path='/login' element={<LoginPage />} />
+      <Route path='/logout' element={<LogoutPage />} />
+    </Route>
+  )
+)
 
-  const publicRoutes = [
-    {
-      path: '/',
-      element: <MainPage/>
-    },
-    {
-      path: '/help',
-      element: <div>Help public</div>
-    }
-  ]
+export default router
 
-  const authOnlyRoutes = [
-    {
-      path: '/',
-      element: <ProtectedRoute />,
-      children: [
-        {
-          path: '/stats',
-          element: <div>Stats</div>
-        }
-      ]
-    }
-  ]
-
-  /* const noAuthRoutes = [
-    {
-      path: '/help-2',
-      element: <div>Help noAuthRoutes</div>
-    }
-  ] */
-
-  const authContext = useAuth()
-
-  // Compile routes into this:
-  const router = createBrowserRouter([
-    ...publicRoutes,
-    // ...(!authContext?.token ? noAuthRoutes : []), // token check looks strange
-    ...authOnlyRoutes,
-  ])
-
-  return <RouterProvider router={router} />
-}
-
-export default Routes
