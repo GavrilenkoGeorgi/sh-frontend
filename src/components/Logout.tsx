@@ -6,6 +6,8 @@ import { type RootState } from '../store'
 import { useLogoutMutation } from '../store/slices/userApiSlice'
 import { logout } from '../store/slices/authSlice'
 
+import styles from './Logout.module.sass'
+
 const Logout: FC = () => {
 
   // eslint-disable-next-line
@@ -25,11 +27,14 @@ const Logout: FC = () => {
     }
   }
 
-  return <>
+  return <div className={styles.container}>
+    <h1>
+      Logout
+    </h1>
     <button onClick={() => { void logoutHandler }}>
       Logout
     </button>
-  </>
+  </div>
 
 }
 

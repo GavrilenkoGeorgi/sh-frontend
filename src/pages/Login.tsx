@@ -6,6 +6,8 @@ import { useDispatch/* , useSelector */ } from 'react-redux/es/exports'
 import { setCredentials } from '../store/slices/authSlice'
 import { useLoginMutation } from '../store/slices/userApiSlice'
 
+import styles from './Login.module.sass'
+
 const Login: FC = () => {
 
   const [email, setEmail] = useState('')
@@ -27,14 +29,18 @@ const Login: FC = () => {
       dispatch(setCredentials({ ...res }))
       navigate('/')
     } catch (err: any) {
-      // console.log(err.data.message || err.error)
+      // console.log(err.data.message || err.error) /!
       console.log(err)
     }
   }
 
-  return <section>
+  return <section className={styles.container}>
     <h1>login</h1>
-    <form id='login' onSubmit={(event) => { void handleSubmit(event) }}>
+    <form
+      id='login'
+      onSubmit={(event) => { void handleSubmit(event) }}
+      className={styles.form}
+    >
       <input
         type='email'
         placeholder='email'
