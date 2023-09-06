@@ -1,11 +1,11 @@
 import React, { type FC, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch/* , useSelector */ } from 'react-redux/es/exports'
+import { useDispatch } from 'react-redux/es/exports'
 
-// import type { RootState } from '../store'
 import { setCredentials } from '../store/slices/authSlice'
 import { useLoginMutation } from '../store/slices/userApiSlice'
 
+import LoadingNotification from '../components/LoadingNotification'
 import styles from './Login.module.sass'
 
 const Login: FC = () => {
@@ -16,10 +16,7 @@ const Login: FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const [login] = useLoginMutation()
-  // const [login, { isLoading }] = useLoginMutation()
-
-  // const { userInfo } = useSelector((state: RootState) => state.auth)
+  const [login, { isLoading }] = useLoginMutation()
 
   const handleSubmit = async (event: React.SyntheticEvent): Promise<void> => {
     event.preventDefault()
@@ -36,6 +33,7 @@ const Login: FC = () => {
 
   return <section className={styles.container}>
     <h1>login</h1>
+    {isLoading && <LoadingNotification />}
     <form
       id='login'
       onSubmit={(event) => { void handleSubmit(event) }}

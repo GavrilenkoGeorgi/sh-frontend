@@ -1,17 +1,13 @@
 import React, { type FC } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import { type RootState } from '../store'
 import { useLogoutMutation } from '../store/slices/userApiSlice'
 import { logout } from '../store/slices/authSlice'
 
 import styles from './Logout.module.sass'
 
 const Logout: FC = () => {
-
-  // eslint-disable-next-line
-  const { userInfo } = useSelector((state: RootState) => state.auth)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -23,7 +19,7 @@ const Logout: FC = () => {
       dispatch(logout({}))
       navigate('/login')
     } catch (err) {
-      console.error(err)
+      console.error(err) // ui notification from store should handle this
     }
   }
 
@@ -31,7 +27,7 @@ const Logout: FC = () => {
     <h1>
       Logout
     </h1>
-    <button onClick={() => { void logoutHandler }}>
+    <button onClick={() => { void logoutHandler() }}>
       Logout
     </button>
   </div>

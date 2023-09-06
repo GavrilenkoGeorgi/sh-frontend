@@ -5,10 +5,13 @@ import {
   Route
 } from 'react-router-dom'
 
-import LoginPage from '../pages/Login'
-import LogoutPage from '../components/Logout'
-import MainPage from '../pages/Main'
 import App from '../App'
+import MainPage from '../pages/Main'
+import LoginPage from '../pages/Login'
+import ProfilePage from '../pages/Profile'
+import LogoutPage from '../components/Logout'
+import ProtectedRoute from './/ProtectedRoute'
+import GlobalStatsPage from '../pages/GlobalStats'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,6 +19,10 @@ const router = createBrowserRouter(
       <Route index={true} path='/' element={<MainPage />} />
       <Route path='/login' element={<LoginPage />} />
       <Route path='/logout' element={<LogoutPage />} />
+      <Route path='' element={<ProtectedRoute />}>
+        <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/global-stats' element={<GlobalStatsPage />} />
+      </Route>
     </Route>
   )
 )

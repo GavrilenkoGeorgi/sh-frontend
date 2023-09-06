@@ -1,14 +1,15 @@
 import React, { type FC } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
-import { useAuth } from '../auth/authProvider'
+import { useSelector } from 'react-redux'
 
-export const ProtectedRoute: FC = () => {
-  const authContext = useAuth()
+import { type RootState } from '../store'
 
-  // Check if the user is authenticated
-  if (authContext?.token == null) {
-    return <Navigate to='/' />
-  }
-  // If authenticated, render the child routes
-  return <Outlet />
+const ProtectedRoute: FC = () => {
+  const { userInfo } = useSelector((state: RootState) => state.auth)
+
+  if (userInfo != null) {
+    return <Outlet />
+  } else return <Navigate to='/login' replace />
 }
+
+export default ProtectedRoute
