@@ -4,8 +4,8 @@
   "description": "Sharlushka v2",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --port 3000",
-    "build": "set NODE_ENV=production && webpack"
+    "build": "set NODE_ENV=production && webpack",
+    "start": "webpack serve --port 3000"
   },
   "author": "JSM",
   "license": "ISC",
