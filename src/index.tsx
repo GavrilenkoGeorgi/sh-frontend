@@ -9,7 +9,9 @@ import router from './routes'
 import App from './App'
 // import './css/index.css' // is this a must?
 
+// eslint-disable-next-line
 const container = document.getElementById('app-root')!
+
 const root = createRoot(container)
 
 root.render(

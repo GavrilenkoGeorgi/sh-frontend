@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { type FC } from 'react'
+import { Link } from 'react-router-dom'
 
-const MainPage = () => {
+const MainPage: FC = () => {
   return <section>
     <h1>mainpage</h1>
 
     <ul>
-      <li><a href='/login'>login</a></li>
-      <li><a href='/logout'>logout</a></li>
-      <li><a href='/register'>register</a></li>
+      <li><Link to='/login'>login</Link></li>
+      <li><Link to='/logout'>logout</Link></li>
+      <li><Link to='/register'>register</Link></li>
+      <li><Link to='/profile'>profile</Link></li>
+      <li><Link to='/global-stats'>global stats</Link></li>
     </ul>
   </section>
 }
