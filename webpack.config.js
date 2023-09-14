@@ -20,13 +20,20 @@ module.exports = {
         use: 'ts-loader'
       },
       {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
-      },
-      {
-        test: /\.sass$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-        exclude: /node_modules/
+        test: /\.(sa|sc|c)ss$/,
+        exclude: /node_modules/,
+        use: [
+          { loader: 'style-loader' },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[local]--[hash:base64:5]'
+              }
+            }
+          },
+          { loader: 'sass-loader' }
+        ]
       }
     ]
   },
