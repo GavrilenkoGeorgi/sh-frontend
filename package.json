@@ -4,8 +4,8 @@
   "description": "Sharlushka v2",
   "main": "index.js",
   "scripts": {
-    "build": "set NODE_ENV=production && webpack",
-    "start": "webpack serve --port 3000"
+    "dev": "webpack serve --port 3000",
+    "build": "set NODE_ENV=production && webpack"
   },
   "author": "JSM",
   "license": "ISC",
@@ -32,10 +32,14 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.1",
     "@reduxjs/toolkit": "^1.9.5",
+    "classnames": "^2.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.46.1",
     "react-redux": "^8.1.2",
-    "react-router-dom": "^6.15.0"
+    "react-router-dom": "^6.15.0",
+    "zod": "^3.22.2"
   }
 }
