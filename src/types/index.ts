@@ -1,8 +1,19 @@
 import { type ReactNode } from 'react'
+import { type FieldErrors } from 'react-hook-form/dist/types'
 
+// types
 export type Nullable<T> = T | null
 
-// export type State = ReturnType<typeof rootReducer>
+export type FocusedStates = Record<string, boolean>
+
+export type InputValues = Record<string, string>
+
+export type RegisterFormErrors = FieldErrors<{
+  username: string
+  email: string
+  password: string
+  confirm: string
+}>
 
 // interfaces
 export interface IUser {
