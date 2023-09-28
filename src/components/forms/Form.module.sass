@@ -1,0 +1,110 @@
+@import '../../styles/colors'
+
+.form
+  display: flex
+  flex-direction: column
+  max-width: 20rem
+  margin: auto
+  input, button
+    margin: 1rem auto
+
+fieldset
+  border: none
+  padding: 0
+  margin: 0
+  display: flex
+  flex-direction: column
+  legend
+    text-align: center
+    font-weight: 600
+    margin-bottom: 1rem
+
+.materialFormItem
+  position: relative
+  margin: 1rem 0 1.75rem
+  &:after
+    height: 2px
+    background-color: #cecfcf
+    width: 100%
+  &:before
+    height: 2px
+    background: $primary-light-color
+    z-index: 1
+    width: 0
+    transition: width .3s
+  &:after, &:before
+    display: block
+    content: ''
+    position: absolute
+    bottom: 0
+  &.error
+    &:before
+      background-color: $error
+  &.focused
+    &:before
+      width: 100%
+
+.inputContainer
+  position: relative
+
+.errorMsg
+  padding: 0
+  margin: 0
+  position: absolute
+  background: transparent
+  color: $error
+  font-style: normal
+  bottom: .4rem
+
+.materialFormLabel
+  z-index:-1
+  display: block
+  width: 100%
+  position: absolute
+  top: 50%
+  transform: translateY(-50%)
+  line-height: 1
+  cursor: text
+  color: $primary-light-color
+  transition: transform ease .3s, color ease .3s
+  transform-origin: 0 0
+  .error &
+    color: $error
+  .focused &
+    transform: translateY(-220%) scale(.9)
+    color: $primary-light-color
+  .error.focused &
+    color: $error
+  .hasValue &
+    transform: translateY(-220%) scale(.9)
+
+input, textarea, select
+  &.materialFormField
+    box-sizing: border-box
+    background-color: #fff
+    border: 0
+    outline: 0
+    width: 100%
+    border-width: 0
+    padding-left: 0
+    padding-right: 0
+    box-shadow: none
+    margin: 0
+    height: 2rem
+    color: #3e3e3e
+    font-size: 16px
+    font-weight: 500
+    appearance: none
+    background-color: transparent
+    &:focus
+      box-shadow: none
+      background: none
+
+.button
+  background-color: $primary-light-color
+  flex: 1 1 0
+  margin: .5rem
+  border: none
+  line-height: 2.5
+  font-size: 1rem
+  color: white

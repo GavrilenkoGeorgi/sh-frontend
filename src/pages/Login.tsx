@@ -7,7 +7,7 @@ import { useLoginMutation } from '../store/slices/userApiSlice'
 
 import LoadingNotification from '../components/LoadingNotification'
 import styles from './Login.module.sass'
-import formStyles from './Form.module.sass'
+import formStyles from '../components/forms/Form.module.sass'
 
 const Login: FC = () => {
 
