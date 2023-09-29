@@ -1,0 +1,134 @@
+@import '../../styles/colors'
+@import '../../styles/variables'
+
+.nav
+  height: $navbarHeight // TODO: mobile navbar height
+  width: 100%
+  // padding: 0 1.5rem
+  padding: 0
+  display: flex
+  justify-content: flex-end
+  align-items: center
+  position: sticky
+  top: 0px
+  z-index: 2
+  background-color: white
+  box-shadow: 0px 0px 11px 0px #0000003a
+  transition: opacity $defaultAnimLength, top $defaultAnimLength
+  @media screen and (min-width: $medium)
+    // padding: 0 3rem
+  @media (prefers-color-scheme: dark)
+    background-color: $dark-gray
+
+.hiddenNav
+  top: -$navbarHeight
+  opacity: 0
+
+.visibleNav
+  top: 0px
+  opacity: 1
+
+.overlay:empty:before
+   content: 'Empty overlay div.'
+
+.overlay
+  position: fixed
+  z-index: 1
+  width: 100vw
+  height: 0
+  opacity: 0
+  overflow: hidden
+  // delay!
+  transition: height 0s $navMenuOpenTime, opacity $navMenuOpenTime
+  background: $overlayColor
+
+.openOverlay
+  height: 100vh
+  opacity: 1
+  transition: height 0s, opacity $navMenuOpenTime
+
+.navigationContainer
+  width: 100%
+  display: flex
+  justify-content: space-between
+  align-items: center
+  height: 100%
+  border: none
+  @media screen and (min-width: $xxlarge)
+    margin: 0 auto
+    max-width: $mdContMaxWidth
+
+.linksContainer
+  display: flex
+  flex-direction: column
+  position: fixed
+  top: 0
+  right: 0
+  bottom: 0
+  z-index: -1
+  margin-left: auto
+  // padding: 1rem 2rem
+  padding: 0
+  width: 60vw
+  transform: translate(60vw)
+  transition: transform $navMenuOpenTime ease-out
+  margin-top: $navbarHeight
+  background-color: white
+  @media (prefers-color-scheme: dark)
+    background-color: $dark-gray
+  &.open
+    transform: translate(0vw)
+  @media screen and (min-width: $medium)
+    transform: translate(0vw)
+    flex-wrap: nowrap
+    padding: 0
+    margin: 0
+    position: static
+    flex-direction: row
+    z-index: inherit
+    height: 100%
+    width: auto
+
+.toggleBtnContainer
+  margin-right: 1rem
+  @media screen and (min-width: $medium)
+    display: none
+    visibility: hidden
+
+.navLink
+  width: 100%
+  margin: .3rem 0
+  min-height: 2rem
+  font-size: 1rem
+  text-align: left
+  color: $dark-gray
+  letter-spacing: 1.35px
+  border-left: none
+  border-right: none
+  border-top: 2px solid transparent
+  border-bottom: 2px solid transparent
+  background-color: transparent
+  transition: color $defaultAnimLength ease-in, border-color $defaultAnimLength ease-in
+  @media screen and (min-width: $small)
+    font-size: 1.25rem
+  @media screen and (min-width: $xlarge)
+    font-size: 1.7rem
+  @media (prefers-color-scheme: dark)
+    color: inherit
+  @media screen and (min-width: $medium)
+    height: 100%
+    padding: 0 1.33rem
+    border-bottom: 4px solid transparent
+    margin: 0
+  &:hover
+    cursor: pointer
+    color: $primary-light-color
+    border-bottom: 2px solid $primary-light-color
+    @media screen and (min-width: $medium)
+      border-bottom: 4px solid $primary-light-color
+
+.current
+  color: $primary-light-color
+  border-bottom: 2px solid $primary-light-color
+  @media screen and (min-width: $medium)
+    border-bottom-width: 4px

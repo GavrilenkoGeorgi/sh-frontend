@@ -30,3 +30,13 @@ export interface IAuth {
   token: string | null
   setToken: (token: string) => void
 }
+
+export interface navLink {
+  label: string
+  url: string
+}
+
+// Navbar
+export interface ToggleBtnProps {
+  open: boolean
+}
