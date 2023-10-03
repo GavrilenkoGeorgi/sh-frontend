@@ -4,7 +4,7 @@
 .nav
   height: $navbarHeight // TODO: mobile navbar height
   width: 100%
-  // padding: 0 1.5rem
+  padding: 0 1.5rem
   padding: 0
   display: flex
   justify-content: flex-end
@@ -15,8 +15,6 @@
   background-color: white
   box-shadow: 0px 0px 11px 0px #0000003a
   transition: opacity $defaultAnimLength, top $defaultAnimLength
-  @media screen and (min-width: $medium)
-    // padding: 0 3rem
   @media (prefers-color-scheme: dark)
     background-color: $dark-gray
 
@@ -29,7 +27,7 @@
   opacity: 1
 
 .overlay:empty:before
-   content: 'Empty overlay div.'
+   content: ''
 
 .overlay
   position: fixed
@@ -41,6 +39,8 @@
   // delay!
   transition: height 0s $navMenuOpenTime, opacity $navMenuOpenTime
   background: $overlayColor
+  background-color: rgb(255 255 255 / 0.3)
+  backdrop-filter: blur(1px)
 
 .openOverlay
   height: 100vh
@@ -53,10 +53,8 @@
   justify-content: space-between
   align-items: center
   height: 100%
+  padding: 0 1rem
   border: none
-  @media screen and (min-width: $xxlarge)
-    margin: 0 auto
-    max-width: $mdContMaxWidth
 
 .linksContainer
   display: flex
@@ -65,9 +63,7 @@
   top: 0
   right: 0
   bottom: 0
-  z-index: -1
   margin-left: auto
-  // padding: 1rem 2rem
   padding: 0
   width: 60vw
   transform: translate(60vw)
@@ -90,25 +86,21 @@
     width: auto
 
 .toggleBtnContainer
-  margin-right: 1rem
   @media screen and (min-width: $medium)
     display: none
     visibility: hidden
 
 .navLink
   width: 100%
+  text-decoration: none
   margin: .3rem 0
-  min-height: 2rem
-  font-size: 1rem
+  margin-left: 2rem
+  display: flex
+  align-items: center
+  font-weight: 400
   text-align: left
-  color: $dark-gray
-  letter-spacing: 1.35px
-  border-left: none
-  border-right: none
-  border-top: 2px solid transparent
-  border-bottom: 2px solid transparent
-  background-color: transparent
-  transition: color $defaultAnimLength ease-in, border-color $defaultAnimLength ease-in
+  color: $primary-color
+  letter-spacing: 1.2px
   @media screen and (min-width: $small)
     font-size: 1.25rem
   @media screen and (min-width: $xlarge)
@@ -118,17 +110,16 @@
   @media screen and (min-width: $medium)
     height: 100%
     padding: 0 1.33rem
-    border-bottom: 4px solid transparent
     margin: 0
+  &:first-child
+    margin-top: 2rem
+    @media screen and (min-width: $medium)
+      margin-top: inherit
   &:hover
     cursor: pointer
     color: $primary-light-color
-    border-bottom: 2px solid $primary-light-color
+    text-decoration: underline
     @media screen and (min-width: $medium)
-      border-bottom: 4px solid $primary-light-color
 
 .current
   color: $primary-light-color
-  border-bottom: 2px solid $primary-light-color
-  @media screen and (min-width: $medium)
-    border-bottom-width: 4px

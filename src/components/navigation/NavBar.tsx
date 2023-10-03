@@ -1,5 +1,5 @@
 import React, { type FC, useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import type { navLink } from '../../types'
 import { useScrollDirection, useComponentVisible } from '../../hooks'
 
@@ -65,17 +65,15 @@ const NavBar: FC = () => {
   ]
 
   const navLinks = navigation.map(link =>
-    <Link to={link.url}
+    <NavLink to={link.url}
       key={link.url}
-      /* scroll={false} */
-    >
-      {/* <button className={router.pathname === link.url
+      className={({ isActive }) => isActive
         ? `${styles.navLink} ${styles.current}`
-        : styles.navLink}
-      > */}
-        {link.label}
-      {/* </button> */}
-    </Link>
+        : styles.navLink
+       }
+    >
+      {link.label}
+    </NavLink>
   )
 
   const navbarStyle = `${styles.nav} ${scrollDirection === 'down' ? styles.hiddenNav : styles.visibleNav}`
@@ -88,7 +86,7 @@ const NavBar: FC = () => {
           className={styles.toggleBtnContainer}
           onClick={toggleMenu}
         >
-          <MenuToggleBtn open={open}/>
+          <MenuToggleBtn open={open} />
         </div>
         <div
           className={`${styles.linksContainer} ${open && styles.open}`}
