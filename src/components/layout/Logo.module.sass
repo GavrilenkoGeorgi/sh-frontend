@@ -1,0 +1,15 @@
+@import '../../styles/colors'
+@import '../../styles/variables'
+
+.logo
+  cursor: pointer
+  display: flex
+  align-items: center
+  transition: opacity $defaultAnimLength ease-in
+  max-width: 2.5rem
+  @media screen and (min-width: $medium)
+    max-width: 4rem
+  svg
+    width: 100%
+  &:hover
+    opacity: .5

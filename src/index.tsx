@@ -7,7 +7,7 @@ import store from './store'
 import router from './routes'
 
 import App from './App'
-// import './css/index.css' // is this a must?
+import './css/index.css' // fonts?
 
 // eslint-disable-next-line
 const container = document.getElementById('app-root')!

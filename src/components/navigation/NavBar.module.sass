@@ -1,0 +1,125 @@
+@import '../../styles/colors'
+@import '../../styles/variables'
+
+.nav
+  height: $navbarHeight // TODO: mobile navbar height
+  width: 100%
+  padding: 0 1.5rem
+  padding: 0
+  display: flex
+  justify-content: flex-end
+  align-items: center
+  position: sticky
+  top: 0px
+  z-index: 2
+  background-color: white
+  box-shadow: 0px 0px 11px 0px #0000003a
+  transition: opacity $defaultAnimLength, top $defaultAnimLength
+  @media (prefers-color-scheme: dark)
+    background-color: $dark-gray
+
+.hiddenNav
+  top: -$navbarHeight
+  opacity: 0
+
+.visibleNav
+  top: 0px
+  opacity: 1
+
+.overlay:empty:before
+   content: ''
+
+.overlay
+  position: fixed
+  z-index: 1
+  width: 100vw
+  height: 0
+  opacity: 0
+  overflow: hidden
+  // delay!
+  transition: height 0s $navMenuOpenTime, opacity $navMenuOpenTime
+  background: $overlayColor
+  background-color: rgb(255 255 255 / 0.3)
+  backdrop-filter: blur(1px)
+
+.openOverlay
+  height: 100vh
+  opacity: 1
+  transition: height 0s, opacity $navMenuOpenTime
+
+.navigationContainer
+  width: 100%
+  display: flex
+  justify-content: space-between
+  align-items: center
+  height: 100%
+  padding: 0 1rem
+  border: none
+
+.linksContainer
+  display: flex
+  flex-direction: column
+  position: fixed
+  top: 0
+  right: 0
+  bottom: 0
+  margin-left: auto
+  padding: 0
+  width: 60vw
+  transform: translate(60vw)
+  transition: transform $navMenuOpenTime ease-out
+  margin-top: $navbarHeight
+  background-color: white
+  @media (prefers-color-scheme: dark)
+    background-color: $dark-gray
+  &.open
+    transform: translate(0vw)
+  @media screen and (min-width: $medium)
+    transform: translate(0vw)
+    flex-wrap: nowrap
+    padding: 0
+    margin: 0
+    position: static
+    flex-direction: row
+    z-index: inherit
+    height: 100%
+    width: auto
+
+.toggleBtnContainer
+  @media screen and (min-width: $medium)
+    display: none
+    visibility: hidden
+
+.navLink
+  width: 100%
+  text-decoration: none
+  margin: .3rem 0
+  margin-left: 2rem
+  display: flex
+  align-items: center
+  font-weight: 400
+  text-align: left
+  color: $primary-color
+  letter-spacing: 1.2px
+  @media screen and (min-width: $small)
+    font-size: 1.25rem
+  @media screen and (min-width: $xlarge)
+    font-size: 1.7rem
+  @media (prefers-color-scheme: dark)
+    color: inherit
+  @media screen and (min-width: $medium)
+    height: 100%
+    padding: 0 1.33rem
+    margin: 0
+  &:first-child
+    margin-top: 2rem
+    @media screen and (min-width: $medium)
+      margin-top: inherit
+  &:hover
+    cursor: pointer
+    color: $primary-light-color
+    text-decoration: underline
+    @media screen and (min-width: $medium)
+
+.current
+  color: $primary-light-color
