@@ -7,6 +7,11 @@
   margin: auto
   input, button
     margin: 1rem auto
+  button
+    padding: .5rem 1.5rem
+    background-color: transparent
+    border: 1px solid $primary-color
+    color: $primary-color
 
 fieldset
   border: none
@@ -19,16 +24,19 @@ fieldset
     font-weight: 600
     margin-bottom: 1rem
 
-.materialFormItem
+.inputContainer
+  position: relative
+
+.formInput
   position: relative
   margin: 1rem 0 1.75rem
   &:after
     height: 2px
-    background-color: #cecfcf
+    background-color: $primary-light-color
     width: 100%
   &:before
     height: 2px
-    background: $primary-light-color
+    background: $primary-color
     z-index: 1
     width: 0
     transition: width .3s
@@ -44,17 +52,14 @@ fieldset
     &:before
       width: 100%
 
-.inputContainer
-  position: relative
-
 .errorMsg
   padding: 0
   margin: 0
   position: absolute
   background: transparent
   color: $error
-  font-style: normal
-  bottom: .4rem
+  font-size: .8rem
+  bottom: .6rem
 
 .materialFormLabel
   z-index:-1
@@ -65,21 +70,21 @@ fieldset
   transform: translateY(-50%)
   line-height: 1
   cursor: text
-  color: $primary-light-color
+  color: $primary-color
   transition: transform ease .3s, color ease .3s
   transform-origin: 0 0
   .error &
     color: $error
   .focused &
     transform: translateY(-220%) scale(.9)
-    color: $primary-light-color
+    color: $primary-color
   .error.focused &
     color: $error
   .hasValue &
     transform: translateY(-220%) scale(.9)
 
 input, textarea, select
-  &.materialFormField
+  &.formInput
     box-sizing: border-box
     background-color: #fff
     border: 0

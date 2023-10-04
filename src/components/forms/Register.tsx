@@ -49,7 +49,7 @@ const Register: FC = () => {
   >
     <fieldset>
       <div className={styles.inputContainer}>
-        <div className={cx(styles.materialFormItem, {
+        <div className={cx(styles.formInput, {
           [styles.focused]: focused.username,
           [styles.hasValue]: values.username,
           [styles.error]: formErrors.username
@@ -61,7 +61,7 @@ const Register: FC = () => {
             Name
           </label>
           <input
-            className={styles.materialFormField}
+            className={styles.formInput}
             {...register('username')}
             onFocus={focusInput}
             onBlur={blurInput}
@@ -73,7 +73,7 @@ const Register: FC = () => {
       </div>
 
       <div className={styles.inputContainer}>
-        <div className={cx(styles.materialFormItem, {
+        <div className={cx(styles.formInput, {
           [styles.focused]: focused.email,
           [styles.hasValue]: values.email,
           [styles.error]: formErrors.email
@@ -85,7 +85,7 @@ const Register: FC = () => {
             Email
           </label>
           <input
-            className={styles.materialFormField}
+            className={styles.formInput}
             {...register('email')}
             onFocus={focusInput}
             onBlur={blurInput}
@@ -97,7 +97,7 @@ const Register: FC = () => {
       </div>
 
       <div className={styles.inputContainer}>
-        <div className={cx(styles.materialFormItem, {
+        <div className={cx(styles.formInput, {
           [styles.focused]: focused.password,
           [styles.hasValue]: values.password,
           [styles.error]: formErrors.password
@@ -112,7 +112,7 @@ const Register: FC = () => {
             Password
           </label>
           <input
-            className={styles.materialFormField}
+            className={styles.formInput}
             type='password'
             {...register('password')}
             onFocus={focusInput}
@@ -125,7 +125,7 @@ const Register: FC = () => {
       </div>
 
       <div className={styles.inputContainer}>
-        <div className={cx(styles.materialFormItem, {
+        <div className={cx(styles.formInput, {
           [styles.focused]: focused.confirm,
           [styles.hasValue]: values.confirm,
           [styles.error]: formErrors.confirm
@@ -137,7 +137,7 @@ const Register: FC = () => {
             Confirm password
           </label>
           <input
-            className={styles.materialFormField}
+            className={styles.formInput}
             {...register('confirm')}
             onFocus={focusInput}
             onBlur={blurInput}
