@@ -56,7 +56,7 @@ const Register: FC = () => {
         })}>
           <label
             htmlFor='username'
-            className={styles.materialFormLabel}
+            className={styles.formLabel}
           >
             Name
           </label>
@@ -79,7 +79,7 @@ const Register: FC = () => {
           [styles.error]: formErrors.email
         })}>
           <label
-            className={styles.materialFormLabel}
+            className={styles.formLabel}
             htmlFor='email'
           >
             Email
@@ -105,10 +105,7 @@ const Register: FC = () => {
         >
           <label
             htmlFor='password'
-            className={cx(styles.materialFormLabel, {
-              [styles.focused]: focused.password,
-              [styles.hasValue]: values.password
-            })}>
+            className={styles.formLabel}>
             Password
           </label>
           <input
@@ -131,7 +128,7 @@ const Register: FC = () => {
           [styles.error]: formErrors.confirm
         })}>
           <label
-            className={styles.materialFormLabel}
+            className={styles.formLabel}
             htmlFor='confirm'
           >
             Confirm password

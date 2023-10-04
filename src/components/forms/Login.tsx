@@ -64,13 +64,13 @@ const Login: FC = () => {
           [styles.error]: formErrors.email
         })}>
           <label
-            className={styles.materialFormLabel}
+            className={styles.formLabel}
             htmlFor='email'
           >
             Email
           </label>
           <input
-            className={styles.formField}
+            className={styles.formInput}
             {...register('email')}
             onFocus={focusInput}
             onBlur={blurInput}
@@ -90,14 +90,11 @@ const Login: FC = () => {
         >
           <label
             htmlFor='password'
-            className={cx(styles.materialFormLabel, {
-              [styles.focused]: focused.password,
-              [styles.hasValue]: values.password
-            })}>
+            className={styles.formLabel}>
             Password
           </label>
           <input
-            className={styles.formField}
+            className={styles.formInput}
             type='password'
             {...register('password')}
             onFocus={focusInput}
