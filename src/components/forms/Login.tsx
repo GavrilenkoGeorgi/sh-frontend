@@ -2,25 +2,29 @@ import React, { type FC, useState, type FocusEvent } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux/es/exports'
 
-import { useSignupMutation } from '../../store/slices/userApiSlice'
-import { RegisterFormSchema, type RegisterFormSchemaType } from '../../schemas/RegisterFormSchema'
-import type { FocusedStates, InputValues, RegisterFormErrors } from '../../types'
+import { LoginFormSchema, type LoginFormSchemaType } from '../../schemas/LoginFormSchema'
+import { setCredentials } from '../../store/slices/authSlice'
+import { useLoginMutation } from '../../store/slices/userApiSlice'
+import type { FocusedStates, InputValues, LoginFormErrors } from '../../types'
 
 import cx from 'classnames'
 import styles from './Form.module.sass'
 
-const Register: FC = () => {
+const Login: FC = () => {
 
   const navigate = useNavigate()
-  const [signup] = useSignupMutation()
+  const [login] = useLoginMutation()
+
+  const dispatch = useDispatch()
 
   const [focused, setFocused] = useState<FocusedStates>({})
   const [values, setValues] = useState<InputValues>({})
-  const [formErrors, setFormErrors] = useState<RegisterFormErrors>({})
+  const [formErrors, setFormErrors] = useState<LoginFormErrors>({})
 
-  const { register, getValues, formState: { errors }, handleSubmit, watch } = useForm<RegisterFormSchemaType>({
-    resolver: zodResolver(RegisterFormSchema)
+  const { register, getValues, formState: { errors }, handleSubmit } = useForm<LoginFormSchemaType>({
+    resolver: zodResolver(LoginFormSchema)
   })
 
   const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
@@ -34,44 +38,25 @@ const Register: FC = () => {
     setFormErrors({ ...errors })
   }
 
-  const onSubmit: SubmitHandler<RegisterFormSchemaType> = async (data): Promise<void> => {
-    console.log('Successful submit data: ', data)
-    await signup(data).unwrap()
-    navigate('/admin', { replace: true })
+  const onSubmit: SubmitHandler<LoginFormSchemaType> = async ({ email, password }): Promise<void> => {
+    try {
+      const res = await login({ email, password }).unwrap()
+      dispatch(setCredentials({ ...res }))
+      navigate('/')
+    } catch (err: any) {
+      console.log(err)
+    }
   }
 
   return <form
     noValidate
+    autoComplete='off'
     // eslint-disable-next-line
     onSubmit={handleSubmit(onSubmit)}
-    id='register'
+    id='login'
     className={styles.form}
   >
     <fieldset>
-      <div className={styles.inputContainer}>
-        <div className={cx(styles.formInput, {
-          [styles.focused]: focused.username,
-          [styles.hasValue]: values.username,
-          [styles.error]: formErrors.username
-        })}>
-          <label
-            htmlFor='username'
-            className={styles.formLabel}
-          >
-            Name
-          </label>
-          <input
-            className={styles.formInput}
-            {...register('username')}
-            onFocus={focusInput}
-            onBlur={blurInput}
-          />
-        </div>
-        {(formErrors.username != null) && <p className={styles.errorMsg}>
-          {formErrors.username.message}
-        </p>}
-      </div>
-
       <div className={styles.inputContainer}>
         <div className={cx(styles.formInput, {
           [styles.focused]: focused.email,
@@ -120,41 +105,9 @@ const Register: FC = () => {
           {formErrors.password.message}
         </p>}
       </div>
-
-      <div className={styles.inputContainer}>
-        <div className={cx(styles.formInput, {
-          [styles.focused]: focused.confirm,
-          [styles.hasValue]: values.confirm,
-          [styles.error]: formErrors.confirm
-        })}>
-          <label
-            className={styles.formLabel}
-            htmlFor='confirm'
-          >
-            Confirm password
-          </label>
-          <input
-            className={styles.formInput}
-            {...register('confirm')}
-            onFocus={focusInput}
-            onBlur={blurInput}
-          />
-        </div>
-        {(formErrors.confirm != null) && <p className={styles.errorMsg}>
-          {formErrors.confirm.message}
-        </p>}
-      </div>
+      <button type='submit'>login</button>
     </fieldset>
-
-    <fieldset>
-      <button type='submit'>Register</button>
-    </fieldset>
-    <div>
-      <pre>
-        {JSON.stringify(watch(), null, 2)}
-      </pre>
-    </div>
   </form>
 }
 
-export default Register
+export default Login

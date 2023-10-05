@@ -1,0 +1,47 @@
+@import '../styles/colors'
+
+.game
+  padding-top: 1.5rem
+  font-weight: 300
+  font-size: 1.5rem
+  color: $primary-color
+  h1
+    text-align: center
+
+.school
+  display: grid
+  grid-template-columns: repeat(6, 1fr)
+  gap: 1rem
+  padding: 0 1rem
+  svg
+    color: $primary-color
+    height: 100%
+    &:hover
+      color: $primary-light-color
+
+.gameResult
+  display: flex
+  padding-left: 1rem
+
+.schoolResult
+  text-align: center
+  margin-bottom: 2rem
+
+.results
+  width: 100%
+  display: flex
+  flex-direction: column
+
+.combName
+  margin: .5rem 0
+  text-transform: capitalize
+
+.combScore
+  display: grid
+  grid-template-columns: repeat(4, 1fr)
+
+.combResult
+  text-align: center
+  display: flex
+  justify-content: center
+  align-items: center

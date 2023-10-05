@@ -1,9 +1,10 @@
 import { type ReactNode } from 'react'
 import { type FieldErrors } from 'react-hook-form/dist/types'
 
-// types
+// Types
 export type Nullable<T> = T | null
 
+// forms
 export type FocusedStates = Record<string, boolean>
 
 export type InputValues = Record<string, string>
@@ -15,7 +16,12 @@ export type RegisterFormErrors = FieldErrors<{
   confirm: string
 }>
 
-// interfaces
+export type LoginFormErrors = FieldErrors<{
+  email: string
+  password: string
+}>
+
+// Interfaces
 export interface IUser {
   _id: string
   name: string
@@ -36,7 +42,20 @@ export interface navLink {
   url: string
 }
 
-// Navbar
+// navbar
 export interface ToggleBtnProps {
   open: boolean
+}
+
+// enums
+export enum Combinations {
+  ONES = 'ones',
+  TWOS = 'twos',
+  THREES = 'threes',
+  FULL = 'full',
+  QUADS = 'quads',
+  POKER = 'poker',
+  SMALL = 'small',
+  LARGE = 'large',
+  CHANCE = 'chance'
 }
