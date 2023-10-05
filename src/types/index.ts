@@ -46,3 +46,16 @@ export interface navLink {
 export interface ToggleBtnProps {
   open: boolean
 }
+
+// enums
+export enum Combinations {
+  ONES = 'ones',
+  TWOS = 'twos',
+  THREES = 'threes',
+  FULL = 'full',
+  QUADS = 'quads',
+  POKER = 'poker',
+  SMALL = 'small',
+  LARGE = 'large',
+  CHANCE = 'chance'
+}
