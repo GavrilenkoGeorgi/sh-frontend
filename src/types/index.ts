@@ -42,6 +42,18 @@ export interface navLink {
   url: string
 }
 
+export interface iCombination {
+  pair: number
+  twoPairs: number
+  triple: number
+  full: number
+  quads: number
+  poker: number
+  small: number
+  large: number
+  chance: number
+}
+
 // navbar
 export interface ToggleBtnProps {
   open: boolean
