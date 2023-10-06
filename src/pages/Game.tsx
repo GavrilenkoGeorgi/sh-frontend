@@ -1,4 +1,5 @@
 import React, { type FC } from 'react'
+import ShScore from '../utils/sh-score'
 import { Combinations } from '../types'
 import Dice from '../components/Dice'
 import styles from './Game.module.sass'
@@ -19,6 +20,13 @@ const GamePage: FC = () => {
 
   // controls
   const currentState = [1, 4, 6, 3, 2]
+
+  const handleClick = (): void => {
+    const roll = ShScore.rollDice()
+    const score = ShScore.getScore(roll)
+    console.log('Roll: ', roll)
+    console.log('Score: ', score)
+  }
 
   return <section className={styles.game}>
     <h1>Score: 234</h1>
@@ -67,7 +75,7 @@ const GamePage: FC = () => {
       {currentState.map((value, index) =>
         <Dice kind={value} key={value.toString() + index} />
       )}
-      <button>
+      <button onClick={handleClick}>
         play
       </button>
     </div>
