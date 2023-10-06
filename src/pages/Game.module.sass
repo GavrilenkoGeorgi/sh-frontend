@@ -1,12 +1,14 @@
 @import '../styles/colors'
 
 .game
-  padding-top: 1.5rem
+  // padding-top: 1.5rem
   font-weight: 300
   font-size: 1.5rem
   color: $primary-color
   h1
     text-align: center
+    margin: 1.5rem 0
+    font-weight: 350
 
 .school
   display: grid
@@ -45,3 +47,15 @@
   display: flex
   justify-content: center
   align-items: center
+
+.controls
+  display: grid
+  grid-template-columns: repeat(5, 1fr) 2fr
+  gap: .75rem
+  margin: 2rem 1rem 0
+  button
+    background-color: $primary-color
+    border: none
+    border-radius: .25rem
+    color: #fff
+    text-transform: uppercase

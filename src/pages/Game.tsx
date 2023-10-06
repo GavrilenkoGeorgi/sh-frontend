@@ -17,11 +17,15 @@ const GamePage: FC = () => {
     gameResults[name] = combResult
   })
 
+  // controls
+  const currentState = [1, 4, 6, 3, 2]
+
   return <section className={styles.game}>
+    <h1>Score: 234</h1>
     {/* School results */}
     <div className={styles.school}>
       {dice.map(item =>
-        <Dice key ={item} kind={item} />
+        <Dice key={item} kind={item} />
       )}
       {schoolResults.map((index, result) =>
         <div
@@ -48,7 +52,7 @@ const GamePage: FC = () => {
             </div>
             {gameResults[key].map((value, index) =>
               <div
-                key={`${key}-${value}-${index}`}
+                key={key + index}
                 className={styles.combResult}
               >
                 {value}
@@ -57,6 +61,15 @@ const GamePage: FC = () => {
           </div>
         )}
       </div>
+    </div>
+    {/* Game controls */}
+    <div className={styles.controls}>
+      {currentState.map((value, index) =>
+        <Dice kind={value} key={value.toString() + index} />
+      )}
+      <button>
+        play
+      </button>
     </div>
   </section>
 }
