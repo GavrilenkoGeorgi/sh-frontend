@@ -9,6 +9,7 @@ import Sixes from '../assets/svg/dice-sixes.svg'
 
 interface iDice {
   kind: number
+  onClick?: () => void
 }
 
 const Dice: FC<iDice> = ({ kind }) => {
@@ -27,7 +28,7 @@ const Dice: FC<iDice> = ({ kind }) => {
     case 6:
       return <Sixes />
     default:
-      return <>empty dice</>
+      return null
   }
 
 }

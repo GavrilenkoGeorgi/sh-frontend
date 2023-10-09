@@ -60,10 +60,10 @@ export interface ToggleBtnProps {
 }
 
 // enums
-export enum Combinations {
-  ONES = 'ones',
-  TWOS = 'twos',
-  THREES = 'threes',
+export enum Combinations { // combination names?
+  PAIR = 'pair',
+  TWOPAIRS = 'two pairs',
+  TRIPLE = 'triple',
   FULL = 'full',
   QUADS = 'quads',
   POKER = 'poker',
