@@ -1,11 +1,12 @@
 import React, { type FC } from 'react'
 
-import Ones from '../assets/svg/dice-ones.svg'
-import Twos from '../assets/svg/dice-twos.svg'
-import Threes from '../assets/svg/dice-threes.svg'
-import Fours from '../assets/svg/dice-fours.svg'
-import Fives from '../assets/svg/dice-fives.svg'
-import Sixes from '../assets/svg/dice-sixes.svg'
+import Ones from '../../assets/svg/dice-ones.svg'
+import Twos from '../../assets/svg/dice-twos.svg'
+import Threes from '../../assets/svg/dice-threes.svg'
+import Fours from '../../assets/svg/dice-fours.svg'
+import Fives from '../../assets/svg/dice-fives.svg'
+import Sixes from '../../assets/svg/dice-sixes.svg'
+import Empty from '../../assets/svg/dice-empty.svg'
 
 interface iDice {
   kind: number
@@ -28,7 +29,7 @@ const Dice: FC<iDice> = ({ kind }) => {
     case 6:
       return <Sixes />
     default:
-      return null
+      return <Empty />
   }
 
 }

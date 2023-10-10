@@ -3,16 +3,20 @@ import ShScore from '../../utils/sh-score'
 import { Combinations } from '../../types'
 
 const names = Object.values(Combinations)
-const game: Record<string, number[]> = {}
+const combinations: Record<string, number[]> = {}
 
 names.forEach(name => {
-  game[name] = new Array(3).fill(0)
+  combinations[name] = new Array(3).fill(0)
 })
 
 const initialState = {
-  gameScore: {
+  game: {
+    score: 0,
+    turn: 0,
+    lock: false,
     school: new Array(6).fill(0),
-    game,
+    combinations,
+    selection: new Array(0),
     roll: new Array(5).fill(0)
   }
 }
@@ -21,16 +25,30 @@ const shSlice = createSlice({
   name: 'sh',
   initialState,
   reducers: {
-    setScore: (state, action) => {
-      console.log('Set score action', action)
+    setScore: ({ game }, action) => {
+      ShScore.getScore(game.selection)
     },
-    rollDice: (state, action) => {
-      const roll = ShScore.rollDice()
-      state.gameScore.roll = roll
+    selectDice: ({ game }, action) => {
+      // add to selection
+      game.selection.push(action.payload)
+      // remove from roll
+      game.roll.splice(game.roll.indexOf(action.payload), 1)
+    },
+    deselectDice: ({ game }, action) => {
+      // add to roll array
+      game.roll.push(action.payload)
+      // remove from selection
+      game.selection.splice(game.selection.indexOf(action.payload), 1)
+    },
+    rollDice: ({ game }) => {
+      const newRoll = ShScore.rollDice(game.roll, game.selection)
+      game.roll = newRoll
+      game.turn = game.turn + 1
+      if (game.turn % 3 === 0) game.lock = true
     }
   }
 })
 
-export const { setScore, rollDice } = shSlice.actions
+export const { setScore, rollDice, selectDice, deselectDice } = shSlice.actions
 
 export default shSlice.reducer

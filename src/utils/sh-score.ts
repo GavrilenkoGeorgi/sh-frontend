@@ -19,13 +19,17 @@ class ShScore {
   }
 
   // Roll dice
-  rollDice = (): number[] => {
-    const minValue = 1
-    const maxValue = 6
-    const currentScore = Array.apply(null, Array(5))
-      .map(() => this.getRandomInt(minValue, maxValue))
+  rollDice = (diceToRoll: number[], diceSelected: number[]): number[] => {
+    let roll: number[] = []
 
-    return currentScore.sort((a, b) => { return a - b })
+    if (diceToRoll.length === 0 && diceSelected.length !== 5) {
+      roll = Array.apply(null, Array(5))
+        .map(() => this.getRandomInt())
+    } else {
+      roll = Array.apply(null, Array(diceToRoll.length))
+        .map(() => this.getRandomInt())
+    }
+    return roll.sort((a, b) => { return a - b })
   }
 
   // Return current state of the score object
@@ -36,7 +40,9 @@ class ShScore {
   }
 
   // Get random value for the dice
-  private readonly getRandomInt = (min: number, max: number): number => {
+  private readonly getRandomInt = (): number => {
+    const min = 1
+    const max = 6
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
 
@@ -77,7 +83,7 @@ class ShScore {
     // poker, small and large combinations are checked separately
     // as they look like some kind of an 'edge case'
     // check for 'poker' (the simpliest one)
-    const poker = latestTurn.every(value => { return value === firstValue })
+    const poker = latestTurn.every(value => { return value === firstValue }) && latestTurn.length === 5
     if (poker) {
       this.combination.poker = firstValue * 5
     }

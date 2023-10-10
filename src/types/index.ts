@@ -62,7 +62,7 @@ export interface ToggleBtnProps {
 // enums
 export enum Combinations { // combination names?
   PAIR = 'pair',
-  TWOPAIRS = 'two pairs',
+  TWOPAIRS = 'twoPairs',
   TRIPLE = 'triple',
   FULL = 'full',
   QUADS = 'quads',
