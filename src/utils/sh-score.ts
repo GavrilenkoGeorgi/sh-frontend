@@ -2,9 +2,11 @@ import { type iCombination } from '../types'
 
 class ShScore {
 
+  school: number[][]
   combination: iCombination
 
   constructor () {
+    this.school = [[], [], [], [], [], []]
     this.combination = {
       pair: 0,
       twoPairs: 0,
@@ -39,6 +41,27 @@ class ShScore {
     return this.combination
   }
 
+  getSchoolScore = (values: number[]): Array<number | null> => {
+
+    this.reset()
+
+    values.forEach(item => {
+      this.school[item - 1].push(item)
+    })
+
+    const result = this.school.map(item => {
+      if (item.length === 0) {
+        return null
+      } else if (item.length === 3) {
+        return 0
+      } else {
+        const [value] = item
+        return (item.length - 3) * value // this will require some explanation
+      }
+    })
+    return result
+  }
+
   // Get random value for the dice
   private readonly getRandomInt = (): number => {
     const min = 1
@@ -58,6 +81,8 @@ class ShScore {
     for (const key in this.combination) {
       this.combination[key as keyof typeof this.combination] = 0
     }
+
+    this.school = [[], [], [], [], [], []]
   }
 
   // Calc score for given combination

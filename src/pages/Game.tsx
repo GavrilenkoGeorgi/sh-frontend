@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import React, { type FC, useEffect } from 'react'
 import Dice from '../components/game/Dice'
 import SchoolDice from '../components/game/SchoolDice'
 import styles from './Game.module.sass'
@@ -18,13 +18,18 @@ const GamePage: FC = () => {
 
   const select = (index: number): void => {
     dispatch(selectDice(game.roll[index]))
-    dispatch(setScore({}))
   }
 
   const deselect = (index: number): void => {
     dispatch(deselectDice(game.selection[index]))
-    dispatch(setScore({}))
   }
+
+  // on selection change calc score
+  useEffect(() => {
+    if (game.selection.length > 0) {
+      dispatch(setScore(game.selection))
+    }
+  }, [game.selection])
 
   return <section className={styles.game}>
     <h1>Score: {game.score}</h1>

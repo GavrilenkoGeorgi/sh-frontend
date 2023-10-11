@@ -14,7 +14,7 @@ const initialState = {
     score: 0,
     turn: 0,
     lock: false,
-    school: new Array(6).fill(0),
+    school: new Array(6).fill(null),
     combinations,
     selection: new Array(0),
     roll: new Array(5).fill(0)
@@ -26,7 +26,11 @@ const shSlice = createSlice({
   initialState,
   reducers: {
     setScore: ({ game }, action) => {
-      ShScore.getScore(game.selection)
+      if (game.turn <= 18) {
+        ShScore.getSchoolScore(action.payload)
+      } else {
+        ShScore.getScore(game.selection)
+      }
     },
     selectDice: ({ game }, action) => {
       // add to selection
