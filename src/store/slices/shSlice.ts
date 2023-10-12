@@ -1,12 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
 import ShScore from '../../utils/sh-score'
-import { Combinations } from '../../types'
+import { SchoolCombinations, GameCombinations } from '../../types'
 
-const names = Object.values(Combinations)
-const combinations: Record<string, number[]> = {}
+const schoolCombNames = Object.values(SchoolCombinations)
+const gameCombNames = Object.values(GameCombinations)
 
-names.forEach(name => {
-  combinations[name] = new Array(3).fill(0)
+const school: Record<string, { final: boolean, score: number | null }> = {}
+const gameCombinations: Record<string, number[]> = {}
+
+schoolCombNames.forEach(name => {
+  school[name] = {
+    final: false,
+    score: null
+  }
+})
+
+gameCombNames.forEach(name => {
+  gameCombinations[name] = new Array(3).fill(0)
 })
 
 const initialState = {
@@ -14,8 +24,8 @@ const initialState = {
     score: 0,
     turn: 0,
     lock: false,
-    school: new Array(6).fill(null),
-    combinations,
+    school,
+    gameCombinations,
     selection: new Array(0),
     roll: new Array(5).fill(0)
   }
@@ -27,9 +37,26 @@ const shSlice = createSlice({
   reducers: {
     setScore: ({ game }, action) => {
       if (game.turn <= 18) {
-        ShScore.getSchoolScore(action.payload)
+        const result = ShScore.getSchoolScore(action.payload)
+        // clear all temp scores
+        for (const key in game.school) {
+          if (!game.school[key].final) {
+            game.school[key].score = null
+          }
+        }
+        // iterate results array and set scores
+        result.forEach((value, index) => {
+          if (value !== null && !game.school[Object.keys(game.school)[index]].final) {
+            game.school[Object.keys(game.school)[index]].score = value
+          }
+        })
       } else {
         ShScore.getScore(game.selection)
+      }
+    },
+    saveScore: ({ game }, action) => {
+      if (game.turn <= 18) {
+        game.school[action.payload].final = true
       }
     },
     selectDice: ({ game }, action) => {
@@ -53,6 +80,12 @@ const shSlice = createSlice({
   }
 })
 
-export const { setScore, rollDice, selectDice, deselectDice } = shSlice.actions
+export const {
+  setScore,
+  saveScore,
+  rollDice,
+  selectDice,
+  deselectDice
+} = shSlice.actions
 
 export default shSlice.reducer

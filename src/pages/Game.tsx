@@ -3,7 +3,13 @@ import Dice from '../components/game/Dice'
 import SchoolDice from '../components/game/SchoolDice'
 import styles from './Game.module.sass'
 
-import { rollDice, selectDice, deselectDice, setScore } from '../store/slices/shSlice'
+import {
+  rollDice,
+  selectDice,
+  deselectDice,
+  setScore,
+  saveScore
+} from '../store/slices/shSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../store'
 
@@ -24,11 +30,13 @@ const GamePage: FC = () => {
     dispatch(deselectDice(game.selection[index]))
   }
 
+  const save = (id: string): void => {
+    dispatch(saveScore(id))
+  }
+
   // on selection change calc score
   useEffect(() => {
-    if (game.selection.length > 0) {
-      dispatch(setScore(game.selection))
-    }
+    dispatch(setScore(game.selection))
   }, [game.selection])
 
   return <section className={styles.game}>
@@ -36,12 +44,14 @@ const GamePage: FC = () => {
     {/* School results */}
     <div className={styles.school}>
       <SchoolDice />
-      {game.school.map((result, index) =>
+      {Object.keys(game.school).map((key) =>
         <div
+          id={key}
+          key={key}
           className={styles.schoolResult}
-          key={index.toString() + result}
+          onClick={() => { save(key) }}
         >
-          {result}
+          {game.school[key].score}
         </div>
       )}
     </div>
@@ -49,7 +59,7 @@ const GamePage: FC = () => {
     <div className={styles.gameResult}>
       {/* actual results from store will go here */}
       <div className={styles.results}>
-        {Object.keys(game.combinations).map(key =>
+        {Object.keys(game.gameCombinations).map(key =>
           <div
             className={styles.combScore}
             key={key}
@@ -59,7 +69,7 @@ const GamePage: FC = () => {
             >
               {key}
             </div>
-            {game.combinations[key].map((value, index) =>
+            {game.gameCombinations[key].map((value, index) =>
               <div
                 key={key + index}
                 className={styles.combResult}

@@ -60,7 +60,16 @@ export interface ToggleBtnProps {
 }
 
 // enums
-export enum Combinations { // combination names?
+export enum SchoolCombinations {
+  ONES = 'ones',
+  TWOS = 'twos',
+  THREES = 'threes',
+  FOURS = 'fours',
+  FIVES = 'fives',
+  SIXES = 'sixes'
+}
+
+export enum GameCombinations { // combination names?
   PAIR = 'pair',
   TWOPAIRS = 'twoPairs',
   TRIPLE = 'triple',
