@@ -2,9 +2,11 @@ import { type iCombination } from '../types'
 
 class ShScore {
 
+  school: number[][]
   combination: iCombination
 
   constructor () {
+    this.school = [[], [], [], [], [], []]
     this.combination = {
       pair: 0,
       twoPairs: 0,
@@ -19,13 +21,17 @@ class ShScore {
   }
 
   // Roll dice
-  rollDice = (): number[] => {
-    const minValue = 1
-    const maxValue = 6
-    const currentScore = Array.apply(null, Array(5))
-      .map(() => this.getRandomInt(minValue, maxValue))
+  rollDice = (diceToRoll: number[], diceSelected: number[]): number[] => {
+    let roll: number[] = []
 
-    return currentScore.sort((a, b) => { return a - b })
+    if (diceToRoll.length === 0 && diceSelected.length !== 5) {
+      roll = Array.apply(null, Array(5))
+        .map(() => this.getRandomInt())
+    } else {
+      roll = Array.apply(null, Array(diceToRoll.length))
+        .map(() => this.getRandomInt())
+    }
+    return roll.sort((a, b) => { return a - b })
   }
 
   // Return current state of the score object
@@ -35,8 +41,31 @@ class ShScore {
     return this.combination
   }
 
+  getSchoolScore = (values: number[]): Array<number | null> => {
+
+    this.reset()
+
+    values.forEach(item => {
+      this.school[item - 1].push(item)
+    })
+
+    const result = this.school.map(item => {
+      if (item.length === 0) {
+        return null
+      } else if (item.length === 3) {
+        return 0
+      } else {
+        const [value] = item
+        return (item.length - 3) * value // this will require some explanation
+      }
+    })
+    return result
+  }
+
   // Get random value for the dice
-  private readonly getRandomInt = (min: number, max: number): number => {
+  private readonly getRandomInt = (): number => {
+    const min = 1
+    const max = 6
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
 
@@ -52,6 +81,8 @@ class ShScore {
     for (const key in this.combination) {
       this.combination[key as keyof typeof this.combination] = 0
     }
+
+    this.school = [[], [], [], [], [], []]
   }
 
   // Calc score for given combination
@@ -77,7 +108,7 @@ class ShScore {
     // poker, small and large combinations are checked separately
     // as they look like some kind of an 'edge case'
     // check for 'poker' (the simpliest one)
-    const poker = latestTurn.every(value => { return value === firstValue })
+    const poker = latestTurn.every(value => { return value === firstValue }) && latestTurn.length === 5
     if (poker) {
       this.combination.poker = firstValue * 5
     }

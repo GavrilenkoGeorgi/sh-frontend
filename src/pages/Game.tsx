@@ -1,46 +1,57 @@
-import React, { type FC } from 'react'
-import ShScore from '../utils/sh-score'
-import { Combinations } from '../types'
-import Dice from '../components/Dice'
+import React, { type FC, useEffect } from 'react'
+import Dice from '../components/game/Dice'
+import SchoolDice from '../components/game/SchoolDice'
 import styles from './Game.module.sass'
+
+import {
+  rollDice,
+  selectDice,
+  deselectDice,
+  setScore,
+  saveScore
+} from '../store/slices/shSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import type { RootState } from '../store'
 
 const GamePage: FC = () => {
 
-  // preliminary mock data
-  const dice = [1, 2, 3, 4, 5, 6]
-  const combResult = new Array(3).fill(0)
-  const schoolResults = new Array(6).fill(0)
+  const dispatch = useDispatch()
+  const { game } = useSelector((state: RootState) => state.sh)
 
-  const names = Object.values(Combinations)
-  const gameResults: Record<string, number[]> = {}
-
-  names.forEach(name => {
-    gameResults[name] = combResult
-  })
-
-  // controls
-  const currentState = [1, 4, 6, 3, 2]
-
-  const handleClick = (): void => {
-    const roll = ShScore.rollDice()
-    const score = ShScore.getScore(roll)
-    console.log('Roll: ', roll)
-    console.log('Score: ', score)
+  const roll = (): void => {
+    dispatch(rollDice())
   }
 
+  const select = (index: number): void => {
+    dispatch(selectDice(game.roll[index]))
+  }
+
+  const deselect = (index: number): void => {
+    dispatch(deselectDice(game.selection[index]))
+  }
+
+  const save = (id: string): void => {
+    dispatch(saveScore(id))
+  }
+
+  // on selection change calc score
+  useEffect(() => {
+    dispatch(setScore(game.selection))
+  }, [game.selection])
+
   return <section className={styles.game}>
-    <h1>Score: 234</h1>
+    <h1>Score: {game.score}</h1>
     {/* School results */}
     <div className={styles.school}>
-      {dice.map(item =>
-        <Dice key={item} kind={item} />
-      )}
-      {schoolResults.map((index, result) =>
+      <SchoolDice />
+      {Object.keys(game.school).map((key) =>
         <div
+          id={key}
+          key={key}
           className={styles.schoolResult}
-          key={index.toString() + result}
+          onClick={() => { save(key) }}
         >
-          {result}
+          {game.school[key].score}
         </div>
       )}
     </div>
@@ -48,7 +59,7 @@ const GamePage: FC = () => {
     <div className={styles.gameResult}>
       {/* actual results from store will go here */}
       <div className={styles.results}>
-        {Object.keys(gameResults).map(key =>
+        {Object.keys(game.combinations).map(key =>
           <div
             className={styles.combScore}
             key={key}
@@ -58,25 +69,49 @@ const GamePage: FC = () => {
             >
               {key}
             </div>
-            {gameResults[key].map((value, index) =>
-              <div
-                key={key + index}
-                className={styles.combResult}
-              >
-                {value}
-              </div>
-            )}
+          {game.combinations[key].map((value, index) =>
+            <div
+              key={key + index}
+              className={styles.combResult}
+            >
+              {value}
+            </div>
+          )}
+          {game.results[key as keyof typeof game.results] > 0 &&
+            <div
+              onClick={() => { save(key) }}
+              className={styles.preliminaryResult}
+            >
+              {game.results[key as keyof typeof game.results]}
+            </div>
+          }
           </div>
         )}
       </div>
     </div>
     {/* Game controls */}
     <div className={styles.controls}>
-      {currentState.map((value, index) =>
-        <Dice kind={value} key={value.toString() + index} />
+      {game.selection.map((value, index) =>
+        <div key={index}
+          onClick={() => { deselect(index) }}
+          className={styles.selectedDice}
+        >
+          <Dice kind={value} />
+        </div>
       )}
-      <button onClick={handleClick}>
-        play
+      {game.roll.map((value, index) =>
+        <div key={index}
+          onClick={() => { select(index) }}
+          className={styles.rolledDice}
+        >
+          <Dice kind={value} />
+        </div>
+      )}
+      <button
+        onClick={roll}
+        disabled={game.lock}
+      >
+        {game.lock ? 'save' : 'play'}
       </button>
     </div>
   </section>

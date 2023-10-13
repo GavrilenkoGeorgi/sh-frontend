@@ -1,7 +1,6 @@
 @import '../styles/colors'
 
 .game
-  // padding-top: 1.5rem
   font-weight: 300
   font-size: 1.5rem
   color: $primary-color
@@ -40,22 +39,34 @@
 
 .combScore
   display: grid
-  grid-template-columns: repeat(4, 1fr)
+  grid-template-columns: 2fr repeat(3, 1fr)
 
-.combResult
+.combResult,
+.preliminaryResult
   text-align: center
   display: flex
   justify-content: center
   align-items: center
+
+.preliminaryResult
+  color: $color-orange
+  font-weight: 450
 
 .controls
   display: grid
   grid-template-columns: repeat(5, 1fr) 2fr
   gap: .75rem
   margin: 2rem 1rem 0
+  .rolledDice,
+  .selectedDice
+    display: flex
+  .selectedDice
+    color: red
   button
     background-color: $primary-color
     border: none
     border-radius: .25rem
     color: #fff
     text-transform: uppercase
+    padding: 0
+    margin: 0
