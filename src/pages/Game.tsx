@@ -59,7 +59,7 @@ const GamePage: FC = () => {
     <div className={styles.gameResult}>
       {/* actual results from store will go here */}
       <div className={styles.results}>
-        {Object.keys(game.gameCombinations).map(key =>
+        {Object.keys(game.combinations).map(key =>
           <div
             className={styles.combScore}
             key={key}
@@ -69,14 +69,22 @@ const GamePage: FC = () => {
             >
               {key}
             </div>
-            {game.gameCombinations[key].map((value, index) =>
-              <div
-                key={key + index}
-                className={styles.combResult}
-              >
-                {value}
-              </div>
-            )}
+          {game.combinations[key].map((value, index) =>
+            <div
+              key={key + index}
+              className={styles.combResult}
+            >
+              {value}
+            </div>
+          )}
+          {game.results[key as keyof typeof game.results] > 0 &&
+            <div
+              onClick={() => { save(key) }}
+              className={styles.preliminaryResult}
+            >
+              {game.results[key as keyof typeof game.results]}
+            </div>
+          }
           </div>
         )}
       </div>
