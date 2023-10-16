@@ -66,6 +66,7 @@ const GamePage: FC = () => {
           >
             <div
               className={styles.combName}
+              onClick={() => { save(key) }}
             >
               {key}
             </div>
