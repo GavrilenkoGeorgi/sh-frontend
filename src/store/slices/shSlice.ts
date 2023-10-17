@@ -67,7 +67,7 @@ const shSlice = createSlice({
           }
         })
       } else {
-        const result = ShScore.getScore(game.selection)
+        const result = ShScore.getScore(ShScore.sort(game.selection))
         for (const name in result) {
           if (game.combinations[name].length < 3) {
             game.results[name as keyof typeof game.results] =
