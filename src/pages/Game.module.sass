@@ -8,6 +8,7 @@
     text-align: center
     margin: 1.5rem 0
     font-weight: 350
+    // font-size: 2rem
 
 .school
   display: grid
@@ -25,8 +26,13 @@
   padding-left: 1rem
 
 .schoolResult
+  min-height: 2rem
   text-align: center
-  margin-bottom: 2rem
+  margin-bottom: 1rem
+
+.pre
+  color: $color-orange
+  font-weight: 450
 
 .results
   width: 100%
@@ -61,12 +67,16 @@
   .selectedDice
     display: flex
   .selectedDice
-    color: red
-  button
-    background-color: $primary-color
-    border: none
-    border-radius: .25rem
-    color: #fff
-    text-transform: uppercase
-    padding: 0
-    margin: 0
+    color: $color-orange
+
+.rollBtn
+  background-color: $primary-color
+  border: none
+  border-radius: .25rem
+  color: #fff
+  text-transform: uppercase
+  padding: 0
+  margin: 0
+
+.locked
+  background-color: $color-orange

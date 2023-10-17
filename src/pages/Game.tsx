@@ -1,8 +1,6 @@
 import React, { type FC, useEffect } from 'react'
-import Dice from '../components/game/Dice'
-import SchoolDice from '../components/game/SchoolDice'
-import styles from './Game.module.sass'
-
+import { useDispatch, useSelector } from 'react-redux'
+import type { RootState } from '../store'
 import {
   rollDice,
   selectDice,
@@ -10,8 +8,10 @@ import {
   setScore,
   saveScore
 } from '../store/slices/shSlice'
-import { useDispatch, useSelector } from 'react-redux'
-import type { RootState } from '../store'
+import SchoolDice from '../components/game/SchoolDice'
+import Dice from '../components/game/Dice'
+import cx from 'classnames'
+import styles from './Game.module.sass'
 
 const GamePage: FC = () => {
 
@@ -48,7 +48,9 @@ const GamePage: FC = () => {
         <div
           id={key}
           key={key}
-          className={styles.schoolResult}
+          className={cx(styles.schoolResult, {
+            [styles.pre]: !game.school[key].final
+          })}
           onClick={() => { save(key) }}
         >
           {game.school[key].score}
@@ -111,6 +113,9 @@ const GamePage: FC = () => {
       <button
         onClick={roll}
         disabled={game.lock}
+        className={cx(styles.rollBtn, {
+          [styles.locked]: game.lock
+        })}
       >
         {game.lock ? 'save' : 'play'}
       </button>
