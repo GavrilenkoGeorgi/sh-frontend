@@ -43,7 +43,13 @@ const initialState = {
     results, // combinations values to show
     selection: new Array(0),
     roll: new Array(5).fill(0),
-    saved: false
+    saved: false,
+    favDiceValues: new Array(6).fill(0),
+    endGameResult: {
+      stats: {},
+      score: 0,
+      favDiceValues: []
+    }
   }
 }
 
@@ -90,6 +96,10 @@ const shSlice = createSlice({
         const value = game.results[payload as keyof typeof game.results]
         game.combinations[payload].push(value)
         game.score = game.score + value
+        // save favourite dice values from this selection
+        for (const value of game.selection) {
+          game.favDiceValues[value - 1]++
+        }
         // clear preliminary results to initial after save
         game.results = results
         game.saved = true
@@ -103,6 +113,13 @@ const shSlice = createSlice({
         game.turn = game.turn + 1
         game.rollCount = 0
         game.lock = false
+      }
+    },
+    endGame: ({ game }) => {
+      game.endGameResult = {
+        stats: ShScore.combinationsStats(game.combinations),
+        score: game.score,
+        favDiceValues: game.favDiceValues as []
       }
     },
     selectDice: ({ game }, { payload }) => {
@@ -128,7 +145,8 @@ export const {
   saveScore,
   rollDice,
   selectDice,
-  deselectDice
+  deselectDice,
+  endGame
 } = shSlice.actions
 
 export default shSlice.reducer

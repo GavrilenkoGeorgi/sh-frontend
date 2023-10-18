@@ -6,7 +6,8 @@ import {
   selectDice,
   deselectDice,
   setScore,
-  saveScore
+  saveScore,
+  endGame
 } from '../store/slices/shSlice'
 import SchoolDice from '../components/game/SchoolDice'
 import Dice from '../components/game/Dice'
@@ -32,6 +33,10 @@ const GamePage: FC = () => {
 
   const save = (id: string): void => {
     dispatch(saveScore(id))
+  }
+
+  const end = (): void => {
+    dispatch(endGame())
   }
 
   // on selection change calc score
@@ -93,7 +98,7 @@ const GamePage: FC = () => {
       </div>
     </div>
     {/* Game controls */}
-    <div className={styles.controls}>
+    { game.turn <= 33 && <div className={styles.controls}>
       {game.selection.map((value, index) =>
         <div key={index}
           onClick={() => { deselect(index) }}
@@ -119,7 +124,14 @@ const GamePage: FC = () => {
       >
         {game.lock ? 'save' : 'play'}
       </button>
-    </div>
+    </div> }
+    { game.turn === 34 &&
+      <div className={styles.saveResults}>
+        <button onClick={ end }>
+          Save results
+        </button>
+      </div>
+    }
   </section>
 }
 

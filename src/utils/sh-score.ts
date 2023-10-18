@@ -4,6 +4,7 @@ class ShScore {
 
   school: number[][]
   combination: iCombination
+  stats: iCombination
 
   constructor () {
     this.school = [[], [], [], [], [], []]
@@ -18,6 +19,7 @@ class ShScore {
       large: 0,
       chance: 0
     }
+    this.stats = this.combination
   }
 
   // Roll dice
@@ -68,6 +70,19 @@ class ShScore {
   // Sort helper ('small' and 'large' combinations depend on this)
   sort = (values: number[]): number[] => {
     return values.sort((a, b) => { return a - b })
+  }
+
+  // Get combinations stats at the end of the game
+  combinationsStats = (results: Record<string, number[]>): iCombination => {
+    for (const key in results) {
+      results[key].forEach(value => {
+        if (value > 0) {
+          this.stats[key as keyof typeof this.combination] =
+            this.stats[key as keyof typeof this.combination] + 1
+        }
+      })
+    }
+    return this.stats
   }
 
   // Get random value for the dice
