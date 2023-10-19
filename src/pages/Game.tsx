@@ -1,13 +1,13 @@
 import React, { type FC, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../store'
+import { useSaveResultsMutation } from '../store/slices/gameApiSlice'
 import {
   rollDice,
   selectDice,
   deselectDice,
   setScore,
-  saveScore,
-  endGame
+  saveScore
 } from '../store/slices/shSlice'
 import SchoolDice from '../components/game/SchoolDice'
 import Dice from '../components/game/Dice'
@@ -18,6 +18,7 @@ const GamePage: FC = () => {
 
   const dispatch = useDispatch()
   const { game } = useSelector((state: RootState) => state.sh)
+  const [saveResults] = useSaveResultsMutation()
 
   const roll = (): void => {
     dispatch(rollDice())
@@ -35,8 +36,17 @@ const GamePage: FC = () => {
     dispatch(saveScore(id))
   }
 
-  const end = (): void => {
-    dispatch(endGame())
+  const end = async (): Promise<void> => {
+    try {
+      const data = {
+        score: game.score,
+        stats: game.stats,
+        favDiceValues: game.favDiceValues
+      }
+      await saveResults(data)
+    } catch (err) {
+      console.log(err) // TODO: propeer err handling
+    }
   }
 
   // on selection change calc score
@@ -127,7 +137,7 @@ const GamePage: FC = () => {
     </div> }
     { game.turn === 34 &&
       <div className={styles.saveResults}>
-        <button onClick={ end }>
+        <button onClick={ () => { void end() }}>
           Save results
         </button>
       </div>

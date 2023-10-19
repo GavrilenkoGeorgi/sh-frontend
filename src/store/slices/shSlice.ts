@@ -45,11 +45,7 @@ const initialState = {
     roll: new Array(5).fill(0),
     saved: false,
     favDiceValues: new Array(6).fill(0),
-    endGameResult: {
-      stats: {},
-      score: 0,
-      favDiceValues: []
-    }
+    stats: {}
   }
 }
 
@@ -114,12 +110,10 @@ const shSlice = createSlice({
         game.rollCount = 0
         game.lock = false
       }
-    },
-    endGame: ({ game }) => {
-      game.endGameResult = {
-        stats: ShScore.combinationsStats(game.combinations),
-        score: game.score,
-        favDiceValues: game.favDiceValues as []
+
+      // last turn
+      if (game.turn === 34) {
+        game.stats = ShScore.combinationsStats(game.combinations)
       }
     },
     selectDice: ({ game }, { payload }) => {
@@ -145,8 +139,7 @@ export const {
   saveScore,
   rollDice,
   selectDice,
-  deselectDice,
-  endGame
+  deselectDice
 } = shSlice.actions
 
 export default shSlice.reducer
