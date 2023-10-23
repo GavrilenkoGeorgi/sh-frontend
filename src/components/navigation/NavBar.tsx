@@ -39,28 +39,28 @@ const NavBar: FC = () => {
 
   const navigation: navLink[] = [
     {
-      label: 'Register',
-      url: '/register'
-    },
-    {
-      label: 'Login',
-      url: '/login'
-    },
-    {
-      label: 'Logout',
-      url: '/logout'
-    },
-    {
       label: 'Game',
-      url: '/game'
+      url: '/'
     },
     {
       label: 'Profile',
       url: '/profile'
     },
     {
+      label: 'Login',
+      url: '/login'
+    },
+    {
       label: 'Stats',
       url: '/stats'
+    },
+    {
+      label: 'Register',
+      url: '/register'
+    },
+    {
+      label: 'Logout',
+      url: '/logout'
     }
   ]
 

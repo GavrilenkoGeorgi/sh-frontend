@@ -4,6 +4,7 @@ class ShScore {
 
   school: number[][]
   combination: iCombination
+  stats: iCombination
 
   constructor () {
     this.school = [[], [], [], [], [], []]
@@ -18,6 +19,7 @@ class ShScore {
       large: 0,
       chance: 0
     }
+    this.stats = this.combination
   }
 
   // Roll dice
@@ -31,7 +33,7 @@ class ShScore {
       roll = Array.apply(null, Array(diceToRoll.length))
         .map(() => this.getRandomInt())
     }
-    return roll.sort((a, b) => { return a - b })
+    return this.sort(roll)
   }
 
   // Return current state of the score object
@@ -41,10 +43,9 @@ class ShScore {
     return this.combination
   }
 
+  // Calculate 'school' score
   getSchoolScore = (values: number[]): Array<number | null> => {
-
     this.reset()
-
     values.forEach(item => {
       this.school[item - 1].push(item)
     })
@@ -55,11 +56,33 @@ class ShScore {
       } else if (item.length === 3) {
         return 0
       } else {
+        // array of dice is greater than zero and not equal to three
+        // we do this trick. example: we got two sixes, values.sixes.length minus 3 is '-1'
+        // multiplied by 6 will score '-6'
+        // if we got 1 dice with value 6 --> array.length is '-2' * 6 equals '-12'
         const [value] = item
-        return (item.length - 3) * value // this will require some explanation
+        return (item.length - 3) * value
       }
     })
     return result
+  }
+
+  // Sort helper ('small' and 'large' combinations depend on this)
+  sort = (values: number[]): number[] => {
+    return values.sort((a, b) => { return a - b })
+  }
+
+  // Get combinations stats at the end of the game
+  combinationsStats = (results: Record<string, number[]>): iCombination => {
+    for (const key in results) {
+      results[key].forEach(value => {
+        if (value > 0) {
+          this.stats[key as keyof typeof this.combination] =
+            this.stats[key as keyof typeof this.combination] + 1
+        }
+      })
+    }
+    return this.stats
   }
 
   // Get random value for the dice
@@ -114,7 +137,7 @@ class ShScore {
     }
 
     // check for 'small/large'
-    if (this.isAscending(latestTurn)) {
+    if (latestTurn.length === 5 && this.isAscending(latestTurn)) {
       for (const item of latestTurn) {
         // if first value is 1 it's a 'small' else 'large'
         if (firstValue === 1) this.combination.small = this.combination.small += item

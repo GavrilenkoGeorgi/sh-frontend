@@ -25,8 +25,13 @@
   padding-left: 1rem
 
 .schoolResult
+  min-height: 2rem
   text-align: center
-  margin-bottom: 2rem
+  margin-bottom: 1rem
+
+.pre
+  color: $color-orange
+  font-weight: 450
 
 .results
   width: 100%
@@ -61,12 +66,50 @@
   .selectedDice
     display: flex
   .selectedDice
-    color: red
-  button
-    background-color: $primary-color
-    border: none
-    border-radius: .25rem
-    color: #fff
-    text-transform: uppercase
-    padding: 0
+    color: $color-orange
+
+.rollBtn
+  background-color: $primary-color
+  border: none
+  border-radius: .25rem
+  color: #fff
+  text-transform: uppercase
+  padding: 0
+  margin: 0
+
+.locked
+  background-color: $color-orange
+
+.modal
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  width: 90%
+  max-width: 360px
+  border-radius: .25rem
+  border: 2px solid $primary-light-color
+
+.blur
+  z-index: -1
+  position: fixed
+  background-color: rgb(255 255 255 / 0.3)
+  backdrop-filter: blur(2px)
+  border-radius: .25rem
+  height: 100%
+  width: 100%
+
+.message
+  padding: 2rem 1.5rem
+  h2
     margin: 0
+    font-size: 2rem
+  button
+    margin-top: 1rem
+    width: 100%
+    font-size: 1rem
+    padding: 1rem
+    border: none
+    background-color: $primary-color
+    color: #fff
+    border-radius: .25rem

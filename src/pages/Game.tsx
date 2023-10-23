@@ -1,29 +1,34 @@
 import React, { type FC, useEffect } from 'react'
-import Dice from '../components/game/Dice'
-import SchoolDice from '../components/game/SchoolDice'
-import styles from './Game.module.sass'
-
+import { useDispatch, useSelector } from 'react-redux'
+import type { RootState } from '../store'
+import { useSaveResultsMutation } from '../store/slices/gameApiSlice'
 import {
   rollDice,
   selectDice,
   deselectDice,
   setScore,
-  saveScore
+  saveScore,
+  reset
 } from '../store/slices/shSlice'
-import { useDispatch, useSelector } from 'react-redux'
-import type { RootState } from '../store'
+import SchoolDice from '../components/game/SchoolDice'
+import Dice from '../components/game/Dice'
+import cx from 'classnames'
+import styles from './Game.module.sass'
 
 const GamePage: FC = () => {
 
   const dispatch = useDispatch()
   const { game } = useSelector((state: RootState) => state.sh)
+  const [saveResults] = useSaveResultsMutation()
 
   const roll = (): void => {
     dispatch(rollDice())
   }
 
   const select = (index: number): void => {
-    dispatch(selectDice(game.roll[index]))
+    if (game.rollCount > 0) {
+      dispatch(selectDice(game.roll[index]))
+    }
   }
 
   const deselect = (index: number): void => {
@@ -31,12 +36,32 @@ const GamePage: FC = () => {
   }
 
   const save = (id: string): void => {
-    dispatch(saveScore(id))
+    if (game.rollCount > 0) {
+      dispatch(saveScore(id))
+    }
+  }
+
+  const end = async (): Promise<void> => {
+    try {
+      const data = {
+        score: game.score,
+        stats: game.stats,
+        favDiceValues: game.favDiceValues
+      }
+      await saveResults(data)
+      dispatch(reset())
+    } catch (err) {
+      console.log(err) // TODO: proper err handling
+    } finally {
+      console.log('Saved.') // TODO: toasts
+    }
   }
 
   // on selection change calc score
   useEffect(() => {
-    dispatch(setScore(game.selection))
+    if (game.selection.length > 0) {
+      dispatch(setScore(game.selection))
+    }
   }, [game.selection])
 
   return <section className={styles.game}>
@@ -48,7 +73,9 @@ const GamePage: FC = () => {
         <div
           id={key}
           key={key}
-          className={styles.schoolResult}
+          className={cx(styles.schoolResult, {
+            [styles.pre]: !game.school[key].final
+          })}
           onClick={() => { save(key) }}
         >
           {game.school[key].score}
@@ -66,6 +93,7 @@ const GamePage: FC = () => {
           >
             <div
               className={styles.combName}
+              onClick={() => { save(key) }}
             >
               {key}
             </div>
@@ -90,7 +118,7 @@ const GamePage: FC = () => {
       </div>
     </div>
     {/* Game controls */}
-    <div className={styles.controls}>
+    {game.turn <= 33 && <div className={styles.controls}>
       {game.selection.map((value, index) =>
         <div key={index}
           onClick={() => { deselect(index) }}
@@ -110,10 +138,24 @@ const GamePage: FC = () => {
       <button
         onClick={roll}
         disabled={game.lock}
+        className={cx(styles.rollBtn, {
+          [styles.locked]: game.lock
+        })}
       >
         {game.lock ? 'save' : 'play'}
       </button>
-    </div>
+    </div> }
+    {game.turn === 34 &&
+      <div className={styles.modal}>
+        <div className={styles.blur}></div>
+        <div className={styles.message}>
+          <h2>Result: {game.score}</h2>
+          <button onClick={ () => { void end() }}>
+            Save result
+          </button>
+        </div>
+      </div>
+    }
   </section>
 }
 
