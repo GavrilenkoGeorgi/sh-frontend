@@ -8,23 +8,23 @@ import {
 import App from '../App'
 import LoginPage from '../pages/Login'
 import ProfilePage from '../pages/Profile'
-import LogoutPage from '../components/Logout'
 import GlobalStatsPage from '../pages/GlobalStats'
-import RegisterPage from '../pages/Register'
 import GamePage from '../pages/Game'
+import HelpPage from '../pages/Help'
+import MainPage from '../pages/Main'
 import ProtectedRoute from './ProtectedRoute'
 import NavBar from '../components/navigation/NavBar'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<><NavBar /><App /></>}>
-      <Route index={true} path='/' element={<GamePage />} />
-      <Route path='/register' element={<RegisterPage />} />
+      <Route index={true} path='/' element={<MainPage />} />
       <Route path='/login' element={<LoginPage />} />
-      <Route path='/logout' element={<LogoutPage />} />
+      <Route path='/help' element={<HelpPage />} />
+      <Route path='/game' element={<GamePage />} />
       <Route path='' element={<ProtectedRoute />} >
         <Route path='/profile' element={<ProfilePage />} />
-        <Route path='/global-stats' element={<GlobalStatsPage />} />
+        <Route path='/stats' element={<GlobalStatsPage />} />
       </Route>
     </Route>
   )

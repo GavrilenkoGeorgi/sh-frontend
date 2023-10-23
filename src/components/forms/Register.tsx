@@ -19,7 +19,7 @@ const Register: FC = () => {
   const [values, setValues] = useState<InputValues>({})
   const [formErrors, setFormErrors] = useState<RegisterFormErrors>({})
 
-  const { register, getValues, formState: { errors }, handleSubmit, watch } = useForm<RegisterFormSchemaType>({
+  const { register, getValues, formState: { errors }, handleSubmit } = useForm<RegisterFormSchemaType>({
     resolver: zodResolver(RegisterFormSchema)
   })
 
@@ -149,11 +149,6 @@ const Register: FC = () => {
     <fieldset>
       <button type='submit'>Register</button>
     </fieldset>
-    <div>
-      <pre>
-        {JSON.stringify(watch(), null, 2)}
-      </pre>
-    </div>
   </form>
 }
 
