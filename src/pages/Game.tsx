@@ -25,7 +25,9 @@ const GamePage: FC = () => {
   }
 
   const select = (index: number): void => {
-    dispatch(selectDice(game.roll[index]))
+    if (game.rollCount > 0) {
+      dispatch(selectDice(game.roll[index]))
+    }
   }
 
   const deselect = (index: number): void => {
@@ -45,7 +47,7 @@ const GamePage: FC = () => {
       }
       await saveResults(data)
     } catch (err) {
-      console.log(err) // TODO: propeer err handling
+      console.log(err) // TODO: proper err handling
     }
   }
 
