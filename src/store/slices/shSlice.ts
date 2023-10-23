@@ -53,6 +53,7 @@ const shSlice = createSlice({
   name: 'sh',
   initialState,
   reducers: {
+    reset: () => initialState,
     setScore: ({ game }, action) => {
       if (game.turn <= 6) {
         const result = ShScore.getSchoolScore(action.payload)
@@ -68,7 +69,7 @@ const shSlice = createSlice({
             game.school[Object.keys(game.school)[index]].score = value
           }
         })
-      } else {
+      } else if (game.turn <= 33) {
         const result = ShScore.getScore(ShScore.sort(game.selection))
         for (const name in result) {
           if (game.combinations[name].length < 3) {
@@ -85,6 +86,12 @@ const shSlice = createSlice({
           // @ts-expect-error: result can be a zero value, so we need this to be null
           game.score = game.score + game.school[payload].score
           game.saved = true
+        }
+        // clear all temp scores
+        for (const key in game.school) {
+          if (!game.school[key].final) {
+            game.school[key].score = null
+          }
         }
       } else if (game.rollCount > 0 && game.turn > 6 && gameCombNames.includes(payload)) {
         // click on combination name saves zero
@@ -113,7 +120,8 @@ const shSlice = createSlice({
 
       // last turn
       if (game.turn === 34) {
-        game.stats = ShScore.combinationsStats(game.combinations)
+        const stats = ShScore.combinationsStats(game.combinations)
+        game.stats = { ...stats }
       }
     },
     selectDice: ({ game }, { payload }) => {
@@ -135,6 +143,7 @@ const shSlice = createSlice({
 })
 
 export const {
+  reset,
   setScore,
   saveScore,
   rollDice,

@@ -7,7 +7,8 @@ import {
   selectDice,
   deselectDice,
   setScore,
-  saveScore
+  saveScore,
+  reset
 } from '../store/slices/shSlice'
 import SchoolDice from '../components/game/SchoolDice'
 import Dice from '../components/game/Dice'
@@ -35,7 +36,9 @@ const GamePage: FC = () => {
   }
 
   const save = (id: string): void => {
-    dispatch(saveScore(id))
+    if (game.rollCount > 0) {
+      dispatch(saveScore(id))
+    }
   }
 
   const end = async (): Promise<void> => {
@@ -46,14 +49,19 @@ const GamePage: FC = () => {
         favDiceValues: game.favDiceValues
       }
       await saveResults(data)
+      dispatch(reset())
     } catch (err) {
       console.log(err) // TODO: proper err handling
+    } finally {
+      console.log('Saved.') // TODO: toasts
     }
   }
 
   // on selection change calc score
   useEffect(() => {
-    dispatch(setScore(game.selection))
+    if (game.selection.length > 0) {
+      dispatch(setScore(game.selection))
+    }
   }, [game.selection])
 
   return <section className={styles.game}>
@@ -110,7 +118,7 @@ const GamePage: FC = () => {
       </div>
     </div>
     {/* Game controls */}
-    { game.turn <= 33 && <div className={styles.controls}>
+    {game.turn <= 33 && <div className={styles.controls}>
       {game.selection.map((value, index) =>
         <div key={index}
           onClick={() => { deselect(index) }}
@@ -137,11 +145,15 @@ const GamePage: FC = () => {
         {game.lock ? 'save' : 'play'}
       </button>
     </div> }
-    { game.turn === 34 &&
-      <div className={styles.saveResults}>
-        <button onClick={ () => { void end() }}>
-          Save results
-        </button>
+    {game.turn === 34 &&
+      <div className={styles.modal}>
+        <div className={styles.blur}></div>
+        <div className={styles.message}>
+          <h2>Result: {game.score}</h2>
+          <button onClick={ () => { void end() }}>
+            Save result
+          </button>
+        </div>
       </div>
     }
   </section>
