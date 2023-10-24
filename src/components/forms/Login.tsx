@@ -11,6 +11,7 @@ import type { FocusedStates, InputValues, LoginFormErrors } from '../../types'
 
 import cx from 'classnames'
 import styles from './Form.module.sass'
+import Logout from './Logout'
 
 const Login: FC = () => {
 
@@ -42,7 +43,7 @@ const Login: FC = () => {
     try {
       const res = await login({ email, password }).unwrap()
       dispatch(setCredentials({ ...res }))
-      navigate('/')
+      navigate('/game')
     } catch (err: any) {
       console.log(err)
     }
@@ -105,7 +106,10 @@ const Login: FC = () => {
           {formErrors.password.message}
         </p>}
       </div>
-      <button type='submit'>login</button>
+      <div className={styles.buttons}>
+        <button type='submit'>Login</button>
+        <Logout />
+      </div>
     </fieldset>
   </form>
 }

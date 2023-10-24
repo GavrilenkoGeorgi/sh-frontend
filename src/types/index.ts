@@ -54,6 +54,12 @@ export interface iCombination {
   chance: number
 }
 
+export interface iHelpDice {
+  name: string
+  dice: number[]
+  value: string
+}
+
 // navbar
 export interface ToggleBtnProps {
   open: boolean

@@ -1,5 +1,7 @@
 import React, { type FC, useState, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import type { RootState } from '../../store'
 import type { navLink } from '../../types'
 import { useScrollDirection, useComponentVisible } from '../../hooks'
 
@@ -9,6 +11,7 @@ import styles from './NavBar.module.sass'
 
 const NavBar: FC = () => {
 
+  const { userInfo } = useSelector((state: RootState) => state.auth)
   const location = useLocation()
   const scrollDirection = useScrollDirection()
 
@@ -40,14 +43,14 @@ const NavBar: FC = () => {
   const navigation: navLink[] = [
     {
       label: 'Game',
-      url: '/'
+      url: '/game'
     },
     {
       label: 'Profile',
       url: '/profile'
     },
     {
-      label: 'Login',
+      label: 'Login/Logout',
       url: '/login'
     },
     {
@@ -56,11 +59,11 @@ const NavBar: FC = () => {
     },
     {
       label: 'Register',
-      url: '/register'
+      url: '/'
     },
     {
-      label: 'Logout',
-      url: '/logout'
+      label: 'Help',
+      url: '/help'
     }
   ]
 
@@ -76,12 +79,15 @@ const NavBar: FC = () => {
     </NavLink>
   )
 
-  const navbarStyle = `${styles.nav} ${scrollDirection === 'down' ? styles.hiddenNav : styles.visibleNav}`
+  const navbarStyle = `${styles.nav} ${scrollDirection === 'down' ? styles.hiddenNav : styles.visibleNav}` // cx??
 
   return <>
     <nav className={navbarStyle} ref={ref}>
       <div className={styles.navigationContainer}>
         <Logo />
+        <div className={styles.userName}>
+          {userInfo?.name}
+        </div>
         <div
           className={styles.toggleBtnContainer}
           onClick={toggleMenu}
