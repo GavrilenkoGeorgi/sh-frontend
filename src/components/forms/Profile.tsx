@@ -1,25 +1,28 @@
-import React, { type FC, useState, type FocusEvent } from 'react'
+import React, { type FC, useState, useEffect, type FocusEvent } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate } from 'react-router-dom'
 
-import { useSignupMutation } from '../../store/slices/userApiSlice'
+import { zodResolver } from '@hookform/resolvers/zod'
+import type { IUser, Nullable, FocusedStates, InputValues, RegisterFormErrors } from '../../types'
+import { useUpdateUserMutation } from '../../store/slices/userApiSlice'
+
 import { RegisterFormSchema, type RegisterFormSchemaType } from '../../schemas/RegisterFormSchema'
-import type { FocusedStates, InputValues, RegisterFormErrors } from '../../types'
 
 import cx from 'classnames'
 import styles from './Form.module.sass'
+import LoadingNotification from '../LoadingNotification'
 
-const Register: FC = () => {
-
-  const navigate = useNavigate()
-  const [signup] = useSignupMutation()
+interface iProps {
+  data: Nullable<IUser>
+}
+const Profile: FC<iProps> = ({ data }) => {
 
   const [focused, setFocused] = useState<FocusedStates>({})
   const [values, setValues] = useState<InputValues>({})
   const [formErrors, setFormErrors] = useState<RegisterFormErrors>({})
 
-  const { register, getValues, formState: { errors }, handleSubmit } = useForm<RegisterFormSchemaType>({
+  const [updateProfile, { isLoading }] = useUpdateUserMutation()
+
+  const { register, getValues, setValue, formState: { errors }, handleSubmit } = useForm<RegisterFormSchemaType>({
     resolver: zodResolver(RegisterFormSchema)
   })
 
@@ -29,24 +32,46 @@ const Register: FC = () => {
 
   const blurInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
     setFocused({ [event.target.name]: false })
-    const values = getValues()
-    setValues({ ...values })
+    setValues({ ...getValues() })
     setFormErrors({ ...errors })
   }
 
-  const onSubmit: SubmitHandler<RegisterFormSchemaType> = async (data): Promise<void> => {
-    console.log('Successful submit data: ', data)
-    await signup(data).unwrap()
-    navigate('/admin', { replace: true })
+  useEffect(() => {
+    if (data !== null) {
+      setFocused({ name: true })
+      setValue('email', data.email)
+      setValue('name', data.name)
+      setValues({ ...data })
+    }
+  }, [])
+
+  const onSubmit: SubmitHandler<RegisterFormSchemaType> = async ({ name, email, password, confirm }): Promise<void> => {
+    try {
+      if (password !== confirm) {
+        throw new Error('Passwords do not match.')
+      }
+      const update = {
+        id: data?._id,
+        name,
+        email,
+        password
+      }
+      await updateProfile(update).unwrap()
+    } catch (err) {
+      console.log(err)
+    } finally {
+      console.log('Update ok.')
+    }
   }
 
   return <form
     noValidate
+    id='register'
     // eslint-disable-next-line
     onSubmit={handleSubmit(onSubmit)}
-    id='register'
     className={styles.form}
   >
+    {isLoading && <LoadingNotification />}
     <fieldset>
       <div className={styles.inputContainer}>
         <div className={cx(styles.formInput, {
@@ -55,13 +80,14 @@ const Register: FC = () => {
           [styles.error]: formErrors.name
         })}>
           <label
-            htmlFor='name'
             className={styles.formLabel}
+            htmlFor='name'
           >
             Name
           </label>
           <input
             className={styles.formInput}
+            type='text'
             {...register('name')}
             onFocus={focusInput}
             onBlur={blurInput}
@@ -86,6 +112,7 @@ const Register: FC = () => {
           </label>
           <input
             className={styles.formInput}
+            type='text'
             {...register('email')}
             onFocus={focusInput}
             onBlur={blurInput}
@@ -135,6 +162,7 @@ const Register: FC = () => {
           </label>
           <input
             className={styles.formInput}
+            type='password'
             {...register('confirm')}
             onFocus={focusInput}
             onBlur={blurInput}
@@ -144,12 +172,9 @@ const Register: FC = () => {
           {formErrors.confirm.message}
         </p>}
       </div>
-    </fieldset>
-
-    <fieldset>
-      <button type='submit'>Register</button>
+      <button type='submit'>Update</button>
     </fieldset>
   </form>
 }
 
-export default Register
+export default Profile

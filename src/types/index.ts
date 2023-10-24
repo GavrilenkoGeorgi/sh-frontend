@@ -10,7 +10,7 @@ export type FocusedStates = Record<string, boolean>
 export type InputValues = Record<string, string>
 
 export type RegisterFormErrors = FieldErrors<{
-  username: string
+  name: string
   email: string
   password: string
   confirm: string
@@ -19,6 +19,7 @@ export type RegisterFormErrors = FieldErrors<{
 export type LoginFormErrors = FieldErrors<{
   email: string
   password: string
+  name?: string
 }>
 
 // Interfaces
