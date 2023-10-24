@@ -1,0 +1,21 @@
+[
+  {"name": "Single dice with ace", "dice": [1], "value": "-2"},
+  {"name": "Two aces", "dice": [1, 1], "value": "-1"},
+  {"name": "Three", "dice": [1, 1, 1], "value": "0"},
+  {"name": "Four", "dice": [1, 1, 1, 1], "value": "+1"},
+  {"name": "Five", "dice": [1, 1, 1, 1, 1], "value": "+2"},
+  {"name": "One six", "dice": [6], "value": "-12"},
+  {"name": "Three sixes", "dice": [6, 6, 6], "value": "0"},
+  {"name": "Five sixes in school", "dice": [6, 6, 6, 6, 6], "value": "+12"},
+  {"name": "Pair", "dice": [4, 4], "value": "8"},
+  {"name": "Two pairs", "dice": [5, 5, 3, 3], "value": "16"},
+  {"name": "Three of a kind", "dice": [2, 2, 2], "value": "6"},
+  {"name": "Full", "dice": [3, 3, 3, 5, 5], "value": "19"},
+  {"name": "Quads", "dice": [6, 6, 6, 6], "value": "24"},
+  {"name": "Poker", "dice": [4, 4, 4, 4, 4], "value": "100"},
+  {"name": "Small", "dice": [1, 2, 3, 4, 5], "value": "15"},
+  {"name": "Large", "dice": [2, 3, 4, 5, 6], "value": "20"},
+  {"name": "Chance", "dice": [2, 3, 1, 6, 4], "value": "16"},
+  {"name": "Another chance", "dice": [4, 1, 6, 1, 5], "value": "17"},
+  {"name": "Yet another chance", "dice": [1, 6, 2, 1, 3], "value": "13"}
+]
