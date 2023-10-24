@@ -22,7 +22,7 @@ const Main: FC = () => {
     <div className={styles.ctaContainer}>
       <p>
         You <Link to="/game">can play unregistered</Link>, but you will not
-        be able to save the results and other player&apos;s stats,
+        be able to save the results or checkout other player&apos;s stats,
         consider registering.
       </p>
     </div>
