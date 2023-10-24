@@ -59,7 +59,7 @@ const NavBar: FC = () => {
     },
     {
       label: 'Register',
-      url: '/'
+      url: '/register'
     },
     {
       label: 'Help',

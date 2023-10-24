@@ -67,6 +67,7 @@ const Profile: FC<iProps> = ({ data }) => {
   return <form
     noValidate
     id='register'
+    // https://github.com/orgs/react-hook-form/discussions/8020
     // eslint-disable-next-line
     onSubmit={handleSubmit(onSubmit)}
     className={styles.form}

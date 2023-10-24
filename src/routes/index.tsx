@@ -12,6 +12,7 @@ import GlobalStatsPage from '../pages/GlobalStats'
 import GamePage from '../pages/Game'
 import HelpPage from '../pages/Help'
 import MainPage from '../pages/Main'
+import RegisterPage from '../pages/Register'
 import ProtectedRoute from './ProtectedRoute'
 import NavBar from '../components/navigation/NavBar'
 
@@ -20,12 +21,15 @@ const router = createBrowserRouter(
     <Route path='/' element={<><NavBar /><App /></>}>
       <Route index={true} path='/' element={<MainPage />} />
       <Route path='/login' element={<LoginPage />} />
-      <Route path='/help' element={<HelpPage />} />
       <Route path='/game' element={<GamePage />} />
+      <Route path='/help' element={<HelpPage />} />
+      <Route path='/register' element={<RegisterPage />} />
+
       <Route path='' element={<ProtectedRoute />} >
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/stats' element={<GlobalStatsPage />} />
       </Route>
+
     </Route>
   )
 )
