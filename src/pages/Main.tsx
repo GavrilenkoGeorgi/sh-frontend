@@ -19,7 +19,7 @@ const Main: FC = () => {
       <Logo />
     </div>
     <h1>Hi, Anonymous!</h1>
-    <div className={styles.ctaContainer}>
+    <div className={styles.intro}>
       <p>
         You <Link to="/game">can play unregistered</Link>, but you will not
         be able to save the results or checkout other player&apos;s stats,
