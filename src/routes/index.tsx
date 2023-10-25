@@ -8,7 +8,7 @@ import {
 import App from '../App'
 import LoginPage from '../pages/Login'
 import ProfilePage from '../pages/Profile'
-import GlobalStatsPage from '../pages/GlobalStats'
+import StatsPage from '../pages/Stats'
 import GamePage from '../pages/Game'
 import HelpPage from '../pages/Help'
 import MainPage from '../pages/Main'
@@ -25,9 +25,9 @@ const router = createBrowserRouter(
       <Route path='/help' element={<HelpPage />} />
       <Route path='/register' element={<RegisterPage />} />
 
+      <Route path='/stats' element={<StatsPage />} />
       <Route path='' element={<ProtectedRoute />} >
         <Route path='/profile' element={<ProfilePage />} />
-        <Route path='/stats' element={<GlobalStatsPage />} />
       </Route>
 
     </Route>

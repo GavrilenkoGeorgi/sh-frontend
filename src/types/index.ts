@@ -66,6 +66,12 @@ export interface ToggleBtnProps {
   open: boolean
 }
 
+export interface ChartProps {
+  width: number
+  height: number
+  margin?: { top: number, right: number, bottom: number, left: number }
+}
+
 // enums
 export enum SchoolCombinations {
   ONES = 'ones',
