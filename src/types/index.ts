@@ -72,6 +72,11 @@ export interface ChartProps {
   margin?: { top: number, right: number, bottom: number, left: number }
 }
 
+export interface CombinationsBarData {
+  id: string
+  value: number
+}
+
 // enums
 export enum SchoolCombinations {
   ONES = 'ones',

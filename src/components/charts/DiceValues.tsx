@@ -7,7 +7,7 @@ import { GridRows, GridColumns } from '@visx/grid'
 import { useSpring, animated } from '@react-spring/web'
 import { type ChartProps, SchoolCombinations } from '../../types'
 
-import styles from './FavDiceValues.module.sass'
+import styles from './Charts.module.sass'
 
 const defaultMargin = { top: 40, right: 30, bottom: 50, left: 40 }
 
