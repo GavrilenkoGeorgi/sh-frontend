@@ -4,6 +4,7 @@ import { Bar } from '@visx/shape'
 import { scaleLinear, scaleBand } from '@visx/scale'
 import { AxisLeft, AxisBottom } from '@visx/axis'
 import { GridRows, GridColumns } from '@visx/grid'
+import { useSpring, animated } from '@react-spring/web'
 import { type ChartProps, SchoolCombinations } from '../../types'
 
 import styles from './FavDiceValues.module.sass'
@@ -12,6 +13,14 @@ const defaultMargin = { top: 40, right: 30, bottom: 50, left: 40 }
 
 const FavDiceValues: FC<ChartProps> = ({ width, height, margin = defaultMargin }) => {
   if (width < 10) return null
+
+  const { scale } = useSpring({
+    from: { scale: 0 },
+    to: { scale: 1 },
+    config: { duration: 500 }
+  })
+
+  const AnimatedBar = animated(Bar)
 
   const names = Object.values(SchoolCombinations)
   // mock data
@@ -24,7 +33,7 @@ const FavDiceValues: FC<ChartProps> = ({ width, height, margin = defaultMargin }
     range: [0, xMax],
     round: true,
     domain: names.map(name => name),
-    padding: 0.4
+    padding: 0.75
   }), [xMax])
 
   const persentScale = useMemo(() => scaleLinear<number>({
@@ -57,16 +66,23 @@ const FavDiceValues: FC<ChartProps> = ({ width, height, margin = defaultMargin }
             const barWidth = valuesScale.bandwidth()
             const barHeight = yMax - (persentScale(value) ?? 0)
             const barX = valuesScale(name)
-            const barY = yMax - barHeight
-            return <Bar
+            return <AnimatedBar
                 key={`bar-${name}`}
                 x={barX}
-                y={barY}
+                y={scale.to((s) => yMax - s * barHeight)}
                 width={barWidth}
-                height={barHeight}
+                height={scale.to((s) => s * barHeight)}
                 fill="#AB47BC"
               />
           })}
+          <AxisLeft
+            tickStroke='#AB47BC'
+            tickLength={0}
+            numTicks={4}
+            stroke='transparent'
+            scale={persentScale}
+            tickClassName={styles.axisTicks}
+          />
           <AxisBottom
             top={yMax}
             scale={valuesScale}
@@ -74,13 +90,7 @@ const FavDiceValues: FC<ChartProps> = ({ width, height, margin = defaultMargin }
             tickLength={0}
             stroke='#AB47BC'
             tickClassName={styles.axisTicks}
-          />
-          <AxisLeft
-            tickStroke='#AB47BC'
-            tickLength={0}
-            stroke='transparent'
-            scale={persentScale}
-            tickClassName={styles.axisTicks}
+            hideAxisLine
           />
         </Group>
       </svg>
