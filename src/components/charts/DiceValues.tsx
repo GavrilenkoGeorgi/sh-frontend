@@ -5,19 +5,23 @@ import { scaleLinear, scaleBand } from '@visx/scale'
 import { AxisLeft, AxisBottom } from '@visx/axis'
 import { GridRows, GridColumns } from '@visx/grid'
 import { useSpring, animated } from '@react-spring/web'
-import { type ChartProps, SchoolCombinations } from '../../types'
-
+import { type BaseChartProps, SchoolCombinations } from '../../types'
+import { withParentSize } from '../withParentSize'
 import styles from './Charts.module.sass'
 
 const defaultMargin = { top: 40, right: 30, bottom: 50, left: 40 }
 
-const FavDiceValues: FC<ChartProps> = ({ width, height, margin = defaultMargin }) => {
+const FavDiceValues: FC<BaseChartProps> = ({ parentWidth, parentHeight, margin = defaultMargin }: BaseChartProps) => {
+  const height = parentHeight
+  const width = parentWidth
+
   if (width < 10) return null
 
   const { scale } = useSpring({
     from: { scale: 0 },
     to: { scale: 1 },
-    config: { duration: 500 }
+    delay: 250,
+    config: { duration: 750 }
   })
 
   const AnimatedBar = animated(Bar)
@@ -29,14 +33,14 @@ const FavDiceValues: FC<ChartProps> = ({ width, height, margin = defaultMargin }
   const xMax = width - margin.left - margin.right
   const yMax = height - margin.top - margin.bottom
 
-  const valuesScale = useMemo(() => scaleBand<string>({
+  const xScale = useMemo(() => scaleBand<string>({
     range: [0, xMax],
     round: true,
     domain: names.map(name => name),
     padding: 0.75
   }), [xMax])
 
-  const persentScale = useMemo(() => scaleLinear<number>({
+  const yScale = useMemo(() => scaleLinear<number>({
     range: [yMax, 0],
     domain: [0, 100],
     nice: true
@@ -48,14 +52,14 @@ const FavDiceValues: FC<ChartProps> = ({ width, height, margin = defaultMargin }
         <rect x={0} y={0} width={width} height={height} fill={'transparent'} rx={14} />
         <Group left={margin.left} top={margin.top}>
           <GridRows
-            scale={persentScale}
+            scale={yScale}
             width={xMax}
             height={yMax}
             stroke="#e0e0e0"
             strokeDasharray='3'
           />
           <GridColumns
-            scale={valuesScale}
+            scale={xScale}
             width={xMax}
             height={yMax}
             stroke="#e0e0e0"
@@ -63,9 +67,9 @@ const FavDiceValues: FC<ChartProps> = ({ width, height, margin = defaultMargin }
 
           {data.map((value, index) => {
             const name = names[index]
-            const barWidth = valuesScale.bandwidth()
-            const barHeight = yMax - (persentScale(value) ?? 0)
-            const barX = valuesScale(name)
+            const barWidth = xScale.bandwidth()
+            const barHeight = yMax - (yScale(value) ?? 0)
+            const barX = xScale(name)
             return <AnimatedBar
                 key={`bar-${name}`}
                 x={barX}
@@ -80,12 +84,12 @@ const FavDiceValues: FC<ChartProps> = ({ width, height, margin = defaultMargin }
             tickLength={0}
             numTicks={4}
             stroke='transparent'
-            scale={persentScale}
+            scale={yScale}
             tickClassName={styles.axisTicks}
           />
           <AxisBottom
             top={yMax}
-            scale={valuesScale}
+            scale={xScale}
             tickStroke='#AB47BC'
             tickLength={0}
             stroke='#AB47BC'
@@ -98,4 +102,4 @@ const FavDiceValues: FC<ChartProps> = ({ width, height, margin = defaultMargin }
   )
 }
 
-export default FavDiceValues
+export default withParentSize(FavDiceValues)

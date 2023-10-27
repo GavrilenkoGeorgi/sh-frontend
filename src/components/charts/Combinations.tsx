@@ -4,13 +4,26 @@ import { Bar } from '@visx/shape'
 import { scaleLinear, scaleBand } from '@visx/scale'
 import { AxisLeft, AxisBottom } from '@visx/axis'
 import { GridRows, GridColumns } from '@visx/grid'
-import { type ChartProps, GameCombinations, type CombinationsBarData } from '../../types'
+import { useSpring, animated } from '@react-spring/web'
+import { withParentSize } from '../withParentSize'
+import { type BaseChartProps, GameCombinations, type CombinationsBarData } from '../../types'
 import styles from './Charts.module.sass'
 
 const defaultMargin = { top: 40, right: 30, bottom: 50, left: 50 }
 
-const Combinations: FC<ChartProps> = ({ width, height, margin = defaultMargin }) => {
+const Combinations: FC<BaseChartProps> = ({ parentWidth, parentHeight, margin = defaultMargin }: BaseChartProps) => {
+  const height = parentHeight
+  const width = parentWidth
   if (width < 10) return null
+
+  const { scale } = useSpring({
+    from: { scale: 0 },
+    to: { scale: 1 },
+    delay: 500,
+    config: { duration: 500 }
+  })
+
+  const AnimatedBar = animated(Bar)
 
   const combinations = Object.values(GameCombinations)
   const chartData = combinations.map((value) => ({ id: value, value: Math.floor(Math.random() * 380) }))
@@ -56,11 +69,10 @@ const Combinations: FC<ChartProps> = ({ width, height, margin = defaultMargin })
           const barHeight = xScale(getCombValue(item))
           const barY = yScale(name)
           return (
-            <Bar
+            <AnimatedBar
               key={`bar-${name}`}
-              x={0}
               y={barY}
-              width={barHeight}
+              width={scale.to((s) => s * barHeight)}
               height={barWidth}
               fill="#AB47BC"
             />
@@ -88,4 +100,4 @@ const Combinations: FC<ChartProps> = ({ width, height, margin = defaultMargin })
   )
 }
 
-export default Combinations
+export default withParentSize(Combinations)
