@@ -10,10 +10,18 @@ export const gameApiSlice = gameSlice.injectEndpoints({
         credentials: 'include',
         body: data
       })
+    }),
+    getStats: builder.mutation({
+      query: () => ({
+        url: `${GAME_URL}/stats`,
+        method: 'GET',
+        credentials: 'include'
+      })
     })
   })
 })
 
 export const {
-  useSaveResultsMutation
+  useSaveResultsMutation,
+  useGetStatsMutation
 } = gameApiSlice
