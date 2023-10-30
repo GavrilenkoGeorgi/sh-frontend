@@ -66,6 +66,36 @@ export interface ToggleBtnProps {
   open: boolean
 }
 
+export interface ChartProps {
+  width: number
+  height: number
+  margin?: { top: number, right: number, bottom: number, left: number }
+}
+
+export interface CombinationsBarData {
+  id: string
+  value: number
+}
+
+export interface iStats {
+  average: number
+  games: number
+  max: number
+  percentFromMax: number
+  scores: number[]
+}
+
+export interface BaseChartProps {
+  parentHeight: number
+  parentWidth: number
+  margin?: {
+    top: number
+    left: number
+    right: number
+    bottom: number
+  }
+}
+
 // enums
 export enum SchoolCombinations {
   ONES = 'ones',

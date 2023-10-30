@@ -1,5 +1,5 @@
 import React, { type FC, useState, useEffect } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../store'
 import type { navLink } from '../../types'
@@ -85,9 +85,9 @@ const NavBar: FC = () => {
     <nav className={navbarStyle} ref={ref}>
       <div className={styles.navigationContainer}>
         <Logo />
-        <div className={styles.userName}>
+        <Link to="/stats" className={styles.userName}>
           {userInfo?.name}
-        </div>
+        </Link>
         <div
           className={styles.toggleBtnContainer}
           onClick={toggleMenu}
