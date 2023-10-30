@@ -5,7 +5,7 @@ import { scaleLinear, scaleBand } from '@visx/scale'
 import { AxisLeft, AxisBottom } from '@visx/axis'
 import { GridRows, GridColumns } from '@visx/grid'
 import { useSpring, animated } from '@react-spring/web'
-import { withParentSize } from '../withParentSize'
+import { withParentSize } from './withParentSize'
 import { type BaseChartProps, GameCombinations, type CombinationsBarData } from '../../types'
 import styles from './Charts.module.sass'
 
