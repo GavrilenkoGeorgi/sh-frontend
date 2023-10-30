@@ -9,7 +9,7 @@ import { RegisterFormSchema, type RegisterFormSchemaType } from '../../schemas/R
 
 import cx from 'classnames'
 import styles from './Form.module.sass'
-import LoadingNotification from '../LoadingNotification'
+import LoadingNotification from '../layout/LoadingNotification'
 
 interface iProps {
   data: Nullable<IUser>
