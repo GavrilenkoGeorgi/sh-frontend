@@ -19,6 +19,7 @@ const GamePage: FC = () => {
 
   const dispatch = useDispatch()
   const { game } = useSelector((state: RootState) => state.sh)
+  const { userInfo } = useSelector((state: RootState) => state.auth)
   const [saveResults] = useSaveResultsMutation()
 
   const roll = (): void => {
@@ -45,11 +46,16 @@ const GamePage: FC = () => {
     try {
       const data = {
         score: game.score,
+        schoolScore: game.schoolScore,
         stats: game.stats,
         favDiceValues: game.favDiceValues
       }
-      await saveResults(data)
+
+      if (userInfo === null) console.log('CTA to register')
+      else await saveResults(data)
+
       dispatch(reset())
+
     } catch (err) {
       console.log(err) // TODO: proper err handling
     } finally {
