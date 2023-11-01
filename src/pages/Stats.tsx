@@ -35,13 +35,13 @@ const StatsPage: FC = () => {
     <aside>
       <h4>Favourite values</h4>
       <div className={styles.hChart}>
-        <DiceValues />
+        {stats?.favDiceValues != null && <DiceValues axisData={stats.favDiceValues} />}
       </div>
     </aside>
     <aside>
       <h4>Combinations</h4>
       <div className={styles.sChart}>
-        <Combinations />
+        {stats?.favComb != null && <Combinations axisData={stats.favComb}/>}
       </div>
     </aside>
   </section>

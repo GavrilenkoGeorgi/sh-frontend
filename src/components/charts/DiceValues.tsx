@@ -5,13 +5,14 @@ import { scaleLinear, scaleBand } from '@visx/scale'
 import { AxisLeft, AxisBottom } from '@visx/axis'
 import { GridRows, GridColumns } from '@visx/grid'
 import { useSpring, animated } from '@react-spring/web'
-import { type BaseChartProps, SchoolCombinations } from '../../types'
+import { type ChartProps, type CombinationsBarData } from '../../types'
 import { withParentSize } from './withParentSize'
 import styles from './Charts.module.sass'
 
 const defaultMargin = { top: 40, right: 30, bottom: 50, left: 40 }
 
-const FavDiceValues: FC<BaseChartProps> = ({ parentWidth, parentHeight, margin = defaultMargin }: BaseChartProps) => {
+const VBarChart: FC<ChartProps> = ({ axisData, parentWidth, parentHeight, margin = defaultMargin }: ChartProps) => {
+
   const height = parentHeight
   const width = parentWidth
 
@@ -26,9 +27,8 @@ const FavDiceValues: FC<BaseChartProps> = ({ parentWidth, parentHeight, margin =
 
   const AnimatedBar = animated(Bar)
 
-  const names = Object.values(SchoolCombinations)
-  // mock data
-  const data = [32, 45, 100, 45, 16, 23]
+  const getItemName = (item: CombinationsBarData): string => item.id
+  const getItemValue = (item: CombinationsBarData): number => Number(item.value)
 
   const xMax = width - margin.left - margin.right
   const yMax = height - margin.top - margin.bottom
@@ -36,13 +36,13 @@ const FavDiceValues: FC<BaseChartProps> = ({ parentWidth, parentHeight, margin =
   const xScale = useMemo(() => scaleBand<string>({
     range: [0, xMax],
     round: true,
-    domain: names.map(name => name),
+    domain: axisData?.map(getItemName),
     padding: 0.75
   }), [xMax])
 
   const yScale = useMemo(() => scaleLinear<number>({
     range: [yMax, 0],
-    domain: [0, 100],
+    domain: [0, Math.max(...axisData?.map(getItemValue))],
     nice: true
   }), [yMax])
 
@@ -65,13 +65,13 @@ const FavDiceValues: FC<BaseChartProps> = ({ parentWidth, parentHeight, margin =
             stroke="#e0e0e0"
           />
 
-          {data.map((value, index) => {
-            const name = names[index]
+          {axisData?.map((item, idx) => {
+            const name = getItemName(item)
             const barWidth = xScale.bandwidth()
-            const barHeight = yMax - (yScale(value) ?? 0)
+            const barHeight = yMax - (yScale(getItemValue(item) ?? 0))
             const barX = xScale(name)
             return <AnimatedBar
-                key={`bar-${name}`}
+                key={`bar-${name}-${idx}`}
                 x={barX}
                 y={scale.to((s) => yMax - s * barHeight)}
                 width={barWidth}
@@ -102,4 +102,4 @@ const FavDiceValues: FC<BaseChartProps> = ({ parentWidth, parentHeight, margin =
   )
 }
 
-export default withParentSize(FavDiceValues)
+export default withParentSize(VBarChart)

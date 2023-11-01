@@ -66,12 +66,6 @@ export interface ToggleBtnProps {
   open: boolean
 }
 
-export interface ChartProps {
-  width: number
-  height: number
-  margin?: { top: number, right: number, bottom: number, left: number }
-}
-
 export interface CombinationsBarData {
   id: string
   value: number
@@ -83,9 +77,18 @@ export interface iStats {
   max: number
   percentFromMax: number
   scores: number[]
+  favDiceValues: ChartAxisData[]
+  favComb: ChartAxisData[]
 }
 
-export interface BaseChartProps {
+export interface ChartAxisData {
+  id: string
+  value: number
+}
+
+export interface ChartProps {
+  data?: number[] // remove this
+  axisData: ChartAxisData[]
   parentHeight: number
   parentWidth: number
   margin?: {

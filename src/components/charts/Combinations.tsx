@@ -6,15 +6,16 @@ import { AxisLeft, AxisBottom } from '@visx/axis'
 import { GridRows, GridColumns } from '@visx/grid'
 import { useSpring, animated } from '@react-spring/web'
 import { withParentSize } from './withParentSize'
-import { type BaseChartProps, GameCombinations, type CombinationsBarData } from '../../types'
+import { type ChartProps, type CombinationsBarData } from '../../types'
+
 import styles from './Charts.module.sass'
 
 const defaultMargin = { top: 40, right: 30, bottom: 50, left: 50 }
 
-const Combinations: FC<BaseChartProps> = ({ parentWidth, parentHeight, margin = defaultMargin }: BaseChartProps) => {
+const HBarChart: FC<ChartProps> = ({ axisData, parentWidth, parentHeight, margin = defaultMargin }: ChartProps) => {
   const height = parentHeight
   const width = parentWidth
-  if (width < 10) return null
+  if (width < 10 || axisData === null) return null
 
   const { scale } = useSpring({
     from: { scale: 0 },
@@ -25,9 +26,6 @@ const Combinations: FC<BaseChartProps> = ({ parentWidth, parentHeight, margin = 
 
   const AnimatedBar = animated(Bar)
 
-  const combinations = Object.values(GameCombinations)
-  const chartData = combinations.map((value) => ({ id: value, value: Math.floor(Math.random() * 380) }))
-
   const getCombName = (item: CombinationsBarData): string => item.id
   const getCombValue = (item: CombinationsBarData): number => Number(item.value)
 
@@ -37,14 +35,14 @@ const Combinations: FC<BaseChartProps> = ({ parentWidth, parentHeight, margin = 
   const yScale = useMemo(() => scaleBand<string>({
     range: [0, yMax],
     round: true,
-    domain: chartData.map(getCombName),
+    domain: axisData?.map(getCombName),
     padding: 0.55
   }), [xMax])
 
   const xScale = useMemo(() => scaleLinear<number>({
     range: [0, xMax],
     round: true,
-    domain: [0, Math.max(...chartData.map(getCombValue))]
+    domain: [0, Math.max(...axisData?.map(getCombValue))]
   }), [yMax])
 
   return (
@@ -63,7 +61,7 @@ const Combinations: FC<BaseChartProps> = ({ parentWidth, parentHeight, margin = 
           height={yMax}
           stroke="#e0e0e0"
         />
-        {chartData.map((item) => {
+        {axisData?.map((item) => {
           const name = getCombName(item)
           const barWidth = yScale.bandwidth()
           const barHeight = xScale(getCombValue(item))
@@ -100,4 +98,4 @@ const Combinations: FC<BaseChartProps> = ({ parentWidth, parentHeight, margin = 
   )
 }
 
-export default withParentSize(Combinations)
+export default withParentSize(HBarChart)
