@@ -66,17 +66,13 @@ export interface ToggleBtnProps {
   open: boolean
 }
 
-export interface CombinationsBarData {
-  id: string
-  value: number
-}
-
 export interface iStats {
   average: number
   games: number
   max: number
   percentFromMax: number
-  scores: number[]
+  scores: ChartAxisData[]
+  schoolScores: ChartAxisData[]
   favDiceValues: ChartAxisData[]
   favComb: ChartAxisData[]
 }
@@ -87,7 +83,6 @@ export interface ChartAxisData {
 }
 
 export interface ChartProps {
-  data?: number[] // remove this
   axisData: ChartAxisData[]
   parentHeight: number
   parentWidth: number

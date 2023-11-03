@@ -5,7 +5,7 @@ import { scaleLinear, scaleBand } from '@visx/scale'
 import { AxisLeft, AxisBottom } from '@visx/axis'
 import { GridRows, GridColumns } from '@visx/grid'
 import { useSpring, animated } from '@react-spring/web'
-import { type ChartProps, type CombinationsBarData } from '../../types'
+import { type ChartProps, type ChartAxisData } from '../../types'
 import { withParentSize } from './withParentSize'
 import styles from './Charts.module.sass'
 
@@ -27,8 +27,8 @@ const VBarChart: FC<ChartProps> = ({ axisData, parentWidth, parentHeight, margin
 
   const AnimatedBar = animated(Bar)
 
-  const getItemName = (item: CombinationsBarData): string => item.id
-  const getItemValue = (item: CombinationsBarData): number => Number(item.value)
+  const getItemName = (item: ChartAxisData): string => item.id
+  const getItemValue = (item: ChartAxisData): number => Number(item.value)
 
   const xMax = width - margin.left - margin.right
   const yMax = height - margin.top - margin.bottom
@@ -57,6 +57,7 @@ const VBarChart: FC<ChartProps> = ({ axisData, parentWidth, parentHeight, margin
             height={yMax}
             stroke="#e0e0e0"
             strokeDasharray='3'
+            numTicks={3}
           />
           <GridColumns
             scale={xScale}

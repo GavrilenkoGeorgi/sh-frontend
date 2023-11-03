@@ -6,7 +6,7 @@ import { AxisLeft, AxisBottom } from '@visx/axis'
 import { GridRows, GridColumns } from '@visx/grid'
 import { useSpring, animated } from '@react-spring/web'
 import { withParentSize } from './withParentSize'
-import { type ChartProps, type CombinationsBarData } from '../../types'
+import { type ChartProps, type ChartAxisData } from '../../types'
 
 import styles from './Charts.module.sass'
 
@@ -26,8 +26,8 @@ const HBarChart: FC<ChartProps> = ({ axisData, parentWidth, parentHeight, margin
 
   const AnimatedBar = animated(Bar)
 
-  const getCombName = (item: CombinationsBarData): string => item.id
-  const getCombValue = (item: CombinationsBarData): number => Number(item.value)
+  const getCombName = (item: ChartAxisData): string => item.id
+  const getCombValue = (item: ChartAxisData): number => Number(item.value)
 
   const xMax = width - margin.left - margin.right
   const yMax = height - margin.top - margin.bottom
