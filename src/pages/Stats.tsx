@@ -37,24 +37,6 @@ const StatsPage: FC = () => {
         <ReCharts data={stats.scores} />
       </div>
     </aside>
-      {/* <aside>
-        <h4>Last scores</h4>
-        <div className={styles.hChart}>
-          <Line axisData={stats.scores} />
-        </div>
-      </aside>
-      <aside>
-        <h4>Favourite values</h4>
-        <div className={styles.hChart}>
-          {stats?.favDiceValues != null && <DiceValues axisData={stats.favDiceValues} />}
-        </div>
-      </aside>
-      <aside>
-        <h4>Combinations</h4>
-        <div className={styles.sChart}>
-          {stats?.favComb != null && <Combinations axisData={stats.favComb}/>}
-        </div>
-      </aside> */}
     </>
     }
   </section>
