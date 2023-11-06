@@ -45,6 +45,7 @@ const initialState = {
     selection: new Array(0),
     roll: new Array(5).fill(0),
     saved: false,
+    end: false,
     favDiceValues: new Array(6).fill(0),
     stats: {}
   }
@@ -81,8 +82,9 @@ const shSlice = createSlice({
       }
     },
     saveScore: ({ game }, { payload }) => {
+
       if (game.rollCount > 0 && game.turn <= 6 && schoolCombNames.includes(payload)) { // save 'school' score
-        if (game.school[payload].score !== null) {
+        if (game.school[payload].score !== null && !game.school[payload].final) {
           game.school[payload].final = true
           // @ts-expect-error: result can be a zero value, so we need this to be null
           game.score = game.score + game.school[payload].score
@@ -121,6 +123,15 @@ const shSlice = createSlice({
         game.turn = game.turn + 1
         game.rollCount = 0
         game.lock = false
+      } else { // check if unable to complete part 1
+        if (game.rollCount === 3 && game.turn <= 6) {
+          // check if school ok
+          for (const key in game.school) {
+            if (!game.school[key].final) {
+              game.end = true
+            }
+          }
+        }
       }
 
       // last turn

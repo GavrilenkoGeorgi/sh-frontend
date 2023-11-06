@@ -151,6 +151,18 @@ const GamePage: FC = () => {
         {game.lock ? 'save' : 'play'}
       </button>
     </div> }
+    {game.end &&
+      <div className={styles.modal}>
+        <div className={styles.blur}></div>
+        <div className={styles.message}>
+          <h2>Game end</h2>
+          <p>Better luck next time</p>
+          <button onClick={() => dispatch(reset())}>
+            ok
+          </button>
+        </div>
+      </div>
+    }
     {game.turn === 34 &&
       <div className={styles.modal}>
         <div className={styles.blur}></div>
