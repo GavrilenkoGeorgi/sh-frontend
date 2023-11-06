@@ -23,11 +23,16 @@ const Chart: FC<ChartProps> = ({ data }) => {
 
   return <ResponsiveContainer>
     <BarChart data={data} margin={margin} layout='vertical' >
-      <CartesianGrid strokeDasharray='3 3'/>
+      <CartesianGrid
+        strokeDasharray='4 6'
+        strokeWidth={0.6}
+        horizontal={false}
+      />
       <XAxis
         type='number'
         tickSize={0}
         tickMargin={10}
+        tickCount={7}
         axisLine={false}
         style={tickStyles}
       />
@@ -39,7 +44,13 @@ const Chart: FC<ChartProps> = ({ data }) => {
         axisLine={false}
         style={tickStyles}
       />
-      <Bar dataKey='value' fill='#AB47BC' maxBarSize={20} />
+      <Bar
+        dataKey='value'
+        fill='#AB47BC'
+        maxBarSize={20}
+        animationDuration={2000}
+        animationBegin={500}
+      />
     </BarChart>
   </ResponsiveContainer>
 }

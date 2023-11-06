@@ -25,8 +25,16 @@ const Chart: FC<ChartProps> = ({ data }) => {
   }
 
   return <ResponsiveContainer>
-    <BarChart data={data} margin={margin} >
-      <CartesianGrid strokeDasharray='3 3' />
+    <BarChart
+      data={data}
+      margin={margin}
+      barCategoryGap={30}
+    >
+      <CartesianGrid
+        strokeDasharray='4 6'
+        strokeWidth={0.6}
+        vertical={false}
+      />
       <XAxis
         dataKey='id'
         tickSize={0}
@@ -42,7 +50,12 @@ const Chart: FC<ChartProps> = ({ data }) => {
         axisLine={false}
         style={tickStyles}
       />
-      <Bar dataKey='value' fill='#AB47BC' maxBarSize={15} />
+      <Bar
+        dataKey='value'
+        fill='#AB47BC'
+        animationDuration={2000}
+        animationBegin={500}
+      />
     </BarChart>
   </ResponsiveContainer>
 }

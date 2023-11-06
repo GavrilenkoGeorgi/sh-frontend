@@ -32,7 +32,10 @@ const Chart: FC<ChartProps> = ({ data }) => {
           <stop offset="95%" stopColor="#AB47BC" stopOpacity={0}/>
         </linearGradient>
       </defs>
-      <CartesianGrid strokeDasharray='4 3' />
+      <CartesianGrid
+        strokeDasharray='4 6'
+        strokeWidth={0.6}
+      />
       <XAxis
         dataKey='id'
         hide
@@ -45,7 +48,13 @@ const Chart: FC<ChartProps> = ({ data }) => {
         style={tickStyles}
       />
       <Tooltip />
-      <Area type='monotone' dataKey='value' stroke='#AB47BC' fill='url(#color)' />
+      <Area type='basis'
+        dataKey='value'
+        stroke='#AB47BC'
+        fill='url(#color)'
+        animationDuration={2000}
+        animationBegin={500}
+      />
     </AreaChart>
   </ResponsiveContainer>
 }
