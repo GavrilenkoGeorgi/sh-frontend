@@ -1,8 +1,9 @@
 import React, { useEffect, type FC, useState } from 'react'
 import { useGetStatsMutation } from '../store/slices/gameApiSlice'
 import { type iStats } from '../types'
-import Combinations from '../components/charts/Combinations'
-import DiceValues from '../components/charts/DiceValues'
+import AreaChart from '../components/charts/AreaChart'
+import BarChart from '../components/charts/BarChart'
+import VertBarChart from '../components/charts/VertBarChart'
 import styles from './Stats.module.sass'
 
 const StatsPage: FC = () => {
@@ -32,18 +33,33 @@ const StatsPage: FC = () => {
       is <span>{stats?.percentFromMax}%</span> from max
     </h3>
     <h4>{stats?.games} games</h4>
-    <aside>
-      <h4>Favourite values</h4>
-      <div className={styles.hChart}>
-        <DiceValues />
-      </div>
-    </aside>
-    <aside>
-      <h4>Combinations</h4>
-      <div className={styles.sChart}>
-        <Combinations />
-      </div>
-    </aside>
+    {stats != null && <>
+      <aside>
+        <h4>School scores</h4>
+        <div className={styles.hChart}>
+          <AreaChart data={stats.schoolScores} />
+        </div>
+      </aside>
+      <aside>
+        <h4>Scores</h4>
+        <div className={styles.hChart}>
+          <AreaChart data={stats.scores} />
+        </div>
+      </aside>
+      <aside>
+        <h4>Fav dice values</h4>
+        <div className={styles.hChart}>
+          <BarChart data={stats.favDiceValues} />
+        </div>
+      </aside>
+      <aside>
+        <h4>Freq combinations</h4>
+        <div className={styles.sChart}>
+          <VertBarChart data={stats.favComb} />
+        </div>
+      </aside>
+    </>
+    }
   </section>
 }
 

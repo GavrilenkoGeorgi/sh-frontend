@@ -35,6 +35,7 @@ gameCombNames.forEach(name => {
 const initialState = {
   game: {
     score: 0,
+    schoolScore: 0, // it can be negative
     turn: 1,
     rollCount: 0,
     lock: false,
@@ -92,6 +93,10 @@ const shSlice = createSlice({
           if (!game.school[key].final) {
             game.school[key].score = null
           }
+        }
+        // save 'school end' score to stats at 6th turn
+        if (game.turn === 6) {
+          game.schoolScore = game.score
         }
       } else if (game.rollCount > 0 && game.turn > 6 && gameCombNames.includes(payload)) {
         // click on combination name saves zero
