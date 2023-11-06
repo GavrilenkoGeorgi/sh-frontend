@@ -11,7 +11,7 @@ import {
 
 import { type ChartProps } from '../../types'
 
-const ReCharts: FC<ChartProps> = ({ data }) => {
+const Chart: FC<ChartProps> = ({ data }) => {
 
   const margin = {
     top: 10,
@@ -31,7 +31,7 @@ const ReCharts: FC<ChartProps> = ({ data }) => {
         </linearGradient>
       </defs>
       <CartesianGrid strokeDasharray='4 3' />
-      <XAxis dataKey='id' />
+      <XAxis dataKey='id' hide />
       <YAxis tickCount={4} />
       <Tooltip />
       <Area type='monotone' dataKey='value' stroke='#AB47BC' fill='url(#color)' />
@@ -39,4 +39,4 @@ const ReCharts: FC<ChartProps> = ({ data }) => {
   </ResponsiveContainer>
 }
 
-export default ReCharts
+export default Chart

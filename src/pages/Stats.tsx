@@ -1,7 +1,9 @@
 import React, { useEffect, type FC, useState } from 'react'
 import { useGetStatsMutation } from '../store/slices/gameApiSlice'
 import { type iStats } from '../types'
-import ReCharts from '../components/charts/AreaChart'
+import AreaChart from '../components/charts/AreaChart'
+import BarChart from '../components/charts/BarChart'
+import VertBarChart from '../components/charts/VertBarChart'
 import styles from './Stats.module.sass'
 
 const StatsPage: FC = () => {
@@ -32,18 +34,30 @@ const StatsPage: FC = () => {
     </h3>
     <h4>{stats?.games} games</h4>
     {stats != null && <>
-    <aside>
-      <h4>Scores:</h4>
-      <div className={styles.hChart}>
-        <ReCharts data={stats.scores} />
-      </div>
-    </aside>
-    <aside>
-      <h4>School scores:</h4>
-      <div className={styles.hChart}>
-        <ReCharts data={stats.schoolScores} />
-      </div>
-    </aside>
+      <aside>
+        <h4>School scores</h4>
+        <div className={styles.hChart}>
+          <AreaChart data={stats.schoolScores} />
+        </div>
+      </aside>
+      <aside>
+        <h4>Scores</h4>
+        <div className={styles.hChart}>
+          <AreaChart data={stats.scores} />
+        </div>
+      </aside>
+      <aside>
+        <h4>Fav dice values</h4>
+        <div className={styles.hChart}>
+          <BarChart data={stats.favDiceValues} />
+        </div>
+      </aside>
+      <aside>
+        <h4>Freq combinations</h4>
+        <div className={styles.sChart}>
+          <VertBarChart data={stats.favComb} />
+        </div>
+      </aside>
     </>
     }
   </section>
