@@ -10,6 +10,8 @@ import {
 
 import { type ChartProps } from '../../types'
 
+import { tickStyles } from './BarChart'
+
 const Chart: FC<ChartProps> = ({ data }) => {
 
   const margin = {
@@ -22,8 +24,21 @@ const Chart: FC<ChartProps> = ({ data }) => {
   return <ResponsiveContainer>
     <BarChart data={data} margin={margin} layout='vertical' >
       <CartesianGrid strokeDasharray='3 3'/>
-      <XAxis type='number' hide />
-      <YAxis type='category' dataKey='id' />
+      <XAxis
+        type='number'
+        tickSize={0}
+        tickMargin={10}
+        axisLine={false}
+        style={tickStyles}
+      />
+      <YAxis
+        type='category'
+        dataKey='id'
+        tickSize={0}
+        tickMargin={10}
+        axisLine={false}
+        style={tickStyles}
+      />
       <Bar dataKey='value' fill='#AB47BC' maxBarSize={20} />
     </BarChart>
   </ResponsiveContainer>

@@ -11,6 +11,8 @@ import {
 
 import { type ChartProps } from '../../types'
 
+import { tickStyles } from './BarChart'
+
 const Chart: FC<ChartProps> = ({ data }) => {
 
   const margin = {
@@ -31,8 +33,17 @@ const Chart: FC<ChartProps> = ({ data }) => {
         </linearGradient>
       </defs>
       <CartesianGrid strokeDasharray='4 3' />
-      <XAxis dataKey='id' hide />
-      <YAxis tickCount={4} />
+      <XAxis
+        dataKey='id'
+        hide
+      />
+      <YAxis
+        tickCount={4}
+        tickSize={0}
+        tickMargin={10}
+        axisLine={false}
+        style={tickStyles}
+      />
       <Tooltip />
       <Area type='monotone' dataKey='value' stroke='#AB47BC' fill='url(#color)' />
     </AreaChart>
