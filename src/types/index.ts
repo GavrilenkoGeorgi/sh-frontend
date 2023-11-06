@@ -83,15 +83,7 @@ export interface ChartAxisData {
 }
 
 export interface ChartProps {
-  axisData: ChartAxisData[]
-  parentHeight: number
-  parentWidth: number
-  margin?: {
-    top: number
-    left: number
-    right: number
-    bottom: number
-  }
+  data: ChartAxisData[]
 }
 
 // enums

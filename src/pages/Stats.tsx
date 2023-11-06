@@ -1,9 +1,7 @@
 import React, { useEffect, type FC, useState } from 'react'
 import { useGetStatsMutation } from '../store/slices/gameApiSlice'
 import { type iStats } from '../types'
-import Combinations from '../components/charts/Combinations'
-import DiceValues from '../components/charts/DiceValues'
-import Line from '../components/charts/Line'
+import ReCharts from '../components/charts/AreaChart'
 import styles from './Stats.module.sass'
 
 const StatsPage: FC = () => {
@@ -34,7 +32,12 @@ const StatsPage: FC = () => {
     </h3>
     <h4>{stats?.games} games</h4>
     {stats != null && <>
-      <aside>
+    <aside>
+      <div className={styles.hChart}>
+        <ReCharts data={stats.scores} />
+      </div>
+    </aside>
+      {/* <aside>
         <h4>Last scores</h4>
         <div className={styles.hChart}>
           <Line axisData={stats.scores} />
@@ -51,7 +54,7 @@ const StatsPage: FC = () => {
         <div className={styles.sChart}>
           {stats?.favComb != null && <Combinations axisData={stats.favComb}/>}
         </div>
-      </aside>
+      </aside> */}
     </>
     }
   </section>
