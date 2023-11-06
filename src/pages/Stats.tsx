@@ -33,8 +33,15 @@ const StatsPage: FC = () => {
     <h4>{stats?.games} games</h4>
     {stats != null && <>
     <aside>
+      <h4>Scores:</h4>
       <div className={styles.hChart}>
         <ReCharts data={stats.scores} />
+      </div>
+    </aside>
+    <aside>
+      <h4>School scores:</h4>
+      <div className={styles.hChart}>
+        <ReCharts data={stats.schoolScores} />
       </div>
     </aside>
     </>
