@@ -16,6 +16,7 @@ import Dice from '../components/game/Dice'
 import cx from 'classnames'
 import styles from './Game.module.sass'
 import { type CanSaveProps } from '../types'
+import ProgressBar from '../components/layout/ProgressBar'
 
 const GamePage: FC = () => {
 
@@ -159,7 +160,15 @@ const GamePage: FC = () => {
           [styles.locked]: game.lock
         })}
       >
-        {game.lock ? 'save' : 'play'}
+        {game.lock
+          ? 'save'
+          : <>
+              {game.rollCount === 0
+                ? 'play'
+                : Math.abs(game.rollCount - 3)
+              }
+            </>
+        }
       </button>
     </div> }
     {game.end &&
@@ -185,6 +194,7 @@ const GamePage: FC = () => {
         </div>
       </div>
     }
+    <ProgressBar count={game.rollCount} />
   </section>
 }
 

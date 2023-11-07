@@ -91,6 +91,10 @@ export interface CanSaveProps {
   score: number | null
 }
 
+export interface iProgressBar {
+  count: number
+}
+
 // enums
 export enum SchoolCombinations {
   ONES = 'ones',
