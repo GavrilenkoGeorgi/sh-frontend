@@ -86,6 +86,11 @@ export interface ChartProps {
   data: ChartAxisData[]
 }
 
+export interface CanSaveProps {
+  final: boolean
+  score: number | null
+}
+
 // enums
 export enum SchoolCombinations {
   ONES = 'ones',

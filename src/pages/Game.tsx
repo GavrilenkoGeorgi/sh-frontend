@@ -8,12 +8,14 @@ import {
   deselectDice,
   setScore,
   saveScore,
+  endGame,
   reset
 } from '../store/slices/shSlice'
 import SchoolDice from '../components/game/SchoolDice'
 import Dice from '../components/game/Dice'
 import cx from 'classnames'
 import styles from './Game.module.sass'
+import { type CanSaveProps } from '../types'
 
 const GamePage: FC = () => {
 
@@ -42,7 +44,11 @@ const GamePage: FC = () => {
     }
   }
 
-  const end = async (): Promise<void> => {
+  const checkEndGame = (): void => {
+    dispatch(endGame())
+  }
+
+  const complete = async (): Promise<void> => {
     try {
       const data = {
         score: game.score,
@@ -70,6 +76,11 @@ const GamePage: FC = () => {
     }
   }, [game.selection])
 
+  const canSave = ({ final, score }: CanSaveProps): boolean => {
+    if (!final && score !== null) return true
+    else return false
+  }
+
   return <section className={styles.game}>
     <h1>Score: {game.score}</h1>
     {/* School results */}
@@ -82,7 +93,7 @@ const GamePage: FC = () => {
           className={cx(styles.schoolResult, {
             [styles.pre]: !game.school[key].final
           })}
-          onClick={() => { save(key) }}
+          onClick={canSave(game.school[key]) ? () => { save(key) } : () => { checkEndGame() } }
         >
           {game.school[key].score}
         </div>
@@ -168,7 +179,7 @@ const GamePage: FC = () => {
         <div className={styles.blur}></div>
         <div className={styles.message}>
           <h2>Result: {game.score}</h2>
-          <button onClick={ () => { void end() }}>
+          <button onClick={ () => { void complete() }}>
             Save result
           </button>
         </div>
