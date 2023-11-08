@@ -17,6 +17,7 @@ import cx from 'classnames'
 import styles from './Game.module.sass'
 import { type CanSaveProps } from '../types'
 import ProgressBar from '../components/layout/ProgressBar'
+import Modal from '../components/layout/Modal'
 
 const GamePage: FC = () => {
 
@@ -78,7 +79,7 @@ const GamePage: FC = () => {
   }, [game.selection])
 
   const canSave = ({ final, score }: CanSaveProps): boolean => {
-    if (!final && score !== null) return true
+    if (!final && score != null) return true
     else return false
   }
 
@@ -172,27 +173,20 @@ const GamePage: FC = () => {
       </button>
     </div> }
     {game.end &&
-      <div className={styles.modal}>
-        <div className={styles.blur}></div>
-        <div className={styles.message}>
-          <h2>Game end</h2>
-          <p>Better luck next time</p>
-          <button onClick={() => dispatch(reset())}>
-            ok
-          </button>
-        </div>
-      </div>
+      <Modal
+        heading='Game end'
+        text='Better luck next time'
+        btnLabel='ok'
+        onClick={() => dispatch(reset())}
+      />
     }
     {game.turn === 34 &&
-      <div className={styles.modal}>
-        <div className={styles.blur}></div>
-        <div className={styles.message}>
-          <h2>Result: {game.score}</h2>
-          <button onClick={ () => { void complete() }}>
-            Save result
-          </button>
-        </div>
-      </div>
+      <Modal
+        heading='Result:'
+        text='Finish'
+        btnLabel='save result'
+        onClick={() => { void complete() }}
+      />
     }
     <ProgressBar count={game.rollCount} />
   </section>

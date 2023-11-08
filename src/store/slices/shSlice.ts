@@ -82,7 +82,6 @@ const shSlice = createSlice({
       }
     },
     saveScore: ({ game }, { payload }) => {
-
       if (game.rollCount > 0 && game.turn <= 6 && schoolCombNames.includes(payload)) { // save 'training' score
         if (game.school[payload].score !== null && !game.school[payload].final) {
           game.school[payload].final = true
@@ -132,29 +131,19 @@ const shSlice = createSlice({
       }
     },
     endGame: ({ game }) => {
-      if (game.rollCount === 3 && game.turn <= 6 && !game.saved) {
-        // check if unable to complete part 1
+      if (game.rollCount === 3 && game.turn <= 6) {
+        // check if unable to complete training
         const dice = [...game.selection, ...game.roll]
         const scores = ShScore.getSchoolScore(dice)
-        let missingCount: number = 0
+        let canSave: boolean = false
         // check if user missed something
         Object.keys(game.school).forEach((key, index) => {
-          if (!game.school[key].final) {
+          if (!game.school[key].final && game.school[key].score === null) {
             // check if score is null in results
-            if (scores[index] === null) {
-              missingCount++
-            }
+            if (scores[index] != null) canSave = true
           }
         })
-
-        if (missingCount > 0) { // moment of truth )
-          const scoreNulls = scores.filter(value => value === null)
-          // we need to have more nulls in results for this check to return true
-          // if this is the case you lose
-          if (missingCount < scoreNulls.length) {
-            game.end = true
-          }
-        }
+        if (!canSave) game.end = true
       }
     },
     selectDice: ({ game }, { payload }) => {
