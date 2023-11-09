@@ -19,15 +19,16 @@ const DraggableDice: FC<iDraggableDice> = ({ kind, parent }) => {
       })
     }), [])
 
-  return <div
+  return <span
     ref={drag}
+    data-kind={kind}
     style={{
       opacity: isDragging ? 0.5 : 1,
       width: '40px'
     }}
   >
     <Dice kind={kind} />
-  </div>
+  </span>
 }
 
 export default DraggableDice
