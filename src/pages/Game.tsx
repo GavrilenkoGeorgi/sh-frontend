@@ -1,23 +1,29 @@
 import React, { type FC, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { DndProvider } from 'react-dnd'
+import { MultiBackend } from 'react-dnd-multi-backend'
+import { HTML5toTouch } from 'rdndmb-html5-to-touch'
+
+// state
 import type { RootState } from '../store'
+import { type CanSaveProps } from '../types'
 import { useSaveResultsMutation } from '../store/slices/gameApiSlice'
 import {
   rollDice,
-  selectDice,
-  deselectDice,
   setScore,
   saveScore,
   endGame,
   reset
 } from '../store/slices/shSlice'
+
+// components and styles
+import ProgressBar from '../components/layout/ProgressBar'
+import { DiceBoard } from '../components/game/DiceBoard'
+import DDice from '../components/game/DraggableDice'
 import SchoolDice from '../components/game/SchoolDice'
-import Dice from '../components/game/Dice'
+import Modal from '../components/layout/Modal'
 import cx from 'classnames'
 import styles from './Game.module.sass'
-import { type CanSaveProps } from '../types'
-import ProgressBar from '../components/layout/ProgressBar'
-import Modal from '../components/layout/Modal'
 
 const GamePage: FC = () => {
 
@@ -28,16 +34,6 @@ const GamePage: FC = () => {
 
   const roll = (): void => {
     dispatch(rollDice())
-  }
-
-  const select = (index: number): void => {
-    if (game.rollCount > 0) {
-      dispatch(selectDice(game.roll[index]))
-    }
-  }
-
-  const deselect = (index: number): void => {
-    dispatch(deselectDice(game.selection[index]))
   }
 
   const save = (id: string): void => {
@@ -85,7 +81,7 @@ const GamePage: FC = () => {
 
   return <section className={styles.game}>
     <h1>Score: {game.score}</h1>
-    {/* School results */}
+    {/* Training results */}
     <div className={styles.school}>
       <SchoolDice />
       {Object.keys(game.school).map((key) =>
@@ -137,23 +133,19 @@ const GamePage: FC = () => {
       </div>
     </div>
     {/* Game controls */}
-    {game.turn <= 33 && <div className={styles.controls}>
-      {game.selection.map((value, index) =>
-        <div key={index}
-          onClick={() => { deselect(index) }}
-          className={styles.selectedDice}
-        >
-          <Dice kind={value} />
-        </div>
-      )}
-      {game.roll.map((value, index) =>
-        <div key={index}
-          onClick={() => { select(index) }}
-          className={styles.rolledDice}
-        >
-          <Dice kind={value} />
-        </div>
-      )}
+    <div className={styles.controls}>
+      <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+        <DiceBoard id='sel'>
+          {game.selection.map((item, idx) =>
+            <DDice key={`${item}-${idx}`} kind={item} parent={'sel'} />
+          )}
+        </DiceBoard>
+        <DiceBoard id='roll'>
+          {game.roll.map((item, idx) =>
+            <DDice key={`${item}-${idx}`} kind={item} parent={'roll'} />
+          )}
+        </DiceBoard>
+      </DndProvider>
       <button
         onClick={roll}
         disabled={game.lock}
@@ -161,7 +153,7 @@ const GamePage: FC = () => {
           [styles.locked]: game.lock
         })}
       >
-        {game.lock
+        {game.lock // btn label
           ? 'save'
           : <>
               {game.rollCount === 0
@@ -171,7 +163,7 @@ const GamePage: FC = () => {
             </>
         }
       </button>
-    </div> }
+    </div>
     {game.end &&
       <Modal
         heading='Game end'

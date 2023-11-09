@@ -58,10 +58,8 @@
   font-weight: 450
 
 .controls
-  display: grid
-  grid-template-columns: repeat(5, 1fr) 2fr
-  gap: .75rem
-  margin: 2rem 1rem 0
+  display: flex
+  gap: .5rem
   .rolledDice,
   .selectedDice
     display: flex
@@ -76,6 +74,8 @@
   text-transform: uppercase
   padding: 0
   margin: 0
+  flex-grow: 1
+  margin-right: .5rem
 
 .locked
   background-color: $color-orange

@@ -95,6 +95,21 @@ export interface iProgressBar {
   count: number
 }
 
+export interface iDraggableDice {
+  kind: number
+  parent?: string
+}
+
+export interface iBoardProps {
+  id: string
+  children?: ReactNode
+}
+
+export interface iDropItem {
+  kind: number
+  parent: string
+}
+
 // enums
 export enum SchoolCombinations {
   ONES = 'ones',
