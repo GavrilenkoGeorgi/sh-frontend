@@ -13,7 +13,7 @@ interface iDice {
   onClick?: () => void
 }
 
-const Dice: FC<iDice> = ({ kind }) => {
+export const Dice: FC<iDice> = ({ kind }) => {
 
   switch (kind) {
     case 1:
@@ -33,5 +33,3 @@ const Dice: FC<iDice> = ({ kind }) => {
   }
 
 }
-
-export default Dice

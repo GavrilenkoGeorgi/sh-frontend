@@ -1,5 +1,5 @@
 import React, { type FC } from 'react'
-import Dice from './Dice'
+import { Dice } from './Dice'
 
 const SchoolDice: FC = () => {
 

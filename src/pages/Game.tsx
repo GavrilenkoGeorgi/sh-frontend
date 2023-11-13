@@ -1,15 +1,11 @@
 import React, { type FC, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { DndProvider } from 'react-dnd'
-import { MultiBackend } from 'react-dnd-multi-backend'
-import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 
 // state
 import type { RootState } from '../store'
 import { type CanSaveProps } from '../types'
 import { useSaveResultsMutation } from '../store/slices/gameApiSlice'
 import {
-  rollDice,
   setScore,
   saveScore,
   endGame,
@@ -18,10 +14,9 @@ import {
 
 // components and styles
 import ProgressBar from '../components/layout/ProgressBar'
-import { DiceBoard } from '../components/game/DiceBoard'
-import DDice from '../components/game/DraggableDice'
 import SchoolDice from '../components/game/SchoolDice'
 import Modal from '../components/layout/Modal'
+import DnDDiceBoard from '../components/game/controls/DnDDiceBoard'
 import cx from 'classnames'
 import styles from './Game.module.sass'
 
@@ -31,10 +26,6 @@ const GamePage: FC = () => {
   const { game } = useSelector((state: RootState) => state.sh)
   const { userInfo } = useSelector((state: RootState) => state.auth)
   const [saveResults] = useSaveResultsMutation()
-
-  const roll = (): void => {
-    dispatch(rollDice())
-  }
 
   const save = (id: string): void => {
     if (game.rollCount > 0) {
@@ -133,37 +124,7 @@ const GamePage: FC = () => {
       </div>
     </div>
     {/* Game controls */}
-    <div className={styles.controls}>
-      <DndProvider backend={MultiBackend} options={HTML5toTouch}>
-        <DiceBoard id='sel'>
-          {game.selection.map((item, idx) =>
-            <DDice key={`${item}-${idx}`} kind={item} parent={'sel'} />
-          )}
-        </DiceBoard>
-        <DiceBoard id='roll'>
-          {game.roll.map((item, idx) =>
-            <DDice key={`${item}-${idx}`} kind={item} parent={'roll'} />
-          )}
-        </DiceBoard>
-      </DndProvider>
-      <button
-        onClick={roll}
-        disabled={game.lock}
-        className={cx(styles.rollBtn, {
-          [styles.locked]: game.lock
-        })}
-      >
-        {game.lock // btn label
-          ? 'save'
-          : <>
-              {game.rollCount === 0
-                ? 'play'
-                : Math.abs(game.rollCount - 3)
-              }
-            </>
-        }
-      </button>
-    </div>
+    <DnDDiceBoard />
     {game.end &&
       <Modal
         heading='Game end'
