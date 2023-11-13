@@ -11,10 +11,10 @@ import {
   type DragEndEvent,
   type DragStartEvent,
   type DragOverEvent,
-  DragOverlay,
-  type DropAnimation,
-  defaultDropAnimation
+  DragOverlay
 } from '@dnd-kit/core'
+
+import { dropAnimation } from './DnDConstants'
 
 import { type RootState } from '../../../store'
 import { selectDice, deselectDice } from '../../../store/slices/shSlice'
@@ -66,9 +66,7 @@ export const getDiceByStatus = (dice: Dice[], status: Status): Dice[] => {
 }
 
 export const getDiceById = (dice: Dice[], id: string): Dice => {
-  // eslint-disable-next-line
-  // @ts-ignore
-  return dice.find((dice) => dice.id === id)
+  return dice.find((dice) => dice.id === id) as Dice
 }
 
 export const BOARD_SECTIONS = {
@@ -100,9 +98,7 @@ export const findBoardSectionContainer = (
   const container = Object.keys(boardSections).find((key) =>
     boardSections[key].find((item) => item.id === id)
   )
-  // eslint-disable-next-line
-  // @ts-ignore
-  return container
+  return container as string
 }
 
 const DnDDiceBoard: FC = () => {
@@ -110,13 +106,16 @@ const DnDDiceBoard: FC = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const update = initialDice.filter(item => item.status === 'roll').slice(0, 5)
 
+    const update = initialDice.filter(item => item.status === 'roll')
     game.roll.forEach((value, index) => {
-      update[index].value = value
+      if (value > 0) {
+        update[index].value = value
+      }
     })
 
-    setCurrState([...initialDice, ...update])
+    const onHold = initialDice.filter(item => item.status === 'sel')
+    setCurrState([...onHold, ...update])
   }, [game.roll])
 
   useEffect(() => {
@@ -255,16 +254,20 @@ const DnDDiceBoard: FC = () => {
             item.status = activeContainer as Status
           }
         })
+
+        const selected = initialDice.filter(item => item.status === 'roll')
+
+        const data = {
+          value: activeDice.value,
+          order: selected.map(item => item.value)
+        }
+
         setCurrState([...initialDice])
-        dispatch(deselectDice(activeDice?.value)) // TODO: one thing!
+        dispatch(deselectDice(data)) // TODO: one thing!
       }
     }
 
     setActiveDiceId(null)
-  }
-
-  const dropAnimation: DropAnimation = {
-    ...defaultDropAnimation
   }
 
   const item = (activeDiceId != null) ? getDiceById(initialDice, activeDiceId) : null

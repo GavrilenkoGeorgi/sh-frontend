@@ -151,8 +151,9 @@ const shSlice = createSlice({
       game.roll.splice(game.roll.indexOf(payload), 1) // remove from roll
     },
     deselectDice: ({ game }, { payload }) => {
-      game.roll.push(payload) // add to roll array
-      game.selection.splice(game.selection.indexOf(payload), 1) // remove from selection
+      // sync roll array
+      game.roll = [...payload.order]
+      game.selection.splice(game.selection.indexOf(payload.value), 1) // remove from selection
     },
     rollDice: ({ game }) => {
       game.saved = false

@@ -15,23 +15,25 @@ const MainButton: FC = () => {
     dispatch(rollDice())
   }
 
-  return <button
-    onClick={roll}
-    disabled={game.lock}
-    className={cx(styles.rollBtn, {
-      [styles.locked]: game.lock
-    })}
-  >
-    {game.lock // btn label
-      ? 'save'
-      : <>
-          {game.rollCount === 0
-            ? 'play'
-            : Math.abs(game.rollCount - 3)
-          }
-        </>
-    }
-  </button>
+  return <div className={styles.btnContainer}>
+    <button
+      onClick={roll}
+      disabled={game.lock}
+      className={cx(styles.rollBtn, {
+        [styles.locked]: game.lock
+      })}
+    >
+      {game.lock // btn label
+        ? 'save'
+        : <>
+            {game.rollCount === 0
+              ? 'play'
+              : Math.abs(game.rollCount - 3)
+            }
+          </>
+      }
+    </button>
+  </div>
 }
 
 export default MainButton
