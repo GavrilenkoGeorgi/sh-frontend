@@ -123,6 +123,7 @@ const GamePage: FC = () => {
         )}
       </div>
     </div>
+    <ProgressBar count={game.rollCount} />
     {/* Game controls */}
     <DnDDiceBoard />
     {game.end &&
@@ -141,7 +142,6 @@ const GamePage: FC = () => {
         onClick={() => { void complete() }}
       />
     }
-    <ProgressBar count={game.rollCount} />
   </section>
 }
 

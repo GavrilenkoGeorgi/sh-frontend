@@ -1,5 +1,5 @@
 import React from 'react'
-import { type Dice } from './DnDDiceBoard'
+import { type Dice } from '../../../types'
 import { Dice as DiceSVG } from '../Dice'
 import styles from './DnDDiceBoard.module.sass'
 

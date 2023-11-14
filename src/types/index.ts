@@ -110,6 +110,17 @@ export interface iDropItem {
   parent: string
 }
 
+// Drag and drop controls
+export type Status = 'roll' | 'sel'
+
+export interface Dice {
+  id: string
+  status: Status
+  value: number
+}
+
+export type BoardSections = Record<string, Dice[]>
+
 // enums
 export enum SchoolCombinations {
   ONES = 'ones',
