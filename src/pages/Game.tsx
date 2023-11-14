@@ -30,9 +30,7 @@ const GamePage: FC = () => {
         favDiceValues: game.favDiceValues
       }
 
-      if (userInfo === null) console.log('CTA to register')
-      else await saveResults(data)
-
+      if (userInfo != null) await saveResults(data)
       dispatch(reset())
 
     } catch (err) {
@@ -72,6 +70,7 @@ const GamePage: FC = () => {
         heading='🎉 Congrats! ✨'
         score={game.score}
         text='Your score is '
+        userName={userInfo?.name}
         btnLabel='save'
         onClick={() => { void complete() }}
       />
