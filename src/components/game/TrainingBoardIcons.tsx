@@ -1,9 +1,9 @@
 import React, { type FC } from 'react'
 import { Dice } from './Dice'
 
-const SchoolDice: FC = () => {
+const TrainingBoardIcons: FC = () => {
 
-  // show school dice svgs in order
+  // show dice svgs in order
   const dice = [1, 2, 3, 4, 5, 6]
 
   return <>
@@ -13,4 +13,4 @@ const SchoolDice: FC = () => {
   </>
 }
 
-export default SchoolDice
+export default TrainingBoardIcons

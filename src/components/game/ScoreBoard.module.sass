@@ -1,0 +1,25 @@
+@import ../../styles/colors
+
+.results
+  display: flex
+  flex-direction: column
+  padding-left: 1rem
+
+.name
+  margin: .5rem 0
+  text-transform: capitalize
+
+.score
+  display: grid
+  grid-template-columns: 2fr repeat(3, 1fr)
+
+.result,
+.preliminaryResult
+  text-align: center
+  display: flex
+  justify-content: center
+  align-items: center
+
+.preliminaryResult
+  color: $color-orange
+  font-weight: 450
