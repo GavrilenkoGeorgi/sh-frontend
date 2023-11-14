@@ -1,7 +1,7 @@
 import React, { type FC } from 'react'
 import { type iHelpDice } from '../../types'
 
-import Dice from '../game/Dice'
+import { Dice } from '../game/Dice'
 import styles from './HelpDice.module.sass'
 
 interface iProps {

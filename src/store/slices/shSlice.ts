@@ -45,6 +45,7 @@ const initialState = {
     selection: new Array(0),
     roll: new Array(5).fill(0),
     saved: false,
+    end: false,
     favDiceValues: new Array(6).fill(0),
     stats: {}
   }
@@ -81,8 +82,8 @@ const shSlice = createSlice({
       }
     },
     saveScore: ({ game }, { payload }) => {
-      if (game.rollCount > 0 && game.turn <= 6 && schoolCombNames.includes(payload)) { // save 'school' score
-        if (game.school[payload].score !== null) {
+      if (game.rollCount > 0 && game.turn <= 6 && schoolCombNames.includes(payload)) { // save 'training' score
+        if (game.school[payload].score !== null && !game.school[payload].final) {
           game.school[payload].final = true
           // @ts-expect-error: result can be a zero value, so we need this to be null
           game.score = game.score + game.school[payload].score
@@ -129,13 +130,30 @@ const shSlice = createSlice({
         game.stats = { ...stats }
       }
     },
+    endGame: ({ game }) => {
+      if (game.rollCount === 3 && game.turn <= 6) {
+        // check if unable to complete training
+        const dice = [...game.selection, ...game.roll]
+        const scores = ShScore.getSchoolScore(dice)
+        let canSave: boolean = false
+        // check if user missed something
+        Object.keys(game.school).forEach((key, index) => {
+          if (!game.school[key].final && game.school[key].score === null) {
+            // check if score is null in results
+            if (scores[index] != null) canSave = true
+          }
+        })
+        if (!canSave) game.end = true
+      }
+    },
     selectDice: ({ game }, { payload }) => {
       game.selection.push(payload) // add to selection
       game.roll.splice(game.roll.indexOf(payload), 1) // remove from roll
     },
     deselectDice: ({ game }, { payload }) => {
-      game.roll.push(payload) // add to roll array
-      game.selection.splice(game.selection.indexOf(payload), 1) // remove from selection
+      // sync roll array
+      game.roll = [...payload.order]
+      game.selection.splice(game.selection.indexOf(payload.value), 1) // remove from selection
     },
     rollDice: ({ game }) => {
       game.saved = false
@@ -149,6 +167,7 @@ const shSlice = createSlice({
 
 export const {
   reset,
+  endGame,
   setScore,
   saveScore,
   rollDice,

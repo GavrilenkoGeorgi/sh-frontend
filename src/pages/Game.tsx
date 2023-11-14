@@ -1,17 +1,22 @@
 import React, { type FC, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
+// state
 import type { RootState } from '../store'
+import { type CanSaveProps } from '../types'
 import { useSaveResultsMutation } from '../store/slices/gameApiSlice'
 import {
-  rollDice,
-  selectDice,
-  deselectDice,
   setScore,
   saveScore,
+  endGame,
   reset
 } from '../store/slices/shSlice'
+
+// components and styles
+import ProgressBar from '../components/layout/ProgressBar'
 import SchoolDice from '../components/game/SchoolDice'
-import Dice from '../components/game/Dice'
+import Modal from '../components/layout/Modal'
+import DnDDiceBoard from '../components/game/controls/DnDDiceBoard'
 import cx from 'classnames'
 import styles from './Game.module.sass'
 
@@ -22,27 +27,17 @@ const GamePage: FC = () => {
   const { userInfo } = useSelector((state: RootState) => state.auth)
   const [saveResults] = useSaveResultsMutation()
 
-  const roll = (): void => {
-    dispatch(rollDice())
-  }
-
-  const select = (index: number): void => {
-    if (game.rollCount > 0) {
-      dispatch(selectDice(game.roll[index]))
-    }
-  }
-
-  const deselect = (index: number): void => {
-    dispatch(deselectDice(game.selection[index]))
-  }
-
   const save = (id: string): void => {
     if (game.rollCount > 0) {
       dispatch(saveScore(id))
     }
   }
 
-  const end = async (): Promise<void> => {
+  const checkEndGame = (): void => {
+    dispatch(endGame())
+  }
+
+  const complete = async (): Promise<void> => {
     try {
       const data = {
         score: game.score,
@@ -70,9 +65,14 @@ const GamePage: FC = () => {
     }
   }, [game.selection])
 
+  const canSave = ({ final, score }: CanSaveProps): boolean => {
+    if (!final && score != null) return true
+    else return false
+  }
+
   return <section className={styles.game}>
     <h1>Score: {game.score}</h1>
-    {/* School results */}
+    {/* Training results */}
     <div className={styles.school}>
       <SchoolDice />
       {Object.keys(game.school).map((key) =>
@@ -82,7 +82,7 @@ const GamePage: FC = () => {
           className={cx(styles.schoolResult, {
             [styles.pre]: !game.school[key].final
           })}
-          onClick={() => { save(key) }}
+          onClick={canSave(game.school[key]) ? () => { save(key) } : () => { checkEndGame() } }
         >
           {game.school[key].score}
         </div>
@@ -123,44 +123,24 @@ const GamePage: FC = () => {
         )}
       </div>
     </div>
+    <ProgressBar count={game.rollCount} />
     {/* Game controls */}
-    {game.turn <= 33 && <div className={styles.controls}>
-      {game.selection.map((value, index) =>
-        <div key={index}
-          onClick={() => { deselect(index) }}
-          className={styles.selectedDice}
-        >
-          <Dice kind={value} />
-        </div>
-      )}
-      {game.roll.map((value, index) =>
-        <div key={index}
-          onClick={() => { select(index) }}
-          className={styles.rolledDice}
-        >
-          <Dice kind={value} />
-        </div>
-      )}
-      <button
-        onClick={roll}
-        disabled={game.lock}
-        className={cx(styles.rollBtn, {
-          [styles.locked]: game.lock
-        })}
-      >
-        {game.lock ? 'save' : 'play'}
-      </button>
-    </div> }
+    <DnDDiceBoard />
+    {game.end &&
+      <Modal
+        heading='Game end'
+        text='Better luck next time'
+        btnLabel='ok'
+        onClick={() => dispatch(reset())}
+      />
+    }
     {game.turn === 34 &&
-      <div className={styles.modal}>
-        <div className={styles.blur}></div>
-        <div className={styles.message}>
-          <h2>Result: {game.score}</h2>
-          <button onClick={ () => { void end() }}>
-            Save result
-          </button>
-        </div>
-      </div>
+      <Modal
+        heading='Result:'
+        text='Finish'
+        btnLabel='save result'
+        onClick={() => { void complete() }}
+      />
     }
   </section>
 }

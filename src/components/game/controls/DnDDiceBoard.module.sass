@@ -1,0 +1,43 @@
+@import '../../../styles/colors'
+
+.container
+  display: flex
+  gap: .5rem
+  margin: 0 .5rem
+
+.board
+  display: flex
+  border-radius: .25rem
+  min-width:20px
+  background-color: $primary-light-color
+  &:first-child
+    background-color: $color-light-orange
+  div
+    display: inherit
+
+.itemContainer
+  margin: 0
+
+.item
+  display: flex
+  min-width: 50px
+  height: auto
+  touch-action: none
+  margin: 0 .1rem
+
+.btnContainer
+  flex-grow: 1
+
+.rollBtn
+  background-color: $primary-color
+  border: none
+  border-radius: .25rem
+  color: #fff
+  text-transform: uppercase
+  padding: 0
+  width: 100%
+  height: 100%
+  transition: color 1s linear
+
+.locked
+  background-color: $color-orange

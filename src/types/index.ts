@@ -86,6 +86,41 @@ export interface ChartProps {
   data: ChartAxisData[]
 }
 
+export interface CanSaveProps {
+  final: boolean
+  score: number | null
+}
+
+export interface iProgressBar {
+  count: number
+}
+
+export interface iDraggableDice {
+  kind: number
+  parent?: string
+}
+
+export interface iBoardProps {
+  id: string
+  children?: ReactNode
+}
+
+export interface iDropItem {
+  kind: number
+  parent: string
+}
+
+// Drag and drop controls
+export type Status = 'roll' | 'sel'
+
+export interface Dice {
+  id: string
+  status: Status
+  value: number
+}
+
+export type BoardSections = Record<string, Dice[]>
+
 // enums
 export enum SchoolCombinations {
   ONES = 'ones',

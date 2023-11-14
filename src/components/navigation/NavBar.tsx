@@ -50,7 +50,7 @@ const NavBar: FC = () => {
       url: '/profile'
     },
     {
-      label: 'Login/Logout',
+      label: 'Login',
       url: '/login'
     },
     {
