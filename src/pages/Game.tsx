@@ -62,16 +62,17 @@ const GamePage: FC = () => {
     {game.end &&
       <Modal
         heading='Game end'
-        text='Better luck next time'
+        text='Better luck next time!'
         btnLabel='ok'
         onClick={() => dispatch(reset())}
       />
     }
     {game.turn === 34 &&
       <Modal
-        heading='Result:'
-        text='Finish'
-        btnLabel='save result'
+        heading='🎉 Congrats! ✨'
+        score={game.score}
+        text='Your score is '
+        btnLabel='save'
         onClick={() => { void complete() }}
       />
     }
