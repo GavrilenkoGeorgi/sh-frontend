@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "Sharlushka v2",
   "main": "index.js",
-  "proxy": "https://sharlushka-5f463ae1030f.herokuapp.com/api",
   "scripts": {
     "dev": "webpack serve --port 3000",
     "build": "set NODE_ENV=production && webpack"
