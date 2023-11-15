@@ -1,5 +1,5 @@
 import { gameSlice } from './apiSlice'
-const GAME_URL = process.env.GAME_URL
+const GAME_URL = process.env.REACT_APP_GAME_URL
 
 export const gameApiSlice = gameSlice.injectEndpoints({
   endpoints: (builder) => ({
