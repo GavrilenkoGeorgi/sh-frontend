@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const WorkboxPlugin = require('workbox-webpack-plugin')
 const WebpackPwaManifest = require('webpack-pwa-manifest')
+const Dotenv = require('dotenv-webpack')
 
 const prod = process.env.NODE_ENV === 'production'
 module.exports = {
@@ -49,6 +50,7 @@ module.exports = {
       template: './src/index.html',
       title: 'Progressive Web Application'
     }),
+    new Dotenv(),
     new MiniCssExtractPlugin(),
     new WorkboxPlugin.GenerateSW({
       // these options encourage the ServiceWorkers to get in there fast

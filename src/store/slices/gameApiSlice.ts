@@ -1,5 +1,5 @@
 import { gameSlice } from './apiSlice'
-const GAME_URL = 'http://localhost:5000/api/game' // TODO: env!
+const GAME_URL = process.env.GAME_URL
 
 export const gameApiSlice = gameSlice.injectEndpoints({
   endpoints: (builder) => ({
