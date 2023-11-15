@@ -37,7 +37,7 @@ const Register: FC = () => {
   const onSubmit: SubmitHandler<RegisterFormSchemaType> = async (data): Promise<void> => {
     console.log('Successful submit data: ', data)
     await signup(data).unwrap()
-    navigate('/admin', { replace: true })
+    navigate('/game', { replace: true })
   }
 
   return <form
