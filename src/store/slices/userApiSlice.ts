@@ -1,6 +1,8 @@
 import { apiSlice } from './apiSlice'
 const USERS_URL = process.env.USERS_URL
 
+console.log('process.env.USERS_URL', process.env.USERS_URL)
+
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
