@@ -50,7 +50,9 @@ module.exports = {
       template: './src/index.html',
       title: 'Progressive Web Application'
     }),
-    new Dotenv(),
+    new Dotenv({
+      systemvars: true
+    }),
     new MiniCssExtractPlugin(),
     new WorkboxPlugin.GenerateSW({
       // these options encourage the ServiceWorkers to get in there fast
