@@ -1,27 +1,35 @@
 @import '../../../styles/colors'
+@import '../../../styles/variables'
 
-.container
+.controls
   display: flex
   gap: .5rem
   margin: 0 .5rem
 
-.board
+.controls > div
   display: flex
+  min-width: calc($diceMinWidth + ($diceMargin * 2))
+
+.board
   border-radius: .25rem
-  min-width:20px
   background-color: $primary-light-color
+  padding: .2rem
   &:first-child
     background-color: $color-light-orange
-  div
-    display: inherit
 
-.itemContainer
-  margin: 0
+.items
+  width: 100%
+  display: flex
+  justify-content: space-between
 
 .item
+  margin: 0
   display: flex
-  min-width: 50px
-  height: auto
+  align-items: center
+
+.dice
+  display: flex
+  min-width: $diceMinWidth
   touch-action: none
   margin: 0 .1rem
 
@@ -34,10 +42,9 @@
   border-radius: .25rem
   color: #fff
   text-transform: uppercase
-  padding: 0 1rem
+  min-width: $diceMinWidth
   width: 100%
-  height: 100%
-  transition: color 1s linear
+  transition: background-color .5s linear
 
 .locked
   background-color: $color-orange

@@ -198,7 +198,7 @@ const DnDDiceBoard: FC = () => {
   }, [game.saved])
 
   return (
-    <div className={styles.container}>
+    <div className={styles.controls}>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}

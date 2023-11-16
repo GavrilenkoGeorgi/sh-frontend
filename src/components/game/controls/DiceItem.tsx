@@ -8,7 +8,7 @@ interface DiceItemProps {
 }
 
 const DiceItem = ({ dice }: DiceItemProps): React.JSX.Element => {
-  return <div className={styles.item}>
+  return <div className={styles.dice}>
       <DiceSVG kind={dice.value} />
     </div>
 }
