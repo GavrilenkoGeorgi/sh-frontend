@@ -24,9 +24,9 @@ const BoardSection = ({ id, title, dice }: BoardSectionProps): React.JSX.Element
       items={dice}
       strategy={horizontalListSortingStrategy}
     >
-      <div ref={setNodeRef}>
+      <div ref={setNodeRef} className={styles.items}>
         {dice.map((item) => (
-          <div key={item.id} className={styles.itemContainer}>
+          <div key={item.id} className={styles.item}>
             <SortableDiceItem id={item.id}>
               <DiceItem dice={item} />
             </SortableDiceItem>
