@@ -12,6 +12,7 @@ import type { FocusedStates, InputValues, LoginFormErrors } from '../../types'
 import cx from 'classnames'
 import styles from './Form.module.sass'
 import Logout from './Logout'
+import LoadingIndicator from '../layout/LoadingIndicator'
 
 const Login: FC = () => {
 
@@ -24,7 +25,7 @@ const Login: FC = () => {
   const [values, setValues] = useState<InputValues>({})
   const [formErrors, setFormErrors] = useState<LoginFormErrors>({})
 
-  const { register, getValues, formState: { errors }, handleSubmit } = useForm<LoginFormSchemaType>({
+  const { register, getValues, formState: { errors, isSubmitting }, handleSubmit } = useForm<LoginFormSchemaType>({
     resolver: zodResolver(LoginFormSchema)
   })
 
@@ -107,7 +108,12 @@ const Login: FC = () => {
         </p>}
       </div>
       <div className={styles.buttons}>
-        <button type='submit'>Login</button>
+        <button type='submit' disabled={isSubmitting}>
+          {isSubmitting
+            ? <LoadingIndicator />
+            : 'Login'
+          }
+        </button>
         <Logout />
       </div>
     </fieldset>

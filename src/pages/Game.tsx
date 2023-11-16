@@ -1,4 +1,4 @@
-import React, { type FC, useEffect } from 'react'
+import React, { type FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 // state
@@ -16,6 +16,7 @@ import styles from './Game.module.sass'
 
 const GamePage: FC = () => {
 
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const dispatch = useDispatch()
   const { game } = useSelector((state: RootState) => state.sh)
   const { userInfo } = useSelector((state: RootState) => state.auth)
@@ -30,6 +31,7 @@ const GamePage: FC = () => {
         favDiceValues: game.favDiceValues
       }
 
+      setIsSubmitting(true)
       if (userInfo != null) await saveResults(data)
       dispatch(reset())
 
@@ -37,6 +39,7 @@ const GamePage: FC = () => {
       console.log(err) // TODO: proper err handling
     } finally {
       console.log('Saved.') // TODO: toasts
+      setIsSubmitting(false)
     }
   }
 
@@ -72,6 +75,7 @@ const GamePage: FC = () => {
         text='Your score is '
         userName={userInfo?.name}
         btnLabel='save'
+        isDisabled={isSubmitting}
         onClick={() => { void complete() }}
       />
     }
