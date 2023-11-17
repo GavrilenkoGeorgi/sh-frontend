@@ -1,5 +1,6 @@
 import React, { type FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 // state
 import type { RootState } from '../store'
@@ -21,6 +22,7 @@ const GamePage: FC = () => {
   const { game } = useSelector((state: RootState) => state.sh)
   const { userInfo } = useSelector((state: RootState) => state.auth)
   const [saveResults] = useSaveResultsMutation()
+  const navigate = useNavigate()
 
   const complete = async (): Promise<void> => {
     try {
@@ -34,7 +36,7 @@ const GamePage: FC = () => {
       setIsSubmitting(true)
       if (userInfo != null) await saveResults(data)
       dispatch(reset())
-
+      navigate('/stats')
     } catch (err) {
       console.log(err) // TODO: proper err handling
     } finally {
