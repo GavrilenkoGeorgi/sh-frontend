@@ -10,7 +10,6 @@ const App: FC = () => {
   const [checkAuth] = useCheckAuthMutation()
 
   const refreshAuth = async (): Promise<void> => {
-    console.log('[debug] refreshing token')
     try {
       const res = await checkAuth({}).unwrap()
       dispatch(setCredentials({ ...res }))

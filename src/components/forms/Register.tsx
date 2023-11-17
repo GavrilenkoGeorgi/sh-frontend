@@ -2,12 +2,13 @@ import React, { type FC, useState, type FocusEvent } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
+import cx from 'classnames'
 
 import { useSignupMutation } from '../../store/slices/userApiSlice'
 import { RegisterFormSchema, type RegisterFormSchemaType } from '../../schemas/RegisterFormSchema'
 import type { FocusedStates, InputValues, RegisterFormErrors } from '../../types'
 
-import cx from 'classnames'
+import LoadingIndicator from '../layout/LoadingIndicator'
 import styles from './Form.module.sass'
 
 const Register: FC = () => {
@@ -19,7 +20,7 @@ const Register: FC = () => {
   const [values, setValues] = useState<InputValues>({})
   const [formErrors, setFormErrors] = useState<RegisterFormErrors>({})
 
-  const { register, getValues, formState: { errors }, handleSubmit } = useForm<RegisterFormSchemaType>({
+  const { register, getValues, formState: { errors, isSubmitting }, handleSubmit } = useForm<RegisterFormSchemaType>({
     resolver: zodResolver(RegisterFormSchema)
   })
 
@@ -35,9 +36,8 @@ const Register: FC = () => {
   }
 
   const onSubmit: SubmitHandler<RegisterFormSchemaType> = async (data): Promise<void> => {
-    console.log('Successful submit data: ', data)
     await signup(data).unwrap()
-    navigate('/game', { replace: true })
+    navigate('/login', { replace: true })
   }
 
   return <form
@@ -147,7 +147,12 @@ const Register: FC = () => {
     </fieldset>
 
     <fieldset>
-      <button type='submit'>Register</button>
+      <button type='submit'>
+        {isSubmitting
+          ? <LoadingIndicator dark />
+          : 'Register'
+        }
+      </button>
     </fieldset>
   </form>
 }

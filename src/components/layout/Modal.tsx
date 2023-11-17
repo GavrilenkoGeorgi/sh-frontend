@@ -22,12 +22,6 @@ const Modal: FC<ModalProps> = ({ heading, text, btnLabel, isDisabled, onClick, s
     <div className={styles.message}>
       <h2>{heading}</h2>
       <p>{text} {score}</p>
-        <button onClick={onClick} disabled={isDisabled}>
-          {isDisabled !== false
-            ? <LoadingIndicator />
-            : `${btnLabel}`
-          }
-        </button>
         {userName == null && <Link
           to='/register'
           className={styles.link}
@@ -35,6 +29,12 @@ const Modal: FC<ModalProps> = ({ heading, text, btnLabel, isDisabled, onClick, s
             Register to save results and view stats
           </Link>
         }
+        <button onClick={onClick} disabled={isDisabled}>
+          {isDisabled !== false
+            ? <LoadingIndicator dark />
+            : `${btnLabel}`
+          }
+        </button>
     </div>
   </div>
 

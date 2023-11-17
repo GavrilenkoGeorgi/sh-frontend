@@ -110,7 +110,7 @@ const Login: FC = () => {
       <div className={styles.buttons}>
         <button type='submit' disabled={isSubmitting}>
           {isSubmitting
-            ? <LoadingIndicator />
+            ? <LoadingIndicator dark />
             : 'Login'
           }
         </button>

@@ -5,7 +5,7 @@ import cx from 'classnames'
 import { type RootState } from '../../store'
 import { saveScore, endGame } from '../../store/slices/shSlice'
 import { type CanSaveProps } from '../../types'
-import TrainingBoardIcons from './TrainingBoardIcons'
+import { Dice } from './Dice'
 import styles from './TrainingBoard.module.sass'
 
 const TrainingBoard: FC = () => {
@@ -29,8 +29,7 @@ const TrainingBoard: FC = () => {
   }
 
   return <div className={styles.training}>
-    <TrainingBoardIcons />
-    {Object.keys(game.school).map((key) =>
+    {Object.keys(game.school).map((key, index) =>
       <div
         id={key}
         key={key}
@@ -42,7 +41,10 @@ const TrainingBoard: FC = () => {
           : () => { checkEndGame() }
         }
       >
-        {game.school[key].score}
+        <div>
+          <Dice kind={index + 1} />
+          {game.school[key].score}
+        </div>
       </div>
     )}
   </div>

@@ -9,7 +9,7 @@ import { RegisterFormSchema, type RegisterFormSchemaType } from '../../schemas/R
 
 import cx from 'classnames'
 import styles from './Form.module.sass'
-import LoadingNotification from '../layout/LoadingNotification'
+import LoadingIndicator from '../layout/LoadingIndicator'
 
 interface iProps {
   data: Nullable<IUser>
@@ -72,7 +72,7 @@ const Profile: FC<iProps> = ({ data }) => {
     onSubmit={handleSubmit(onSubmit)}
     className={styles.form}
   >
-    {isLoading && <LoadingNotification />}
+    {isLoading && <LoadingIndicator />}
     <fieldset>
       <div className={styles.inputContainer}>
         <div className={cx(styles.formInput, {

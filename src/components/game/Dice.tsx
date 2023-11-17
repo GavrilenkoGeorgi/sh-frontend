@@ -13,23 +13,27 @@ interface iDice {
   onClick?: () => void
 }
 
-export const Dice: FC<iDice> = ({ kind }) => {
+export const Dice: FC<iDice> = ({ kind, onClick }) => {
+
+  const handleClick = (): void => {
+    if (onClick != null) onClick()
+  }
 
   switch (kind) {
-    case 1:
-      return <Ones />
+    case 1: // we are returning svg image with a click handler
+      return <Ones onClick={handleClick} />
     case 2:
-      return <Twos />
+      return <Twos onClick={handleClick} />
     case 3:
-      return <Threes />
+      return <Threes onClick={handleClick} />
     case 4:
-      return <Fours />
+      return <Fours onClick={handleClick} />
     case 5:
-      return <Fives />
+      return <Fives onClick={handleClick} />
     case 6:
-      return <Sixes />
+      return <Sixes onClick={handleClick} />
     default:
-      return <Empty />
+      return <Empty onClick={handleClick} />
   }
 
 }

@@ -1,5 +1,6 @@
 @import '../styles/colors'
 @import '../styles/mixins'
+@import '../styles/variables'
 
 .container
   margin-top: 3rem
@@ -12,10 +13,10 @@
   margin: auto
 
 .intro
-  max-width: 22rem
+  max-width: $formWidth
   margin: 0 auto
   p
-    padding: 0 1rem
-    line-height: 1.3rem
+    text-indent: 1rem
+    line-height: 1.25rem
   a
     @include link
