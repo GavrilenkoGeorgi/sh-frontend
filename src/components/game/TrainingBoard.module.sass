@@ -5,17 +5,22 @@
   grid-template-columns: repeat(6, 1fr)
   gap: .75rem
   padding: 0 1rem
-  svg
-    color: $primary-color
-    height: 100%
-    &:hover
-      color: $primary-light-color
+
+svg
+  height: 100%
 
 .result
   min-height: 5.5rem
   text-align: center
   margin-bottom: .5rem
 
-.pre
+svg, .result
+  transition: color .25s linear
+  color: $primary-color
+  &:hover
+    color: $color-orange
+
+.savable
   color: $color-orange
-  font-weight: 450
+  svg
+    color: $color-orange

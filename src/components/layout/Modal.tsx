@@ -12,10 +12,10 @@ interface ModalProps {
   onClick: () => void
   score?: number
   userName?: Nullable<string>
-  isDisabled?: boolean
+  isBusy?: boolean
 }
 
-const Modal: FC<ModalProps> = ({ heading, text, btnLabel, isDisabled, onClick, score, userName }) => {
+const Modal: FC<ModalProps> = ({ heading, text, btnLabel, isBusy = false, onClick, score, userName }) => {
 
   return <div className={styles.modal}>
     <div className={styles.blur}></div>
@@ -29,9 +29,9 @@ const Modal: FC<ModalProps> = ({ heading, text, btnLabel, isDisabled, onClick, s
             Register to save results and view stats
           </Link>
         }
-        <button onClick={onClick} disabled={isDisabled}>
-          {isDisabled !== false
-            ? <LoadingIndicator dark />
+        <button onClick={onClick} disabled={isBusy}>
+          {isBusy
+            ? <LoadingIndicator />
             : `${btnLabel}`
           }
         </button>
