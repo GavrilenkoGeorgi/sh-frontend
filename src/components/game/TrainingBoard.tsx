@@ -34,7 +34,8 @@ const TrainingBoard: FC = () => {
         id={key}
         key={key}
         className={cx(styles.result, {
-          [styles.pre]: !game.school[key].final
+          [styles.savable]: game.school[key].score != null &&
+            !game.school[key].final
         })}
         onClick={canSave(game.school[key])
           ? () => { save(key) }
