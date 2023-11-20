@@ -1,7 +1,7 @@
 import React, { type FC, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import RegisterForm from '../components/forms/Register'
+import LoginForm from '../components/forms/Login'
 import styles from './Main.module.sass'
 import Logo from '../assets/svg/sharlushka-logo.svg'
 
@@ -26,7 +26,7 @@ const Main: FC = () => {
         consider registering.
       </p>
     </div>
-    <RegisterForm />
+    <LoginForm />
   </section>
 }
 
