@@ -184,7 +184,7 @@ const DnDDiceBoard: FC = () => {
   }, [game.roll])
 
   useEffect(() => { // on save
-    if (game.saved) {
+    if (game.saved || game.over) {
       diceArray.forEach((item, index) => {
         diceArray[index].status = 'roll'
         diceArray[index].value = 0
@@ -195,7 +195,7 @@ const DnDDiceBoard: FC = () => {
       setDiceState([...diceArray])
     }
 
-  }, [game.saved])
+  }, [game.saved, game.over])
 
   return (
     <div className={styles.controls}>

@@ -62,9 +62,9 @@ const GamePage: FC = () => {
     <ProgressBar count={game.rollCount} />
     <DnDDiceBoard />
     {/* Modals */}
-    {game.end &&
+    {game.over &&
       <Modal
-        heading='Game end'
+        heading='Game over'
         text='Better luck next time!'
         btnLabel='ok'
         onClick={() => dispatch(reset())}

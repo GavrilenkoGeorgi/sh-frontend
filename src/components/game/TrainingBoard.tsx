@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
 
 import { type RootState } from '../../store'
-import { saveScore, endGame } from '../../store/slices/shSlice'
+import { saveScore, gameOver } from '../../store/slices/shSlice'
 import { type CanSaveProps } from '../../types'
 import { Dice } from './Dice'
 import styles from './TrainingBoard.module.sass'
@@ -24,8 +24,8 @@ const TrainingBoard: FC = () => {
     else return false
   }
 
-  const checkEndGame = (): void => {
-    dispatch(endGame())
+  const checkGameOver = (): void => {
+    dispatch(gameOver())
   }
 
   return <div className={styles.training}>
@@ -38,7 +38,7 @@ const TrainingBoard: FC = () => {
         })}
         onClick={canSave(game.school[key])
           ? () => { save(key) }
-          : () => { checkEndGame() }
+          : () => { checkGameOver() }
         }
       >
         <div>

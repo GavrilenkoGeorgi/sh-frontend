@@ -45,7 +45,7 @@ const initialState = {
     selection: new Array(0),
     roll: new Array(5).fill(0),
     saved: false,
-    end: false,
+    over: false,
     favDiceValues: new Array(6).fill(0),
     stats: {}
   }
@@ -130,7 +130,7 @@ const shSlice = createSlice({
         game.stats = { ...stats }
       }
     },
-    endGame: ({ game }) => {
+    gameOver: ({ game }) => {
       if (game.rollCount === 3 && game.turn <= 6) {
         // check if unable to complete training
         const dice = [...game.selection, ...game.roll]
@@ -143,7 +143,7 @@ const shSlice = createSlice({
             if (scores[index] != null) canSave = true
           }
         })
-        if (!canSave) game.end = true
+        if (!canSave) game.over = true
       }
     },
     selectDice: ({ game }, { payload }) => {
@@ -167,7 +167,7 @@ const shSlice = createSlice({
 
 export const {
   reset,
-  endGame,
+  gameOver,
   setScore,
   saveScore,
   rollDice,
