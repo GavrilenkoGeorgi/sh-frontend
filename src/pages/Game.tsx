@@ -77,7 +77,7 @@ const GamePage: FC = () => {
         text='Your score is '
         userName={userInfo?.name}
         btnLabel='save'
-        isDisabled={isSubmitting}
+        isBusy={isSubmitting}
         onClick={() => { void complete() }}
       />
     }
