@@ -2,12 +2,12 @@ import React, { type ReactElement } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-interface SortableTaskItemProps {
+interface SortableDiceItemProps {
   children: React.ReactNode
   id: string
 }
 
-const SortableTaskItem = ({ children, id }: SortableTaskItemProps): ReactElement => {
+const SortableDiceItem = ({ children, id }: SortableDiceItemProps): ReactElement => {
   const {
     attributes,
     listeners,
@@ -24,10 +24,10 @@ const SortableTaskItem = ({ children, id }: SortableTaskItemProps): ReactElement
   }
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners} aria-label='Dice'>
       {children}
     </div>
   )
 }
 
-export default SortableTaskItem
+export default SortableDiceItem

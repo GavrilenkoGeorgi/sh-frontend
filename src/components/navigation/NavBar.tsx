@@ -85,9 +85,14 @@ const NavBar: FC = () => {
     <nav className={navbarStyle} ref={ref}>
       <div className={styles.navigationContainer}>
         <Logo />
-        <Link to="/stats" className={styles.userName}>
-          {userInfo?.name}
-        </Link>
+        {userInfo != null &&
+          <Link to='/stats'
+            className={styles.userName}
+            aria-label={userInfo.name}
+          >
+            {userInfo.name}
+          </Link>
+        }
         <div
           className={styles.toggleBtnContainer}
           onClick={toggleMenu}

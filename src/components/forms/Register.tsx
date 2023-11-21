@@ -62,6 +62,8 @@ const Register: FC = () => {
           </label>
           <input
             className={styles.formInput}
+            type='text'
+            aria-label='Name'
             {...register('name')}
             onFocus={focusInput}
             onBlur={blurInput}
@@ -86,6 +88,8 @@ const Register: FC = () => {
           </label>
           <input
             className={styles.formInput}
+            type='email'
+            aria-label='Email'
             {...register('email')}
             onFocus={focusInput}
             onBlur={blurInput}
@@ -111,6 +115,7 @@ const Register: FC = () => {
           <input
             className={styles.formInput}
             type='password'
+            aria-label='Password'
             {...register('password')}
             onFocus={focusInput}
             onBlur={blurInput}
@@ -135,6 +140,8 @@ const Register: FC = () => {
           </label>
           <input
             className={styles.formInput}
+            type='password'
+            aria-label='Confirm password'
             {...register('confirm')}
             onFocus={focusInput}
             onBlur={blurInput}
