@@ -18,7 +18,7 @@ const plugins = [
   new Dotenv({
     systemvars: true
   }),
-  (process.env.BUNDLE_REPORT === 'true') ? new BundleAnalyzerPlugin() : '',
+  (process.env.NODE_ENV === 'development') ? new BundleAnalyzerPlugin() : '',
   new MiniCssExtractPlugin(),
   new WebpackPwaManifest({
     name: 'Sh dice game',
