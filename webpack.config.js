@@ -4,6 +4,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const WorkboxPlugin = require('workbox-webpack-plugin')
 const WebpackPwaManifest = require('webpack-pwa-manifest')
 const Dotenv = require('dotenv-webpack')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const prod = process.env.NODE_ENV === 'production'
 
@@ -15,6 +18,7 @@ const plugins = [
   new Dotenv({
     systemvars: true
   }),
+  (process.env.BUNDLE_REPORT === 'true') ? new BundleAnalyzerPlugin() : '',
   new MiniCssExtractPlugin(),
   new WebpackPwaManifest({
     name: 'Sh dice game',
@@ -45,17 +49,50 @@ const wbxPlugin = new WorkboxPlugin.GenerateSW({
   // these options encourage the ServiceWorkers to get in there fast
   // and not allow any straggling 'old' SWs to hang around
   clientsClaim: true,
-  skipWaiting: true,
-  maximumFileSizeToCacheInBytes: 5000000
+  skipWaiting: true
 })
 
-if (process.env.NODE_ENV === 'development') plugins.push(wbxPlugin)
+if (process.env.NODE_ENV === 'production') plugins.push(wbxPlugin) // ??
 
 module.exports = {
   mode: prod ? 'production' : 'development',
   entry: './src/index.tsx',
   output: {
     path: path.join(__dirname, '/dist/')
+  },
+  optimization: {
+    minimizer: [
+      new CssMinimizerPlugin({
+        parallel: true
+      }),
+      new TerserPlugin({
+        test: /\.js(\?.*)?$/i,
+        parallel: true
+      })
+    ],
+    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        vendor: {
+          test: /[\\\/]node_modules[\\\/]/,
+          name (module) {
+            // get the name. E.g. node_modules/packageName/not/this/part.js
+            // or node_modules/packageName
+            const package = module.context.match(/[\\\/]node_modules[\\\/](.*?)([\\\/]|$)/)
+            let packageName
+
+            if (package !== null) { // the last one is null
+              [, packageName] = package // get the second item
+              // npm package names are URL-safe, but some servers don't like @ symbols
+              return `npm.${packageName.replace('@', '')}`
+            } else return false
+          }
+        }
+      }
+    }
   },
   module: {
     rules: [

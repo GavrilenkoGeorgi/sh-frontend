@@ -4,8 +4,8 @@
   "description": "Sharlushka v2",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack serve --port 3000",
-    "build": "set NODE_ENV=production && webpack"
+    "dev": "cross-env NODE_ENV=development webpack serve --port 3000",
+    "build": "cross-env NODE_ENV=production BUNDLE_REPORT=true webpack"
   },
   "author": "JSM",
   "license": "ISC",
@@ -15,7 +15,9 @@
     "@types/react-beautiful-dnd": "^13.1.7",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
     "dotenv-webpack": "^8.0.1",
     "eslint": "^8.48.0",
     "eslint-config-standard-with-typescript": "^39.0.0",
@@ -28,9 +30,11 @@
     "sass": "^1.66.1",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
+    "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.4.4",
     "typescript": "^5.2.2",
     "webpack": "^5.88.2",
+    "webpack-bundle-analyzer": "^4.10.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
     "webpack-pwa-manifest": "^4.3.0",
