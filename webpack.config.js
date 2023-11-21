@@ -7,8 +7,11 @@ const Dotenv = require('dotenv-webpack')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
+const SitemapPlugin = require('sitemap-webpack-plugin').default
+const CopyPlugin = require('copy-webpack-plugin')
 
 const prod = process.env.NODE_ENV === 'production'
+const paths = ['/', '/login', '/game', '/help', '/register', '/stats', '/profile'] //!
 
 const plugins = [
   new HtmlWebpackPlugin({
@@ -20,6 +23,20 @@ const plugins = [
   }),
   (process.env.NODE_ENV === 'development') ? new BundleAnalyzerPlugin() : '',
   new MiniCssExtractPlugin(),
+  new SitemapPlugin({
+    base: 'https://sharlushka.netlify.app',
+    paths,
+    options: {
+      lastmod: true,
+      changefreq: 'yearly',
+      priority: 0.4
+    }
+  }),
+  new CopyPlugin({
+    patterns: [
+      { from: './src/public/robots.txt', to: 'robots.txt' }
+    ]
+  }),
   new WebpackPwaManifest({
     name: 'Sh dice game',
     publicPath: '/',
@@ -79,15 +96,14 @@ module.exports = {
         vendor: {
           test: /[\\\/]node_modules[\\\/]/,
           name (module) {
-            // get the name. E.g. node_modules/packageName/not/this/part.js
-            // or node_modules/packageName
-            const package = module.context.match(/[\\\/]node_modules[\\\/](.*?)([\\\/]|$)/)
-            let packageName
-
-            if (package !== null) { // the last one is null
-              [, packageName] = package // get the second item
+            // get the name. E.g. node_modules/pkgName/not/this/part.js
+            // or node_modules/pkgName
+            const pkg = module.context.match(/[\\\/]node_modules[\\\/](.*?)([\\\/]|$)/)
+            let pkgName
+            if (pkg !== null) { // the last one is null
+              [, pkgName] = pkg // get the second item
               // npm package names are URL-safe, but some servers don't like @ symbols
-              return `npm.${packageName.replace('@', '')}`
+              return `npm.${pkgName.replace('@', '')}`
             } else return false
           }
         }
