@@ -73,6 +73,8 @@ const Login: FC = () => {
           </label>
           <input
             className={styles.formInput}
+            aria-label='Email'
+            type='email'
             {...register('email')}
             onFocus={focusInput}
             onBlur={blurInput}
@@ -98,6 +100,7 @@ const Login: FC = () => {
           <input
             className={styles.formInput}
             type='password'
+            aria-label='Password'
             {...register('password')}
             onFocus={focusInput}
             onBlur={blurInput}
