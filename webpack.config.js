@@ -78,6 +78,7 @@ module.exports = {
     path: path.join(__dirname, '/dist/')
   },
   optimization: {
+    usedExports: 'global',
     minimizer: [
       new CssMinimizerPlugin({
         parallel: true

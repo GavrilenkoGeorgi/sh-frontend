@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -8,13 +8,15 @@ import {
 import App from '../App'
 import LoginPage from '../pages/Login'
 import ProfilePage from '../pages/Profile'
-import StatsPage from '../pages/Stats'
-import GamePage from '../pages/Game'
 import HelpPage from '../pages/Help'
 import MainPage from '../pages/Main'
 import RegisterPage from '../pages/Register'
 import ProtectedRoute from './ProtectedRoute'
 import NavBar from '../components/navigation/NavBar'
+
+// heaviest routes
+const StatsPage = lazy(async () => await import('../pages/Stats'))
+const GamePage = lazy(async () => await import('../pages/Game'))
 
 const router = createBrowserRouter(
   createRoutesFromElements(
