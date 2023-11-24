@@ -1,6 +1,7 @@
 import React, { type FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import CountUp from 'react-countup'
 
 // state
 import type { RootState } from '../store'
@@ -14,6 +15,7 @@ import ProgressBar from '../components/layout/ProgressBar'
 import DnDDiceBoard from '../components/game/controls/DnDDiceBoard'
 import Modal from '../components/layout/Modal'
 import styles from './Game.module.sass'
+import type { Counter } from '../types'
 
 const GamePage: FC = () => {
 
@@ -23,6 +25,11 @@ const GamePage: FC = () => {
   const { userInfo } = useSelector((state: RootState) => state.auth)
   const [saveResults] = useSaveResultsMutation()
   const navigate = useNavigate()
+
+  const [counter, setCounter] = useState<Counter>({
+    start: 0,
+    end: 0
+  })
 
   const complete = async (): Promise<void> => {
     try {
@@ -52,8 +59,14 @@ const GamePage: FC = () => {
     }
   }, [game.selection])
 
+  useEffect(() => {
+    setCounter(prev => ({ ...prev, start: (game.score - counter.start), end: game.score }))
+  }, [game.score])
+
   return <section className={styles.game}>
-    <h1>Score: {game.score}</h1>
+    <h1>
+      Score: <CountUp start={counter.start} end={counter.end} duration={3} />
+    </h1>
     {/* Training */}
     <TrainingBoard />
     {/* Game */}
