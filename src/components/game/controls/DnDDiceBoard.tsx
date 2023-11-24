@@ -199,27 +199,29 @@ const DnDDiceBoard: FC = () => {
 
   return (
     <div className={styles.controls}>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
-      >
-        {Object.keys(boardSections).map((boardSectionKey) => (
-          <div key={boardSectionKey} className={styles.board}>
-            <BoardSection
-              id={boardSectionKey}
-              title={boardSectionKey}
-              dice={boardSections[boardSectionKey]}
-            />
-          </div>
-        ))}
-        {/* draggable item animation */}
-        <DragOverlay dropAnimation={dropAnimation}>
-          {(item != null) ? <DiceItem dice={item} /> : null}
-        </DragOverlay>
-      </DndContext>
+      <div className={styles.boardSections}>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+        >
+          {Object.keys(boardSections).map((boardSectionKey) => (
+            <div key={boardSectionKey} className={styles.board}>
+              <BoardSection
+                id={boardSectionKey}
+                title={boardSectionKey}
+                dice={boardSections[boardSectionKey]}
+              />
+            </div>
+          ))}
+          {/* draggable item animation */}
+          <DragOverlay dropAnimation={dropAnimation}>
+            {(item != null) ? <DiceItem dice={item} /> : null}
+          </DragOverlay>
+        </DndContext>
+      </div>
       <MainButton />
     </div>
   )

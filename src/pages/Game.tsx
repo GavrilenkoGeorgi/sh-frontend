@@ -59,8 +59,8 @@ const GamePage: FC = () => {
     {/* Game */}
     <ScoreBoard />
     {/* Game controls */}
-    <ProgressBar count={game.rollCount} />
     <DnDDiceBoard />
+    <ProgressBar count={game.rollCount} />
     {/* Modals */}
     {game.over &&
       <Modal
