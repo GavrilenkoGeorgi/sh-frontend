@@ -110,11 +110,6 @@ export interface iDropItem {
   parent: string
 }
 
-export interface Counter {
-  start: number
-  end: number
-}
-
 // Drag and drop controls
 export type Status = 'roll' | 'sel'
 
