@@ -1,5 +1,7 @@
 import React, { useEffect, type FC, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useGetStatsMutation } from '../store/slices/gameApiSlice'
+import { setNotification } from '../store/slices/notificationSlice'
 import { type iStats } from '../types'
 import AreaChart from '../components/charts/AreaChart'
 import BarChart from '../components/charts/BarChart'
@@ -8,6 +10,7 @@ import styles from './Stats.module.sass'
 
 const StatsPage: FC = () => {
 
+  const dispatch = useDispatch()
   const [getStats] = useGetStatsMutation()
   const [stats, setStats] = useState<iStats>()
 
@@ -15,10 +18,8 @@ const StatsPage: FC = () => {
     try {
       const data = await getStats({}).unwrap()
       setStats(data)
-    } catch (err) {
-      console.log(err) // TODO: proper err handling
-    } finally {
-      console.log('Stats loaded.') // TODO: toasts!
+    } catch (err: any) {
+      dispatch(setNotification({ msg: err.error, type: 'error' }))
     }
   }
 

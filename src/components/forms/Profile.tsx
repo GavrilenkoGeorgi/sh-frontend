@@ -1,11 +1,14 @@
 import React, { type FC, useState, useEffect, type FocusEvent } from 'react'
+import { useDispatch } from 'react-redux'
 import { type SubmitHandler, useForm } from 'react-hook-form'
-
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { IUser, Nullable, FocusedStates, InputValues, RegisterFormErrors } from '../../types'
-import { useUpdateUserMutation } from '../../store/slices/userApiSlice'
 
+import { useUpdateUserMutation } from '../../store/slices/userApiSlice'
+import { setNotification } from '../../store/slices/notificationSlice'
 import { RegisterFormSchema, type RegisterFormSchemaType } from '../../schemas/RegisterFormSchema'
+import { ToastTypes } from '../../types'
+import type { IUser, Nullable, FocusedStates, InputValues, RegisterFormErrors } from '../../types'
+import { getErrMsg } from '../../utils'
 
 import cx from 'classnames'
 import styles from './Form.module.sass'
@@ -16,6 +19,7 @@ interface iProps {
 }
 const Profile: FC<iProps> = ({ data }) => {
 
+  const dispatch = useDispatch()
   const [focused, setFocused] = useState<FocusedStates>({})
   const [values, setValues] = useState<InputValues>({})
   const [formErrors, setFormErrors] = useState<RegisterFormErrors>({})
@@ -57,10 +61,15 @@ const Profile: FC<iProps> = ({ data }) => {
         password
       }
       await updateProfile(update).unwrap()
-    } catch (err) {
-      console.log(err)
-    } finally {
-      console.log('Update ok.')
+      dispatch(setNotification({
+        msg: 'Profile update ok.',
+        type: ToastTypes.SUCCESS
+      }))
+    } catch (err: unknown) {
+      dispatch(setNotification({
+        msg: getErrMsg(err),
+        type: ToastTypes.ERROR
+      }))
     }
   }
 

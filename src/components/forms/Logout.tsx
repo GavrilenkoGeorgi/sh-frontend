@@ -3,8 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { useLogoutMutation } from '../../store/slices/userApiSlice'
 import { logout } from '../../store/slices/authSlice'
+import { setNotification } from '../../store/slices/notificationSlice'
 import { type RootState } from '../../store'
 import LoadingIndicator from '../layout/LoadingIndicator'
+import { getErrMsg } from '../../utils'
+import { ToastTypes } from '../../types'
 
 const Logout: FC = () => {
 
@@ -18,8 +21,11 @@ const Logout: FC = () => {
       setLoading(true)
       await logoutApiCall({}).unwrap()
       dispatch(logout())
-    } catch (err) {
-      console.error(err) // ui notification from store should handle this
+    } catch (err: unknown) {
+      dispatch(setNotification({
+        msg: getErrMsg(err),
+        type: ToastTypes.ERROR
+      }))
     } finally {
       setLoading(false)
     }

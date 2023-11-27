@@ -1,18 +1,23 @@
 import React, { type FC, useState, type FocusEvent } from 'react'
+import { useDispatch } from 'react-redux'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
 import cx from 'classnames'
 
 import { useSignupMutation } from '../../store/slices/userApiSlice'
+import { setNotification } from '../../store/slices/notificationSlice'
 import { RegisterFormSchema, type RegisterFormSchemaType } from '../../schemas/RegisterFormSchema'
 import type { FocusedStates, InputValues, RegisterFormErrors } from '../../types'
+import { ToastTypes } from '../../types'
+import { getErrMsg } from '../../utils'
 
 import LoadingIndicator from '../layout/LoadingIndicator'
 import styles from './Form.module.sass'
 
 const Register: FC = () => {
 
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [signup] = useSignupMutation()
 
@@ -36,8 +41,19 @@ const Register: FC = () => {
   }
 
   const onSubmit: SubmitHandler<RegisterFormSchemaType> = async (data): Promise<void> => {
-    await signup(data).unwrap()
-    navigate('/login', { replace: true })
+    try {
+      await signup(data).unwrap()
+      dispatch(setNotification({
+        msg: 'All ok, you can login after activating your account.',
+        type: ToastTypes.ERROR
+      }))
+      navigate('/login', { replace: true })
+    } catch (err: unknown) {
+      dispatch(setNotification({
+        msg: getErrMsg(err),
+        type: ToastTypes.ERROR
+      }))
+    }
   }
 
   return <form
