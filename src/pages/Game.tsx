@@ -7,6 +7,9 @@ import CountUp from 'react-countup'
 import type { RootState } from '../store'
 import { useSaveResultsMutation } from '../store/slices/gameApiSlice'
 import { setScore, reset } from '../store/slices/shSlice'
+import { setNotification } from '../store/slices/notificationSlice'
+import { getErrMsg } from '../utils'
+import { ToastTypes } from '../types'
 
 // components and styles
 import TrainingBoard from '../components/game/TrainingBoard'
@@ -37,11 +40,17 @@ const GamePage: FC = () => {
       setIsSubmitting(true)
       if (userInfo != null) await saveResults(data)
       dispatch(reset())
+      dispatch(setNotification({
+        msg: 'Saved',
+        type: ToastTypes.SUCCESS
+      }))
       navigate('/stats')
-    } catch (err) {
-      console.log(err) // TODO: proper err handling
+    } catch (err: unknown) {
+      dispatch(setNotification({
+        msg: getErrMsg(err),
+        type: ToastTypes.ERROR
+      }))
     } finally {
-      console.log('Saved.') // TODO: toasts
       setIsSubmitting(false)
     }
   }

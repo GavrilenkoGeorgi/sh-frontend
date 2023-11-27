@@ -7,7 +7,10 @@ import { useDispatch } from 'react-redux/es/exports'
 import { LoginFormSchema, type LoginFormSchemaType } from '../../schemas/LoginFormSchema'
 import { setCredentials } from '../../store/slices/authSlice'
 import { useLoginMutation } from '../../store/slices/userApiSlice'
+import { setNotification } from '../../store/slices/notificationSlice'
+import { ToastTypes } from '../../types'
 import type { FocusedStates, InputValues, LoginFormErrors } from '../../types'
+import { getErrMsg } from '../../utils'
 
 import cx from 'classnames'
 import styles from './Form.module.sass'
@@ -45,8 +48,11 @@ const Login: FC = () => {
       const res = await login({ email, password }).unwrap()
       dispatch(setCredentials({ ...res }))
       navigate('/game')
-    } catch (err: any) {
-      console.log(err)
+    } catch (err: unknown) {
+      dispatch(setNotification({
+        msg: getErrMsg(err),
+        type: ToastTypes.ERROR
+      }))
     }
   }
 

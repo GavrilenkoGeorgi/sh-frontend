@@ -1,0 +1,104 @@
+@use 'sass:math'
+@import '../../styles/colors'
+@import '../../styles/variables'
+
+$mobileWidth: 250px
+$desktopWidth: 400px
+$toast-position: 30px
+
+// The toast - position is at the bottom, in the middle of the screen
+// #toast
+.toast
+  // Position and size
+  visibility: hidden
+  // Sit on top of the screen
+  position: fixed
+  // Add a z-index if needed
+  z-index: 2
+  // Center the toast
+  left: 50%
+  // 30px from the top
+  top: $toast-position
+  // Width
+  max-width: $mobileWidth
+  min-width: $mobileWidth
+  /* Divide value of min-width by 2
+  margin-left: math.div(-$mobileWidth, 2)
+  @media screen and ( min-width: $medium)
+    max-width: $desktopWidth
+    min-width: $desktopWidth
+    margin-left: math.div(-$desktopWidth, 2)
+  // Styles
+  color: $primary-color
+  text-align: left
+  font-size: .8rem
+  padding: 1rem
+  background-color: $primary-light-color
+  border: 1px solid $primary-color
+  border-radius: .25rem
+  display: flex
+  justify-content: space-between
+  align-content: center
+  align-items: center
+  // -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s
+  // animation: fadein 0.5s, fadeout 0.5s 2.5s
+  &.show
+    // Show the toast
+    visibility: visible
+    // Add animation: Take 0.5 seconds to fade in and out the toast.
+    // However, delay the fade out process for 2.5 seconds
+    // -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s
+    // animation: fadein 0.5s, fadeout 0.5s 2.5s
+    -webkit-animation: fadein 0.5s
+    animation: fadein 0.5s
+  &.error
+    background-color: $toast-error
+    border-color: $error
+    color: $error
+  &.success
+    background-color: $toast-success
+
+.iconContainer
+  font-size: 0
+  opacity: .5
+  transition: opacity $defaultAnimLength ease-in
+  &:hover
+    opacity: 1
+    cursor: pointer
+
+// Animations to fade the toast in and out
+@-webkit-keyframes fadein
+  from
+    top: 0
+    opacity: 0
+
+  to
+    top: $toast-position
+    opacity: 1
+
+@keyframes fadein
+  from
+    top: 0
+    opacity: 0
+
+  to
+    top: $toast-position
+    opacity: 1
+
+@-webkit-keyframes fadeout
+  from
+    top: $toast-position
+    opacity: 1
+
+  to
+    top: 0
+    opacity: 0
+
+@keyframes fadeout
+  from
+    top: $toast-position
+    opacity: 1
+
+  to
+    top: 0
+    opacity: 0

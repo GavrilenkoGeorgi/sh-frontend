@@ -1,8 +1,11 @@
 import React, { type FC, useEffect } from 'react'
+import { useDispatch } from 'react-redux/es/exports'
 import { Outlet } from 'react-router-dom'
 import { useCheckAuthMutation } from './store/slices/userApiSlice'
 import { setCredentials } from './store/slices/authSlice'
-import { useDispatch } from 'react-redux/es/exports'
+import { setNotification } from './store/slices/notificationSlice'
+import { ToastTypes } from './types'
+import { getErrMsg } from './utils'
 
 const App: FC = () => {
 
@@ -13,8 +16,15 @@ const App: FC = () => {
     try {
       const res = await checkAuth({}).unwrap()
       dispatch(setCredentials({ ...res }))
-    } catch (err) {
-      console.log('Check auth error', err)
+      dispatch(setNotification({
+        msg: 'Login ok',
+        type: ToastTypes.SUCCESS
+      }))
+    } catch (err: unknown) {
+      dispatch(setNotification({
+        msg: getErrMsg(err),
+        type: ToastTypes.ERROR
+      }))
     }
   }
 

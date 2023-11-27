@@ -110,6 +110,24 @@ export interface iDropItem {
   parent: string
 }
 
+export interface iNotification {
+  message: Nullable<string>
+  type?: Nullable<string>
+}
+
+export interface iErrorMessage {
+  data: {
+    message: string
+    stack: string
+  }
+  status: string
+}
+
+export interface iError extends Error {
+  status: string
+  error: string
+}
+
 // Drag and drop controls
 export type Status = 'roll' | 'sel'
 
@@ -141,4 +159,9 @@ export enum GameCombinations { // combination names?
   SMALL = 'small',
   LARGE = 'large',
   CHANCE = 'chance'
+}
+
+export enum ToastTypes {
+  ERROR = 'error',
+  SUCCESS = 'success'
 }
