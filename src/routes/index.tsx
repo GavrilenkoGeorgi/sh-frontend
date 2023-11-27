@@ -14,6 +14,7 @@ import RegisterPage from '../pages/Register'
 import ProtectedRoute from './ProtectedRoute'
 import NavBar from '../components/navigation/NavBar'
 import LoadingIndicator from '../components/layout/LoadingIndicator'
+import Toast from '../components/layout/Toast'
 
 // heaviest routes
 const StatsPage = lazy(async () => await import('../pages/Stats'))
@@ -21,7 +22,7 @@ const GamePage = lazy(async () => await import('../pages/Game'))
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<><NavBar /><App /></>}>
+    <Route path='/' element={<><NavBar /><App /><Toast /></>}>
       <Route index={true} path='/' element={<MainPage />} />
       <Route path='/login' element={<LoginPage />} />
       <Route path='/game' element={
