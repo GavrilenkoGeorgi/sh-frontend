@@ -7,8 +7,6 @@
   width: 100%
   max-width: $formWidth
   margin: 0 auto
-  input, button
-    margin: 1rem auto
   button
     min-width: 8rem
     padding: .5rem 1.5rem
@@ -18,13 +16,15 @@
     display: flex
     justify-content: center
     align-items: center
-    min-height: 2.2rem
+    min-height: 2.4rem
+    margin-top: 2rem
     text-transform: capitalize
     &:disabled
       opacity: .3
 
 .buttons
   display: flex
+  justify-content: space-between
   gap: .5rem
 
 fieldset

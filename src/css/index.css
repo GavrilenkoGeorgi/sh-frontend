@@ -10,6 +10,15 @@ body {
   box-sizing: border-box;
 }
 
+main {
+  height: 85vh;
+}
+
 h1, h2 {
   letter-spacing: .035rem;
+}
+
+button {
+  font-family: 'Quicksand';
+  letter-spacing: .05rem;
 }

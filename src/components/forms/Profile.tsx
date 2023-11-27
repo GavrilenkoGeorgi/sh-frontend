@@ -24,9 +24,9 @@ const Profile: FC<iProps> = ({ data }) => {
   const [values, setValues] = useState<InputValues>({})
   const [formErrors, setFormErrors] = useState<RegisterFormErrors>({})
 
-  const [updateProfile, { isLoading }] = useUpdateUserMutation()
+  const [updateProfile] = useUpdateUserMutation()
 
-  const { register, getValues, setValue, formState: { errors }, handleSubmit } = useForm<RegisterFormSchemaType>({
+  const { register, getValues, setValue, formState: { errors, isSubmitting }, handleSubmit } = useForm<RegisterFormSchemaType>({
     resolver: zodResolver(RegisterFormSchema)
   })
 
@@ -81,7 +81,6 @@ const Profile: FC<iProps> = ({ data }) => {
     onSubmit={handleSubmit(onSubmit)}
     className={styles.form}
   >
-    {isLoading && <LoadingIndicator />}
     <fieldset>
       <div className={styles.inputContainer}>
         <div className={cx(styles.formInput, {
@@ -186,7 +185,12 @@ const Profile: FC<iProps> = ({ data }) => {
           {formErrors.confirm.message}
         </p>}
       </div>
-      <button type='submit'>Update</button>
+      <button type='submit'>
+        {isSubmitting
+          ? <LoadingIndicator dark />
+          : 'Update'
+        }
+      </button>
     </fieldset>
   </form>
 }
