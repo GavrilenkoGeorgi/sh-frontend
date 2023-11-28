@@ -28,7 +28,6 @@ const Chart: FC<ChartProps> = ({ data }) => {
     <BarChart
       data={data}
       margin={margin}
-      barCategoryGap={30}
     >
       <CartesianGrid
         strokeDasharray='4 6'
@@ -53,7 +52,8 @@ const Chart: FC<ChartProps> = ({ data }) => {
       <Bar
         dataKey='value'
         fill='#AB47BC'
-        animationDuration={2000}
+        maxBarSize={18}
+        animationDuration={4000}
         animationBegin={500}
       />
     </BarChart>

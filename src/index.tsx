@@ -7,7 +7,6 @@ import store from './store'
 import router from './routes'
 import { registerSW } from './utils/serviceWorker'
 
-import App from './App'
 import './css/index.css' // fonts?
 
 // eslint-disable-next-line
@@ -20,6 +19,5 @@ registerSW()
 root.render(
   <Provider store={store}>
     <RouterProvider router={router} />
-    <App />
   </Provider>
 )

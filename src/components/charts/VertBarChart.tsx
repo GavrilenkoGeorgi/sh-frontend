@@ -22,7 +22,11 @@ const Chart: FC<ChartProps> = ({ data }) => {
   }
 
   return <ResponsiveContainer>
-    <BarChart data={data} margin={margin} layout='vertical' >
+    <BarChart
+      data={data}
+      margin={margin}
+      layout='vertical'
+    >
       <CartesianGrid
         strokeDasharray='4 6'
         strokeWidth={0.6}
@@ -47,8 +51,8 @@ const Chart: FC<ChartProps> = ({ data }) => {
       <Bar
         dataKey='value'
         fill='#AB47BC'
-        maxBarSize={20}
-        animationDuration={2000}
+        maxBarSize={18}
+        animationDuration={4000}
         animationBegin={500}
       />
     </BarChart>
