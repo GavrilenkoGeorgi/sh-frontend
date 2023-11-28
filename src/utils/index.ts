@@ -19,7 +19,7 @@ export const getErrMsg = (err: unknown): string => {
 
 export const formatChartAxisData = (data: ChartAxisData[]): ChartAxisData[] => {
   return data.map((item: ChartAxisData) => ({
-    id: format(new Date(item.id), 'kk:mm MMM L'),
+    id: format(new Date(item.id), 'kk:mm MMM do'),
     value: item.value
   }))
 }
