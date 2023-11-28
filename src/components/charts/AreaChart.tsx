@@ -27,9 +27,9 @@ const Chart: FC<ChartProps> = ({ data }) => {
       margin={margin}
     >
       <defs>
-        <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="5%" stopColor="#AB47BC" stopOpacity={0.5}/>
-          <stop offset="95%" stopColor="#AB47BC" stopOpacity={0}/>
+        <linearGradient id='color' x1='0' y1='0' x2='0' y2='1'>
+          <stop offset='5%' stopColor='#AB47BC' stopOpacity={0.5} />
+          <stop offset='95%' stopColor='#AB47BC' stopOpacity={0} />
         </linearGradient>
       </defs>
       <CartesianGrid
@@ -52,8 +52,9 @@ const Chart: FC<ChartProps> = ({ data }) => {
         dataKey='value'
         stroke='#AB47BC'
         fill='url(#color)'
-        animationDuration={2000}
+        animationDuration={4000}
         animationBegin={500}
+        animationEasing='ease-out'
       />
     </AreaChart>
   </ResponsiveContainer>
