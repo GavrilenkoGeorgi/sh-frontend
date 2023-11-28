@@ -42,7 +42,8 @@ const StatsPage: FC = () => {
           <CountUp
             start={0}
             end={stats.max}
-            duration={4}
+            delay={0.75}
+            duration={3}
           />
           </span>
         </h2>
@@ -51,15 +52,15 @@ const StatsPage: FC = () => {
             <CountUp
               start={0}
               end={stats.average}
-              delay={1}
-              duration={4}
+              delay={1.25}
+              duration={3}
             />
           </span> which is&nbsp;
           <span>
             <CountUp
               start={0}
               end={stats.percentFromMax}
-              delay={1.5}
+              delay={1.75}
               duration={4}
               suffix='%'
             />
