@@ -1,4 +1,5 @@
-import type { iError, iErrorMessage } from '../types'
+import { format } from 'date-fns'
+import type { iError, iErrorMessage, ChartAxisData } from '../types'
 
 export const getErrMsg = (err: unknown): string => {
 
@@ -14,4 +15,11 @@ export const getErrMsg = (err: unknown): string => {
   }
 
   return message
+}
+
+export const formatChartAxisData = (data: ChartAxisData[]): ChartAxisData[] => {
+  return data.map((item: ChartAxisData) => ({
+    id: format(new Date(item.id), 'kk:mm MMM L'),
+    value: item.value
+  }))
 }
