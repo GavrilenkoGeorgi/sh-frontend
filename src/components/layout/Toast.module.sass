@@ -5,15 +5,14 @@
 $mobileWidth: 250px
 $desktopWidth: 400px
 $toast-position: 100px
+$toast-hidden-position: -300px
 
 // The toast - position is at the bottom, in the middle of the screen
 .toast
   // Position and size
   visibility: hidden
-  // Sit on top of the screen
   position: fixed
   z-index: 2
-  top: $toast-position
   left: 50%
   transform: translate(-50%, -50%)
   max-width: $mobileWidth
@@ -32,17 +31,16 @@ $toast-position: 100px
   justify-content: space-between
   align-content: center
   align-items: center
-  // -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s
-  // animation: fadein 0.5s, fadeout 0.5s 2.5s
   &.show
     // Show the toast
     visibility: visible
-    // Add animation: Take 0.5 seconds to fade in and out the toast.
-    // However, delay the fade out process for 2.5 seconds
-    // -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s
-    // animation: fadein 0.5s, fadeout 0.5s 2.5s
+    top: $toast-position
     -webkit-animation: fadein 0.5s
     animation: fadein 0.5s
+  &.hide
+    top: $toast-hidden-position
+    -webkit-animation: fadeout 0.5s
+    animation: fadeout 0.5s
   &.error
     background-color: $toast-error
     border-color: $error
@@ -92,5 +90,5 @@ $toast-position: 100px
     opacity: 1
 
   to
-    top: 0
+    top: $toast-hidden-position
     opacity: 0
