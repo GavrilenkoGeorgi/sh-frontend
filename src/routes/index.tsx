@@ -38,12 +38,12 @@ const router = createBrowserRouter(
       <Route path='/help' element={<HelpPage />} />
       <Route path='/register' element={<RegisterPage />} />
 
-      <Route path='/stats' element={
-        <Suspense fallback={<Fallback />}>
-          <StatsPage />
-        </Suspense>
-      } />
       <Route path='' element={<ProtectedRoute />} >
+        <Route path='/stats' element={
+          <Suspense fallback={<Fallback />}>
+            <StatsPage />
+          </Suspense>
+        } />
         <Route path='/profile' element={<ProfilePage />} />
       </Route>
 
