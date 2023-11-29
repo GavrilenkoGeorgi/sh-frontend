@@ -33,7 +33,7 @@ class ShScore {
       roll = Array.apply(null, Array(diceToRoll.length))
         .map(() => this.getRandomInt())
     }
-    return this.sort(roll)
+    return roll
   }
 
   // Return current state of the score object
