@@ -4,30 +4,22 @@
 
 $mobileWidth: 250px
 $desktopWidth: 400px
-$toast-position: 30px
+$toast-position: 100px
 
 // The toast - position is at the bottom, in the middle of the screen
-// #toast
 .toast
   // Position and size
   visibility: hidden
   // Sit on top of the screen
   position: fixed
-  // Add a z-index if needed
   z-index: 2
-  // Center the toast
-  left: 50%
-  // 30px from the top
   top: $toast-position
-  // Width
+  left: 50%
+  transform: translate(-50%, -50%)
   max-width: $mobileWidth
   min-width: $mobileWidth
-  /* Divide value of min-width by 2
-  margin-left: math.div(-$mobileWidth, 2)
   @media screen and ( min-width: $medium)
     max-width: $desktopWidth
-    min-width: $desktopWidth
-    margin-left: math.div(-$desktopWidth, 2)
   // Styles
   color: $primary-color
   text-align: left

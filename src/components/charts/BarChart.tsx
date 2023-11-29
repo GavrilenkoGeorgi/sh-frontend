@@ -42,12 +42,13 @@ const Chart: FC<ChartProps> = ({ data }) => {
         style={tickStyles}
       />
       <YAxis
-        tickCount={4}
+        tickCount={3}
         color='red'
         tickSize={0}
         tickMargin={10}
         axisLine={false}
         style={tickStyles}
+        domain={[0, 100]}
       />
       <Bar
         dataKey='value'

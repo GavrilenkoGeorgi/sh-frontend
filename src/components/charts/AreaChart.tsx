@@ -48,7 +48,7 @@ const Chart: FC<ChartProps> = ({ data }) => {
         style={tickStyles}
       />
       <Tooltip />
-      <Area type='basis'
+      <Area type='natural'
         dataKey='value'
         stroke='#AB47BC'
         fill='url(#color)'

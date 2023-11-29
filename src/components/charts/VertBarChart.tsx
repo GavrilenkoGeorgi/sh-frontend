@@ -39,6 +39,7 @@ const Chart: FC<ChartProps> = ({ data }) => {
         tickCount={7}
         axisLine={false}
         style={tickStyles}
+        domain={[0, 100]}
       />
       <YAxis
         type='category'
