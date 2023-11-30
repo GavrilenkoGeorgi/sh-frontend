@@ -8,10 +8,12 @@ import { useScrollDirection, useComponentVisible } from '../../hooks'
 import Logo from '../layout/Logo'
 import { MenuToggleBtn } from './MenuToggleBtn'
 import styles from './NavBar.module.sass'
+import LoadingIndicator from '../layout/LoadingIndicator'
 
 const NavBar: FC = () => {
 
   const { userInfo } = useSelector((state: RootState) => state.auth)
+  const { busy } = useSelector((state: RootState) => state.notification)
   const location = useLocation()
   const scrollDirection = useScrollDirection()
 
@@ -93,6 +95,7 @@ const NavBar: FC = () => {
             {userInfo.name}
           </Link>
         }
+        {busy && <LoadingIndicator dark />}
         <div
           className={styles.toggleBtnContainer}
           onClick={toggleMenu}

@@ -3,7 +3,8 @@ import type { iNotification } from '../../types'
 
 const initialState: iNotification = {
   message: null,
-  type: null
+  type: null,
+  busy: false
 }
 
 const notificationSlice = createSlice({
@@ -17,10 +18,13 @@ const notificationSlice = createSlice({
       } else {
         state.message = null
       }
+    },
+    setBusy: (state, action) => {
+      state.busy = action.payload
     }
   }
 })
 
-export const { setNotification } = notificationSlice.actions
+export const { setNotification, setBusy } = notificationSlice.actions
 
 export default notificationSlice.reducer

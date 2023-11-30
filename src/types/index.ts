@@ -113,6 +113,7 @@ export interface iDropItem {
 export interface iNotification {
   message: Nullable<string>
   type?: Nullable<string>
+  busy: boolean
 }
 
 export interface iErrorMessage {
