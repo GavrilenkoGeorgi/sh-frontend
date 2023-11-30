@@ -50,7 +50,7 @@
 .navigationContainer
   width: 100%
   display: flex
-  justify-content: space-between
+  justify-content: center
   align-items: center
   height: 100%
   padding: 0 1rem
@@ -86,7 +86,8 @@
     width: auto
 
 .toggleBtnContainer
-  min-width: 40px
+  margin-left: auto
+  min-width: 40px // logo width
   text-align: right
   @media screen and (min-width: $medium)
     display: none
@@ -117,16 +118,31 @@
       margin-top: inherit
   &:hover
     cursor: pointer
-    color: $primary-light-color
+    color: $color-orange
     text-decoration: underline
-    @media screen and (min-width: $medium)
 
 .current
   color: $color-orange
 
 .userName
-  font-size: 1.2rem
+  font-size: 1.25rem
+  line-height: 1.25rem
   letter-spacing: .05rem
-  padding: 0 .75rem
+  padding: 0 .5rem
   text-decoration: none
   font-weight: 450
+  color: $primary-color
+  &:hover
+    color: $color-orange
+
+.userIcon
+  text-align: right
+  height: 100%
+  max-width: 1.1rem
+  margin: 0 .35rem
+  color: $primary-color
+  svg
+    height: 100%
+    width: 100%
+  &:hover
+    color: $color-orange
