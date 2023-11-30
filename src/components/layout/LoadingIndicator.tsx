@@ -4,10 +4,16 @@ import cx from 'classnames'
 
 interface LoadingIndicatorProps {
   dark?: boolean
+  large?: boolean
 }
 
-const LoadingIndicator: FC<LoadingIndicatorProps> = ({ dark }) => {
-  return <span className={cx(styles.loader, { [styles.dark]: dark })}></span>
+const LoadingIndicator: FC<LoadingIndicatorProps> = ({ dark, large }) => {
+  return <span
+    className={cx(styles.loader, {
+      [styles.dark]: dark,
+      [styles.large]: large
+    })}>
+  </span>
 }
 
 export default LoadingIndicator

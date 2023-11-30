@@ -34,10 +34,10 @@ const StatsPage: FC = () => {
     void loadStats()
   }, [])
 
-  return <>
+  return <section className={styles.container}>
+    <h1>Stats</h1>
     {stats != null
-      ? <section className={styles.container}>
-        <h1>Stats</h1>
+      ? <>
         <h2>Highest score: <span>
           <CountUp
             start={0}
@@ -91,9 +91,12 @@ const StatsPage: FC = () => {
             <VertBarChart data={stats.favComb} />
           </div>
         </aside>
-      </section>
-      : <LoadingIndicator />
-  }</>
+      </>
+      : <div className={styles.loaderContainer}>
+        <LoadingIndicator dark />
+      </div>
+    }
+  </section>
 }
 
 export default StatsPage
