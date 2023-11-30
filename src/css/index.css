@@ -5,6 +5,11 @@
   font-display: swap;
 }
 
+html {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 body {
   font-family: 'Quicksand';
   box-sizing: border-box;
