@@ -133,7 +133,7 @@ class ShScore {
     // check for 'poker' (the simpliest one)
     const poker = latestTurn.every(value => { return value === firstValue }) && latestTurn.length === 5
     if (poker) {
-      this.combination.poker = firstValue * 5
+      this.combination.poker = (firstValue * 5) + 80 // old rules are back
     }
 
     // check for 'small/large'
