@@ -9,6 +9,7 @@ import Logo from '../layout/Logo'
 import { MenuToggleBtn } from './MenuToggleBtn'
 import styles from './NavBar.module.sass'
 import LoadingIndicator from '../layout/LoadingIndicator'
+import UserIcon from '../../assets/svg/icon-user.svg'
 
 const NavBar: FC = () => {
 
@@ -87,10 +88,13 @@ const NavBar: FC = () => {
     <nav className={navbarStyle} ref={ref}>
       <div className={styles.navigationContainer}>
         <Logo />
+        <div className={styles.userIcon}>
+          <UserIcon />
+        </div>
         {userInfo != null &&
           <Link to='/stats'
-            className={styles.userName}
-            aria-label={userInfo.name}
+          className={styles.userName}
+          aria-label={userInfo.name}
           >
             {userInfo.name}
           </Link>
