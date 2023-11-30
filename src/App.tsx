@@ -4,7 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useCheckAuthMutation } from './store/slices/userApiSlice'
 import { setCredentials } from './store/slices/authSlice'
-import { setNotification } from './store/slices/notificationSlice'
+import { setNotification, setBusy } from './store/slices/notificationSlice'
 import { ToastTypes } from './types'
 import { getErrMsg } from './utils'
 
@@ -16,17 +16,16 @@ const App: FC = () => {
 
   const refreshAuth = async (): Promise<void> => {
     try {
+      dispatch(setBusy(true))
       const res = await checkAuth({}).unwrap()
       dispatch(setCredentials({ ...res }))
-      dispatch(setNotification({
-        msg: 'Login ok',
-        type: ToastTypes.SUCCESS
-      }))
     } catch (err: unknown) {
       dispatch(setNotification({
         msg: getErrMsg(err),
         type: ToastTypes.ERROR
       }))
+    } finally {
+      dispatch(setBusy(false))
     }
   }
 

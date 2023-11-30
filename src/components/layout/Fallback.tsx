@@ -6,9 +6,7 @@ import styles from './Fallback.module.sass'
 const Fallback: FC = () => {
 
   return <div className={styles.layout}>
-    <div className={styles.container}>
-     <LoadingIndicator dark />
-    </div>
+    <LoadingIndicator dark large />
   </div>
 }
 
