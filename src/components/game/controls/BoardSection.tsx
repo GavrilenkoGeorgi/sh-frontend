@@ -26,11 +26,9 @@ const BoardSection = ({ id, title, dice }: BoardSectionProps): React.JSX.Element
     >
       <div ref={setNodeRef} className={styles.items}>
         {dice.map((item) => (
-          <div key={item.id} className={styles.item}>
-            <SortableDiceItem id={item.id}>
-              <DiceItem dice={item} />
-            </SortableDiceItem>
-          </div>
+          <SortableDiceItem key={item.id} id={item.id}>
+            <DiceItem dice={item} />
+          </SortableDiceItem>
         ))}
       </div>
     </SortableContext>
