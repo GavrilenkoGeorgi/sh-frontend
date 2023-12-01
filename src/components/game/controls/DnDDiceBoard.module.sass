@@ -3,7 +3,7 @@
 
 .controls
   padding: 0 1rem
-  margin-top: 2rem
+  margin-top: 1rem
 
 .boardSections
   display: flex
@@ -12,33 +12,28 @@
   margin: .5rem 0 0
 
 .boardSections > div
-  min-width: calc($diceMinWidth + ($diceMargin * 2))
+  min-width: 10%
   flex-grow: 1
 
 .board
   border-radius: .25rem
   background-color: $primary-light-color
-  padding: .2rem
-  justify-content: center
+  padding: .4rem .25rem 0 //! mobile safari debug
   &:first-child
     background-color: $color-light-orange
 
 .items
   display: flex
-  justify-content: center
-  padding: .2rem
-  gap: .5rem
-
-.item
-  display: flex
-  align-items: center
-  min-width: $diceMinWidth
-  div
-    width: 100%
+  justify-content: space-around
+  gap: .25rem
 
 .dice
-  display: flex
+  // display: flex //! mobile safari debug
   touch-action: none
+  --webkit-touch-callout: none
+  svg
+    width: 100%
+    max-width: $diceMaxWidth
 
 .rollBtn
   border: 1px solid $primary-color
