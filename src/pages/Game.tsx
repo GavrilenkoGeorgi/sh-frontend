@@ -17,6 +17,7 @@ import ScoreBoard from '../components/game/ScoreBoard'
 import ProgressBar from '../components/layout/ProgressBar'
 import DnDDiceBoard from '../components/game/controls/DnDDiceBoard'
 import Modal from '../components/layout/Modal'
+import ConfettiAnimation from '../components/layout/ConfettiAnimation'
 import styles from './Game.module.sass'
 
 const GamePage: FC = () => {
@@ -88,15 +89,18 @@ const GamePage: FC = () => {
       />
     }
     {game.turn === 34 &&
-      <Modal
-        heading='🎉 Congrats! ✨'
-        score={game.score}
-        text='Your score is '
-        userName={userInfo?.name}
-        btnLabel='save'
-        isBusy={isSubmitting}
-        onClick={() => { void complete() }}
-      />
+      <>
+        <ConfettiAnimation />
+        <Modal
+          heading='🎉 Congrats! ✨'
+          score={game.score}
+          text='Your score is '
+          userName={userInfo?.name}
+          btnLabel='save'
+          isBusy={isSubmitting}
+          onClick={() => { void complete() }}
+        />
+      </>
     }
   </section>
 }
