@@ -3,7 +3,7 @@ import type { Dice, Status, BoardSections } from '../../../types'
 
 export const dropAnimation: DropAnimation = {
   duration: 300,
-  easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)'
+  easing: 'cubic-bezier(.12, .17, .78, .37)'
 }
 
 export const diceArray: Dice[] = [

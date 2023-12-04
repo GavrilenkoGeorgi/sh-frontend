@@ -16,18 +16,13 @@ const ConfettiAnimation: FC = () => {
         weight: 4
       },
       {
-        src: '/img/circle.svg',
-        size: 12,
-        weight: 2
-      },
-      {
         src: '/img/confetti-ribbon.svg',
         size: 60,
         weight: 5
       }
     ],
     rotate: true,
-    particleCount: 50,
+    particleCount: 33,
     duration: 4000,
     fadeOut: 2000
   })
