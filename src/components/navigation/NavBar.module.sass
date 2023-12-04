@@ -102,18 +102,14 @@
   font-weight: 400
   text-align: left
   color: $primary-color
-  letter-spacing: 1.2px
-  font-size: 1.3rem
-  @media screen and (min-width: $xlarge)
-    font-size: 1.8rem
   @media (prefers-color-scheme: dark)
     color: inherit
   @media screen and (min-width: $medium)
     height: 100%
-    padding: 0 1.33rem
+    padding: 0 1rem
     margin: 0
   &:first-child
-    margin-top: 2rem
+    margin-top: 1.25rem
     @media screen and (min-width: $medium)
       margin-top: inherit
   &:hover
@@ -124,15 +120,22 @@
 .current
   color: $color-orange
 
-.userName
-  font-size: 1.25rem
-  line-height: 1.25rem
-  letter-spacing: .05rem
-  text-decoration: none
+.navLink, .userName
   font-weight: 450
+  font-size: 1.3rem
+  letter-spacing: .05rem
+  @media screen and (min-width: $medium)
+    font-size: 1rem
+  @media screen and (min-width: $xlarge)
+    font-size: 2.5rem
+
+.userName
+  text-decoration: none
   color: $primary-color
   &:hover
     color: $color-orange
+  @media screen and (min-width: $medium)
+    margin-right: auto
 
 .userIcon
   text-align: right
@@ -140,6 +143,8 @@
   max-width: 1.1rem
   margin: 0 .35rem
   color: $primary-color
+  @media screen and (min-width: $medium)
+    max-width: .9rem
   svg
     height: 100%
     width: 100%
