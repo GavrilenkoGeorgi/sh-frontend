@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sharlushka.netlify.app/sitemap.xml
+Sitemap: https://sharlushka.net/sitemap.xml

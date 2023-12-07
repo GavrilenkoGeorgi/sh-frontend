@@ -24,7 +24,7 @@ const plugins = [
   (process.env.NODE_ENV === 'development') ? new BundleAnalyzerPlugin() : '',
   new MiniCssExtractPlugin(),
   new SitemapPlugin({
-    base: 'https://sharlushka.netlify.app',
+    base: 'https://sharlushka.net',
     paths,
     options: {
       lastmod: true,
