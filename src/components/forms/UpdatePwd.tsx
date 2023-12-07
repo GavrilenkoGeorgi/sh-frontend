@@ -1,11 +1,12 @@
 import React, { useEffect, type FC, useState, type FocusEvent } from 'react'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { useUpdatePasswordMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
-import { PwdUpdateFormSchema, type PwdResetFormSchemaType } from '../../schemas/PwdUpdateSchema'
+import { PwdUpdateFormSchema, type PwdUpdateFormSchemaType } from '../../schemas/PwdUpdateSchema'
 import { ToastTypes } from '../../types'
 import type { FocusedStates, InputValues, UpdatePwdFormErrors } from '../../types'
 import { getErrMsg } from '../../utils'
@@ -20,12 +21,13 @@ interface PwdUpdateProps {
 
 const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
 
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [focused, setFocused] = useState<FocusedStates>({})
   const [values, setValues] = useState<InputValues>({})
   const [formErrors, setFormErrors] = useState<UpdatePwdFormErrors>({})
 
-  const [updatePwd] = useUpdatePasswordMutation()
+  const [updatePassword] = useUpdatePasswordMutation()
 
   const {
     register,
@@ -33,7 +35,7 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
     setValue,
     formState: { errors, isSubmitting },
     handleSubmit
-  } = useForm<PwdResetFormSchemaType>({
+  } = useForm<PwdUpdateFormSchemaType>({
     resolver: zodResolver(PwdUpdateFormSchema)
   })
 
@@ -47,17 +49,14 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
     setFormErrors({ ...errors })
   }
 
-  const onSubmit: SubmitHandler<PwdResetFormSchemaType> = async ({ password, confirm, token }): Promise<void> => {
+  const onSubmit: SubmitHandler<PwdUpdateFormSchemaType> = async ({ password, token }): Promise<void> => {
     try {
-      const update = {
-        token,
-        password
-      }
-      await updatePwd(update).unwrap()
+      await updatePassword({ password, token }).unwrap()
       dispatch(setNotification({
         msg: 'Password update ok.',
         type: ToastTypes.SUCCESS
       }))
+      navigate('/login')
     } catch (err: unknown) {
       dispatch(setNotification({
         msg: getErrMsg(err),

@@ -3,7 +3,7 @@ import { type SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useDispatch } from 'react-redux/es/exports'
 
-import { LoginFormSchema, type LoginFormSchemaType } from '../../schemas/LoginFormSchema'
+import { RecoveryEmailSchema, type RecoveryEmailSchemaType } from '../../schemas/RecoveryEmailSchema'
 import { useSendRecoveryEmailMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { ToastTypes } from '../../types'
@@ -24,8 +24,8 @@ const ForgotPwd: FC = () => {
   const [values, setValues] = useState<InputValues>({})
   const [formErrors, setFormErrors] = useState<LoginFormErrors>({})
 
-  const { register, getValues, formState: { errors, isSubmitting }, handleSubmit } = useForm<LoginFormSchemaType>({
-    resolver: zodResolver(LoginFormSchema)
+  const { register, getValues, formState: { errors, isSubmitting }, handleSubmit } = useForm<RecoveryEmailSchemaType>({
+    resolver: zodResolver(RecoveryEmailSchema)
   })
 
   const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
@@ -39,7 +39,7 @@ const ForgotPwd: FC = () => {
     setFormErrors({ ...errors })
   }
 
-  const onSubmit: SubmitHandler<LoginFormSchemaType> = async ({ email }): Promise<void> => {
+  const onSubmit: SubmitHandler<RecoveryEmailSchemaType> = async ({ email }): Promise<void> => {
     try {
       await sendRecoveryEmail({ email })
       dispatch(setNotification({

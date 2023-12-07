@@ -9,4 +9,4 @@ export const PwdUpdateFormSchema = z.object({
   path: ['confirm']
 })
 
-export type PwdResetFormSchemaType = z.infer<typeof PwdUpdateFormSchema>
+export type PwdUpdateFormSchemaType = z.infer<typeof PwdUpdateFormSchema>
