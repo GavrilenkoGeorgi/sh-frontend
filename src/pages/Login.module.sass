@@ -1,6 +1,16 @@
 @import '../styles/variables'
+@import '../styles/colors'
+@import '../styles/mixins'
 
 .container
   margin-top: $mobilePagePadding
   h1
     text-align: center
+  aside
+    text-align: right
+    max-width: $formWidth
+    margin: 1rem auto
+    a
+      font-size: .8rem
+      color: $primary-color
+      @include link

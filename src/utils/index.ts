@@ -7,10 +7,10 @@ export const getErrMsg = (err: unknown): string => {
   const { data } = err as iErrorMessage
 
   if (data !== undefined) {
-    message = data.message
+    message = data.message ?? data.name
   } else {
-    // server is down, default errors
     const { error } = err as iError
+    // server is down, default errors
     message = error
   }
 

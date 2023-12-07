@@ -1,32 +1,40 @@
-import React, { type FC, useState, type FocusEvent } from 'react'
+import React, { useEffect, type FC, useState, type FocusEvent } from 'react'
 import { useDispatch } from 'react-redux'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate } from 'react-router-dom'
-import cx from 'classnames'
 
-import { useSignupMutation } from '../../store/slices/userApiSlice'
+import { useUpdatePasswordMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
-import { RegisterFormSchema, type RegisterFormSchemaType } from '../../schemas/RegisterFormSchema'
-import type { FocusedStates, InputValues, RegisterFormErrors } from '../../types'
+import { PwdUpdateFormSchema, type PwdResetFormSchemaType } from '../../schemas/PwdUpdateSchema'
 import { ToastTypes } from '../../types'
+import type { FocusedStates, InputValues, UpdatePwdFormErrors } from '../../types'
 import { getErrMsg } from '../../utils'
 
-import LoadingIndicator from '../layout/LoadingIndicator'
+import cx from 'classnames'
 import styles from './Form.module.sass'
+import LoadingIndicator from '../layout/LoadingIndicator'
 
-const Register: FC = () => {
+interface PwdUpdateProps {
+  token?: string
+}
+
+const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
 
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const [signup] = useSignupMutation()
-
   const [focused, setFocused] = useState<FocusedStates>({})
   const [values, setValues] = useState<InputValues>({})
-  const [formErrors, setFormErrors] = useState<RegisterFormErrors>({})
+  const [formErrors, setFormErrors] = useState<UpdatePwdFormErrors>({})
 
-  const { register, getValues, formState: { errors, isSubmitting }, handleSubmit } = useForm<RegisterFormSchemaType>({
-    resolver: zodResolver(RegisterFormSchema)
+  const [updatePwd] = useUpdatePasswordMutation()
+
+  const {
+    register,
+    getValues,
+    setValue,
+    formState: { errors, isSubmitting },
+    handleSubmit
+  } = useForm<PwdResetFormSchemaType>({
+    resolver: zodResolver(PwdUpdateFormSchema)
   })
 
   const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
@@ -35,19 +43,21 @@ const Register: FC = () => {
 
   const blurInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
     setFocused({ [event.target.name]: false })
-    const values = getValues()
-    setValues({ ...values })
+    setValues({ ...getValues() })
     setFormErrors({ ...errors })
   }
 
-  const onSubmit: SubmitHandler<RegisterFormSchemaType> = async (data): Promise<void> => {
+  const onSubmit: SubmitHandler<PwdResetFormSchemaType> = async ({ password, confirm, token }): Promise<void> => {
     try {
-      await signup(data).unwrap()
+      const update = {
+        token,
+        password
+      }
+      await updatePwd(update).unwrap()
       dispatch(setNotification({
-        msg: 'All ok, you can login after activating your account.',
+        msg: 'Password update ok.',
         type: ToastTypes.SUCCESS
       }))
-      navigate('/login', { replace: true })
     } catch (err: unknown) {
       dispatch(setNotification({
         msg: getErrMsg(err),
@@ -56,64 +66,29 @@ const Register: FC = () => {
     }
   }
 
+  useEffect(() => {
+    if (token != null) setValue('token', token)
+  }, [token])
+
   return <form
     noValidate
+    id='updatePwd'
+    // https://github.com/orgs/react-hook-form/discussions/8020
     // eslint-disable-next-line
     onSubmit={handleSubmit(onSubmit)}
-    id='register'
     className={styles.form}
   >
     <fieldset>
-      <div className={styles.inputContainer}>
-        <div className={cx(styles.formInput, {
-          [styles.focused]: focused.name,
-          [styles.hasValue]: values.name,
-          [styles.error]: formErrors.name
-        })}>
-          <label
-            htmlFor='name'
-            className={styles.formLabel}
-          >
-            Name
-          </label>
-          <input
-            className={styles.formInput}
-            type='text'
-            aria-label='Name'
-            {...register('name')}
-            onFocus={focusInput}
-            onBlur={blurInput}
-          />
-        </div>
-        {(formErrors.name != null) && <p className={styles.errorMsg}>
-          {formErrors.name.message}
-        </p>}
-      </div>
 
       <div className={styles.inputContainer}>
-        <div className={cx(styles.formInput, {
-          [styles.focused]: focused.email,
-          [styles.hasValue]: values.email,
-          [styles.error]: formErrors.email
-        })}>
-          <label
-            className={styles.formLabel}
-            htmlFor='email'
-          >
-            Email
-          </label>
-          <input
-            className={styles.formInput}
-            type='email'
-            aria-label='Email'
-            {...register('email')}
-            onFocus={focusInput}
-            onBlur={blurInput}
-          />
-        </div>
-        {(formErrors.email != null) && <p className={styles.errorMsg}>
-          {formErrors.email.message}
-        </p>}
+        <input
+          className={styles.formInput}
+          type='hidden'
+          aria-label='Token'
+          {...register('token')}
+          onFocus={focusInput}
+          onBlur={blurInput}
+        />
       </div>
 
       <div className={styles.inputContainer}>
@@ -167,17 +142,16 @@ const Register: FC = () => {
           {formErrors.confirm.message}
         </p>}
       </div>
-    </fieldset>
 
-    <fieldset>
       <button type='submit'>
         {isSubmitting
           ? <LoadingIndicator dark />
-          : 'Register'
+          : 'Update'
         }
       </button>
+
     </fieldset>
   </form>
 }
 
-export default Register
+export default UpdatePwd

@@ -40,11 +40,27 @@ export const userApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
         body: data
       })
+    }),
+    sendRecoveryEmail: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/forgotpwd`,
+        method: 'POST',
+        body: data
+      })
+    }),
+    updatePassword: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/updatepwd`,
+        method: 'PUT',
+        body: data
+      })
     })
   })
 })
 
 export const {
+  useSendRecoveryEmailMutation,
+  useUpdatePasswordMutation,
   useLoginMutation,
   useLogoutMutation,
   useSignupMutation,

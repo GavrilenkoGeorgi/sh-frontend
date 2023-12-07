@@ -21,9 +21,9 @@ const Main: FC = () => {
     <h1>Hi, Anonymous!</h1>
     <div className={styles.intro}>
       <p>
-        You <Link to="/game">can play unregistered</Link>, but you will not
+        You <Link to='/game'>can play unregistered</Link>, but you will not
         be able to save the results or checkout other player&apos;s stats,
-        consider registering.
+        consider <Link to='/register'>registering</Link>.
       </p>
     </div>
     <LoginForm />

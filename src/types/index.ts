@@ -16,6 +16,12 @@ export type RegisterFormErrors = FieldErrors<{
   confirm: string
 }>
 
+export type UpdatePwdFormErrors = FieldErrors<{
+  password: string
+  confirm: string
+  token: string
+}>
+
 export type LoginFormErrors = FieldErrors<{
   email: string
   password: string
@@ -120,6 +126,8 @@ export interface iErrorMessage {
   data: {
     message: string
     stack: string
+    name?: string
+    issues?: object[]
   }
   status: string
 }

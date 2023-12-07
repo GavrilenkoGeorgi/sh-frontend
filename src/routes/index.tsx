@@ -10,6 +10,7 @@ import LoginPage from '../pages/Login'
 import ProfilePage from '../pages/Profile'
 import HelpPage from '../pages/Help'
 import RegisterPage from '../pages/Register'
+import PasswordPage from '../pages/Password'
 import ProtectedRoute from './ProtectedRoute'
 import NavBar from '../components/navigation/NavBar'
 import Fallback from '../components/layout/Fallback'
@@ -29,14 +30,17 @@ const router = createBrowserRouter(
           <MainPage />
         </Suspense>
       } />
-      <Route path='/login' element={<LoginPage />} />
+
       <Route path='/game' element={
         <Suspense fallback={<Fallback />}>
           <GamePage />
         </Suspense>
       } />
+
+      <Route path='/login' element={<LoginPage />} />
       <Route path='/help' element={<HelpPage />} />
       <Route path='/register' element={<RegisterPage />} />
+      <Route path='/forgotpwd' element={<PasswordPage />} />
 
       <Route path='' element={<ProtectedRoute />} >
         <Route path='/stats' element={
