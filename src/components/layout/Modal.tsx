@@ -1,5 +1,4 @@
 import React, { type FC } from 'react'
-import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import type { Nullable } from '../../types'
 
@@ -14,9 +13,18 @@ interface ModalProps {
   score?: number
   userName?: Nullable<string>
   isBusy?: boolean
+  close?: () => void
 }
 
-const Modal: FC<ModalProps> = ({ heading, text, btnLabel, isBusy = false, onClick, score, userName }) => {
+const Modal: FC<ModalProps> = ({
+  heading,
+  text,
+  btnLabel,
+  isBusy = false,
+  onClick,
+  score,
+  close = null
+}) => {
 
   return <div className={styles.modal}>
     <div className={styles.blur}></div>
@@ -34,19 +42,26 @@ const Modal: FC<ModalProps> = ({ heading, text, btnLabel, isBusy = false, onClic
       <div className={styles.message}>
         <h2>{heading}</h2>
         <p>{text} {score}</p>
-          {userName == null && <Link
-            to='/register'
-            className={styles.link}
-            >
-              Register to save results and view stats
-            </Link>
-          }
-        <button onClick={onClick} disabled={isBusy}>
-          {isBusy
-            ? <LoadingIndicator />
-            : `${btnLabel}`
-          }
-        </button>
+        <div className={styles.buttons}>
+          <button
+            onClick={onClick}
+            disabled={isBusy}
+            type='button'
+            className={styles.button}
+          >
+            {isBusy
+              ? <LoadingIndicator />
+              : `${btnLabel}`
+            }
+          </button>
+          {close !== null && <button
+            type='button'
+            className={styles.cancelBtn}
+            onClick={() => { close() }}
+          >
+            cancel
+          </button>}
+        </div>
       </div>
     </motion.div>
   </div>

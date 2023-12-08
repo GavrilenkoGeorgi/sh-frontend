@@ -117,7 +117,11 @@ const Login: FC = () => {
         </p>}
       </div>
       <div className={styles.buttons}>
-        <button type='submit' disabled={isSubmitting}>
+        <button
+          type='submit'
+          disabled={isSubmitting}
+          className={styles.button}
+        >
           {isSubmitting
             ? <LoadingIndicator dark />
             : 'Login'

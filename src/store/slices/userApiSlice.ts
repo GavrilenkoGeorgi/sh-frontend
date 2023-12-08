@@ -3,6 +3,13 @@ const USERS_URL = process.env.REACT_APP_USERS_URL
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    deleteAcc: builder.mutation({
+      query: () => ({
+        url: `${USERS_URL}/delete`,
+        method: 'DELETE',
+        credentials: 'include'
+      })
+    }),
     login: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/login`,
@@ -59,6 +66,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
+  useDeleteAccMutation,
   useSendRecoveryEmailMutation,
   useUpdatePasswordMutation,
   useLoginMutation,

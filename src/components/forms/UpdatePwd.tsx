@@ -142,7 +142,10 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
         </p>}
       </div>
 
-      <button type='submit'>
+      <button
+        type='submit'
+        className={styles.button}
+      >
         {isSubmitting
           ? <LoadingIndicator dark />
           : 'Update'

@@ -89,7 +89,11 @@ const ForgotPwd: FC = () => {
         </p>}
       </div>
 
-      <button type='submit' disabled={isSubmitting}>
+      <button
+        type='submit'
+        disabled={isSubmitting}
+        className={styles.button}
+      >
         {isSubmitting
           ? <LoadingIndicator dark />
           : 'Send email'
