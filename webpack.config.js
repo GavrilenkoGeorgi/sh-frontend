@@ -42,11 +42,20 @@ const plugins = [
     name: 'Sh dice game',
     publicPath: '/',
     fingerprints: true,
-    id: '/',
+    launch_handler: {
+      client_mode: 'navigate-existing'
+    },
+    start_url: '/',
+    id: '/?homescreen=1',
+    scope: 'https://sharlushka.net',
     display: 'standalone',
-    short_name: 'Sh',
+    short_name: 'Sharlushka',
     filename: 'manifest.json',
-    description: 'Dice game',
+    description: 'Dice game with stats.',
+    categories: ['games'],
+    dir: 'ltr',
+    lang: 'en',
+    prefer_related_applications: false,
     theme_color: '#7B1FA2',
     background_color: '#7B1FA2',
     crossorigin: 'use-credentials', // can be null, use-credentials or anonymous
