@@ -16,6 +16,11 @@ export type RegisterFormErrors = FieldErrors<{
   confirm: string
 }>
 
+export type ProfileFormErrors = FieldErrors<{
+  name: string
+  email: string
+}>
+
 export type UpdatePwdFormErrors = FieldErrors<{
   password: string
   confirm: string

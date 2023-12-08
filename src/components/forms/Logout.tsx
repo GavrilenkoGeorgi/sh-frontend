@@ -1,5 +1,6 @@
 import React, { type FC, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import { useLogoutMutation } from '../../store/slices/userApiSlice'
 import { logout } from '../../store/slices/authSlice'
@@ -12,6 +13,7 @@ import styles from './Form.module.sass'
 
 const Logout: FC = () => {
 
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [logoutApiCall] = useLogoutMutation()
   const [loading, setLoading] = useState(false)
@@ -22,6 +24,7 @@ const Logout: FC = () => {
       setLoading(true)
       await logoutApiCall({}).unwrap()
       dispatch(logout())
+      navigate('/')
     } catch (err: unknown) {
       dispatch(setNotification({
         msg: getErrMsg(err),

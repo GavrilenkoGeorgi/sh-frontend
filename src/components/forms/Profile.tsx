@@ -5,9 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { useUpdateUserMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
-import { RegisterFormSchema, type RegisterFormSchemaType } from '../../schemas/RegisterFormSchema'
+import { ProfileFormSchema, type ProfileFormSchemaType } from '../../schemas/ProfileFormSchema'
 import { ToastTypes } from '../../types'
-import type { IUser, Nullable, FocusedStates, InputValues, RegisterFormErrors } from '../../types'
+import type { IUser, Nullable, FocusedStates, InputValues, ProfileFormErrors } from '../../types'
 import { getErrMsg } from '../../utils'
 
 import cx from 'classnames'
@@ -22,12 +22,12 @@ const Profile: FC<iProps> = ({ data }) => {
   const dispatch = useDispatch()
   const [focused, setFocused] = useState<FocusedStates>({})
   const [values, setValues] = useState<InputValues>({})
-  const [formErrors, setFormErrors] = useState<RegisterFormErrors>({})
+  const [formErrors, setFormErrors] = useState<ProfileFormErrors>({})
 
   const [updateProfile] = useUpdateUserMutation()
 
-  const { register, getValues, setValue, formState: { errors, isSubmitting }, handleSubmit } = useForm<RegisterFormSchemaType>({
-    resolver: zodResolver(RegisterFormSchema)
+  const { register, getValues, setValue, formState: { errors, isSubmitting }, handleSubmit } = useForm<ProfileFormSchemaType>({
+    resolver: zodResolver(ProfileFormSchema)
   })
 
   const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
@@ -49,20 +49,16 @@ const Profile: FC<iProps> = ({ data }) => {
     }
   }, [])
 
-  const onSubmit: SubmitHandler<RegisterFormSchemaType> = async ({ name, email, password, confirm }): Promise<void> => {
+  const onSubmit: SubmitHandler<ProfileFormSchemaType> = async ({ name, email }): Promise<void> => {
     try {
-      if (password !== confirm) {
-        throw new Error('Passwords do not match.')
-      }
       const update = {
         id: data?._id,
         name,
-        email,
-        password
+        email
       }
       await updateProfile(update).unwrap()
       dispatch(setNotification({
-        msg: 'Profile update ok.',
+        msg: 'Profile update ok. Please relogin.',
         type: ToastTypes.SUCCESS
       }))
     } catch (err: unknown) {
@@ -75,7 +71,7 @@ const Profile: FC<iProps> = ({ data }) => {
 
   return <form
     noValidate
-    id='register'
+    id='updateProfile'
     // https://github.com/orgs/react-hook-form/discussions/8020
     // eslint-disable-next-line
     onSubmit={handleSubmit(onSubmit)}
