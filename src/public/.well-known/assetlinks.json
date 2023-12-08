@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "net.sharlushka.twa",
+        "sha256_cert_fingerprints": ["4B:47:05:BC:DA:C3:6A:AB:98:F5:3E:C1:48:66:D5:D2:AF:A2:F5:D9:31:71:66:7B:47:81:F1:77:45:0C:5F:8B"]
+      }
+    }]
