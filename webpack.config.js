@@ -35,7 +35,8 @@ const plugins = [
   new CopyPlugin({
     patterns: [
       { from: './src/public/robots.txt', to: 'robots.txt' },
-      { from: './src/public/img', to: 'img' }
+      { from: './src/public/img', to: 'img' },
+      { from: './src/public/.well-known', to: '.well-known' }
     ]
   }),
   new WebpackPwaManifest({
