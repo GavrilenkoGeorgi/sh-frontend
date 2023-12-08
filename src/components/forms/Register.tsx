@@ -170,7 +170,10 @@ const Register: FC = () => {
     </fieldset>
 
     <fieldset>
-      <button type='submit'>
+      <button
+        type='submit'
+        className={styles.button}
+      >
         {isSubmitting
           ? <LoadingIndicator dark />
           : 'Register'

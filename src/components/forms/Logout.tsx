@@ -8,6 +8,7 @@ import { type RootState } from '../../store'
 import LoadingIndicator from '../layout/LoadingIndicator'
 import { getErrMsg } from '../../utils'
 import { ToastTypes } from '../../types'
+import styles from './Form.module.sass'
 
 const Logout: FC = () => {
 
@@ -35,6 +36,7 @@ const Logout: FC = () => {
     type='button'
     onClick={() => { void logoutHandler() }}
     disabled={userInfo == null}
+    className={styles.button}
   >
     {loading
       ? <LoadingIndicator dark />

@@ -134,63 +134,13 @@ const Profile: FC<iProps> = ({ data }) => {
         </p>}
       </div>
 
-      <div className={styles.inputContainer}>
-        <div className={cx(styles.formInput, {
-          [styles.focused]: focused.password,
-          [styles.hasValue]: values.password,
-          [styles.error]: formErrors.password
-        })}
-        >
-          <label
-            htmlFor='password'
-            className={styles.formLabel}>
-            Password
-          </label>
-          <input
-            className={styles.formInput}
-            type='password'
-            aria-label='Password'
-            {...register('password')}
-            onFocus={focusInput}
-            onBlur={blurInput}
-          />
-        </div>
-        {(formErrors.password != null) && <p className={styles.errorMsg}>
-          {formErrors.password.message}
-        </p>}
-      </div>
-
-      <div className={styles.inputContainer}>
-        <div className={cx(styles.formInput, {
-          [styles.focused]: focused.confirm,
-          [styles.hasValue]: values.confirm,
-          [styles.error]: formErrors.confirm
-        })}>
-          <label
-            className={styles.formLabel}
-            htmlFor='confirm'
-          >
-            Confirm password
-          </label>
-          <input
-            className={styles.formInput}
-            type='password'
-            aria-label='Confirm password'
-            {...register('confirm')}
-            onFocus={focusInput}
-            onBlur={blurInput}
-          />
-        </div>
-        {(formErrors.confirm != null) && <p className={styles.errorMsg}>
-          {formErrors.confirm.message}
-        </p>}
-      </div>
-      <button type='submit'>
+      <button type='submit' className={styles.button}>
         {isSubmitting
           ? <LoadingIndicator dark />
           : 'Update'
         }
       </button>
+
     </fieldset>
   </form>
 }

@@ -7,24 +7,6 @@
   width: 100%
   max-width: $formWidth
   margin: 0 auto
-  button
-    min-width: 8rem
-    padding: .5rem 1.5rem
-    background-color: transparent
-    border: 1px solid $primary-color
-    color: $primary-color
-    display: flex
-    justify-content: center
-    align-items: center
-    margin-top: 1.4rem
-    text-transform: capitalize
-    &:disabled
-      opacity: .3
-
-.buttons
-  display: flex
-  justify-content: space-between
-  gap: .5rem
 
 fieldset
   border: none
@@ -118,11 +100,27 @@ input, textarea, select
       box-shadow: none
       background: none
 
-.button
-  background-color: $primary-light-color
-  flex: 1 1 0
-  margin: .5rem
-  border: none
-  line-height: 2.5
-  font-size: 1rem
-  color: white
+.buttons
+  display: flex
+  justify-content: space-between
+  gap: .5rem
+
+.button, .deleteBtn
+  min-width: 8rem
+  padding: .5rem 1.5rem
+  background-color: transparent
+  border: 1px solid $primary-color
+  color: $primary-color
+  display: flex
+  justify-content: center
+  align-items: center
+  margin-top: 1.4rem
+  text-transform: capitalize
+  width: 100%
+  cursor: pointer
+  &:disabled
+    opacity: .3
+
+.deleteBtn
+  border-color: $error
+  color: $error
