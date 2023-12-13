@@ -65,6 +65,10 @@ const NavBar: FC = () => {
       url: '/register'
     },
     {
+      label: 'Privacy',
+      url: '/privacy'
+    },
+    {
       label: 'Help',
       url: '/help'
     }

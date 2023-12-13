@@ -1,7 +1,7 @@
 import React, { type FC } from 'react'
 
 import HelpDice from '../components/layout/HelpDice'
-import styles from './Help.module.sass'
+import styles from './SharedStyles.module.sass'
 
 import data from '../assets/data/HelpPage.json'
 

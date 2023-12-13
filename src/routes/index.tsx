@@ -11,6 +11,7 @@ import ProfilePage from '../pages/Profile'
 import HelpPage from '../pages/Help'
 import RegisterPage from '../pages/Register'
 import PasswordPage from '../pages/Password'
+import PrivacyPage from '../pages/Privacy'
 import ProtectedRoute from './ProtectedRoute'
 import NavBar from '../components/navigation/NavBar'
 import Fallback from '../components/layout/Fallback'
@@ -41,6 +42,7 @@ const router = createBrowserRouter(
       <Route path='/help' element={<HelpPage />} />
       <Route path='/register' element={<RegisterPage />} />
       <Route path='/forgotpwd' element={<PasswordPage />} />
+      <Route path='/privacy' element={<PrivacyPage />} />
 
       <Route path='' element={<ProtectedRoute />} >
         <Route path='/stats' element={

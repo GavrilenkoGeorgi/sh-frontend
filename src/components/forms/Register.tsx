@@ -2,7 +2,7 @@ import React, { type FC, useState, type FocusEvent } from 'react'
 import { useDispatch } from 'react-redux'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import cx from 'classnames'
 
 import { useSignupMutation } from '../../store/slices/userApiSlice'
@@ -180,6 +180,12 @@ const Register: FC = () => {
         }
       </button>
     </fieldset>
+
+    <p className={styles.privacy}>
+      Will be used in accourdance with
+      our <Link to='/privacy'>Privacy Policy</Link>.
+    </p>
+
   </form>
 }
 
