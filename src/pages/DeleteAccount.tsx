@@ -1,8 +1,13 @@
 import React, { type FC } from 'react'
+import { useSelector } from 'react-redux'
+import type { RootState } from '../store'
 import DeleteAccountForm from '../components/forms/DeleteAccount'
 import styles from './SharedStyles.module.sass'
 
 const DeleteAccount: FC = () => {
+
+  const { userInfo } = useSelector((state: RootState) => state.auth)
+
   return <section className={styles.container}>
     <h1 className={styles.pageHeading}>Delete account</h1>
     <h2>
@@ -49,7 +54,7 @@ const DeleteAccount: FC = () => {
       For any questions or assistance regarding account deletion,
       contact us at <a href='mailto:gavrilenko.georgi@gmail.com'>gavrilenko.georgi@gmail.com</a>.
     </p>
-    <DeleteAccountForm />
+    {userInfo != null && <DeleteAccountForm />}
   </section>
 }
 

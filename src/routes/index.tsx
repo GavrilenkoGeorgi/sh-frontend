@@ -44,6 +44,7 @@ const router = createBrowserRouter(
       <Route path='/register' element={<RegisterPage />} />
       <Route path='/forgotpwd' element={<PasswordPage />} />
       <Route path='/privacy' element={<PrivacyPage />} />
+      <Route path='/deleteacc' element={<DeleteAccountPage />} />
 
       <Route path='' element={<ProtectedRoute />} >
         <Route path='/stats' element={
@@ -52,7 +53,6 @@ const router = createBrowserRouter(
           </Suspense>
         } />
         <Route path='/profile' element={<ProfilePage />} />
-        <Route path='/deleteacc' element={<DeleteAccountPage />} />
       </Route>
 
     </Route>
