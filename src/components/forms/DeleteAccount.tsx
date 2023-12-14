@@ -11,7 +11,7 @@ import { ToastTypes } from '../../types'
 import Modal from '../layout/Modal'
 import styles from './Form.module.sass'
 
-const DeleteProfile: FC = () => {
+const DeleteAccount: FC = () => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -67,4 +67,4 @@ const DeleteProfile: FC = () => {
   </>
 }
 
-export default DeleteProfile
+export default DeleteAccount
