@@ -11,6 +11,13 @@ export const gameApiSlice = gameSlice.injectEndpoints({
         body: data
       })
     }),
+    clearStats: builder.mutation({
+      query: () => ({
+        url: `${GAME_URL}/clearstats`,
+        method: 'DELETE',
+        credentials: 'include'
+      })
+    }),
     getStats: builder.mutation({
       query: () => ({
         url: `${GAME_URL}/stats`,
@@ -23,5 +30,6 @@ export const gameApiSlice = gameSlice.injectEndpoints({
 
 export const {
   useSaveResultsMutation,
+  useClearStatsMutation,
   useGetStatsMutation
 } = gameApiSlice

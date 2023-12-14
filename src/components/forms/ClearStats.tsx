@@ -1,35 +1,30 @@
 import React, { type FC, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 
-import { useDeleteAccMutation } from '../../store/slices/userApiSlice'
+import { useClearStatsMutation } from '../../store/slices/gameApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
-import { logout } from '../../store/slices/authSlice'
 import { getErrMsg } from '../../utils'
 import { ToastTypes } from '../../types'
 
 import Modal from '../layout/Modal'
 import styles from './Form.module.sass'
 
-const DeleteAccount: FC = () => {
+const ClearStats: FC = () => {
 
-  const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [deleteAcc] = useDeleteAccMutation()
+  const [clearStats] = useClearStatsMutation()
   const [loading, setLoading] = useState(false)
-
   const [openModal, setOpenModal] = useState(false)
 
   const deleteHandler = async (): Promise<void> => {
     try {
       setLoading(true)
-      await deleteAcc({}).unwrap()
-      dispatch(logout())
+      await clearStats({}).unwrap()
       dispatch(setNotification({
-        msg: 'Account deleted',
+        msg: 'Stats cleared',
         type: ToastTypes.SUCCESS
       }))
-      navigate('/')
+      setOpenModal(false)
     } catch (err: unknown) {
       dispatch(setNotification({
         msg: getErrMsg(err),
@@ -42,22 +37,20 @@ const DeleteAccount: FC = () => {
 
   return <>
     <form className={styles.form}>
-      <fieldset>
-      <div className={styles.buttons}>
+      <fieldset className={styles.buttons}>
         <button
           type='button'
           className={styles.deleteBtn}
           onClick={ () => { setOpenModal(true) } }
         >
-          Delete account
+          Clear stats
         </button>
-      </div>
-      </fieldset>
+      </fieldset >
     </form>
     {openModal &&
       <Modal
         heading='Are you sure?'
-        text='You are about to delete your account and all game results!'
+        text='You are about to delete all your game results and clear stats!'
         btnLabel='delete'
         isBusy={loading}
         onClick={() => { void deleteHandler() }}
@@ -67,4 +60,4 @@ const DeleteAccount: FC = () => {
   </>
 }
 
-export default DeleteAccount
+export default ClearStats
