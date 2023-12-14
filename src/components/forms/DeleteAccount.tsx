@@ -17,7 +17,6 @@ const DeleteAccount: FC = () => {
   const dispatch = useDispatch()
   const [deleteAcc] = useDeleteAccMutation()
   const [loading, setLoading] = useState(false)
-
   const [openModal, setOpenModal] = useState(false)
 
   const deleteHandler = async (): Promise<void> => {
