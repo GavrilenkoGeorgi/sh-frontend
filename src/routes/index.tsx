@@ -13,6 +13,7 @@ import RegisterPage from '../pages/Register'
 import PasswordPage from '../pages/Password'
 import PrivacyPage from '../pages/Privacy'
 import DeleteAccountPage from '../pages/DeleteAccount'
+import ClearStatsPage from '../pages/ClearStats'
 import ProtectedRoute from './ProtectedRoute'
 import NavBar from '../components/navigation/NavBar'
 import Fallback from '../components/layout/Fallback'
@@ -53,6 +54,7 @@ const router = createBrowserRouter(
           </Suspense>
         } />
         <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/clearstats' element={<ClearStatsPage />} />
       </Route>
 
     </Route>

@@ -17,7 +17,7 @@ const Profile: FC = () => {
     <aside className={styles.text}>
       <p>
         Looking for a way to <Link to='/deleteacc'>
-        delete you account?</Link>
+        delete your account</Link> or <Link to='/clearstats'>clear stats</Link>?
       </p>
     </aside>
   </section>
