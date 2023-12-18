@@ -13,7 +13,7 @@ interface BoardSectionProps {
   dice: Dice[]
 }
 
-const BoardSection = ({ id, title, dice }: BoardSectionProps): React.JSX.Element => {
+const BoardSection = ({ id, dice }: BoardSectionProps): React.JSX.Element => {
   const { setNodeRef } = useDroppable({
     id
   })
