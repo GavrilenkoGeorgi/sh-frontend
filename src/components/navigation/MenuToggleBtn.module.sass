@@ -1,4 +1,4 @@
-@import '../../styles/colors'
+@use '../../styles/colors'
 
 .button
   padding: 0
@@ -12,7 +12,7 @@
   height: 2px
   width: 22px
   transform: translateY(-100%)
-  background-color: $light-color
+  background-color: colors.$light-color
   @media (prefers-color-scheme: dark)
     background-color: white
   &:before,
@@ -24,7 +24,7 @@
     height: 2px
     width: 22px
     transition: top 0.2s 0.4s ease, transform 0.2s ease, background-color 0.2s ease
-    background-color: $light-color
+    background-color: colors.$light-color
     @media (prefers-color-scheme: dark)
       background-color: white
   &:before

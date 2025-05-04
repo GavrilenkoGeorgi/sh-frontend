@@ -1,5 +1,5 @@
-@import '../../../styles/colors'
-@import '../../../styles/variables'
+@use '../../../styles/colors'
+@use '../../../styles/variables'
 
 .controls
   padding: 0 1rem
@@ -17,10 +17,10 @@
 
 .board
   border-radius: .25rem
-  background-color: $primary-light-color
+  background-color: colors.$primary-light-color
   padding: .4rem .25rem 0 //! mobile safari debug
   &:first-child
-    background-color: $color-light-orange
+    background-color: colors.$color-light-orange
 
 .items
   display: flex
@@ -33,33 +33,33 @@
   --webkit-touch-callout: none
   svg
     width: 100%
-    max-height: $diceMaxHeight
+    max-height: variables.$diceMaxHeight
 
 .rollBtn
-  border: 1px solid $primary-color
-  background-color: $primary-color
+  border: 1px solid colors.$primary-color
+  background-color: colors.$primary-color
   border-radius: .25rem
-  color: $primary-light-color
+  color: colors.$primary-light-color
   color: #fff
   text-transform: uppercase
   width: 100%
   margin-top: .5rem
-  min-height: $diceMaxHeight + .5rem
+  min-height: variables.$diceMaxHeight + .5rem
   transition-property: background-color, color, border
   transition-duration: .5s
   transition-timing-function: linear
 
 .rolled
-  background-color: $primary-light-color
-  border: 1px solid $primary-color
-  color: $primary-color
+  background-color: colors.$primary-light-color
+  border: 1px solid colors.$primary-color
+  color: colors.$primary-color
 
 .lastRoll
-  background-color: $color-light-orange
-  border: 1px solid $color-orange
-  color: $primary-color
+  background-color: colors.$color-light-orange
+  border: 1px solid colors.$color-orange
+  color: colors.$primary-color
 
 .locked
-  border: 1px solid $color-orange
-  background-color: $color-orange
+  border: 1px solid colors.$color-orange
+  background-color: colors.$color-orange
   color: #fff

@@ -1,4 +1,4 @@
-@import '../../styles/colors'
+@use '../../styles/colors'
 
 .modal
   position: absolute
@@ -24,7 +24,7 @@
 .message
   align-self: center
   justify-self: center
-  border: 1px solid $primary-light-color
+  border: 1px solid colors.$primary-light-color
   padding: 2rem
   border-radius: .25rem
   background-color: #fff
@@ -35,7 +35,7 @@
   p
     margin-top: .75rem
     font-size: 1.3rem
-    color: $color-orange
+    color: colors.$color-orange
 
 .button, .cancelBtn
   display: flex
@@ -47,7 +47,7 @@
   font-size: 1rem
   text-transform: capitalize
   border: none
-  background-color: $primary-color
+  background-color: colors.$primary-color
   color: #fff
   border-radius: .25rem
   cursor: pointer
@@ -56,10 +56,10 @@
   display: flex
 
 .cancelBtn
-  border: 1px solid $primary-color
-  background-color: $primary-light-color
-  color: $primary-color
+  border: 1px solid colors.$primary-color
+  background-color: colors.$primary-light-color
+  color: colors.$primary-color
 
 .link
   font-size: 1rem
-  color: $primary-color
+  color: colors.$primary-color
