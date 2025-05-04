@@ -1,11 +1,11 @@
-@import '../../styles/colors'
-@import '../../styles/variables'
+@use '../../styles/colors'
+@use '../../styles/variables'
 
 .form
   display: flex
   flex-direction: column
   width: 100%
-  max-width: $formWidth
+  max-width: variables.$formWidth
   margin: 0 auto
 
 fieldset
@@ -27,11 +27,11 @@ fieldset
   margin: 1rem 0 1.75rem
   &:after
     height: 2px
-    background-color: $primary-light-color
+    background-color: colors.$primary-light-color
     width: 100%
   &:before
     height: 2px
-    background: $primary-color
+    background: colors.$primary-color
     z-index: 1
     width: 0
     transition: width .3s
@@ -42,7 +42,7 @@ fieldset
     bottom: 0
   &.error
     &:before
-      background-color: $error
+      background-color: colors.$error
   &.focused
     &:before
       width: 100%
@@ -52,7 +52,7 @@ fieldset
   margin: 0
   position: absolute
   background: transparent
-  color: $error
+  color: colors.$error
   font-size: .8rem
   bottom: .6rem
 
@@ -65,16 +65,16 @@ fieldset
   transform: translateY(-50%)
   line-height: 1
   cursor: text
-  color: $primary-color
+  color: colors.$primary-color
   transition: transform ease .3s, color ease .3s
   transform-origin: 0 0
   .error &
-    color: $error
+    color: colors.$error
   .focused &
     transform: translateY(-220%) scale(.9)
-    color: $primary-color
+    color: colors.$primary-color
   .error.focused &
-    color: $error
+    color: colors.$error
   .hasValue &
     transform: translateY(-220%) scale(.9)
 
@@ -109,8 +109,8 @@ input, textarea, select
   min-width: 8rem
   padding: .5rem 1.5rem
   background-color: transparent
-  border: 1px solid $primary-color
-  color: $primary-color
+  border: 1px solid colors.$primary-color
+  color: colors.$primary-color
   display: flex
   justify-content: center
   align-items: center
@@ -122,12 +122,12 @@ input, textarea, select
     opacity: .3
 
 .deleteBtn
-  border-color: $error
-  color: $error
+  border-color: colors.$error
+  color: colors.$error
 
 .privacy
   text-align: center
   font-size: .7rem
   margin-top: 1rem
   a
-    color: $primary-color
+    color: colors.$primary-color

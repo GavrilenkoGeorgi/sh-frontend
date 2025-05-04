@@ -1,20 +1,20 @@
-@import '../styles/colors'
-@import '../styles/variables'
+@use '../styles/colors'
+@use '../styles/variables'
 
 .container
-  padding: $mobilePagePadding 1rem $mobilePagePadding
-  max-width: $pageContainerWidth
+  padding: variables.$mobilePagePadding 1rem variables.$mobilePagePadding
+  max-width: variables.$pageContainerWidth
   margin: 0 auto
   h1, h2
-    color: $dark-gray
+    color: colors.$dark-gray
   h2
     font-size: 1.25rem
     margin: 3rem 0 0
   h3
     margin-top: 1rem
-    color: $light-color
+    color: colors.$light-color
   a
-    color: $primary-color
+    color: colors.$primary-color
   ul
     padding-left: 2rem
     li
@@ -23,17 +23,17 @@
     line-height: 1.5rem
 
 .text
-  max-width: $formWidth
+  max-width: variables.$formWidth
 
 .dateStamp
   font-size: .8rem
   text-align: right
   margin: 0 0 2rem
-  color: $primary-color
+  color: colors.$primary-color
 
 .pageHeading
   text-align: center
 
 strong
-  color: $primary-color
+  color: colors.$primary-color
   font-weight: 450

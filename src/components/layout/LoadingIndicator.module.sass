@@ -1,9 +1,9 @@
-@import '../../styles/colors'
+@use '../../styles/colors'
 
 .loader
   min-width: 1.2rem
   min-height: 1.2rem
-  border: .15rem solid $primary-light-color
+  border: .15rem solid colors.$primary-light-color
   border-bottom-color: transparent
   border-radius: 50%
   display: inline-block
@@ -11,7 +11,7 @@
   animation: rotation 1.5s linear infinite
 
 .dark
-  border: .15rem solid $primary-color
+  border: .15rem solid colors.$primary-color
   border-bottom-color: transparent
 
 .large

@@ -1,4 +1,4 @@
-@import ../../styles/colors
+@use "../../styles/colors"
 
 .training
   display: grid
@@ -15,11 +15,11 @@ svg
 
 svg, .result
   transition: color .25s linear
-  color: $primary-color
+  color: colors.$primary-color
   &:hover
-    color: $color-orange
+    color: colors.$color-orange
 
 .savable
-  color: $color-orange
+  color: colors.$color-orange
   svg
-    color: $color-orange
+    color: colors.$color-orange

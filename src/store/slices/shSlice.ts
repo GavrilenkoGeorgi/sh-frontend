@@ -85,7 +85,7 @@ const shSlice = createSlice({
       if (game.rollCount > 0 && game.turn <= 6 && schoolCombNames.includes(payload)) { // save 'training' score
         if (game.school[payload].score !== null && !game.school[payload].final) {
           game.school[payload].final = true
-          // @ts-expect-error: result can be a zero value, so we need this to be null
+          // result can be a zero value, so we need this to be null
           game.score = game.score + game.school[payload].score
           game.saved = true
         }

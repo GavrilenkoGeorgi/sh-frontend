@@ -1,9 +1,9 @@
-@import '../../styles/colors'
-@import '../../styles/variables'
+@use '../../styles/colors'
+@use '../../styles/variables'
 
 .nav
-  height: $navbarHeight // TODO: mobile navbar height
-  min-height: $navbarHeight
+  height: variables.$navbarHeight // TODO: mobile navbar height
+  min-height: variables.$navbarHeight
   width: 100%
   padding: 0 1.5rem
   padding: 0
@@ -15,12 +15,12 @@
   z-index: 2
   background-color: white
   box-shadow: 0px 0px 11px 0px #0000003a
-  transition: opacity $defaultAnimLength, top $defaultAnimLength
+  transition: opacity variables.$defaultAnimLength, top variables.$defaultAnimLength
   @media (prefers-color-scheme: dark)
-    background-color: $dark-gray
+    background-color: colors.$dark-gray
 
 .hiddenNav
-  top: -$navbarHeight
+  top: -(variables.$navbarHeight)
   opacity: 0
 
 .visibleNav
@@ -38,14 +38,14 @@
   opacity: 0
   overflow: hidden
   // delay!
-  transition: height 0s $navMenuOpenTime, opacity $navMenuOpenTime
+  transition: height 0s variables.$navMenuOpenTime, opacity variables.$navMenuOpenTime
   background-color: rgb(255 255 255 / 0.3)
   backdrop-filter: blur(1px)
 
 .openOverlay
   height: 100vh
   opacity: 1
-  transition: height 0s, opacity $navMenuOpenTime
+  transition: height 0s, opacity variables.$navMenuOpenTime
 
 .navigationContainer
   width: 100%
@@ -67,14 +67,14 @@
   padding: 0
   width: 50vw
   transform: translate(60vw)
-  transition: transform $navMenuOpenTime ease-out
-  margin-top: $navbarHeight
+  transition: transform variables.$navMenuOpenTime ease-out
+  margin-top: variables.$navbarHeight
   background-color: white
   @media (prefers-color-scheme: dark)
-    background-color: $dark-gray
+    background-color: colors.$dark-gray
   &.open
     transform: translate(0vw)
-  @media screen and (min-width: $medium)
+  @media screen and (min-width: variables.$medium)
     transform: translate(0vw)
     flex-wrap: nowrap
     padding: 0
@@ -89,7 +89,7 @@
   margin-left: auto
   min-width: 40px // logo width
   text-align: right
-  @media screen and (min-width: $medium)
+  @media screen and (min-width: variables.$medium)
     display: none
     visibility: hidden
 
@@ -99,40 +99,40 @@
   margin-left: 2rem
   display: flex
   align-items: center
-  color: $primary-color
+  color: colors.$primary-color
   @media (prefers-color-scheme: dark)
     color: inherit
-  @media screen and (min-width: $medium)
+  @media screen and (min-width: variables.$medium)
     height: 100%
     padding: 0 1rem
     margin: 0
   &:first-child
     margin-top: 1.25rem
-    @media screen and (min-width: $medium)
+    @media screen and (min-width: variables.$medium)
       margin-top: inherit
   &:hover
     cursor: pointer
-    color: $color-orange
+    color: colors.$color-orange
     text-decoration: underline
 
 .current
-  color: $color-orange
+  color: colors.$color-orange
 
 .navLink, .userName
   font-weight: 450
   font-size: 1.3rem
   letter-spacing: .05rem
-  @media screen and (min-width: $medium)
+  @media screen and (min-width: variables.$medium)
     font-size: 1rem
-  @media screen and (min-width: $xlarge)
+  @media screen and (min-width: variables.$xlarge)
     font-size: 1.5rem
 
 .userName
   text-decoration: none
-  color: $primary-color
+  color: colors.$primary-color
   &:hover
-    color: $color-orange
-  @media screen and (min-width: $medium)
+    color: colors.$color-orange
+  @media screen and (min-width: variables.$medium)
     margin-right: auto
 
 .userIcon
@@ -140,13 +140,13 @@
   height: 100%
   max-width: 1.1rem
   margin: 0 .35rem
-  color: $primary-color
-  @media screen and (min-width: $medium)
+  color: colors.$primary-color
+  @media screen and (min-width: variables.$medium)
     max-width: .9rem
-  @media screen and (min-width: $xlarge)
+  @media screen and (min-width: variables.$xlarge)
     max-width: 1.25rem
   svg
     height: 100%
     width: 100%
   &:hover
-    color: $color-orange
+    color: colors.$color-orange

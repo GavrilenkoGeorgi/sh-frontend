@@ -1,9 +1,9 @@
-@import '../styles/colors'
-@import '../styles/mixins'
-@import '../styles/variables'
+@use '../styles/colors'
+@use '../styles/mixins'
+@use '../styles/variables'
 
 .container
-  margin-top: $mobilePagePadding
+  margin-top: variables.$mobilePagePadding
   h1
     text-align: center
     margin-bottom: 0
@@ -13,11 +13,11 @@
   margin: 0 auto 3rem
 
 .intro
-  max-width: $formWidth
+  max-width: variables.$formWidth
   margin: 0 auto
   p
     margin-top: .5rem
     text-indent: 1rem
     line-height: 1.25rem
   a
-    @include link
+    @include mixins.link

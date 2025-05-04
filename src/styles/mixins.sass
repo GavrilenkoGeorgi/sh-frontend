@@ -1,9 +1,11 @@
+@use "colors"
+
 @mixin link
-  color: $primary-color
-  text-decoration-color: $primary-color
+  color: colors.$primary-color
+  text-decoration-color: colors.$primary-color
   text-decoration-thickness: 1px
   text-underline-offset: 1.75px
   text-decoration-skip-ink: auto
   &:hover
-    color: $color-orange
-    text-decoration-color: $color-orange
+    color: colors.$color-orange
+    text-decoration-color: colors.$color-orange
