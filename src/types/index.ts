@@ -177,5 +177,6 @@ export enum GameCombinations { // combination names?
 
 export enum ToastTypes {
   ERROR = 'error',
-  SUCCESS = 'success'
+  SUCCESS = 'success',
+  WARNING = 'warning'
 }
