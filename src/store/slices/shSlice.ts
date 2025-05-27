@@ -1,11 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 import ShScore from '../../utils/sh-score'
-import { SchoolCombinations, GameCombinations, type iCombination } from '../../types'
+import {
+  SchoolCombinations,
+  GameCombinations,
+  type iCombination
+} from '../../types'
 
 const schoolCombNames = Object.values(SchoolCombinations)
 const gameCombNames = Object.values(GameCombinations)
 
-const school: Record<string, { final: boolean, score: number | null }> = {}
+const school: Record<string, { final: boolean; score: number | null }> = {}
 const combinations: Record<string, number[]> = {}
 
 // these are saved results
@@ -21,14 +25,14 @@ const results: iCombination = {
   chance: 0
 }
 
-schoolCombNames.forEach(name => {
+schoolCombNames.forEach((name) => {
   school[name] = {
     final: false,
     score: null
   }
 })
 
-gameCombNames.forEach(name => {
+gameCombNames.forEach((name) => {
   combinations[name] = []
 })
 
@@ -67,7 +71,10 @@ const shSlice = createSlice({
         }
         // iterate results array and set scores
         result.forEach((value, index) => {
-          if (value !== null && !game.school[Object.keys(game.school)[index]].final) {
+          if (
+            value !== null &&
+            !game.school[Object.keys(game.school)[index]].final
+          ) {
             game.school[Object.keys(game.school)[index]].score = value
           }
         })
@@ -76,14 +83,22 @@ const shSlice = createSlice({
         for (const name in result) {
           if (game.combinations[name].length < 3) {
             game.results[name as keyof typeof game.results] =
-            result[name as keyof typeof game.results]
+              result[name as keyof typeof game.results]
           }
         }
       }
     },
     saveScore: ({ game }, { payload }) => {
-      if (game.rollCount > 0 && game.turn <= 6 && schoolCombNames.includes(payload)) { // save 'training' score
-        if (game.school[payload].score !== null && !game.school[payload].final) {
+      if (
+        game.rollCount > 0 &&
+        game.turn <= 6 &&
+        schoolCombNames.includes(payload)
+      ) {
+        // save 'training' score
+        if (
+          game.school[payload].score !== null &&
+          !game.school[payload].final
+        ) {
           game.school[payload].final = true
           // result can be a zero value, so we need this to be null
           game.score = game.score + game.school[payload].score
@@ -99,7 +114,11 @@ const shSlice = createSlice({
         if (game.turn === 6) {
           game.schoolScore = game.score
         }
-      } else if (game.rollCount > 0 && game.turn > 6 && gameCombNames.includes(payload)) {
+      } else if (
+        game.rollCount > 0 &&
+        game.turn > 6 &&
+        gameCombNames.includes(payload)
+      ) {
         // click on combination name saves zero
         // click on result saves current result
         const value = game.results[payload as keyof typeof game.results]
@@ -110,7 +129,7 @@ const shSlice = createSlice({
           game.favDiceValues[value - 1]++
         }
         // clear preliminary results to initial after save
-        game.results = results
+        game.results = { ...results } // Create a new object instead of sharing reference
         game.saved = true
       }
 

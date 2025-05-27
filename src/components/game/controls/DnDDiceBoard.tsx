@@ -29,8 +29,9 @@ import DiceItem from './DiceItem'
 import MainButton from './MainButton'
 import styles from './DnDDiceBoard.module.sass'
 
-const DnDDiceBoard: FC = () => {
+import { Portal } from '../../layout/Portal'
 
+const DnDDiceBoard: FC = () => {
   const { game } = useSelector((state: RootState) => state.sh)
   const dispatch = useDispatch()
   const [diceState, setDiceState] = useState<Dice[]>(diceArray)
@@ -48,7 +49,8 @@ const DnDDiceBoard: FC = () => {
   )
 
   // item to animate on interaction
-  const item = (activeDiceId != null) ? getDiceById(diceState, activeDiceId) : null
+  const item =
+    activeDiceId != null ? getDiceById(diceState, activeDiceId) : null
 
   const handleDragStart = ({ active }: DragStartEvent): void => {
     setActiveDiceId(active.id as string)
@@ -66,8 +68,8 @@ const DnDDiceBoard: FC = () => {
     )
 
     if (
-      (activeContainer.length === 0) ||
-      (overContainer.length === 0) ||
+      activeContainer.length === 0 ||
+      overContainer.length === 0 ||
       activeContainer === overContainer
     ) {
       return
@@ -78,9 +80,7 @@ const DnDDiceBoard: FC = () => {
       const overItems = boardSection[overContainer]
 
       // Find the indexes for the items
-      const activeIndex = activeItems.findIndex(
-        (item) => item.id === active.id
-      )
+      const activeIndex = activeItems.findIndex((item) => item.id === active.id)
       const overIndex = overItems.findIndex((item) => item.id !== over?.id)
 
       return {
@@ -113,8 +113,8 @@ const DnDDiceBoard: FC = () => {
     )
 
     if (
-      (activeContainer.length === 0) ||
-      (overContainer.length === 0) ||
+      activeContainer.length === 0 ||
+      overContainer.length === 0 ||
       activeContainer !== overContainer
     ) {
       return
@@ -141,7 +141,7 @@ const DnDDiceBoard: FC = () => {
     const activeDice = getDiceById(diceState, active.id.toString())
 
     if (activeDice.status !== activeContainer) {
-      if (activeContainer === 'sel') { // !
+      if (activeContainer === 'sel') {
         dispatch(selectDice(activeDice.value))
         diceState.forEach((item) => {
           if (activeDice.id === item.id) {
@@ -156,11 +156,11 @@ const DnDDiceBoard: FC = () => {
           }
         })
 
-        const selected = diceState.filter(item => item.status === 'roll')
+        const selected = diceState.filter((item) => item.status === 'roll')
 
         const data = {
           value: activeDice.value,
-          order: selected.map(item => item.value)
+          order: selected.map((item) => item.value)
         }
 
         setDiceState([...diceState])
@@ -171,19 +171,21 @@ const DnDDiceBoard: FC = () => {
     setActiveDiceId(null)
   }
 
-  useEffect(() => { // on roll
-    const update = diceState.filter(item => item.status === 'roll')
+  useEffect(() => {
+    // on roll
+    const update = diceState.filter((item) => item.status === 'roll')
     game.roll.forEach((value, index) => {
       if (value > 0) {
         update[index].value = value
       }
     })
 
-    const onHold = diceState.filter(item => item.status === 'sel')
+    const onHold = diceState.filter((item) => item.status === 'sel')
     setDiceState([...onHold, ...update])
   }, [game.roll])
 
-  useEffect(() => { // on save
+  useEffect(() => {
+    // on save // i guess we dont't need this here
     if (game.saved || game.over) {
       diceArray.forEach((item, index) => {
         diceArray[index].status = 'roll'
@@ -194,7 +196,6 @@ const DnDDiceBoard: FC = () => {
       setBoardSections(init)
       setDiceState([...diceArray])
     }
-
   }, [game.saved, game.over])
 
   return (
@@ -217,9 +218,15 @@ const DnDDiceBoard: FC = () => {
             </div>
           ))}
           {/* draggable item animation */}
-          <DragOverlay dropAnimation={dropAnimation}>
-            {(item != null) ? <DiceItem dice={item} /> : null}
-          </DragOverlay>
+          <Portal>
+            <DragOverlay
+              dropAnimation={dropAnimation}
+              className={styles.dragOverlayWrapper}
+              adjustScale
+            >
+              {item != null ? <DiceItem dice={item} /> : null}
+            </DragOverlay>
+          </Portal>
         </DndContext>
       </div>
       <MainButton />

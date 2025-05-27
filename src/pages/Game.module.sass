@@ -9,10 +9,38 @@
   display: flex
   flex-direction: column
   justify-content: center
-  height: calc(100vh - variables.$navbarHeight)
   max-width: variables.$pageContainerWidth
+  position: relative
   margin: 0 auto
+  @media screen and (min-width: variables.$medium)
+    margin: 1rem auto
   h1
     text-align: center
     margin: 0 0 1.5rem
     font-weight: 350
+
+.frame
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  z-index: -1
+  display: none
+  @media screen and (min-width: variables.$medium)
+    display: inline-block
+
+.content
+  display: flex
+  flex-direction: column
+  justify-content: space-evenly
+  border-radius: 3rem
+  @media screen and (min-width: variables.$medium)
+    padding: variables.$mobileFramePadding
+    padding-bottom: 0
+  
+.phone
+  width: 100%
+  min-width: variables.$pageContainerWidth
+  object-fit: contain
+  svg
+    min-width: variables.$pageContainerWidth
