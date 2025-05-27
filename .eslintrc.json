@@ -11,6 +11,7 @@
   "plugins": ["react"],
   "rules": {
     "padded-blocks": "off",
-    "multiline-ternary": "off"
+    "multiline-ternary": "off",
+    "delimiter": "semi"
   }
 }

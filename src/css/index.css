@@ -1,7 +1,8 @@
 @font-face {
-	font-family: 'Quicksand';
-	src: url('../fonts/Quicksand-VariableFont_wght.ttf') format('truetype-variations');
-	font-weight: 250 450;
+  font-family: 'Quicksand';
+  src: url('../fonts/Quicksand-VariableFont_wght.ttf')
+    format('truetype-variations');
+  font-weight: 250 450;
   font-display: swap;
 }
 
@@ -18,11 +19,12 @@ main {
   height: 85vh;
 }
 
-h1, h2 {
-  letter-spacing: .035rem;
+h1,
+h2 {
+  letter-spacing: 0.035rem;
 }
 
 button {
   font-family: 'Quicksand';
-  letter-spacing: .05rem;
+  letter-spacing: 0.05rem;
 }

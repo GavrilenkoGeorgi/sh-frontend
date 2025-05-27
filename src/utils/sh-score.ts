@@ -1,12 +1,11 @@
 import { type iCombination } from '../types'
 
 class ShScore {
-
   school: number[][]
   combination: iCombination
   stats: iCombination
 
-  constructor () {
+  constructor() {
     this.school = [[], [], [], [], [], []]
     this.combination = {
       pair: 0,
@@ -19,7 +18,17 @@ class ShScore {
       large: 0,
       chance: 0
     }
-    this.stats = this.combination
+    this.stats = {
+      pair: 0,
+      twoPairs: 0,
+      triple: 0,
+      full: 0,
+      quads: 0,
+      poker: 0,
+      small: 0,
+      large: 0,
+      chance: 0
+    }
   }
 
   // Roll dice
@@ -27,11 +36,11 @@ class ShScore {
     let roll: number[] = []
 
     if (diceToRoll.length === 0 && diceSelected.length !== 5) {
-      roll = Array.apply(null, Array(5))
-        .map(() => this.getRandomInt())
+      roll = Array.apply(null, Array(5)).map(() => this.getRandomInt())
     } else {
-      roll = Array.apply(null, Array(diceToRoll.length))
-        .map(() => this.getRandomInt())
+      roll = Array.apply(null, Array(diceToRoll.length)).map(() =>
+        this.getRandomInt()
+      )
     }
     return roll
   }
@@ -46,11 +55,11 @@ class ShScore {
   // Calculate 'school' score
   getSchoolScore = (values: number[]): Array<number | null> => {
     this.reset()
-    values.forEach(item => {
+    values.forEach((item) => {
       this.school[item - 1].push(item)
     })
 
-    const result = this.school.map(item => {
+    const result = this.school.map((item) => {
       if (item.length === 0) {
         return null
       } else if (item.length === 3) {
@@ -69,16 +78,23 @@ class ShScore {
 
   // Sort helper ('small' and 'large' combinations depend on this)
   sort = (values: number[]): number[] => {
-    return values.sort((a, b) => { return a - b })
+    return values.sort((a, b) => {
+      return a - b
+    })
   }
 
   // Get combinations stats at the end of the game
   combinationsStats = (results: Record<string, number[]>): iCombination => {
+    // Reset stats to get fresh statistics at the end of each game
+    for (const key in this.stats) {
+      this.stats[key as keyof typeof this.combination] = 0
+    }
+
+    // Count combinations with positive values
     for (const key in results) {
-      results[key].forEach(value => {
+      results[key].forEach((value) => {
         if (value > 0) {
-          this.stats[key as keyof typeof this.combination] =
-            this.stats[key as keyof typeof this.combination] + 1
+          this.stats[key as keyof typeof this.combination] += 1
         }
       })
     }
@@ -99,12 +115,14 @@ class ShScore {
     })
   }
 
-  // Reset combination object
+  // Reset combination object and school arrays for new calculations
   private readonly reset = (): void => {
+    // Reset combination scores to 0
     for (const key in this.combination) {
       this.combination[key as keyof typeof this.combination] = 0
     }
 
+    // Reset school arrays (but not stats as they accumulate throughout the game)
     this.school = [[], [], [], [], [], []]
   }
 
@@ -131,16 +149,20 @@ class ShScore {
     // poker, small and large combinations are checked separately
     // as they look like some kind of an 'edge case'
     // check for 'poker' (the simpliest one)
-    const poker = latestTurn.every(value => { return value === firstValue }) && latestTurn.length === 5
+    const poker =
+      latestTurn.every((value) => {
+        return value === firstValue
+      }) && latestTurn.length === 5
     if (poker) {
-      this.combination.poker = (firstValue * 5) + 80 // old rules are back
+      this.combination.poker = firstValue * 5 + 80 // old rules are back
     }
 
     // check for 'small/large'
     if (latestTurn.length === 5 && this.isAscending(latestTurn)) {
       for (const item of latestTurn) {
         // if first value is 1 it's a 'small' else 'large'
-        if (firstValue === 1) this.combination.small = this.combination.small += item
+        if (firstValue === 1)
+          this.combination.small = this.combination.small += item
         else this.combination.large = this.combination.large += item
       }
     }
@@ -152,7 +174,8 @@ class ShScore {
       // check for pair and two pairs
       if (item.length >= 2) {
         // check if we already have value
-        if (this.combination.pair !== 0) { // not zero i.e., exists
+        if (this.combination.pair !== 0) {
+          // not zero i.e., exists
           // check if the new value is bigger
           const currentValue = this.combination.pair
           const secondPairValue = value * 2
@@ -181,13 +204,19 @@ class ShScore {
       // it is recorder as a higher 'pair' but we can't use it
       // as it is a part of triple and we need original other pair
       // although it may be smaller
-      if ((this.combination.triple !== 0) && (this.combination.twoPairs !== 0) && (this.combination.quads === 0)) {
-        const secondPair = (this.combination.twoPairs - this.combination.pair) / 2
+      if (
+        this.combination.triple !== 0 &&
+        this.combination.twoPairs !== 0 &&
+        this.combination.quads === 0
+      ) {
+        const secondPair =
+          (this.combination.twoPairs - this.combination.pair) / 2
 
-        if (secondPair === (this.combination.triple / 3)) {
-          this.combination.full = this.combination.triple + this.combination.pair
+        if (secondPair === this.combination.triple / 3) {
+          this.combination.full =
+            this.combination.triple + this.combination.pair
         } else {
-          this.combination.full = this.combination.triple + (secondPair * 2)
+          this.combination.full = this.combination.triple + secondPair * 2
         }
       }
 
@@ -198,7 +227,6 @@ class ShScore {
       }
     }
   }
-
 }
 
 export default new ShScore()

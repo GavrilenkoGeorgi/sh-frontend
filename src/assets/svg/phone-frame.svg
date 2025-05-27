@@ -1,0 +1,47 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 250 500"
+  fill="none"
+>
+
+
+  <!-- Device outline -->
+  <rect
+    x="1"
+    y="1"
+    width="248"
+    height="498"
+    rx="24"
+    ry="24"
+    stroke="#000"
+    stroke-width="2"
+    fill="none"
+  />
+
+  <!-- Notch -->
+  <path
+    d="M 80 0 L 170 0 Q 175 0 175 5 L 175 10 Q 175 15 170 15 L 80 15 Q 75 15 75 10 L 75 5 Q 75 0 80 0 Z"
+    fill="#000"
+  />
+
+  <!-- Volume buttons (just outside left bezel) -->
+  <rect x="-2"  y="120" width="2" height="40" rx="2" fill="#000" />
+  <rect x="-2"  y="180" width="2" height="40" rx="2" fill="#000" />
+
+  <!-- Mute switch (just outside left bezel) -->
+  <rect x="-2"  y="240" width="2" height="20" rx="1" fill="#000" />
+
+  <!-- Power button (just outside right bezel) -->
+  <rect x="249" y="200" width="2" height="60" rx="2" fill="#000" />
+
+  <!-- Screen area (invisible, for positioning) -->
+  <rect
+    x="10"
+    y="35"
+    width="230"
+    height="445"
+    rx="24"
+    ry="24"
+    fill="transparent"
+  />
+</svg>

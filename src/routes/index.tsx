@@ -27,36 +27,54 @@ const GamePage = lazy(async () => await import('../pages/Game'))
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<><NavBar /><App /><Toast /></>}>
-      <Route index={true} path='/' element={
-        <Suspense fallback={<Fallback />}>
-          <MainPage />
-        </Suspense>
-      } />
-
-      <Route path='/game' element={
-        <Suspense fallback={<Fallback />}>
-          <GamePage />
-        </Suspense>
-      } />
-
-      <Route path='/login' element={<LoginPage />} />
-      <Route path='/help' element={<HelpPage />} />
-      <Route path='/register' element={<RegisterPage />} />
-      <Route path='/forgotpwd' element={<PasswordPage />} />
-      <Route path='/privacy' element={<PrivacyPage />} />
-      <Route path='/deleteacc' element={<DeleteAccountPage />} />
-      <Route path='/clearstats' element={<ClearStatsPage />} />
-
-      <Route path='' element={<ProtectedRoute />} >
-        <Route path='/stats' element={
+    <Route
+      path="/"
+      element={
+        <>
+          <NavBar />
+          <App />
+          <Toast />
+        </>
+      }
+    >
+      <Route
+        index={true}
+        path="/"
+        element={
           <Suspense fallback={<Fallback />}>
-            <StatsPage />
+            <MainPage />
           </Suspense>
-        } />
-        <Route path='/profile' element={<ProfilePage />} />
-      </Route>
+        }
+      />
 
+      <Route
+        path="/game"
+        element={
+          <Suspense fallback={<Fallback />}>
+            <GamePage />
+          </Suspense>
+        }
+      />
+
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/help" element={<HelpPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/forgotpwd" element={<PasswordPage />} />
+      <Route path="/privacy" element={<PrivacyPage />} />
+      <Route path="/deleteacc" element={<DeleteAccountPage />} />
+      <Route path="/clearstats" element={<ClearStatsPage />} />
+
+      <Route path="" element={<ProtectedRoute />}>
+        <Route
+          path="/stats"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <StatsPage />
+            </Suspense>
+          }
+        />
+        <Route path="/profile" element={<ProfilePage />} />
+      </Route>
     </Route>
   )
 )
