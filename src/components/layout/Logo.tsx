@@ -1,5 +1,5 @@
 import React, { type FC } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 import LogoSVG from '../../assets/svg/sharlushka-logo.svg'
 import * as styles from './Logo.module.sass'

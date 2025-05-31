@@ -1,5 +1,5 @@
 import React, { type FC, useEffect } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router'
 import { motion } from 'framer-motion'
 import { useCheckAuthMutation } from './store/slices/userApiSlice'
 import { setCredentials } from './store/slices/authSlice'

@@ -1,5 +1,5 @@
 import React, { type FC, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router'
 
 import LoginForm from '../components/forms/Login'
 import * as styles from './Main.module.sass'

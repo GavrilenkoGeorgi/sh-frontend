@@ -1,6 +1,6 @@
 import React, { type FC } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 import type { RootState } from '../store'
 import ProfileForm from '../components/forms/Profile'

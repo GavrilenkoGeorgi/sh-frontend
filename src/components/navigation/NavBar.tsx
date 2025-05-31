@@ -1,5 +1,5 @@
 import React, { type FC, useState, useEffect } from 'react'
-import { NavLink, useLocation, Link } from 'react-router-dom'
+import { NavLink, useLocation, Link } from 'react-router'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../store'
 import type { navLink } from '../../types'
