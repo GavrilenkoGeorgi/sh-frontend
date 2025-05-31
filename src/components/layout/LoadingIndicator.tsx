@@ -1,5 +1,5 @@
 import React, { type FC } from 'react'
-import styles from './LoadingIndicator.module.sass'
+import * as styles from './LoadingIndicator.module.sass'
 import cx from 'classnames'
 
 interface LoadingIndicatorProps {
@@ -8,12 +8,14 @@ interface LoadingIndicatorProps {
 }
 
 const LoadingIndicator: FC<LoadingIndicatorProps> = ({ dark, large }) => {
-  return <span
-    className={cx(styles.loader, {
-      [styles.dark]: dark,
-      [styles.large]: large
-    })}>
-  </span>
+  return (
+    <span
+      className={cx(styles.loader, {
+        [styles.dark]: dark,
+        [styles.large]: large
+      })}
+    ></span>
+  )
 }
 
 export default LoadingIndicator

@@ -6,12 +6,13 @@ import { type RootState } from '../../store'
 import { ToastTypes } from '../../types'
 
 import CloseIcon from '../../assets/svg/icon-close.svg'
-import styles from './Toast.module.sass'
+import * as styles from './Toast.module.sass'
 
 const Toast: FC = () => {
-
   const dispatch = useDispatch()
-  const { message, type } = useSelector((state: RootState) => state.notification)
+  const { message, type } = useSelector(
+    (state: RootState) => state.notification
+  )
   const [open, setOpen] = useState(false)
 
   const close = (): void => {
@@ -25,27 +26,29 @@ const Toast: FC = () => {
     message != null ? setOpen(true) : setOpen(false)
   }, [message])
 
-  return <>
-    <div
-      id={styles.toast}
-      className={cx(styles.toast, {
-        [styles.show]: message,
-        [styles.hide]: !open,
-        [styles.error]: type === ToastTypes.ERROR,
-        [styles.success]: type === ToastTypes.SUCCESS
-      })}
-    >
-      <div>
-        {message}
-      </div>
+  return (
+    <>
       <div
-        className={styles.iconContainer}
-        onClick={ () => { close() } }
+        id={styles.toast}
+        className={cx(styles.toast, {
+          [styles.show]: message,
+          [styles.hide]: !open,
+          [styles.error]: type === ToastTypes.ERROR,
+          [styles.success]: type === ToastTypes.SUCCESS
+        })}
       >
-        <CloseIcon />
+        <div>{message}</div>
+        <div
+          className={styles.iconContainer}
+          onClick={() => {
+            close()
+          }}
+        >
+          <CloseIcon />
+        </div>
       </div>
-    </div>
-  </>
+    </>
+  )
 }
 
 export default Toast

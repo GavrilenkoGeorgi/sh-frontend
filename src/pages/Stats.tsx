@@ -8,11 +8,10 @@ import { formatChartAxisData } from '../utils'
 import AreaChart from '../components/charts/AreaChart'
 import BarChart from '../components/charts/BarChart'
 import VertBarChart from '../components/charts/VertBarChart'
-import styles from './Stats.module.sass'
+import * as styles from './Stats.module.sass'
 import LoadingIndicator from '../components/layout/LoadingIndicator'
 
 const StatsPage: FC = () => {
-
   const dispatch = useDispatch()
   const [getStats] = useGetStatsMutation()
   const [stats, setStats] = useState<iStats>()
@@ -34,69 +33,72 @@ const StatsPage: FC = () => {
     void loadStats()
   }, [])
 
-  return <section className={styles.container}>
-    <h1>Stats</h1>
-    {stats != null
-      ? <>
-        <h2>Highest score: <span>
-          <CountUp
-            start={0}
-            end={stats.max}
-            delay={0.75}
-            duration={3}
-          />
-          </span>
-        </h2>
-        <h3>Average:&nbsp;
-          <span>
-            <CountUp
-              start={0}
-              end={stats.average}
-              delay={1.25}
-              duration={3}
-            />
-          </span> which is&nbsp;
-          <span>
-            <CountUp
-              start={0}
-              end={stats.percentFromMax}
-              delay={1.75}
-              duration={4}
-              suffix='%'
-            />
-          </span> from max
-        </h3>
-        <h4>{stats.games} games so far</h4>
-        <aside>
-          <h4>School scores</h4>
-          <div className={styles.hChart}>
-            <AreaChart data={stats.schoolScores} />
-          </div>
-        </aside>
-        <aside>
-          <h4>Scores</h4>
-          <div className={styles.hChart}>
-            <AreaChart data={stats.scores} />
-          </div>
-        </aside>
-        <aside>
-          <h4>Fav dice values</h4>
-          <div className={styles.hChart}>
-            <BarChart data={stats.favDiceValues} />
-          </div>
-        </aside>
-        <aside>
-          <h4>Freq combinations</h4>
-          <div className={styles.sChart}>
-            <VertBarChart data={stats.favComb} />
-          </div>
-        </aside>
-      </>
-      : <div className={styles.loaderContainer}>
-        <LoadingIndicator dark />
-      </div>
-    }
-  </section>
+  return (
+    <section className={styles.container}>
+      <h1>Stats</h1>
+      {stats != null ? (
+        <>
+          <h2>
+            Highest score:{' '}
+            <span>
+              <CountUp start={0} end={stats.max} delay={0.75} duration={3} />
+            </span>
+          </h2>
+          <h3>
+            Average:&nbsp;
+            <span>
+              <CountUp
+                start={0}
+                end={stats.average}
+                delay={1.25}
+                duration={3}
+              />
+            </span>{' '}
+            which is&nbsp;
+            <span>
+              <CountUp
+                start={0}
+                end={stats.percentFromMax}
+                delay={1.75}
+                duration={4}
+                suffix="%"
+              />
+            </span>{' '}
+            from max
+          </h3>
+          <h4>{stats.games} games so far</h4>
+          <aside>
+            <h4>School scores</h4>
+            <div className={styles.hChart}>
+              <AreaChart data={stats.schoolScores} />
+            </div>
+          </aside>
+          <aside>
+            <h4>Scores</h4>
+            <div className={styles.hChart}>
+              <AreaChart data={stats.scores} />
+            </div>
+          </aside>
+          <aside>
+            <h4>Fav dice values</h4>
+            <div className={styles.hChart}>
+              <BarChart data={stats.favDiceValues} />
+            </div>
+          </aside>
+          <aside>
+            <h4>Freq combinations</h4>
+            <div className={styles.sChart}>
+              <VertBarChart data={stats.favComb} />
+            </div>
+          </aside>
+        </>
+      ) : (
+        <div className={styles.loaderContainer}>
+          <LoadingIndicator dark />
+        </div>
+      )}
+    </section>
+  )
 }
 
 export default StatsPage

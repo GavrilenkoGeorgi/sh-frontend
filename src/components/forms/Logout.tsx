@@ -9,10 +9,9 @@ import { type RootState } from '../../store'
 import LoadingIndicator from '../layout/LoadingIndicator'
 import { getErrMsg } from '../../utils'
 import { ToastTypes } from '../../types'
-import styles from './Form.module.sass'
+import * as styles from './Form.module.sass'
 
 const Logout: FC = () => {
-
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [logoutApiCall] = useLogoutMutation()
@@ -26,27 +25,29 @@ const Logout: FC = () => {
       dispatch(logout())
       navigate('/')
     } catch (err: unknown) {
-      dispatch(setNotification({
-        msg: getErrMsg(err),
-        type: ToastTypes.ERROR
-      }))
+      dispatch(
+        setNotification({
+          msg: getErrMsg(err),
+          type: ToastTypes.ERROR
+        })
+      )
     } finally {
       setLoading(false)
     }
   }
 
-  return <button
-    type='button'
-    onClick={() => { void logoutHandler() }}
-    disabled={userInfo == null}
-    className={styles.button}
-  >
-    {loading
-      ? <LoadingIndicator dark />
-      : 'logout'
-    }
-  </button>
-
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        void logoutHandler()
+      }}
+      disabled={userInfo == null}
+      className={styles.button}
+    >
+      {loading ? <LoadingIndicator dark /> : 'logout'}
+    </button>
+  )
 }
 
 export default Logout

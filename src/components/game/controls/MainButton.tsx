@@ -5,7 +5,7 @@ import cx from 'classnames'
 import { rollDice } from '../../../store/slices/shSlice'
 import { setNotification } from '../../../store/slices/notificationSlice'
 import type { RootState } from '../../../store'
-import styles from './DnDDiceBoard.module.sass'
+import * as styles from './DnDDiceBoard.module.sass'
 import { ToastTypes } from '../../../types'
 
 import SaveIcon from '../../../assets/svg/save-result.svg'

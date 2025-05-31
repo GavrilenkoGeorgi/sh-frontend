@@ -1,6 +1,6 @@
 import React, { type FC } from 'react'
 import { type iProgressBar } from '../../types'
-import styles from './ProgressBar.module.sass'
+import * as styles from './ProgressBar.module.sass'
 
 const ProgressBar: FC<iProgressBar> = ({ count }) => {
   let width

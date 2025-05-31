@@ -6,10 +6,9 @@ import { type RootState } from '../../store'
 import { saveScore, gameOver } from '../../store/slices/shSlice'
 import { type CanSaveProps } from '../../types'
 import { Dice } from './Dice'
-import styles from './TrainingBoard.module.sass'
+import * as styles from './TrainingBoard.module.sass'
 
 const TrainingBoard: FC = () => {
-
   const { game } = useSelector((state: RootState) => state.sh)
   const dispatch = useDispatch()
 
@@ -28,27 +27,34 @@ const TrainingBoard: FC = () => {
     dispatch(gameOver())
   }
 
-  return <div className={styles.training}>
-    {Object.keys(game.school).map((key, index) =>
-      <div
-        id={key}
-        key={key}
-        className={cx(styles.result, {
-          [styles.savable]: game.school[key].score != null &&
-            !game.school[key].final
-        })}
-        onClick={canSave(game.school[key])
-          ? () => { save(key) }
-          : () => { checkGameOver() }
-        }
-      >
-        <div>
-          <Dice kind={index + 1} />
-          {game.school[key].score}
+  return (
+    <div className={styles.training}>
+      {Object.keys(game.school).map((key, index) => (
+        <div
+          id={key}
+          key={key}
+          className={cx(styles.result, {
+            [styles.savable]:
+              game.school[key].score != null && !game.school[key].final
+          })}
+          onClick={
+            canSave(game.school[key])
+              ? () => {
+                  save(key)
+                }
+              : () => {
+                  checkGameOver()
+                }
+          }
+        >
+          <div>
+            <Dice kind={index + 1} />
+            {game.school[key].score}
+          </div>
         </div>
-      </div>
-    )}
-  </div>
+      ))}
+    </div>
+  )
 }
 
 export default TrainingBoard

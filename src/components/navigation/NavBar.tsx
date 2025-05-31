@@ -7,12 +7,11 @@ import { useScrollDirection, useComponentVisible } from '../../hooks'
 
 import Logo from '../layout/Logo'
 import { MenuToggleBtn } from './MenuToggleBtn'
-import styles from './NavBar.module.sass'
+import * as styles from './NavBar.module.sass'
 import LoadingIndicator from '../layout/LoadingIndicator'
 import UserIcon from '../../assets/svg/icon-user.svg'
 
 const NavBar: FC = () => {
-
   const { userInfo } = useSelector((state: RootState) => state.auth)
   const { busy } = useSelector((state: RootState) => state.notification)
   const location = useLocation()
@@ -38,7 +37,7 @@ const NavBar: FC = () => {
 
   // close mobile menu and hide overlay on scroll
   useEffect(() => {
-    setOpen(prevState => {
+    setOpen((prevState) => {
       return prevState && false
     })
   }, [scrollDirection])
@@ -74,52 +73,53 @@ const NavBar: FC = () => {
     }
   ]
 
-  const navLinks = navigation.map(link =>
-    <NavLink to={link.url}
+  const navLinks = navigation.map((link) => (
+    <NavLink
+      to={link.url}
       key={link.url}
-      className={({ isActive }) => isActive
-        ? `${styles.navLink} ${styles.current}`
-        : styles.navLink
-       }
+      className={({ isActive }) =>
+        isActive ? `${styles.navLink} ${styles.current}` : styles.navLink
+      }
     >
       {link.label}
     </NavLink>
+  ))
+
+  const navbarStyle = `${styles.nav} ${
+    scrollDirection === 'down' ? styles.hiddenNav : styles.visibleNav
+  }` // cx??
+
+  return (
+    <>
+      <nav className={navbarStyle} ref={ref}>
+        <div className={styles.navigationContainer}>
+          <Logo />
+          <div className={styles.userIcon}>
+            <UserIcon />
+          </div>
+          {userInfo != null && (
+            <Link
+              to="/stats"
+              className={styles.userName}
+              aria-label={userInfo.name}
+            >
+              {userInfo.name}
+            </Link>
+          )}
+          {busy && <LoadingIndicator dark />}
+          <div className={styles.toggleBtnContainer} onClick={toggleMenu}>
+            <MenuToggleBtn open={open} />
+          </div>
+          <div className={`${styles.linksContainer} ${open && styles.open}`}>
+            {navLinks}
+          </div>
+        </div>
+      </nav>
+      <div
+        className={`${styles.overlay} ${open ? styles.openOverlay : ''}`}
+      ></div>
+    </>
   )
-
-  const navbarStyle = `${styles.nav} ${scrollDirection === 'down' ? styles.hiddenNav : styles.visibleNav}` // cx??
-
-  return <>
-    <nav className={navbarStyle} ref={ref}>
-      <div className={styles.navigationContainer}>
-        <Logo />
-        <div className={styles.userIcon}>
-          <UserIcon />
-        </div>
-        {userInfo != null &&
-          <Link to='/stats'
-          className={styles.userName}
-          aria-label={userInfo.name}
-          >
-            {userInfo.name}
-          </Link>
-        }
-        {busy && <LoadingIndicator dark />}
-        <div
-          className={styles.toggleBtnContainer}
-          onClick={toggleMenu}
-        >
-          <MenuToggleBtn open={open} />
-        </div>
-        <div
-          className={`${styles.linksContainer} ${open && styles.open}`}
-        >
-          {navLinks}
-        </div>
-      </div>
-    </nav>
-    <div className={`${styles.overlay} ${open ? styles.openOverlay : ''}`}>
-    </div>
-  </>
 }
 
 export default NavBar
