@@ -2,7 +2,7 @@ import React from 'react'
 import { type Dice } from '../../../types'
 import { Dice as DiceSVG } from '../Dice'
 import { motion } from 'framer-motion'
-import styles from './DnDDiceBoard.module.sass'
+import * as styles from './DnDDiceBoard.module.sass'
 
 interface DiceItemProps {
   dice: Dice

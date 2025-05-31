@@ -3,7 +3,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   Route
-} from 'react-router-dom'
+} from 'react-router'
 
 import App from '../App'
 import LoginPage from '../pages/Login'

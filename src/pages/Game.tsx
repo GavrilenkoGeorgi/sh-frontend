@@ -1,6 +1,6 @@
 import React, { type FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import CountUp from 'react-countup'
 
 // state
@@ -18,7 +18,7 @@ import ProgressBar from '../components/layout/ProgressBar'
 import DnDDiceBoard from '../components/game/controls/DnDDiceBoard'
 import Modal from '../components/layout/Modal'
 import ConfettiAnimation from '../components/layout/ConfettiAnimation'
-import styles from './Game.module.sass'
+import * as styles from './Game.module.sass'
 import Frame from '../assets/svg/phone-frame.svg'
 
 const GamePage: FC = () => {

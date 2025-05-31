@@ -4,14 +4,23 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const WorkboxPlugin = require('workbox-webpack-plugin')
 const WebpackPwaManifest = require('webpack-pwa-manifest')
 const Dotenv = require('dotenv-webpack')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const SitemapPlugin = require('sitemap-webpack-plugin').default
 const CopyPlugin = require('copy-webpack-plugin')
 
 const prod = process.env.NODE_ENV === 'production'
-const paths = ['/', '/login', '/game', '/help', '/register', '/stats', '/profile'] //!
+const paths = [
+  '/',
+  '/login',
+  '/game',
+  '/help',
+  '/register',
+  '/stats',
+  '/profile'
+] //!
 
 const plugins = [
   new HtmlWebpackPlugin({
@@ -21,7 +30,7 @@ const plugins = [
   new Dotenv({
     systemvars: true
   }),
-  (process.env.NODE_ENV === 'development') ? new BundleAnalyzerPlugin() : '',
+  process.env.NODE_ENV === 'development' ? new BundleAnalyzerPlugin() : '',
   new MiniCssExtractPlugin(),
   new SitemapPlugin({
     base: 'https://sharlushka.net',
@@ -107,13 +116,16 @@ module.exports = {
       cacheGroups: {
         vendor: {
           test: /[\\\/]node_modules[\\\/]/,
-          name (module) {
+          name(module) {
             // get the name. E.g. node_modules/pkgName/not/this/part.js
             // or node_modules/pkgName
-            const pkg = module.context.match(/[\\\/]node_modules[\\\/](.*?)([\\\/]|$)/)
+            const pkg = module.context.match(
+              /[\\\/]node_modules[\\\/](.*?)([\\\/]|$)/
+            )
             let pkgName
-            if (pkg !== null) { // the last one is null
-              [, pkgName] = pkg // get the second item
+            if (pkg !== null) {
+              // the last one is null
+              ;[, pkgName] = pkg // get the second item
               // npm package names are URL-safe, but some servers don't like @ symbols
               return `npm.${pkgName.replace('@', '')}`
             } else return false
@@ -132,24 +144,47 @@ module.exports = {
         },
         use: 'ts-loader'
       },
+      // 1️⃣ CSS-Module rule: only files ending in .module.scss/.module.css
       {
-        test: /\.(sa|sc|c)ss$/,
-        exclude: /node_modules/,
+        test: /\.module\.(sa|sc|c)ss$/, // <-- notice the “.module.” in the pattern
+        exclude: /node_modules/, // ignore node_modules (if you never publish CSS modules to npm)
         use: [
-          { loader: 'style-loader' },
+          'style-loader', // 1. Injects <style> tags at runtime
           {
-            loader: 'css-loader',
+            loader: 'css-loader', // 2. Interprets @import and url() & enables "modules"
             options: {
               modules: {
+                // How the generated class names should look
                 localIdentName: '[local]--[hash:base64:5]'
               }
             }
           },
-          { loader: 'sass-loader',
+          {
+            loader: 'sass-loader', // 3. Compiles Sass → CSS
             options: {
-              api: "modern",
+              // “modern” is fine, or remove if you don't need a special API
+              implementation: require('sass')
             }
-           }
+          }
+        ]
+      },
+
+      // 2️⃣ Global CSS/Sass rule: everything else (.scss/.css) except .module
+      {
+        test: /\.(sa|sc|c)ss$/, // match .scss/.sass/.css
+        exclude: [
+          /\.module\.(sa|sc|c)ss$/, // exclude any “.module.scss” or “.module.css”
+          /node_modules/ // <-- newly added exclusion
+        ],
+        use: [
+          'style-loader',
+          'css-loader', // No `modules: true` here
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass')
+            }
+          }
         ]
       },
       {

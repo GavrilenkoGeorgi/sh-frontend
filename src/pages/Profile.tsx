@@ -1,26 +1,27 @@
 import React, { type FC } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 import type { RootState } from '../store'
 import ProfileForm from '../components/forms/Profile'
 
-import styles from './Profile.module.sass'
+import * as styles from './Profile.module.sass'
 
 const Profile: FC = () => {
-
   const { userInfo } = useSelector((state: RootState) => state.auth)
 
-  return <section className={styles.container}>
-    <h1>Update profile</h1>
-    <ProfileForm data={userInfo} />
-    <aside className={styles.text}>
-      <p>
-        Looking for a way to <Link to='/deleteacc'>
-        delete your account</Link> or <Link to='/clearstats'>clear stats</Link>?
-      </p>
-    </aside>
-  </section>
+  return (
+    <section className={styles.container}>
+      <h1>Update profile</h1>
+      <ProfileForm data={userInfo} />
+      <aside className={styles.text}>
+        <p>
+          Looking for a way to <Link to="/deleteacc">delete your account</Link>{' '}
+          or <Link to="/clearstats">clear stats</Link>?
+        </p>
+      </aside>
+    </section>
+  )
 }
 
 export default Profile

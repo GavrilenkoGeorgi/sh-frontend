@@ -27,7 +27,7 @@ import {
 import BoardSection from './BoardSection'
 import DiceItem from './DiceItem'
 import MainButton from './MainButton'
-import styles from './DnDDiceBoard.module.sass'
+import * as styles from './DnDDiceBoard.module.sass'
 
 import { Portal } from '../../layout/Portal'
 
@@ -219,11 +219,7 @@ const DnDDiceBoard: FC = () => {
           ))}
           {/* draggable item animation */}
           <Portal>
-            <DragOverlay
-              dropAnimation={dropAnimation}
-              className={styles.dragOverlayWrapper}
-              adjustScale
-            >
+            <DragOverlay dropAnimation={dropAnimation} adjustScale>
               {item != null ? <DiceItem dice={item} /> : null}
             </DragOverlay>
           </Portal>

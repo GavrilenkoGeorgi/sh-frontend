@@ -1,11 +1,14 @@
 import React from 'react'
 import { useDroppable } from '@dnd-kit/core'
-import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
+import {
+  SortableContext,
+  horizontalListSortingStrategy
+} from '@dnd-kit/sortable'
 
 import { type Dice } from '../../../types'
 import DiceItem from './DiceItem'
 import SortableDiceItem from './SortableDiceItem'
-import styles from './DnDDiceBoard.module.sass'
+import * as styles from './DnDDiceBoard.module.sass'
 
 interface BoardSectionProps {
   id: string

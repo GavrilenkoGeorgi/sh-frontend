@@ -1,5 +1,5 @@
 import React, { type FC } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router'
 import { useSelector } from 'react-redux'
 
 import { type RootState } from '../store'
@@ -9,7 +9,7 @@ const ProtectedRoute: FC = () => {
 
   if (userInfo != null) {
     return <Outlet />
-  } else return <Navigate to='/login' replace />
+  } else return <Navigate to="/login" replace />
 }
 
 export default ProtectedRoute
