@@ -19,7 +19,7 @@ import DnDDiceBoard from '../components/game/controls/DnDDiceBoard'
 import Modal from '../components/layout/Modal'
 import ConfettiAnimation from '../components/layout/ConfettiAnimation'
 import * as styles from './Game.module.sass'
-import Frame from '../assets/svg/phone-frame.svg'
+import Frame from '../assets/svg/phone-frame2.svg'
 
 const GamePage: FC = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)

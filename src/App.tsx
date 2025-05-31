@@ -7,6 +7,7 @@ import { setNotification, setBusy } from './store/slices/notificationSlice'
 import { ToastTypes } from './types'
 import { getErrMsg } from './utils'
 import { useDispatch } from 'react-redux'
+import * as styles from './pages/SharedStyles.module.sass'
 
 const App: FC = () => {
   const dispatch = useDispatch()
@@ -43,6 +44,7 @@ const App: FC = () => {
       key={pathname}
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
+      className={styles.motionDiv}
       transition={{
         duration: 1,
         ease: [0.6, -0.05, 0.01, 0.99],

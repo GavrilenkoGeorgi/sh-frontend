@@ -3,20 +3,21 @@
 
 .game
   font-weight: 300
-  font-size: 1.5rem
+  font-size: 1.3rem
   color: colors.$primary-color
-  flex-grow: 1
   display: flex
+  flex-grow: 1
   flex-direction: column
   justify-content: center
-  max-width: variables.$pageContainerWidth
-  position: relative
-  margin: 0 auto
+  position: sticky
+  height: 100%
   @media screen and (min-width: variables.$medium)
+    max-width: variables.$pageContainerWidth
     margin: 1rem auto
+    max-height: variables.$mockFrameHeight // mock frame height
   h1
     text-align: center
-    margin: 0 0 1.5rem
+    margin: 0
     font-weight: 350
 
 .frame
@@ -33,10 +34,14 @@
   display: flex
   flex-direction: column
   justify-content: space-evenly
-  border-radius: 3rem
+  height: 100%
   @media screen and (min-width: variables.$medium)
-    padding: variables.$mobileFramePadding
-    padding-bottom: 0
+    padding: 2rem 1.5rem 0
+    border-radius: 4rem
+    box-shadow: 14px 16px 28px -14px #b989c2
+  &:last-child
+    position: relative
+    bottom: 0
   
 .phone
   width: 100%
