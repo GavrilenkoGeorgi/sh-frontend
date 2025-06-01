@@ -3,34 +3,50 @@
 
 .controls
   padding: 0 1rem
-  margin-top: 1rem
+  @media screen and (min-width: variables.$medium)
+    display: flex
+    gap: 1rem
+    max-width: 10rem
+    padding: 0
 
 .boardSections
   display: flex
   justify-content: space-between
   gap: .5rem
-  margin: .5rem 0 0
+  @media screen and (min-width: variables.$medium)
+    flex-direction: row
+    flex-wrap: wrap
 
 .boardSections > div
-  min-width: 15%
+  padding: .5rem
+  min-width: 2rem
+  
   flex-grow: 1
 
 .board
   border-radius: .25rem
   background-color: colors.$primary-light-color
-  padding: .4rem .25rem 0 //! mobile safari debug
+  // padding: .4rem .25rem 0 //! mobile safari debug
+  display: flex
+  align-items: center
   &:first-child
     background-color: colors.$color-light-orange
 
 .items
   display: flex
+  width: 100%
   justify-content: space-around
-  gap: .25rem
+  @media screen and (min-width: variables.$medium)
+    display: flex
+    flex-direction: column
+    height: 100%
 
 .dice
   // display: flex //! mobile safari debug
+  display: flex
   touch-action: none
   --webkit-touch-callout: none
+
   svg
     width: 100%
     max-width: variables.$diceMaxHeight
@@ -48,6 +64,8 @@
   transition-property: background-color, color, border
   transition-duration: .5s
   transition-timing-function: linear
+  @media screen and (min-width: variables.$medium)
+    margin-top: 0
 
 .rolled
   background-color: colors.$primary-light-color

@@ -1,13 +1,19 @@
 @use "../../styles/colors"
+@use "../../styles/variables"
 
 .results
   display: flex
   flex-direction: column
   padding-left: 1rem
+  justify-content: space-between
+  @media screen and (min-width: variables.$medium)
+    padding: 0
 
 .name
   margin: .5rem 0
   text-transform: capitalize
+  @media screen and (min-width: variables.$medium)
+    margin: 0
 
 .score
   display: grid

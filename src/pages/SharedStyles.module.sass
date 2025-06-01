@@ -2,8 +2,7 @@
 @use '../styles/variables'
 
 .container
-  padding: variables.$mobilePagePadding 1rem variables.$mobilePagePadding
-  max-width: variables.$pageContainerWidth
+  max-width: 50rem
   margin: 0 auto
   h1, h2
     color: colors.$dark-gray
@@ -37,3 +36,19 @@
 strong
   color: colors.$primary-color
   font-weight: 450
+
+.motionDiv
+  height: calc(100vh - variables.$navbarHeight)
+  display: flex
+  align-items: center
+  justify-content: center
+
+.privacy, .textPage
+  @media screen and (min-width: variables.$medium)
+    max-width: variables.$desktopTextPagewidth
+
+.privacy
+  padding: 60rem 1rem 5rem
+  
+.textPage
+  padding: 30rem 1rem 5rem
