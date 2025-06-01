@@ -19,7 +19,6 @@ import DnDDiceBoard from '../components/game/controls/DnDDiceBoard'
 import Modal from '../components/layout/Modal'
 import ConfettiAnimation from '../components/layout/ConfettiAnimation'
 import * as styles from './Game.module.sass'
-import Frame from '../assets/svg/phone-frame2.svg'
 
 const GamePage: FC = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
@@ -70,10 +69,16 @@ const GamePage: FC = () => {
   return (
     <section className={styles.game}>
       <div className={styles.content}>
-        <h1>
-          Score:&nbsp;
+        <div className={styles.score}>
+          <div className={styles.label}>
+            <div>S</div>
+            <div>
+              <span>co</span>
+              <span>re</span>
+            </div>
+          </div>
           <CountUp end={game.score} duration={5} preserveValue={true} />
-        </h1>
+        </div>
         {/* Training */}
         <TrainingBoard />
         {/* Game */}
@@ -106,9 +111,6 @@ const GamePage: FC = () => {
           </>
         )}
         <ProgressBar count={game.rollCount} />
-      </div>
-      <div className={styles.frame}>
-        <Frame className={styles.phone} />
       </div>
     </section>
   )

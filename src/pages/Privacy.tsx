@@ -3,7 +3,7 @@ import * as styles from './SharedStyles.module.sass'
 
 const Privacy: FC = () => {
   return (
-    <section className={styles.container}>
+    <section className={styles.privacy}>
       <h1>Privacy Policy for Sharlushka Dice Game</h1>
       <p className={styles.dateStamp}>Last updated: 13.12.2023</p>
       <article>

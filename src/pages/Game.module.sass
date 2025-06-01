@@ -12,23 +12,40 @@
   position: sticky
   height: 100%
   @media screen and (min-width: variables.$medium)
-    max-width: variables.$pageContainerWidth
-    margin: 1rem auto
+    max-width: variables.$landscapeContainerWidth
+    margin: 0 auto
     max-height: variables.$mockFrameHeight // mock frame height
-  h1
-    text-align: center
-    margin: 0
-    font-weight: 350
 
-.frame
-  position: absolute
-  top: 0
-  left: 0
-  width: 100%
-  z-index: -1
-  display: none
+.score
+  text-align: center
+  margin: 0
+  font-weight: 350
+  display: flex
+  align-items: center
+  justify-content: center
   @media screen and (min-width: variables.$medium)
-    display: inline-block
+    flex-direction: column
+    justify-content: center
+  span
+    font-size: 2rem
+    font-weight: 600
+
+.label
+  display: flex
+  flex-direction: row
+  align-items: center
+  font-size: 2rem
+  font-weight: 600
+  margin-right: .5rem
+  @media screen and (min-width: variables.$medium)
+    margin-right: 0
+  div
+    display: flex
+    flex-direction: column
+    span
+      font-size: 1rem
+      line-height: .9rem
+      font-weight: 600
 
 .content
   display: flex
@@ -36,9 +53,12 @@
   justify-content: space-evenly
   height: 100%
   @media screen and (min-width: variables.$medium)
-    padding: 2rem 1.5rem 0
-    border-radius: 4rem
-    box-shadow: 14px 16px 28px -14px #b989c2
+    border: 1px solid colors.$primary-light-color
+    box-shadow: 11px 12px 36px 1px rgba(124,124,124,0.5)
+    padding: 1rem 0
+    border-radius: 3.5rem
+    flex-direction: row
+    height: 20rem
   &:last-child
     position: relative
     bottom: 0
