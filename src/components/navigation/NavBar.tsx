@@ -98,7 +98,7 @@ const NavBar: FC = () => {
             <Link
               to={userInfo != null ? '/profile' : '/login'}
               className={styles.userName}
-              aria-label={userInfo?.name}
+              aria-label={userInfo?.name ?? 'Guest'}
             >
               <UserIcon />
             </Link>
