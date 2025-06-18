@@ -5,8 +5,7 @@
   padding: 0 1rem
   @media screen and (min-width: variables.$medium)
     display: flex
-    gap: 1rem
-    max-width: 10rem
+    gap: .6rem
     padding: 0
 
 .boardSections
@@ -14,13 +13,12 @@
   justify-content: space-between
   gap: .5rem
   @media screen and (min-width: variables.$medium)
-    flex-direction: row
-    flex-wrap: wrap
+    flex-direction: column-reverse
+    height: 100%
 
 .boardSections > div
   padding: .5rem
-  min-width: 2rem
-  
+  min-width: variables.$diceMaxHeight
   flex-grow: 1
 
 .board
@@ -36,21 +34,23 @@
   display: flex
   width: 100%
   justify-content: space-around
+  gap: .5rem
   @media screen and (min-width: variables.$medium)
     display: flex
     flex-direction: column
     height: 100%
+    max-width: variables.$controlsWidth
+
 
 .dice
   // display: flex //! mobile safari debug
   display: flex
   touch-action: none
+  cursor: grab
   --webkit-touch-callout: none
 
   svg
     width: 100%
-    max-width: variables.$diceMaxHeight
-    max-height: variables.$diceMaxHeight
 
 .rollBtn
   border: none
@@ -60,12 +60,14 @@
   text-transform: uppercase
   width: 100%
   margin-top: .5rem
-  min-height: variables.$diceMaxHeight + .5rem
+  min-height: variables.$diceMaxHeight + 1rem
   transition-property: background-color, color, border
   transition-duration: .5s
   transition-timing-function: linear
+  cursor: pointer
   @media screen and (min-width: variables.$medium)
     margin-top: 0
+    width: variables.$controlsWidth + 1rem
 
 .rolled
   background-color: colors.$primary-light-color

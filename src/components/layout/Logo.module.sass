@@ -1,13 +1,23 @@
 @use '../../styles/colors'
 @use '../../styles/variables'
 
+.logoContainer
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 0.5rem
+  position: relative
+  @media (prefers-color-scheme: dark)
+    background-color: colors.$dark-gray
+
 .logo
   cursor: pointer
   display: flex
   max-width: 2.5rem
   transition: opacity variables.$defaultAnimLength ease-in
-  margin-right: auto
+  margin-right: .75rem
   svg
     width: 100%
+    min-width: 2.5rem
   &:hover
     opacity: .5

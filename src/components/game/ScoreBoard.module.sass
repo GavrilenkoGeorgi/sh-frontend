@@ -6,12 +6,16 @@
   flex-direction: column
   padding-left: 1rem
   justify-content: space-between
+  gap: .5rem
   @media screen and (min-width: variables.$medium)
     padding: 0
+    flex-grow: 1
 
 .name
   margin: .5rem 0
   text-transform: capitalize
+  &:hover
+    color: colors.$color-orange
   @media screen and (min-width: variables.$medium)
     margin: 0
 
@@ -25,6 +29,7 @@
   display: flex
   justify-content: center
   align-items: center
+  cursor: pointer
 
 .preliminaryResult
   color: colors.$color-orange

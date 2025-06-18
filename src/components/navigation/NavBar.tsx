@@ -94,19 +94,25 @@ const NavBar: FC = () => {
       <nav className={navbarStyle} ref={ref}>
         <div className={styles.navigationContainer}>
           <Logo />
-          <div className={styles.userIcon}>
-            <UserIcon />
-          </div>
-          {userInfo != null && (
+          <div className={styles.user}>
             <Link
-              to="/stats"
+              to={userInfo != null ? '/profile' : '/login'}
               className={styles.userName}
-              aria-label={userInfo.name}
+              aria-label={userInfo?.name}
             >
-              {userInfo.name}
+              <UserIcon />
             </Link>
-          )}
-          {busy && <LoadingIndicator dark />}
+            {userInfo != null && (
+              <Link
+                to="/stats"
+                className={styles.userName}
+                aria-label={userInfo.name}
+              >
+                {userInfo.name}
+              </Link>
+            )}
+            {busy && <LoadingIndicator dark />}
+          </div>
           <div className={styles.toggleBtnContainer} onClick={toggleMenu}>
             <MenuToggleBtn open={open} />
           </div>
@@ -115,9 +121,9 @@ const NavBar: FC = () => {
           </div>
         </div>
       </nav>
-      <div
+      {/* <div
         className={`${styles.overlay} ${open ? styles.openOverlay : ''}`}
-      ></div>
+      ></div> */}
     </>
   )
 }

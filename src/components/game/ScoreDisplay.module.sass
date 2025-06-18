@@ -1,0 +1,25 @@
+@use '../../styles/colors'
+@use '../../styles/variables' 
+
+.score
+  text-align: center
+  margin: 0
+  display: flex
+  align-items: center
+  justify-content: center
+  color: colors.$primary-color
+  font-weight: 400
+
+.label
+  display: flex
+  flex-direction: row
+  align-items: center
+  margin-right: .5rem
+  div
+    display: flex
+    flex-direction: column
+    span
+      line-height: 1rem
+
+.dropCap
+  font-size: variables.$largeFontSize

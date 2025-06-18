@@ -1,7 +1,6 @@
 import React, { type FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import CountUp from 'react-countup'
 
 // state
 import type { RootState } from '../store'
@@ -69,16 +68,6 @@ const GamePage: FC = () => {
   return (
     <section className={styles.game}>
       <div className={styles.content}>
-        <div className={styles.score}>
-          <div className={styles.label}>
-            <div>S</div>
-            <div>
-              <span>co</span>
-              <span>re</span>
-            </div>
-          </div>
-          <CountUp end={game.score} duration={5} preserveValue={true} />
-        </div>
         {/* Training */}
         <TrainingBoard />
         {/* Game */}

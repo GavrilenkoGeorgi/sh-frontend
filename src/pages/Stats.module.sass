@@ -1,9 +1,13 @@
 @use '../styles/colors'
 @use '../styles/variables'
 
-.container
-  margin-top: variables.$mobilePagePadding
-  padding: 0 1rem
+.statsPage
+  width: 100%
+  max-width: variables.$desktopTextPagewidth
+  padding-top: 18rem
+
+.stats
+  padding-top: 18rem
   h1
     color: colors.$primary-color
   h1, h2, h3, h4
@@ -23,7 +27,6 @@
   margin-top: 2rem
 
 .hChart, .sChart
-  max-width: 35rem
   margin: 0 auto
   height: 10rem
   border-radius: .25rem
