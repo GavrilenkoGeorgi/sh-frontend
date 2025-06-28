@@ -2,7 +2,7 @@
 @use '../../../styles/variables'
 
 .controls
-  padding: 0 1rem
+  padding: 0 .5rem
   @media screen and (min-width: variables.$medium)
     display: flex
     gap: .6rem
@@ -17,8 +17,8 @@
     height: 100%
 
 .boardSections > div
-  padding: .5rem
-  min-width: variables.$diceMaxHeight
+  padding: .5rem .5rem
+  min-width: variables.$emptyDropZoneWidth
   flex-grow: 1
 
 .board
@@ -34,7 +34,7 @@
   display: flex
   width: 100%
   justify-content: space-around
-  gap: .5rem
+  gap: .25rem
   @media screen and (min-width: variables.$medium)
     display: flex
     flex-direction: column

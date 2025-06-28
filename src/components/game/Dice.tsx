@@ -14,7 +14,6 @@ interface iDice {
 }
 
 export const Dice: FC<iDice> = ({ kind, onClick }) => {
-
   const handleClick = (): void => {
     if (onClick != null) onClick()
   }
@@ -35,5 +34,4 @@ export const Dice: FC<iDice> = ({ kind, onClick }) => {
     default:
       return <Empty onClick={handleClick} />
   }
-
 }

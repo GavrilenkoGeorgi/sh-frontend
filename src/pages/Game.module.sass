@@ -3,7 +3,7 @@
 
 .game
   font-weight: 300
-  font-size: 1.3rem
+  font-size: 1.8rem
   color: colors.$primary-color
   display: flex
   flex-grow: 1
@@ -15,12 +15,15 @@
     max-width: variables.$landscapeContainerWidth
     margin: 0 auto
     max-height: variables.$mockFrameHeight // mock frame height
+    font-size: 1.25rem
+  @media screen and (max-height: variables.$smallHeight)
+    font-size: 1.2rem
 
 .content
   display: flex
   flex-direction: column
   justify-content: space-between
-  padding: 1.25rem 0
+  padding: 1rem 0
   height: 100%
   @media screen and (min-width: variables.$medium)
     border: 1px solid colors.$primary-light-color
