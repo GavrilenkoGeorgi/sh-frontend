@@ -6,6 +6,7 @@ import {
 } from 'react-router'
 
 import App from '../App'
+import { ROUTES } from '../constants/routes'
 import LoginPage from '../pages/Login'
 import ProfilePage from '../pages/Profile'
 import HelpPage from '../pages/Help'
@@ -39,7 +40,7 @@ const router = createBrowserRouter(
     >
       <Route
         index={true}
-        path="/"
+        path={ROUTES.HOME}
         element={
           <Suspense fallback={<Fallback />}>
             <MainPage />
@@ -48,7 +49,7 @@ const router = createBrowserRouter(
       />
 
       <Route
-        path="/game"
+        path={ROUTES.GAME}
         element={
           <Suspense fallback={<Fallback />}>
             <GamePage />
@@ -56,24 +57,24 @@ const router = createBrowserRouter(
         }
       />
 
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/help" element={<HelpPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/forgotpwd" element={<PasswordPage />} />
-      <Route path="/privacy" element={<PrivacyPage />} />
-      <Route path="/deleteacc" element={<DeleteAccountPage />} />
-      <Route path="/clearstats" element={<ClearStatsPage />} />
+      <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+      <Route path={ROUTES.HELP} element={<HelpPage />} />
+      <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
+      <Route path={ROUTES.FORGOT_PASSWORD} element={<PasswordPage />} />
+      <Route path={ROUTES.PRIVACY} element={<PrivacyPage />} />
+      <Route path={ROUTES.DELETE_ACCOUNT} element={<DeleteAccountPage />} />
+      <Route path={ROUTES.CLEAR_STATS} element={<ClearStatsPage />} />
 
       <Route path="" element={<ProtectedRoute />}>
         <Route
-          path="/stats"
+          path={ROUTES.STATS}
           element={
             <Suspense fallback={<Fallback />}>
               <StatsPage />
             </Suspense>
           }
         />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
       </Route>
     </Route>
   )
