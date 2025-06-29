@@ -3,7 +3,10 @@ import ShScore from '../../utils/sh-score'
 import {
   SchoolCombinations,
   GameCombinations,
-  type iCombination
+  type iCombination,
+  type SaveScorePayload,
+  isSchoolCombination,
+  isGameCombination
 } from '../../types'
 
 const schoolCombNames = Object.values(SchoolCombinations)
@@ -12,7 +15,7 @@ const gameCombNames = Object.values(GameCombinations)
 const school: Record<string, { final: boolean; score: number | null }> = {}
 const combinations: Record<string, number[]> = {}
 
-// these are saved results
+// these are saved results?
 const results: iCombination = {
   pair: 0,
   twoPairs: 0,
@@ -88,11 +91,11 @@ const shSlice = createSlice({
         }
       }
     },
-    saveScore: ({ game }, { payload }) => {
+    saveScore: ({ game }, { payload }: { payload: SaveScorePayload }) => {
       if (
         game.rollCount > 0 &&
         game.turn <= 6 &&
-        schoolCombNames.includes(payload)
+        isSchoolCombination(payload)
       ) {
         // save 'training' score
         if (
@@ -117,7 +120,8 @@ const shSlice = createSlice({
       } else if (
         game.rollCount > 0 &&
         game.turn > 6 &&
-        gameCombNames.includes(payload)
+        isGameCombination(payload) &&
+        game.combinations[payload].length < 3 // Check if combination hasn't been saved 3 times
       ) {
         // click on combination name saves zero
         // click on result saves current result
