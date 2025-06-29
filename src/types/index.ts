@@ -180,3 +180,17 @@ export enum ToastTypes {
   SUCCESS = 'success',
   WARNING = 'warning'
 }
+
+// action payload types
+export type SaveScorePayload = SchoolCombinations | GameCombinations
+
+// type guards
+export function isSchoolCombination(
+  value: string
+): value is SchoolCombinations {
+  return Object.values(SchoolCombinations).includes(value as SchoolCombinations)
+}
+
+export function isGameCombination(value: string): value is GameCombinations {
+  return Object.values(GameCombinations).includes(value as GameCombinations)
+}

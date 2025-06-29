@@ -4,7 +4,11 @@ import cx from 'classnames'
 
 import { type RootState } from '../../store'
 import { saveScore, gameOver } from '../../store/slices/shSlice'
-import { type CanSaveProps } from '../../types'
+import {
+  SaveScorePayload,
+  type CanSaveProps,
+  SchoolCombinations
+} from '../../types'
 import { Dice } from './Dice'
 import * as styles from './TrainingBoard.module.sass'
 
@@ -12,7 +16,7 @@ const TrainingBoard: FC = () => {
   const { game } = useSelector((state: RootState) => state.sh)
   const dispatch = useDispatch()
 
-  const save = (id: string): void => {
+  const save = (id: SaveScorePayload): void => {
     if (game.rollCount > 0) {
       dispatch(saveScore(id))
     }
@@ -29,7 +33,7 @@ const TrainingBoard: FC = () => {
 
   return (
     <div className={styles.training}>
-      {Object.keys(game.school).map((key, index) => (
+      {Object.values(SchoolCombinations).map((key, index) => (
         <div
           id={key}
           key={key}
