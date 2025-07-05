@@ -1,19 +1,22 @@
 import React, { type FC, useState, useEffect } from 'react'
 import { NavLink, useLocation, Link } from 'react-router'
-import { useSelector } from 'react-redux'
-import type { RootState } from '../../store'
 import type { navLink } from '../../types'
-import { useScrollDirection, useComponentVisible } from '../../hooks'
+import {
+  useScrollDirection,
+  useComponentVisible,
+  SCROLL_DIRECTION
+} from '../../hooks'
+import cx from 'classnames'
 
 import Logo from '../layout/Logo'
 import { MenuToggleBtn } from './MenuToggleBtn'
 import * as styles from './NavBar.module.sass'
-import LoadingIndicator from '../layout/LoadingIndicator'
-import UserIcon from '../../assets/svg/icon-user.svg'
+
+import { ROUTES } from '../../constants/routes'
+import { ScoreDisplay } from '../game/ScoreDisplay'
+import { UserLInk } from './UserLink'
 
 const NavBar: FC = () => {
-  const { userInfo } = useSelector((state: RootState) => state.auth)
-  const { busy } = useSelector((state: RootState) => state.notification)
   const location = useLocation()
   const scrollDirection = useScrollDirection()
 
@@ -45,31 +48,31 @@ const NavBar: FC = () => {
   const navigation: navLink[] = [
     {
       label: 'Game',
-      url: '/game'
+      url: ROUTES.GAME
     },
     {
       label: 'Profile',
-      url: '/profile'
+      url: ROUTES.PROFILE
     },
     {
       label: 'Login',
-      url: '/login'
+      url: ROUTES.LOGIN
     },
     {
       label: 'Stats',
-      url: '/stats'
+      url: ROUTES.STATS
     },
     {
       label: 'Register',
-      url: '/register'
+      url: ROUTES.REGISTER
     },
     {
       label: 'Privacy',
-      url: '/privacy'
+      url: ROUTES.PRIVACY
     },
     {
       label: 'Help',
-      url: '/help'
+      url: ROUTES.HELP
     }
   ]
 
@@ -78,53 +81,39 @@ const NavBar: FC = () => {
       to={link.url}
       key={link.url}
       className={({ isActive }) =>
-        isActive ? `${styles.navLink} ${styles.current}` : styles.navLink
+        cx(styles.navLink, {
+          [styles.current]: isActive
+        })
       }
     >
       {link.label}
     </NavLink>
   ))
 
-  const navbarStyle = `${styles.nav} ${
-    scrollDirection === 'down' ? styles.hiddenNav : styles.visibleNav
-  }` // cx??
-
   return (
-    <>
-      <nav className={navbarStyle} ref={ref}>
-        <div className={styles.navigationContainer}>
-          <Logo />
-          <div className={styles.user}>
-            <Link
-              to={userInfo != null ? '/profile' : '/login'}
-              className={styles.userName}
-              aria-label={userInfo?.name ?? 'Guest'}
-            >
-              <UserIcon />
-            </Link>
-            {userInfo != null && (
-              <Link
-                to="/stats"
-                className={styles.userName}
-                aria-label={userInfo.name}
-              >
-                {userInfo.name}
-              </Link>
-            )}
-            {busy && <LoadingIndicator dark />}
-          </div>
-          <div className={styles.toggleBtnContainer} onClick={toggleMenu}>
-            <MenuToggleBtn open={open} />
-          </div>
-          <div className={`${styles.linksContainer} ${open && styles.open}`}>
-            {navLinks}
-          </div>
+    <nav
+      className={cx(styles.nav, {
+        [styles.hiddenNav]: scrollDirection === SCROLL_DIRECTION.DOWN,
+        [styles.visibleNav]: scrollDirection !== SCROLL_DIRECTION.DOWN
+      })}
+      ref={ref}
+    >
+      <div className={styles.navigationContainer}>
+        <Logo />
+        <ScoreDisplay />
+        <div className={styles.toggleBtnContainer} onClick={toggleMenu}>
+          <MenuToggleBtn open={open} />
         </div>
-      </nav>
-      {/* <div
-        className={`${styles.overlay} ${open ? styles.openOverlay : ''}`}
-      ></div> */}
-    </>
+        <div
+          className={cx(styles.linksContainer, {
+            [styles.open]: open
+          })}
+        >
+          <UserLInk />
+          {navLinks}
+        </div>
+      </div>
+    </nav>
   )
 }
 

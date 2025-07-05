@@ -3,7 +3,7 @@
 
 .game
   font-weight: 300
-  font-size: 1.8rem
+  font-size: 1.3rem
   color: colors.$primary-color
   display: flex
   flex-grow: 1
@@ -11,6 +11,8 @@
   justify-content: center
   position: sticky
   height: 100%
+  @media screen and (min-width: variables.$small)
+    font-size: 1.5rem
   @media screen and (min-width: variables.$medium)
     max-width: variables.$landscapeContainerWidth
     margin: 0 auto

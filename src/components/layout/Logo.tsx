@@ -3,7 +3,6 @@ import { Link } from 'react-router'
 
 import LogoSVG from '../../assets/svg/sharlushka-logo.svg'
 import * as styles from './Logo.module.sass'
-import { ScoreDisplay } from '../game/ScoreDisplay'
 
 const Logo: FC = () => {
   return (
@@ -11,7 +10,6 @@ const Logo: FC = () => {
       <Link to="/" className={styles.logo} aria-label="Main page">
         <LogoSVG />
       </Link>
-      <ScoreDisplay />
     </div>
   )
 }

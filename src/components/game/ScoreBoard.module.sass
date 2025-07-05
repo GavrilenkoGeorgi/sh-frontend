@@ -13,13 +13,13 @@
     flex-grow: 1
 
 .name
-  margin: .15rem 0
   text-transform: capitalize
   &:hover
     color: colors.$color-orange
+  @media screen and (min-width: variables.$small)
+    margin: .4rem 0
   @media screen and (min-width: variables.$medium)
     margin: 0
-
 .score
   display: grid
   grid-template-columns: 2fr repeat(3, 1fr)

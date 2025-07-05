@@ -1,0 +1,26 @@
+@use '../../styles/colors'
+@use '../../styles/variables'
+
+.user
+  display: flex
+  margin: .3rem 0
+  margin-left: 2rem
+  width: 100%
+  gap: .5rem
+  align-items: center
+  svg
+    width: 100%
+    height: 100%
+    max-width: 1rem
+    color: colors.$primary-color
+
+.userName
+  text-decoration: none
+  font-size: variables.$middleFontSize
+  color: colors.$primary-color
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+  max-width: 9rem
+  &:hover
+    color: colors.$color-orange
