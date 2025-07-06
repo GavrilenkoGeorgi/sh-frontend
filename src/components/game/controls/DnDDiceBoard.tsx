@@ -190,7 +190,7 @@ const DnDDiceBoard: FC = () => {
       //  sync boardSections with diceState
       setBoardSections(initializeBoard(newDiceState))
     }
-  }, [game.roll])
+  }, [game.roll, initializeBoard, diceState, setBoardSections])
 
   useEffect(() => {
     if (game.saved || game.over) {
