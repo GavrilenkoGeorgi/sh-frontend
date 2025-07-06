@@ -12,21 +12,23 @@
   display: flex
   justify-content: space-between
   gap: .5rem
+
   @media screen and (min-width: variables.$medium)
     flex-direction: column-reverse
     height: 100%
 
 .boardSections > div
-  padding: .5rem .5rem
+  padding: .5rem
   min-width: variables.$emptyDropZoneWidth
-  flex-grow: 1
+  @media screen and (max-width: variables.$medium)
+    min-height: variables.$diceMaxHeight
+
 
 .board
   border-radius: .25rem
   background-color: colors.$primary-light-color
-  // padding: .4rem .25rem 0 //! mobile safari debug
-  display: flex
-  align-items: center
+  flex-grow: 1
+  height: 100%
   &:first-child
     background-color: colors.$color-light-orange
 
@@ -53,11 +55,11 @@
   svg
     width: 100%
 
-.rollBtn
+.rollButton // less chars more mem??
   border: none
   background-color: colors.$primary-color
   border-radius: .25rem
-  color: #fff
+  color: colors.$primary-light-color
   text-transform: uppercase
   width: 100%
   margin-top: .5rem

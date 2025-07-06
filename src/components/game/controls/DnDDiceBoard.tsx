@@ -102,7 +102,7 @@ const DnDDiceBoard: FC = () => {
     })
   }
 
-  const handleDragEnd = ({ active, over, collisions }: DragEndEvent): void => {
+  const handleDragEnd = ({ active, over }: DragEndEvent): void => {
     const activeContainer = findBoardSectionContainer(
       boardSections,
       active.id as string
@@ -141,29 +141,25 @@ const DnDDiceBoard: FC = () => {
     const activeDice = getDiceById(diceState, active.id.toString())
 
     if (activeDice.status !== activeContainer) {
+      // fix: immutable update instead of mutation
+      const updatedDiceState = diceState.map((item) =>
+        item.id === activeDice.id
+          ? { ...item, status: activeContainer as Status }
+          : item
+      )
+
       if (activeContainer === 'sel') {
         dispatch(selectDice(activeDice.value))
-        diceState.forEach((item) => {
-          if (activeDice.id === item.id) {
-            item.status = activeContainer as Status
-          }
-        })
-        setDiceState([...diceState])
+        setDiceState(updatedDiceState)
       } else {
-        diceState.forEach((item) => {
-          if (activeDice.id === item.id) {
-            item.status = activeContainer as Status
-          }
-        })
-
-        const selected = diceState.filter((item) => item.status === 'roll')
-
+        const selected = updatedDiceState.filter(
+          (item) => item.status === 'roll'
+        )
         const data = {
           value: activeDice.value,
           order: selected.map((item) => item.value)
         }
-
-        setDiceState([...diceState])
+        setDiceState(updatedDiceState)
         dispatch(deselectDice(data))
       }
     }
@@ -172,29 +168,41 @@ const DnDDiceBoard: FC = () => {
   }
 
   useEffect(() => {
-    // on roll
-    const update = diceState.filter((item) => item.status === 'roll')
-    game.roll.forEach((value, index) => {
-      if (value > 0) {
-        update[index].value = value
+    // on roll immutable update for roll values
+    const rollDice = diceState.filter((item) => item.status === 'roll')
+    const holdDice = diceState.filter((item) => item.status === 'sel')
+
+    const updatedRollDice = rollDice.map((item, index) => {
+      if (game.roll[index] > 0) {
+        return { ...item, value: game.roll[index] }
       }
+      return item
     })
 
-    const onHold = diceState.filter((item) => item.status === 'sel')
-    setDiceState([...onHold, ...update])
-  }, [game.roll])
+    // update if there were changes
+    const hasChanges = updatedRollDice.some(
+      (item, index) => item.value !== rollDice[index]?.value
+    )
+
+    if (hasChanges) {
+      const newDiceState = [...holdDice, ...updatedRollDice]
+      setDiceState(newDiceState)
+      //  sync boardSections with diceState
+      setBoardSections(initializeBoard(newDiceState))
+    }
+  }, [game.roll, initializeBoard, diceState, setBoardSections])
 
   useEffect(() => {
-    // on save // i guess we dont't need this here
     if (game.saved || game.over) {
-      diceArray.forEach((item, index) => {
-        diceArray[index].status = 'roll'
-        diceArray[index].value = 0
-      })
+      const resetDiceArray = diceArray.map((item) => ({
+        ...item,
+        status: 'roll' as Status,
+        value: 0
+      }))
 
-      const init = initializeBoard([...diceArray])
+      const init = initializeBoard(resetDiceArray)
       setBoardSections(init)
-      setDiceState([...diceArray])
+      setDiceState(resetDiceArray)
     }
   }, [game.saved, game.over])
 

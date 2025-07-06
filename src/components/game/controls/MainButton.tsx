@@ -39,7 +39,7 @@ const MainButton: FC = () => {
   return (
     <button
       onClick={handleButtonClick}
-      className={cx(styles.rollBtn, {
+      className={cx(styles.rollButton, {
         [styles.locked]: lock,
         [styles.rolled]: rollCount === 1,
         [styles.lastRoll]: rollCount === 2
