@@ -1,5 +1,5 @@
 import React, { type FC, useState, useEffect } from 'react'
-import { NavLink, useLocation, Link } from 'react-router'
+import { NavLink, useLocation } from 'react-router-dom'
 import type { navLink } from '../../types'
 import {
   useScrollDirection,
@@ -14,7 +14,7 @@ import * as styles from './NavBar.module.sass'
 
 import { ROUTES } from '../../constants/routes'
 import { ScoreDisplay } from '../game/ScoreDisplay'
-import { UserLInk } from './UserLink'
+import { UserLink } from './UserLink'
 
 const NavBar: FC = () => {
   const location = useLocation()
@@ -109,7 +109,7 @@ const NavBar: FC = () => {
             [styles.open]: open
           })}
         >
-          <UserLInk />
+          <UserLink />
           {navLinks}
         </div>
       </div>

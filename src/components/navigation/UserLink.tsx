@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { ROUTES } from '../../constants/routes'
 
-export const UserLInk: FC = () => {
+export const UserLink: FC = () => {
   const { userInfo } = useSelector((state: RootState) => state.auth)
   const { busy } = useSelector((state: RootState) => state.notification)
 
