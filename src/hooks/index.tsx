@@ -1,5 +1,10 @@
 import { useEffect, useState, useRef } from 'react'
 
+export enum SCROLL_DIRECTION {
+  UP = 'up',
+  DOWN = 'down'
+}
+
 export function useScrollDirection() {
   const [scrollDirection, setScrollDirection] = useState('')
 
@@ -8,8 +13,12 @@ export function useScrollDirection() {
 
     const updateScrollDirection = () => {
       const scrollY = window.scrollY
-      const direction = scrollY > lastScrollY ? 'down' : 'up'
-      if (direction !== scrollDirection && (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)) {
+      const direction =
+        scrollY > lastScrollY ? SCROLL_DIRECTION.DOWN : SCROLL_DIRECTION.UP
+      if (
+        direction !== scrollDirection &&
+        (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)
+      ) {
         setScrollDirection(direction)
       }
       lastScrollY = scrollY > 0 ? scrollY : 0
@@ -24,14 +33,18 @@ export function useScrollDirection() {
 }
 
 export function useComponentVisible(initialIsVisible: boolean) {
-
   const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible)
   const ref = useRef<HTMLInputElement>(null)
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (ref.current && !ref.current.contains(event.target as HTMLInputElement)) {
+    if (
+      ref.current &&
+      !ref.current.contains(event.target as HTMLInputElement)
+    ) {
       setIsComponentVisible(false)
-    } else { setIsComponentVisible(true) }
+    } else {
+      setIsComponentVisible(true)
+    }
   }
 
   useEffect(() => {
@@ -45,6 +58,7 @@ export function useComponentVisible(initialIsVisible: boolean) {
 }
 
 export const useNextImageImageFade = (_className: string) => {
+  // tf is this?
   const [className, setClassName] = useState(`${_className} opacity-0`)
   return {
     className,

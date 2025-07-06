@@ -48,6 +48,7 @@
   touch-action: none
   cursor: grab
   --webkit-touch-callout: none
+  max-height: variables.$diceMaxHeight
 
   svg
     width: 100%
@@ -60,7 +61,7 @@
   text-transform: uppercase
   width: 100%
   margin-top: .5rem
-  min-height: variables.$diceMaxHeight + 1rem
+  min-height: variables.$diceMaxHeight
   transition-property: background-color, color, border
   transition-duration: .5s
   transition-timing-function: linear
