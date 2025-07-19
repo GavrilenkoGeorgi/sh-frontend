@@ -57,7 +57,7 @@ const plugins = [
     },
     start_url: '/',
     id: '/?homescreen=1',
-    scope: 'https://sharlushka.net',
+    scope: '/',
     display: 'standalone',
     short_name: 'Sharlushka',
     filename: 'manifest.json',

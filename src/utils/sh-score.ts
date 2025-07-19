@@ -78,7 +78,7 @@ class ShScore {
 
   // Sort helper ('small' and 'large' combinations depend on this)
   sort = (values: number[]): number[] => {
-    return values.sort((a, b) => {
+    return [...values].sort((a, b) => {
       return a - b
     })
   }

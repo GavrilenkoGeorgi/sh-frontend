@@ -227,8 +227,8 @@ const DnDDiceBoard: FC = () => {
           ))}
           {/* draggable item animation */}
           <Portal>
-            <DragOverlay dropAnimation={dropAnimation} adjustScale>
-              {item != null ? <DiceItem dice={item} /> : null}
+            <DragOverlay dropAnimation={dropAnimation}>
+              {item != null ? <DiceItem dice={item} isDragging={true} /> : null}
             </DragOverlay>
           </Portal>
         </DndContext>
