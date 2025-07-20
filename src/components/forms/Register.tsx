@@ -178,7 +178,7 @@ const Register: FC = () => {
               {...register('confirm')}
               onFocus={focusInput}
               onBlur={blurInput}
-              autoComplete="confirm-new-password"
+              autoComplete="new-password"
             />
           </div>
           {formErrors.confirm != null && (
