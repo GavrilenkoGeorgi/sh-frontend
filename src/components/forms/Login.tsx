@@ -96,6 +96,7 @@ const Login: FC = () => {
               {...register('email')}
               onFocus={focusInput}
               onBlur={blurInput}
+              autoComplete="email"
             />
           </div>
           {formErrors.email != null && (
@@ -121,6 +122,7 @@ const Login: FC = () => {
               {...register('password')}
               onFocus={focusInput}
               onBlur={blurInput}
+              autoComplete="current-password"
             />
           </div>
           {formErrors.password != null && (

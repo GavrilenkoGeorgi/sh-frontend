@@ -187,10 +187,18 @@ const DnDDiceBoard: FC = () => {
     if (hasChanges) {
       const newDiceState = [...holdDice, ...updatedRollDice]
       setDiceState(newDiceState)
-      //  sync boardSections with diceState
-      setBoardSections(initializeBoard(newDiceState))
+
+      // preserve the existing board section order, only update the dice data
+      setBoardSections((prevBoardSections) => ({
+        ...prevBoardSections,
+        // keep 'sel' section order, update 'roll' section
+        sel: prevBoardSections.sel.map(
+          (dice) => holdDice.find((holdDice) => holdDice.id === dice.id) || dice
+        ),
+        roll: updatedRollDice
+      }))
     }
-  }, [game.roll, initializeBoard, diceState, setBoardSections])
+  }, [game.roll, diceState])
 
   useEffect(() => {
     if (game.saved || game.over) {

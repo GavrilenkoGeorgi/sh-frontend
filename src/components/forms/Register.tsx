@@ -100,6 +100,7 @@ const Register: FC = () => {
               {...register('name')}
               onFocus={focusInput}
               onBlur={blurInput}
+              autoComplete="name"
             />
           </div>
           {formErrors.name != null && (
@@ -125,6 +126,7 @@ const Register: FC = () => {
               {...register('email')}
               onFocus={focusInput}
               onBlur={blurInput}
+              autoComplete="email"
             />
           </div>
           {formErrors.email != null && (
@@ -150,6 +152,7 @@ const Register: FC = () => {
               {...register('password')}
               onFocus={focusInput}
               onBlur={blurInput}
+              autoComplete="new-password"
             />
           </div>
           {formErrors.password != null && (
@@ -175,6 +178,7 @@ const Register: FC = () => {
               {...register('confirm')}
               onFocus={focusInput}
               onBlur={blurInput}
+              autoComplete="new-password"
             />
           </div>
           {formErrors.confirm != null && (
