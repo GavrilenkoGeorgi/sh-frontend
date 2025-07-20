@@ -95,6 +95,7 @@ const ForgotPwd: FC = () => {
               {...register('email')}
               onFocus={focusInput}
               onBlur={blurInput}
+              autoComplete="email"
             />
           </div>
           {formErrors.email != null && (

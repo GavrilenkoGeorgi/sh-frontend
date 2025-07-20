@@ -100,6 +100,7 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
             {...register('token')}
             onFocus={focusInput}
             onBlur={blurInput}
+            autoComplete="off"
           />
         </div>
 
@@ -121,6 +122,7 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
               {...register('password')}
               onFocus={focusInput}
               onBlur={blurInput}
+              autoComplete="new-password"
             />
           </div>
           {formErrors.password != null && (
@@ -146,6 +148,7 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
               {...register('confirm')}
               onFocus={focusInput}
               onBlur={blurInput}
+              autoComplete="confirm-new-password"
             />
           </div>
           {formErrors.confirm != null && (

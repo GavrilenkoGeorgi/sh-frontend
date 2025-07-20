@@ -118,6 +118,7 @@ const Profile: FC<iProps> = ({ data }) => {
               {...register('name')}
               onFocus={focusInput}
               onBlur={blurInput}
+              autoComplete="name"
             />
           </div>
           {formErrors.name != null && (
@@ -143,6 +144,7 @@ const Profile: FC<iProps> = ({ data }) => {
               {...register('email')}
               onFocus={focusInput}
               onBlur={blurInput}
+              autoComplete="email"
             />
           </div>
           {formErrors.email != null && (
