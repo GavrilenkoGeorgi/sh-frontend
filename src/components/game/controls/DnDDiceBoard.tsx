@@ -28,6 +28,7 @@ import BoardSection from './BoardSection'
 import DiceItem from './DiceItem'
 import MainButton from './MainButton'
 import * as styles from './DnDDiceBoard.module.sass'
+import { usePWALifecycle } from '../../../hooks/usePWALifecycle'
 
 import { Portal } from '../../layout/Portal'
 
@@ -41,12 +42,52 @@ const DnDDiceBoard: FC = () => {
     useState<BoardSections>(initialBoardSections)
   const [activeDiceId, setActiveDiceId] = useState<null | string>(null)
 
+  // PWA lifecycle for the mobile devices
+  usePWALifecycle({
+    onAppVisible: () => {
+      // when app becomes visible again retore state
+      if (game.selection.length > 0 || game.roll.some((val) => val > 0)) {
+        restoreDiceStateFromRedux()
+      }
+    }
+  })
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates
     })
   )
+
+  const restoreDiceStateFromRedux = () => {
+    const restoredDiceArray = diceArray.map((item, index) => {
+      // die is in selection?
+      if (index < game.selection.length) {
+        return {
+          ...item,
+          status: 'sel' as Status,
+          value: game.selection[index]
+        }
+      }
+
+      // then, it's in roll array
+      const rollIndex = index - game.selection.length
+      const rollValue = game.roll[rollIndex]
+      if (rollValue > 0) {
+        return {
+          ...item,
+          status: 'roll' as Status,
+          value: rollValue
+        }
+      }
+
+      return item
+    })
+
+    const restoredBoardSections = initializeBoard(restoredDiceArray)
+    setBoardSections(restoredBoardSections)
+    setDiceState(restoredDiceArray)
+  }
 
   // item to animate on interaction
   const item =
@@ -168,37 +209,41 @@ const DnDDiceBoard: FC = () => {
   }
 
   useEffect(() => {
-    // on roll immutable update for roll values
-    const rollDice = diceState.filter((item) => item.status === 'roll')
-    const holdDice = diceState.filter((item) => item.status === 'sel')
+    const syncedSelectedDice = game.selection.map((value, index) => ({
+      id: diceArray[index].id,
+      status: 'sel' as Status,
+      value: value
+    }))
 
-    const updatedRollDice = rollDice.map((item, index) => {
-      if (game.roll[index] > 0) {
-        return { ...item, value: game.roll[index] }
-      }
-      return item
-    })
+    const syncedRollDice = game.roll.map((value, index) => ({
+      id: diceArray[game.selection.length + index].id,
+      status: 'roll' as Status,
+      value: value
+    }))
 
-    // update if there were changes
-    const hasChanges = updatedRollDice.some(
-      (item, index) => item.value !== rollDice[index]?.value
-    )
+    const newDiceState = [...syncedSelectedDice, ...syncedRollDice]
 
-    if (hasChanges) {
-      const newDiceState = [...holdDice, ...updatedRollDice]
+    // update if there are actual changes
+    const hasChanges =
+      newDiceState.length !== diceState.length ||
+      newDiceState.some(
+        (dice, index) =>
+          !diceState[index] ||
+          dice.value !== diceState[index].value ||
+          dice.status !== diceState[index].status
+      )
+
+    if (
+      hasChanges &&
+      (game.selection.length > 0 || game.roll.some((val) => val > 0))
+    ) {
       setDiceState(newDiceState)
-
-      // preserve the existing board section order, only update the dice data
-      setBoardSections((prevBoardSections) => ({
-        ...prevBoardSections,
-        // keep 'sel' section order, update 'roll' section
-        sel: prevBoardSections.sel.map(
-          (dice) => holdDice.find((holdDice) => holdDice.id === dice.id) || dice
-        ),
-        roll: updatedRollDice
-      }))
+      setBoardSections({
+        sel: syncedSelectedDice,
+        roll: syncedRollDice
+      })
     }
-  }, [game.roll, diceState])
+  }, [game.roll, game.selection])
 
   useEffect(() => {
     if (game.saved || game.over) {
@@ -213,6 +258,13 @@ const DnDDiceBoard: FC = () => {
       setDiceState(resetDiceArray)
     }
   }, [game.saved, game.over])
+
+  // Fix: Restore dice state from Redux on component mount/remount
+  useEffect(() => {
+    if (game.selection.length > 0 || game.roll.some((val) => val > 0)) {
+      restoreDiceStateFromRedux()
+    }
+  }, []) // Run only on mount
 
   return (
     <div className={styles.controls}>
