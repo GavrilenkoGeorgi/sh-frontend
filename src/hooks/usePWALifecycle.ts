@@ -6,7 +6,7 @@ interface PWALifecycleCallbacks {
   onBeforeUnload?: () => void
 }
 
-export const usePWALifecycle = (callbacks: PWALifecycleCallbacks = {}) => {
+export const usePWALifecycle = (callbacks: PWALifecycleCallbacks) => {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
@@ -40,5 +40,5 @@ export const usePWALifecycle = (callbacks: PWALifecycleCallbacks = {}) => {
       window.removeEventListener('pagehide', handlePageHide)
       window.removeEventListener('pageshow', handlePageShow)
     }
-  }, [callbacks])
+  }, [callbacks.onAppHidden, callbacks.onAppVisible, callbacks.onBeforeUnload])
 }

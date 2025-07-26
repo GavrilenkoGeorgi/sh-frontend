@@ -33,7 +33,15 @@ export const useGameStatePersistence = () => {
   return {
     getSavedGameState: () => {
       const saved = localStorage.getItem(GAME_STATE_KEY)
-      return saved ? JSON.parse(saved) : null
+      if (saved) {
+        try {
+          return JSON.parse(saved)
+        } catch (error) {
+          console.error('Failed to parse saved game state:', error)
+          return null
+        }
+      }
+      return null
     },
     clearSavedGameState: () => {
       localStorage.removeItem(GAME_STATE_KEY)
