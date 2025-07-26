@@ -28,6 +28,7 @@ import BoardSection from './BoardSection'
 import DiceItem from './DiceItem'
 import MainButton from './MainButton'
 import * as styles from './DnDDiceBoard.module.sass'
+import { usePWALifecycle } from '../../../hooks/usePWALifecycle'
 
 import { Portal } from '../../layout/Portal'
 
@@ -41,12 +42,56 @@ const DnDDiceBoard: FC = () => {
     useState<BoardSections>(initialBoardSections)
   const [activeDiceId, setActiveDiceId] = useState<null | string>(null)
 
+  // PWA lifecycle for the mobile devices
+  usePWALifecycle({
+    onAppVisible: () => {
+      // when app becomes visible again retore state
+      if (game.selection.length > 0 || game.roll.some((val) => val > 0)) {
+        restoreDiceStateFromRedux()
+      }
+    }
+  })
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates
     })
   )
+
+  const restoreDiceStateFromRedux = () => {
+    // create selected dice array preserving existing order
+    const currentSelectedDice = boardSections.sel || []
+    const restoredSelectedDice = game.selection.map((value, index) => {
+      const existingDice = currentSelectedDice[index]
+      return {
+        id: existingDice?.id || diceArray[index].id,
+        status: 'sel' as Status,
+        value: value
+      }
+    })
+
+    const restoredRollDice = game.roll
+      .map((value, index) => {
+        if (value > 0) {
+          return {
+            id: diceArray[game.selection.length + index].id,
+            status: 'roll' as Status,
+            value: value
+          }
+        }
+        return null
+      })
+      .filter(Boolean) as Dice[]
+
+    const restoredDiceArray = [...restoredSelectedDice, ...restoredRollDice]
+
+    setBoardSections({
+      sel: restoredSelectedDice,
+      roll: restoredRollDice
+    })
+    setDiceState(restoredDiceArray)
+  }
 
   // item to animate on interaction
   const item =
@@ -141,7 +186,7 @@ const DnDDiceBoard: FC = () => {
     const activeDice = getDiceById(diceState, active.id.toString())
 
     if (activeDice.status !== activeContainer) {
-      // fix: immutable update instead of mutation
+      // Fix: immutable update instead of mutation
       const updatedDiceState = diceState.map((item) =>
         item.id === activeDice.id
           ? { ...item, status: activeContainer as Status }
@@ -152,12 +197,12 @@ const DnDDiceBoard: FC = () => {
         dispatch(selectDice(activeDice.value))
         setDiceState(updatedDiceState)
       } else {
-        const selected = updatedDiceState.filter(
+        const rollDice = updatedDiceState.filter(
           (item) => item.status === 'roll'
         )
         const data = {
           value: activeDice.value,
-          order: selected.map((item) => item.value)
+          order: rollDice.map((item) => item.value)
         }
         setDiceState(updatedDiceState)
         dispatch(deselectDice(data))
@@ -168,37 +213,55 @@ const DnDDiceBoard: FC = () => {
   }
 
   useEffect(() => {
-    // on roll immutable update for roll values
     const rollDice = diceState.filter((item) => item.status === 'roll')
     const holdDice = diceState.filter((item) => item.status === 'sel')
 
-    const updatedRollDice = rollDice.map((item, index) => {
-      if (game.roll[index] > 0) {
-        return { ...item, value: game.roll[index] }
-      }
-      return item
-    })
+    const updatedRollDice = game.roll
+      .map((value, index) => {
+        // find existing dice to preserve id
+        const existingDice = rollDice[index]
+        return {
+          id: existingDice?.id || diceArray[game.selection.length + index].id,
+          status: 'roll' as Status,
+          value: value
+        }
+      })
+      .filter((dice) => dice.value > 0)
 
-    // update if there were changes
-    const hasChanges = updatedRollDice.some(
-      (item, index) => item.value !== rollDice[index]?.value
+    const hasRollChanges = updatedRollDice.some(
+      (item, index) => !rollDice[index] || item.value !== rollDice[index].value
     )
 
-    if (hasChanges) {
-      const newDiceState = [...holdDice, ...updatedRollDice]
+    const updatedSelectedDice = game.selection.map((value, index) => ({
+      id: holdDice[index]?.id || diceArray[index].id,
+      status: 'sel' as Status,
+      value: value
+    }))
+
+    if (hasRollChanges || holdDice.length !== updatedSelectedDice.length) {
+      const newDiceState = [...updatedSelectedDice, ...updatedRollDice]
       setDiceState(newDiceState)
 
-      // preserve the existing board section order, only update the dice data
+      // preserve existing order
       setBoardSections((prevBoardSections) => ({
         ...prevBoardSections,
-        // keep 'sel' section order, update 'roll' section
-        sel: prevBoardSections.sel.map(
-          (dice) => holdDice.find((holdDice) => holdDice.id === dice.id) || dice
-        ),
+        // update dice values while preserving positions
+        sel:
+          prevBoardSections.sel.length > 0
+            ? prevBoardSections.sel
+                .map(
+                  (dice) =>
+                    updatedSelectedDice.find(
+                      (updatedDice) => updatedDice.id === dice.id
+                    ) || dice
+                )
+                .filter((_, index) => index < game.selection.length)
+            : updatedSelectedDice,
+        // update 'roll' section with new values
         roll: updatedRollDice
       }))
     }
-  }, [game.roll, diceState])
+  }, [game.roll, game.selection])
 
   useEffect(() => {
     if (game.saved || game.over) {
@@ -213,6 +276,13 @@ const DnDDiceBoard: FC = () => {
       setDiceState(resetDiceArray)
     }
   }, [game.saved, game.over])
+
+  // fix: restore dice state
+  useEffect(() => {
+    if (game.selection.length > 0 || game.roll.some((val) => val > 0)) {
+      restoreDiceStateFromRedux()
+    }
+  }, [])
 
   return (
     <div className={styles.controls}>

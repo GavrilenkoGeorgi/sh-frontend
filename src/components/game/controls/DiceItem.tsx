@@ -28,7 +28,11 @@ const DiceItem = ({
       }
 
   return (
-    <motion.div key={dice.id + dice.value} {...animationProps}>
+    <motion.div
+      key={`${dice.id}-${dice.status}`}
+      {...animationProps}
+      layout={!isDragging}
+    >
       <div className={styles.dice}>
         <DiceSVG kind={dice.value} />
       </div>
