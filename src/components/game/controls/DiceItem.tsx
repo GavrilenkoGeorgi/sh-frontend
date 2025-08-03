@@ -7,31 +7,34 @@ import * as styles from './DnDDiceBoard.module.sass'
 interface DiceItemProps {
   dice: Dice
   isDragging?: boolean
+  shouldAnimate?: boolean
 }
 
 const DiceItem = ({
   dice,
-  isDragging = false
+  isDragging = false,
+  shouldAnimate = false
 }: DiceItemProps): React.JSX.Element => {
-  // disable fmotion animations during drag to prevent transform conflicts
-  const animationProps = isDragging
-    ? {}
-    : {
-        initial: { y: -10, opacity: 0 },
-        animate: { y: 0, opacity: 1 },
-        transition: {
-          duration: 2,
-          ease: [0.6, -0.05, 0.01, 0.99],
-          type: 'spring',
-          stiffness: 300
+  // animate if shouldAnimate is true (for rolled dice with new values)
+  const animationProps =
+    isDragging || !shouldAnimate
+      ? {}
+      : {
+          initial: { y: -10, opacity: 0 },
+          animate: { y: 0, opacity: 1 },
+          transition: {
+            duration: 2,
+            ease: [0.6, -0.05, 0.01, 0.99],
+            type: 'spring',
+            stiffness: 300
+          }
         }
-      }
 
   return (
     <motion.div
-      key={`${dice.id}-${dice.status}`}
+      key={`${dice.id}-${dice.status}-${dice.value}`}
       {...animationProps}
-      layout={!isDragging}
+      layout={!isDragging && shouldAnimate}
     >
       <div className={styles.dice}>
         <DiceSVG kind={dice.value} />

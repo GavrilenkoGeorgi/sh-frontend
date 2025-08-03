@@ -1,9 +1,12 @@
 @use '../styles/variables'
+@use '../styles/mixins'
 
 .container
   margin-top: variables.$mobilePagePadding
   h1
     text-align: center
+  a
+    @include mixins.link
 
 .text
   max-width: variables.$formWidth

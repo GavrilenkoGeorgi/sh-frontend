@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 
 import LoginForm from '../components/forms/Login'
 import * as styles from './Login.module.sass'
+import { ROUTES } from '../constants/routes'
 
 const Login: FC = () => {
   return (
@@ -10,7 +11,7 @@ const Login: FC = () => {
       <h1>Login</h1>
       <LoginForm />
       <aside>
-        <Link to="/forgotpwd" aria-label="Forgot password">
+        <Link to={ROUTES.FORGOT_PASSWORD} aria-label="Forgot password">
           Forgot password?
         </Link>
       </aside>
