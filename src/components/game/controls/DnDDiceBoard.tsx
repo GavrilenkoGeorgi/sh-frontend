@@ -16,7 +16,8 @@ import {
 
 import { type RootState } from '../../../store'
 import { selectDice, deselectDice } from '../../../store/slices/shSlice'
-import type { Dice, Status, BoardSections } from '../../../types'
+import type { Dice, BoardSections } from '../../../types'
+import { DiceStatus } from '../../../types'
 import {
   dropAnimation,
   diceArray,
@@ -36,6 +37,7 @@ const DnDDiceBoard: FC = () => {
   const { game } = useSelector((state: RootState) => state.sh)
   const dispatch = useDispatch()
   const [diceState, setDiceState] = useState<Dice[]>(diceArray)
+  const [hasNewRoll, setHasNewRoll] = useState<boolean>(false)
 
   const initialBoardSections = initializeBoard(diceState)
   const [boardSections, setBoardSections] =
@@ -61,12 +63,12 @@ const DnDDiceBoard: FC = () => {
 
   const restoreDiceStateFromRedux = () => {
     // create selected dice array preserving existing order
-    const currentSelectedDice = boardSections.sel || []
+    const currentSelectedDice = boardSections.selected || []
     const restoredSelectedDice = game.selection.map((value, index) => {
       const existingDice = currentSelectedDice[index]
       return {
         id: existingDice?.id || diceArray[index].id,
-        status: 'sel' as Status,
+        status: DiceStatus.SELECTED,
         value: value
       }
     })
@@ -76,7 +78,7 @@ const DnDDiceBoard: FC = () => {
         if (value > 0) {
           return {
             id: diceArray[game.selection.length + index].id,
-            status: 'roll' as Status,
+            status: DiceStatus.ROLL,
             value: value
           }
         }
@@ -87,7 +89,7 @@ const DnDDiceBoard: FC = () => {
     const restoredDiceArray = [...restoredSelectedDice, ...restoredRollDice]
 
     setBoardSections({
-      sel: restoredSelectedDice,
+      selected: restoredSelectedDice,
       roll: restoredRollDice
     })
     setDiceState(restoredDiceArray)
@@ -187,18 +189,20 @@ const DnDDiceBoard: FC = () => {
 
     if (activeDice.status !== activeContainer) {
       // Fix: immutable update instead of mutation
+      const newStatus =
+        activeContainer === DiceStatus.SELECTED
+          ? DiceStatus.SELECTED
+          : DiceStatus.ROLL
       const updatedDiceState = diceState.map((item) =>
-        item.id === activeDice.id
-          ? { ...item, status: activeContainer as Status }
-          : item
+        item.id === activeDice.id ? { ...item, status: newStatus } : item
       )
 
-      if (activeContainer === 'sel') {
+      if (activeContainer === DiceStatus.SELECTED) {
         dispatch(selectDice(activeDice.value))
         setDiceState(updatedDiceState)
       } else {
         const rollDice = updatedDiceState.filter(
-          (item) => item.status === 'roll'
+          (item) => item.status === DiceStatus.ROLL
         )
         const data = {
           value: activeDice.value,
@@ -213,8 +217,10 @@ const DnDDiceBoard: FC = () => {
   }
 
   useEffect(() => {
-    const rollDice = diceState.filter((item) => item.status === 'roll')
-    const holdDice = diceState.filter((item) => item.status === 'sel')
+    const rollDice = diceState.filter((item) => item.status === DiceStatus.ROLL)
+    const holdDice = diceState.filter(
+      (item) => item.status === DiceStatus.SELECTED
+    )
 
     const updatedRollDice = game.roll
       .map((value, index) => {
@@ -222,7 +228,7 @@ const DnDDiceBoard: FC = () => {
         const existingDice = rollDice[index]
         return {
           id: existingDice?.id || diceArray[game.selection.length + index].id,
-          status: 'roll' as Status,
+          status: DiceStatus.ROLL,
           value: value
         }
       })
@@ -234,21 +240,21 @@ const DnDDiceBoard: FC = () => {
 
     const updatedSelectedDice = game.selection.map((value, index) => ({
       id: holdDice[index]?.id || diceArray[index].id,
-      status: 'sel' as Status,
+      status: DiceStatus.SELECTED,
       value: value
     }))
 
     if (hasRollChanges || holdDice.length !== updatedSelectedDice.length) {
       const newDiceState = [...updatedSelectedDice, ...updatedRollDice]
       setDiceState(newDiceState)
+      setHasNewRoll(hasRollChanges && game.roll.some((val) => val > 0))
 
-      // preserve existing order
       setBoardSections((prevBoardSections) => ({
         ...prevBoardSections,
         // update dice values while preserving positions
-        sel:
-          prevBoardSections.sel.length > 0
-            ? prevBoardSections.sel
+        selected:
+          prevBoardSections.selected?.length > 0
+            ? prevBoardSections.selected
                 .map(
                   (dice) =>
                     updatedSelectedDice.find(
@@ -257,9 +263,13 @@ const DnDDiceBoard: FC = () => {
                 )
                 .filter((_, index) => index < game.selection.length)
             : updatedSelectedDice,
-        // update 'roll' section with new values
         roll: updatedRollDice
       }))
+
+      // reset animation flag after animation completes
+      if (hasRollChanges && game.roll.some((val) => val > 0)) {
+        setTimeout(() => setHasNewRoll(false), 2500) // animation duration
+      }
     }
   }, [game.roll, game.selection])
 
@@ -267,13 +277,14 @@ const DnDDiceBoard: FC = () => {
     if (game.saved || game.over) {
       const resetDiceArray = diceArray.map((item) => ({
         ...item,
-        status: 'roll' as Status,
+        status: DiceStatus.ROLL,
         value: 0
       }))
 
       const init = initializeBoard(resetDiceArray)
       setBoardSections(init)
       setDiceState(resetDiceArray)
+      setHasNewRoll(false) // reset animation flag
     }
   }, [game.saved, game.over])
 
@@ -300,13 +311,16 @@ const DnDDiceBoard: FC = () => {
                 id={boardSectionKey}
                 title={boardSectionKey}
                 dice={boardSections[boardSectionKey]}
+                shouldAnimateNewDice={hasNewRoll}
               />
             </div>
           ))}
           {/* draggable item animation */}
           <Portal>
             <DragOverlay dropAnimation={dropAnimation}>
-              {item != null ? <DiceItem dice={item} isDragging={true} /> : null}
+              {item != null ? (
+                <DiceItem dice={item} isDragging={true} shouldAnimate={false} />
+              ) : null}
             </DragOverlay>
           </Portal>
         </DndContext>

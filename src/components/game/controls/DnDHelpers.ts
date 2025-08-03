@@ -1,5 +1,6 @@
 import { type DropAnimation } from '@dnd-kit/core'
-import type { Dice, Status, BoardSections } from '../../../types'
+import type { Dice, BoardSections } from '../../../types'
+import { DiceStatus } from '../../../types'
 
 export const dropAnimation: DropAnimation = {
   duration: 300,
@@ -9,37 +10,37 @@ export const dropAnimation: DropAnimation = {
 export const diceArray: Dice[] = [
   {
     id: 'one',
-    status: 'roll',
+    status: DiceStatus.ROLL,
     value: 0
   },
   {
     id: 'two',
-    status: 'roll',
+    status: DiceStatus.ROLL,
     value: 0
   },
   {
     id: 'three',
-    status: 'roll',
+    status: DiceStatus.ROLL,
     value: 0
   },
   {
     id: 'four',
-    status: 'roll',
+    status: DiceStatus.ROLL,
     value: 0
   },
   {
     id: 'five',
-    status: 'roll',
+    status: DiceStatus.ROLL,
     value: 0
   }
 ]
 
 export const boardNames = {
-  sel: 'sel',
-  roll: 'roll'
+  selected: DiceStatus.SELECTED,
+  roll: DiceStatus.ROLL
 }
 
-export const getDiceByStatus = (dice: Dice[], status: Status): Dice[] => {
+export const getDiceByStatus = (dice: Dice[], status: DiceStatus): Dice[] => {
   return dice.filter((dice) => dice.status === status)
 }
 
@@ -53,7 +54,7 @@ export const initializeBoard = (dice: Dice[]): BoardSections => {
   Object.keys(boardNames).forEach((boardSectionKey) => {
     boardSections[boardSectionKey] = getDiceByStatus(
       dice,
-      boardSectionKey as Status
+      boardNames[boardSectionKey as keyof typeof boardNames]
     )
   })
 

@@ -143,11 +143,16 @@ export interface iError extends Error {
 }
 
 // Drag and drop controls
-export type Status = 'roll' | 'sel'
+export enum DiceStatus {
+  ROLL = 'roll',
+  SELECTED = 'selected'
+}
+
+export type Status = DiceStatus // Keep for backward compatibility during transition
 
 export interface Dice {
   id: string
-  status: Status
+  status: DiceStatus
   value: number
 }
 
