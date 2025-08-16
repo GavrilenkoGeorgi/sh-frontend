@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { Nullable, IUser } from '../../types'
 
 const checkUserInfo = (): Nullable<IUser> => {
-
   const data = localStorage.getItem('userInfo')
   const info = Boolean(data)
 
@@ -11,16 +10,26 @@ const checkUserInfo = (): Nullable<IUser> => {
 }
 
 const initialState = {
-  userInfo: checkUserInfo()
+  userInfo: checkUserInfo(),
+  isCheckingAuth: false
 }
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    startCheckingAuth: (state) => {
+      state.isCheckingAuth = true
+    },
+    finishCheckingAuth: (state) => {
+      state.isCheckingAuth = false
+    },
     setCredentials: (state, action) => {
       state.userInfo = action.payload.user
-      localStorage.setItem('accessToken', JSON.stringify(action.payload.accessToken))
+      localStorage.setItem(
+        'accessToken',
+        JSON.stringify(action.payload.accessToken)
+      )
     },
     logout: (state) => {
       state.userInfo = null
@@ -29,6 +38,7 @@ const authSlice = createSlice({
   }
 })
 
-export const { setCredentials, logout } = authSlice.actions
+export const { setCredentials, logout, startCheckingAuth, finishCheckingAuth } =
+  authSlice.actions
 
 export default authSlice.reducer
