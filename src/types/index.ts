@@ -122,7 +122,7 @@ export interface iDropItem {
   parent: string
 }
 
-export interface iNotification {
+export interface Notification {
   message: Nullable<string>
   type?: Nullable<string>
   busy: boolean
