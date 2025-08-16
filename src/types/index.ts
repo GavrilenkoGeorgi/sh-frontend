@@ -1,3 +1,4 @@
+import { UniqueIdentifier } from '@dnd-kit/core'
 import { type ReactNode } from 'react'
 import { type FieldErrors } from 'react-hook-form/dist/types'
 
@@ -151,7 +152,7 @@ export enum DiceStatus {
 export type Status = DiceStatus // Keep for backward compatibility during transition
 
 export interface Dice {
-  id: string
+  id: UniqueIdentifier
   status: DiceStatus
   value: number
 }

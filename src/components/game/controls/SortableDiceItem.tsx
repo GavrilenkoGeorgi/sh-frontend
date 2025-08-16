@@ -1,13 +1,17 @@
 import React, { type ReactElement } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { UniqueIdentifier } from '@dnd-kit/core'
 
 interface SortableDiceItemProps {
   children: React.ReactNode
-  id: string
+  id: UniqueIdentifier
 }
 
-const SortableDiceItem = ({ children, id }: SortableDiceItemProps): ReactElement => {
+const SortableDiceItem = ({
+  children,
+  id
+}: SortableDiceItemProps): ReactElement => {
   const {
     attributes,
     listeners,
@@ -24,7 +28,13 @@ const SortableDiceItem = ({ children, id }: SortableDiceItemProps): ReactElement
   }
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners} aria-label='Dice'>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      aria-label="Dice"
+    >
       {children}
     </div>
   )
