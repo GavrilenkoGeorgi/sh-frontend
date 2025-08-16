@@ -67,3 +67,7 @@ export const useNextImageImageFade = (_className: string) => {
     }
   }
 }
+
+// export new dice board hooks
+export { useDiceBoard } from './useDiceBoard'
+export { useDragHandlers } from './useDragHandlers'
