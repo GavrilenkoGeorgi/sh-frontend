@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { iNotification } from '../../types'
+import type { Notification } from '../../types'
 
-const initialState: iNotification = {
+const initialState: Notification = {
   message: null,
   type: null,
   busy: false

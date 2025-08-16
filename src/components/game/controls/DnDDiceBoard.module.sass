@@ -2,16 +2,15 @@
 @use '../../../styles/variables'
 
 .controls
-  padding: 0 .5rem
   @media screen and (min-width: variables.$medium)
     display: flex
     gap: .6rem
-    padding: 0
 
 .boardSections
   display: flex
   justify-content: space-between
   gap: .5rem
+  margin-top: .5rem
 
   @media screen and (min-width: variables.$medium)
     flex-direction: column-reverse
@@ -62,7 +61,6 @@
   color: colors.$primary-light-color
   text-transform: uppercase
   width: 100%
-  margin-top: .5rem
   min-height: variables.$rollButtonHeight 
   transition-property: background-color, color, border
   transition-duration: .5s

@@ -1,5 +1,6 @@
 import { type DropAnimation } from '@dnd-kit/core'
 import type { Dice, BoardSections } from '../../../types'
+import type { UniqueIdentifier } from '@dnd-kit/core'
 import { DiceStatus } from '../../../types'
 
 export const dropAnimation: DropAnimation = {
@@ -44,8 +45,9 @@ export const getDiceByStatus = (dice: Dice[], status: DiceStatus): Dice[] => {
   return dice.filter((dice) => dice.status === status)
 }
 
-export const getDiceById = (dice: Dice[], id: string): Dice => {
-  return dice.find((dice) => dice.id === id) as Dice
+export const getDiceById = (dice: Dice[], id: UniqueIdentifier): Dice => {
+  const idStr = String(id)
+  return dice.find((dice) => dice.id === idStr) as Dice
 }
 
 export const initializeBoard = (dice: Dice[]): BoardSections => {
@@ -63,14 +65,17 @@ export const initializeBoard = (dice: Dice[]): BoardSections => {
 
 export const findBoardSectionContainer = (
   boardSections: BoardSections,
-  id: string
+  id?: UniqueIdentifier | null
 ): string => {
-  if (id in boardSections) {
-    return id
+  if (!id) return ''
+  const idStr = String(id)
+
+  if (idStr in boardSections) {
+    return idStr
   }
 
   const container = Object.keys(boardSections).find((key) =>
-    boardSections[key].find((item) => item.id === id)
+    boardSections[key].find((item) => item.id === idStr)
   )
-  return container as string
+  return container || ''
 }
