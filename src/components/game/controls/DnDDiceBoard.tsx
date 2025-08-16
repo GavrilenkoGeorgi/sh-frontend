@@ -44,6 +44,7 @@ const DnDDiceBoard: FC = () => {
 
   return (
     <div className={styles.controls}>
+      <MainButton />
       <div className={styles.boardSections}>
         <DnDContextWrapper
           onDragStart={handleDragStart}
@@ -74,7 +75,6 @@ const DnDDiceBoard: FC = () => {
           </Portal>
         </DnDContextWrapper>
       </div>
-      <MainButton />
     </div>
   )
 }
