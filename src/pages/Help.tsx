@@ -7,7 +7,7 @@ import data from '../assets/data/HelpPage.json'
 
 const Help: FC = () => {
   return (
-    <section className={styles.textPage}>
+    <section className={styles.contentPage}>
       <h1>Help</h1>
       <article>
         Each turn consists of a maximum of three rolls — the first roll to be

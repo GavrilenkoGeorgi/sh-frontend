@@ -30,22 +30,22 @@ export const useDiceBoard = () => {
 
     // create selected dice array preserving existing order
     const currentSelectedDice = boardSections.selected || []
-    const restoredSelectedDice = game.selection.map((value, index) => {
-      const existingDice = currentSelectedDice[index]
+    const restoredSelectedDice = game.selection.map((dieIndex, i) => {
+      const existingDice = currentSelectedDice[i]
       return {
-        id: existingDice?.id || diceArray[index].id,
+        id: existingDice?.id || diceArray[dieIndex].id,
         status: DiceStatus.SELECTED,
-        value: value
+        value: game.roll[dieIndex]
       }
     })
 
     const restoredRollDice = game.roll
-      .map((value, index) => {
-        if (value > 0) {
+      .map((faceValue, dieIndex) => {
+        if (!game.selection.includes(dieIndex) && faceValue > 0) {
           return {
-            id: diceArray[game.selection.length + index].id,
+            id: diceArray[dieIndex].id,
             status: DiceStatus.ROLL,
-            value: value
+            value: faceValue
           }
         }
         return null
@@ -62,19 +62,15 @@ export const useDiceBoard = () => {
   }, [boardSections.selected, game.selection, game.roll])
 
   const handleDiceSelection = useCallback(
-    (diceValue: number) => {
-      dispatch(selectDice(diceValue))
+    (diceIndex: number) => {
+      dispatch(selectDice(diceIndex))
     },
     [dispatch]
   )
 
   const handleDiceDeselection = useCallback(
-    (value: number, rollOrder: number[]) => {
-      const data = {
-        value,
-        order: rollOrder
-      }
-      dispatch(deselectDice(data))
+    (diceIndex: number, rollOrder: number[]) => {
+      dispatch(deselectDice({ index: diceIndex, order: rollOrder }))
     },
     [dispatch]
   )
@@ -99,14 +95,18 @@ export const useDiceBoard = () => {
       (item) => item.status === DiceStatus.SELECTED
     )
 
-    const updatedRollDice = game.roll
-      .map((value, index) => {
-        // find existing dice to preserve id
-        const existingDice = rollDice[index]
+    // build roll dice from non-selected positions
+    const nonSelectedEntries = game.roll
+      .map((faceValue, dieIndex) => ({ faceValue, dieIndex }))
+      .filter(({ dieIndex }) => !game.selection.includes(dieIndex))
+
+    const updatedRollDice = nonSelectedEntries
+      .map(({ faceValue, dieIndex }, i) => {
+        const existingDice = rollDice[i]
         return {
-          id: existingDice?.id || diceArray[game.selection.length + index].id,
+          id: existingDice?.id || diceArray[dieIndex].id,
           status: DiceStatus.ROLL,
-          value: value
+          value: faceValue
         }
       })
       .filter((dice) => dice.value > 0)
@@ -115,10 +115,11 @@ export const useDiceBoard = () => {
       (item, index) => !rollDice[index] || item.value !== rollDice[index].value
     )
 
-    const updatedSelectedDice = game.selection.map((value, index) => ({
-      id: holdDice[index]?.id || diceArray[index].id,
+    // build selected dice from selection indices, getting face values from roll
+    const updatedSelectedDice = game.selection.map((dieIndex, i) => ({
+      id: holdDice[i]?.id || diceArray[dieIndex].id,
       status: DiceStatus.SELECTED,
-      value: value
+      value: game.roll[dieIndex]
     }))
 
     if (hasRollChanges || holdDice.length !== updatedSelectedDice.length) {

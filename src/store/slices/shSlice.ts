@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
+// store/sh/shSlice.ts
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import ShScore from '../../utils/sh-score'
 import {
   SchoolCombinations,
@@ -9,23 +10,50 @@ import {
   isGameCombination
 } from '../../types'
 
+// constants
+const DICE_COUNT = 5
+const MAX_ROLLS = 3
+const SCHOOL_TURNS = 6
+const MAX_TURNS = 34
+const MAX_SAVES_PER_COMBINATION = 3
+
 const schoolCombNames = Object.values(SchoolCombinations)
 const gameCombNames = Object.values(GameCombinations)
 
-// create fresh state objects
-const createSchoolState = () => {
-  const school: Record<string, { final: boolean; score: number | null }> = {}
+// types
+type SchoolCell = { final: boolean; score: number | null }
+type CombinationsState = Record<string, number[]>
+type SchoolState = Record<string, SchoolCell>
+
+interface GameState {
+  score: number
+  schoolScore: number
+  turn: number
+  rollCount: number
+  lock: boolean
+  school: SchoolState
+  combinations: CombinationsState
+  results: iCombination
+  // selection now stores dice indices (0..DICE_COUNT-1)
+  selection: number[]
+  // roll stores dice faces, length === DICE_COUNT
+  roll: number[]
+  saved: boolean
+  over: boolean
+  favDiceValues: number[] // length 6 (faces 1..6)
+  stats: Record<string, any>
+}
+
+const createSchoolState = (): SchoolState => {
+  const school: SchoolState = {} as SchoolState
   schoolCombNames.forEach((name) => {
-    school[name] = {
-      final: false,
-      score: null
-    }
+    school[name] = { final: false, score: null }
   })
   return school
 }
 
-const createCombinationsState = () => {
-  const combinations: Record<string, number[]> = {}
+const createCombinationsState = (): CombinationsState => {
+  const combinations: CombinationsState = {}
   gameCombNames.forEach((name) => {
     combinations[name] = []
   })
@@ -44,40 +72,36 @@ const createResultsState = (): iCombination => ({
   chance: 0
 })
 
-// clear temporary scores
-const clearTempSchoolScores = (
-  school: Record<string, { final: boolean; score: number | null }>
-) => {
-  for (const key in school) {
-    if (!school[key].final) {
-      school[key].score = null
-    }
-  }
-}
+const zeroRoll = () => Array(DICE_COUNT).fill(0)
+const zeroFavDiceValues = () => Array(6).fill(0)
 
-const clearTempResults = (results: iCombination) => {
-  for (const name in results) {
-    results[name as keyof typeof results] = 0
-  }
-}
-
-const initialState = {
+const initialState: { game: GameState } = {
   game: {
     score: 0,
-    schoolScore: 0, // it can be negative
+    schoolScore: 0,
     turn: 1,
     rollCount: 0,
     lock: false,
     school: createSchoolState(),
     combinations: createCombinationsState(),
     results: createResultsState(),
-    selection: [] as number[],
-    roll: [0, 0, 0, 0, 0],
+    selection: [],
+    roll: zeroRoll(),
     saved: false,
     over: false,
-    favDiceValues: [0, 0, 0, 0, 0, 0],
+    favDiceValues: zeroFavDiceValues(),
     stats: {}
   }
+}
+
+const clearTempSchoolScores = (school: SchoolState) => {
+  for (const name of schoolCombNames) {
+    if (!school[name].final) school[name].score = null
+  }
+}
+
+const clearTempResults = (results: iCombination) => {
+  for (const k in results) results[k as keyof typeof results] = 0
 }
 
 const shSlice = createSlice({
@@ -86,45 +110,30 @@ const shSlice = createSlice({
   reducers: {
     reset: (state) => {
       state.game = {
-        score: 0,
-        schoolScore: 0,
-        turn: 1,
-        rollCount: 0,
-        lock: false,
-        school: createSchoolState(),
-        combinations: createCombinationsState(),
-        results: createResultsState(),
-        selection: [],
-        roll: [0, 0, 0, 0, 0],
-        saved: false,
-        over: false,
-        favDiceValues: [0, 0, 0, 0, 0, 0],
-        stats: {}
+        ...initialState.game
       }
     },
-    setScore: ({ game }, action) => {
-      if (game.turn <= 6) {
+
+    // payload: current dice (e.g. roll + selection combined?) — keep original contract
+    setScore: (state, action: PayloadAction<number[]>) => {
+      const { game } = state
+      if (game.turn <= SCHOOL_TURNS) {
         clearTempSchoolScores(game.school)
         const result = ShScore.getSchoolScore(action.payload)
-        // iterate results array and set scores
+        // use stable schoolCombNames order
         result.forEach((value, index) => {
-          if (
-            value !== null &&
-            !game.school[Object.keys(game.school)[index]].final
-          ) {
-            game.school[Object.keys(game.school)[index]].score = value
+          const combName = schoolCombNames[index]
+          if (value !== null && !game.school[combName].final) {
+            game.school[combName].score = value
           }
         })
-      } else if (game.turn <= 33) {
+      } else if (game.turn <= MAX_TURNS - 1) {
         const result = ShScore.getScore(ShScore.sort(action.payload))
-
-        // clear all temp combination results first
         clearTempResults(game.results)
 
-        // only set scores if there's a selection and result has values
         if (action.payload.length > 0) {
-          for (const name in result) {
-            if (game.combinations[name].length < 3) {
+          for (const name of gameCombNames) {
+            if (game.combinations[name].length < MAX_SAVES_PER_COMBINATION) {
               game.results[name as keyof typeof game.results] =
                 result[name as keyof typeof game.results]
             }
@@ -132,100 +141,121 @@ const shSlice = createSlice({
         }
       }
     },
-    saveScore: ({ game }, { payload }: { payload: SaveScorePayload }) => {
+
+    saveScore: (state, action: PayloadAction<SaveScorePayload>) => {
+      const { game } = state
+      const payload = action.payload as SaveScorePayload
+
       if (
         game.rollCount > 0 &&
-        game.turn <= 6 &&
+        game.turn <= SCHOOL_TURNS &&
         isSchoolCombination(payload)
       ) {
-        // save 'training' score
-        if (
-          game.school[payload].score !== null &&
-          !game.school[payload].final
-        ) {
-          game.school[payload].final = true
-          // result can be a zero value, so we need this to be null
-          game.score = game.score + game.school[payload].score
+        const cell = game.school[payload]
+        if (cell.score !== null && !cell.final) {
+          cell.final = true
+          game.score += cell.score
           game.saved = true
         }
-        // clear all temp scores
         clearTempSchoolScores(game.school)
-        // save 'school end' score to stats at 6th turn
-        if (game.turn === 6) {
+        if (game.turn === SCHOOL_TURNS) {
           game.schoolScore = game.score
         }
       } else if (
         game.rollCount > 0 &&
-        game.turn > 6 &&
+        game.turn > SCHOOL_TURNS &&
         isGameCombination(payload) &&
-        game.combinations[payload].length < 3 // Check if combination hasn't been saved 3 times
+        game.combinations[payload].length < MAX_SAVES_PER_COMBINATION
       ) {
-        // click on combination name saves zero
-        // click on result saves current result
+        // value from results
         const value = game.results[payload as keyof typeof game.results]
         game.combinations[payload].push(value)
-        game.score = game.score + value
-        // save favourite dice values from this selection
-        for (const value of game.selection) {
-          game.favDiceValues[value - 1]++
+        game.score += value
+
+        // update fav dice using selection indices (safe)
+        for (const dieIndex of game.selection) {
+          const face = game.roll[dieIndex]
+          if (face && face >= 1 && face <= 6) game.favDiceValues[face - 1]++
         }
-        // clear preliminary results to initial after save
         clearTempResults(game.results)
         game.saved = true
       }
 
       if (game.saved) {
-        // reset selection and unlock next turn
+        // reset selection and roll
         game.selection.length = 0
-        game.roll.splice(0, game.roll.length, 0, 0, 0, 0, 0)
-        // unlock button
-        game.turn = game.turn + 1
+        game.roll.splice(0, game.roll.length, ...zeroRoll())
+        game.turn++
         game.rollCount = 0
         game.lock = false
       }
 
-      // last turn
-      if (game.turn === 34) {
-        const stats = ShScore.combinationsStats(game.combinations)
-        game.stats = { ...stats }
+      // compute stats at end of game
+      if (game.turn === MAX_TURNS) {
+        game.stats = { ...ShScore.combinationsStats(game.combinations) }
       }
     },
-    gameOver: ({ game }) => {
-      if (game.rollCount === 3 && game.turn <= 6) {
-        // check if unable to complete training
-        const dice = [...game.selection, ...game.roll]
-        const scores = ShScore.getSchoolScore(dice)
-        let canSave: boolean = false
-        // check if user missed something
-        Object.keys(game.school).forEach((key, index) => {
+
+    gameOver: (state) => {
+      const { game } = state
+      if (game.rollCount === MAX_ROLLS && game.turn <= SCHOOL_TURNS) {
+        // game.roll has all 5 dice values in the index-based model
+        const scores = ShScore.getSchoolScore([...game.roll])
+        let canSave = false
+        schoolCombNames.forEach((key, index) => {
           if (!game.school[key].final && game.school[key].score === null) {
-            // check if score is null in results
             if (scores[index] != null) canSave = true
           }
         })
         if (!canSave) game.over = true
       }
     },
-    selectDice: ({ game }, { payload }) => {
-      game.selection.push(payload) // add to selection
-      game.roll.splice(game.roll.indexOf(payload), 1) // remove from roll
+
+    // select/deselect by index (0..DICE_COUNT-1)
+    selectDice: (state, action: PayloadAction<number>) => {
+      const { game } = state
+      const idx = action.payload
+      if (idx < 0 || idx >= DICE_COUNT) return
+      if (!game.selection.includes(idx)) {
+        game.selection.push(idx)
+      }
     },
-    deselectDice: ({ game }, { payload }) => {
-      // sync roll array - avoid direct assignment, use splice instead
-      game.roll.splice(0, game.roll.length, ...payload.order)
-      game.selection.splice(game.selection.indexOf(payload.value), 1) // remove from selection
+
+    deselectDice: (
+      state,
+      action: PayloadAction<{ index: number; order: number[] }>
+    ) => {
+      const { game } = state
+      const { index, order } = action.payload
+      // restore roll array order if provided; order must be an array of length DICE_COUNT of face values
+      if (order && order.length === DICE_COUNT) {
+        game.roll.splice(0, game.roll.length, ...order)
+      }
+      const pos = game.selection.indexOf(index)
+      if (pos !== -1) game.selection.splice(pos, 1)
+
       if (game.selection.length === 0) {
-        // reset score if no selection
         clearTempSchoolScores(game.school)
         clearTempResults(game.results)
       }
     },
-    rollDice: ({ game }) => {
+
+    rollDice: (state) => {
+      const { game } = state
       game.saved = false
-      const newRoll = ShScore.rollDice(game.roll, game.selection)
-      game.roll = newRoll
-      game.rollCount = game.rollCount + 1
-      if (game.rollCount === 3) game.lock = true
+      // only re-roll non-selected dice positions
+      const diceToReroll = game.roll.filter(
+        (_, i) => !game.selection.includes(i)
+      )
+      const newValues = ShScore.rollDice(diceToReroll, game.selection)
+      let newIdx = 0
+      for (let i = 0; i < DICE_COUNT; i++) {
+        if (!game.selection.includes(i)) {
+          game.roll[i] = newValues[newIdx++]
+        }
+      }
+      game.rollCount++
+      if (game.rollCount >= MAX_ROLLS) game.lock = true
     }
   }
 })
