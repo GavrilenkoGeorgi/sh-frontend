@@ -9,6 +9,7 @@ import {
 import type { Dice, BoardSections } from '../types'
 import { DiceStatus } from '../types'
 import {
+  diceArray,
   findBoardSectionContainer,
   getDiceById
 } from '../components/game/controls/DnDHelpers'
@@ -20,8 +21,8 @@ interface UseDragHandlersProps {
   setBoardSections: (
     sections: BoardSections | ((prev: BoardSections) => BoardSections)
   ) => void
-  onDiceSelect: (value: number) => void
-  onDiceDeselect: (value: number, rollOrder: number[]) => void
+  onDiceSelect: (diceIndex: number) => void
+  onDiceDeselect: (diceIndex: number, rollOrder: number[]) => void
 }
 
 export const useDragHandlers = ({
@@ -137,15 +138,17 @@ export const useDragHandlers = ({
         )
 
         if (activeContainer === DiceStatus.SELECTED) {
-          onDiceSelect(activeDice.value)
+          const diceIndex = diceArray.findIndex((d) => d.id === activeDice.id)
+          onDiceSelect(diceIndex)
           setDiceState(updatedDiceState)
         } else {
+          const diceIndex = diceArray.findIndex((d) => d.id === activeDice.id)
           const rollDice = updatedDiceState.filter(
             (item) => item.status === DiceStatus.ROLL
           )
           const rollOrder = rollDice.map((item) => item.value)
           setDiceState(updatedDiceState)
-          onDiceDeselect(activeDice.value, rollOrder)
+          onDiceDeselect(diceIndex, rollOrder)
         }
       }
 

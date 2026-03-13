@@ -61,47 +61,51 @@ const GamePage: FC = () => {
   // on selection change calc score
   useEffect(() => {
     if (game.selection.length > 0) {
-      dispatch(setScore(game.selection))
+      // selection stores indices, convert to face values for scoring
+      const selectedValues = game.selection.map((i) => game.roll[i])
+      dispatch(setScore(selectedValues))
     }
   }, [game.selection])
 
   return (
-    <section className={styles.game}>
-      <div className={styles.content}>
-        {/* Training */}
-        <TrainingBoard />
-        {/* Game */}
-        <ScoreBoard />
-        {/* Game controls */}
-        <DnDDiceBoard />
-        {/* Modals */}
-        {game.over && (
-          <Modal
-            heading="Game over"
-            text="Better luck next time!"
-            btnLabel="ok"
-            onClick={() => dispatch(reset())}
-          />
-        )}
-        {game.turn === 34 && (
-          <>
-            <ConfettiAnimation />
+    <>
+      <section className={styles.game}>
+        <div className={styles.content}>
+          {/* Training */}
+          <TrainingBoard />
+          {/* Game */}
+          <ScoreBoard />
+          {/* Game controls */}
+          <DnDDiceBoard />
+          {/* Modals */}
+          {game.over && (
             <Modal
-              heading="🎉 Congrats! ✨"
-              score={game.score}
-              text="Your score is "
-              userName={userInfo?.name}
-              btnLabel="save"
-              isBusy={isSubmitting}
-              onClick={() => {
-                void complete()
-              }}
+              heading="Game over"
+              text="Better luck next time!"
+              btnLabel="ok"
+              onClick={() => dispatch(reset())}
             />
-          </>
-        )}
-        <ProgressBar count={game.rollCount} />
-      </div>
-    </section>
+          )}
+          {game.turn === 34 && (
+            <>
+              <ConfettiAnimation />
+              <Modal
+                heading="🎉 Congrats! ✨"
+                score={game.score}
+                text="Your score is "
+                userName={userInfo?.name}
+                btnLabel="save"
+                isBusy={isSubmitting}
+                onClick={() => {
+                  void complete()
+                }}
+              />
+            </>
+          )}
+        </div>
+      </section>
+      <ProgressBar count={game.rollCount} />
+    </>
   )
 }
 
