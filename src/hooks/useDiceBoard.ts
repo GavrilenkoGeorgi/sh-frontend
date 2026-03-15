@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { type RootState } from '../store'
-import { selectDice, deselectDice } from '../store/slices/shSlice'
+import {
+  selectDice,
+  deselectDice,
+  reorderSelectedDice
+} from '../store/slices/shSlice'
 import type { Dice, BoardSections } from '../types'
 import { DiceStatus } from '../types'
 import {
@@ -24,20 +28,16 @@ export const useDiceBoard = () => {
 
   const restoreDiceStateFromRedux = useCallback(() => {
     // only restore if there's actual data to restore
-    if (!(game.selection.length > 0 || game.roll.some((val) => val > 0))) {
+    if (!(game.selectionOrder.length > 0 || game.roll.some((val) => val > 0))) {
       return
     }
 
-    // create selected dice array preserving existing order
-    const currentSelectedDice = boardSections.selected || []
-    const restoredSelectedDice = game.selection.map((dieIndex, i) => {
-      const existingDice = currentSelectedDice[i]
-      return {
-        id: existingDice?.id || diceArray[dieIndex].id,
-        status: DiceStatus.SELECTED,
-        value: game.roll[dieIndex]
-      }
-    })
+    // create selected dice using selectionOrder for stable visual ordering
+    const restoredSelectedDice = game.selectionOrder.map((dieIndex) => ({
+      id: diceArray[dieIndex].id,
+      status: DiceStatus.SELECTED,
+      value: game.roll[dieIndex]
+    }))
 
     const restoredRollDice = game.roll
       .map((faceValue, dieIndex) => {
@@ -59,7 +59,7 @@ export const useDiceBoard = () => {
       roll: restoredRollDice
     })
     setDiceState(restoredDiceArray)
-  }, [boardSections.selected, game.selection, game.roll])
+  }, [game.selectionOrder, game.roll])
 
   const handleDiceSelection = useCallback(
     (diceIndex: number) => {
@@ -71,6 +71,13 @@ export const useDiceBoard = () => {
   const handleDiceDeselection = useCallback(
     (diceIndex: number, rollOrder: number[]) => {
       dispatch(deselectDice({ index: diceIndex, order: rollOrder }))
+    },
+    [dispatch]
+  )
+
+  const handleDiceReorder = useCallback(
+    (orderedIndices: number[]) => {
+      dispatch(reorderSelectedDice(orderedIndices))
     },
     [dispatch]
   )
@@ -115,9 +122,9 @@ export const useDiceBoard = () => {
       (item, index) => !rollDice[index] || item.value !== rollDice[index].value
     )
 
-    // build selected dice from selection indices, getting face values from roll
-    const updatedSelectedDice = game.selection.map((dieIndex, i) => ({
-      id: holdDice[i]?.id || diceArray[dieIndex].id,
+    // build selected dice from selectionOrder for stable visual ordering
+    const updatedSelectedDice = game.selectionOrder.map((dieIndex) => ({
+      id: diceArray[dieIndex].id,
       status: DiceStatus.SELECTED,
       value: game.roll[dieIndex]
     }))
@@ -129,7 +136,7 @@ export const useDiceBoard = () => {
 
       setBoardSections((prevBoardSections) => ({
         ...prevBoardSections,
-        // update dice values while preserving positions
+        // preserve visual order by matching on stable dice ids
         selected:
           prevBoardSections.selected?.length > 0
             ? prevBoardSections.selected
@@ -139,7 +146,7 @@ export const useDiceBoard = () => {
                       (updatedDice) => updatedDice.id === dice.id
                     ) || dice
                 )
-                .filter((_, index) => index < game.selection.length)
+                .filter((_, index) => index < game.selectionOrder.length)
             : updatedSelectedDice,
         roll: updatedRollDice
       }))
@@ -149,7 +156,7 @@ export const useDiceBoard = () => {
         setTimeout(() => setHasNewRoll(false), ANIMATION_DURATION)
       }
     }
-  }, [game.roll, game.selection, diceState])
+  }, [game.roll, game.selection, game.selectionOrder, diceState])
 
   // reset board when game is saved or over
   useEffect(() => {
@@ -172,6 +179,7 @@ export const useDiceBoard = () => {
     restoreDiceStateFromRedux,
     handleDiceSelection,
     handleDiceDeselection,
+    handleDiceReorder,
     resetBoard
   }
 }

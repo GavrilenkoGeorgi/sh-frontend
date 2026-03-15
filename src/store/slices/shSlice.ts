@@ -36,6 +36,8 @@ interface GameState {
   results: iCombination
   // selection now stores dice indices (0..DICE_COUNT-1)
   selection: number[]
+  // visual order of selected dice (same members as selection, but user-reorderable)
+  selectionOrder: number[]
   // roll stores dice faces, length === DICE_COUNT
   roll: number[]
   saved: boolean
@@ -86,6 +88,7 @@ const initialState: { game: GameState } = {
     combinations: createCombinationsState(),
     results: createResultsState(),
     selection: [],
+    selectionOrder: [],
     roll: zeroRoll(),
     saved: false,
     over: false,
@@ -184,6 +187,7 @@ const shSlice = createSlice({
       if (game.saved) {
         // reset selection and roll
         game.selection.length = 0
+        game.selectionOrder.length = 0
         game.roll.splice(0, game.roll.length, ...zeroRoll())
         game.turn++
         game.rollCount = 0
@@ -218,6 +222,7 @@ const shSlice = createSlice({
       if (idx < 0 || idx >= DICE_COUNT) return
       if (!game.selection.includes(idx)) {
         game.selection.push(idx)
+        game.selectionOrder.push(idx)
       }
     },
 
@@ -233,10 +238,24 @@ const shSlice = createSlice({
       }
       const pos = game.selection.indexOf(index)
       if (pos !== -1) game.selection.splice(pos, 1)
+      const orderPos = game.selectionOrder.indexOf(index)
+      if (orderPos !== -1) game.selectionOrder.splice(orderPos, 1)
 
       if (game.selection.length === 0) {
         clearTempSchoolScores(game.school)
         clearTempResults(game.results)
+      }
+    },
+
+    reorderSelectedDice: (state, action: PayloadAction<number[]>) => {
+      const { game } = state
+      const ordered = action.payload
+      // validate: must contain the same members as current selection
+      if (
+        ordered.length === game.selection.length &&
+        ordered.every((idx) => game.selection.includes(idx))
+      ) {
+        game.selectionOrder.splice(0, game.selectionOrder.length, ...ordered)
       }
     },
 
@@ -267,7 +286,8 @@ export const {
   saveScore,
   rollDice,
   selectDice,
-  deselectDice
+  deselectDice,
+  reorderSelectedDice
 } = shSlice.actions
 
 export default shSlice.reducer
