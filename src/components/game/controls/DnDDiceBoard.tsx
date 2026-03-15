@@ -20,7 +20,8 @@ const DnDDiceBoard: FC = () => {
     hasNewRoll,
     restoreDiceStateFromRedux,
     handleDiceSelection,
-    handleDiceDeselection
+    handleDiceDeselection,
+    handleDiceReorder
   } = useDiceBoard()
 
   const { activeDice, handleDragStart, handleDragOver, handleDragEnd } =
@@ -30,7 +31,8 @@ const DnDDiceBoard: FC = () => {
       boardSections,
       setBoardSections,
       onDiceSelect: handleDiceSelection,
-      onDiceDeselect: handleDiceDeselection
+      onDiceDeselect: handleDiceDeselection,
+      onDiceReorder: handleDiceReorder
     })
 
   // PWA lifecycle for mobile devices

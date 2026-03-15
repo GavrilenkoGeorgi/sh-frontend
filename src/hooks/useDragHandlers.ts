@@ -23,6 +23,7 @@ interface UseDragHandlersProps {
   ) => void
   onDiceSelect: (diceIndex: number) => void
   onDiceDeselect: (diceIndex: number, rollOrder: number[]) => void
+  onDiceReorder: (orderedIndices: number[]) => void
 }
 
 export const useDragHandlers = ({
@@ -31,7 +32,8 @@ export const useDragHandlers = ({
   boardSections,
   setBoardSections,
   onDiceSelect,
-  onDiceDeselect
+  onDiceDeselect,
+  onDiceReorder
 }: UseDragHandlersProps) => {
   const [activeDiceId, setActiveDiceId] = useState<UniqueIdentifier | null>(
     null
@@ -115,14 +117,26 @@ export const useDragHandlers = ({
       )
 
       if (activeIndex !== overIndex) {
-        setBoardSections((boardSection) => ({
-          ...boardSection,
-          [overContainer]: arrayMove(
+        setBoardSections((boardSection) => {
+          const reordered = arrayMove(
             boardSection[overContainer],
             activeIndex,
             overIndex
           )
-        }))
+
+          // persist selected order in Redux after reorder
+          if (overContainer === DiceStatus.SELECTED) {
+            const orderedIndices = reordered.map((dice) =>
+              diceArray.findIndex((d) => d.id === dice.id)
+            )
+            onDiceReorder(orderedIndices)
+          }
+
+          return {
+            ...boardSection,
+            [overContainer]: reordered
+          }
+        })
       }
 
       const activeDice = getDiceById(diceState, active.id)
