@@ -12,10 +12,6 @@ import { ToastTypes } from '../types'
 const CHECK_TIMEOUT = 5000 // ms
 
 export async function authLoader(_: LoaderFunctionArgs) {
-  const accessToken = localStorage.getItem('accessToken')
-
-  if (!accessToken) return null
-
   // start checking flag
   store.dispatch(startCheckingAuth())
 
@@ -32,8 +28,7 @@ export async function authLoader(_: LoaderFunctionArgs) {
     if (res && 'data' in res && res.data && res.data.user) {
       store.dispatch(
         setCredentials({
-          user: res.data.user,
-          accessToken: res.data.accessToken
+          user: res.data.user
         })
       )
     }

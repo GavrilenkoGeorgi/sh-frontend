@@ -1,4 +1,4 @@
-import React, { type FC, useState, useEffect } from 'react'
+import React, { type FC, useState, useEffect, useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import type { navLink } from '../../types'
 import {
@@ -15,10 +15,12 @@ import * as styles from './NavBar.module.sass'
 import { ROUTES } from '../../constants/routes'
 import { ScoreDisplay } from '../game/ScoreDisplay'
 import { UserLink } from './UserLink'
+import { useAuthStatus } from '../../hooks/auth/useAuthStatus'
 
 const NavBar: FC = () => {
   const location = useLocation()
   const scrollDirection = useScrollDirection()
+  const { data, isUnauthenticated } = useAuthStatus()
 
   // mobile menu
   const { ref, isComponentVisible } = useComponentVisible(false)
@@ -45,36 +47,39 @@ const NavBar: FC = () => {
     })
   }, [scrollDirection])
 
-  const navigation: navLink[] = [
-    {
-      label: 'Game',
-      url: ROUTES.GAME
-    },
-    {
-      label: 'Profile',
-      url: ROUTES.PROFILE
-    },
-    {
-      label: 'Login',
-      url: ROUTES.LOGIN
-    },
-    {
-      label: 'Stats',
-      url: ROUTES.STATS
-    },
-    {
-      label: 'Register',
-      url: ROUTES.REGISTER
-    },
-    {
-      label: 'Privacy',
-      url: ROUTES.PRIVACY
-    },
-    {
-      label: 'Help',
-      url: ROUTES.HELP
-    }
-  ]
+  const navigation: navLink[] = useMemo(
+    () => [
+      {
+        label: 'Game',
+        url: ROUTES.GAME
+      },
+      {
+        label: 'Profile',
+        url: ROUTES.PROFILE
+      },
+      {
+        label: `${isUnauthenticated ? 'Login' : 'Logout'}`,
+        url: ROUTES.LOGIN
+      },
+      {
+        label: 'Stats',
+        url: ROUTES.STATS
+      },
+      {
+        label: 'Register',
+        url: ROUTES.REGISTER
+      },
+      {
+        label: 'Privacy',
+        url: ROUTES.PRIVACY
+      },
+      {
+        label: 'Help',
+        url: ROUTES.HELP
+      }
+    ],
+    [isUnauthenticated]
+  )
 
   const navLinks = navigation.map((link) => (
     <NavLink

@@ -3,15 +3,18 @@ import { Link, useNavigate } from 'react-router'
 
 import LoginForm from '../components/forms/Login'
 import * as styles from './Main.module.sass'
+import { link } from './Login.module.sass'
 import Logo from '../assets/svg/sharlushka-logo.svg'
+import { ROUTES } from '../constants/routes'
+import { useAuthStatus } from '../hooks/auth/useAuthStatus'
 
 const Main: FC = () => {
   const navigate = useNavigate()
+  const { data } = useAuthStatus()
 
   useEffect(() => {
-    const auth = Boolean(localStorage.getItem('accessToken'))
-    if (auth) navigate('/game')
-  }, [])
+    if (Boolean(data?.isAuthenticated)) navigate('/game')
+  }, [data?.isAuthenticated])
 
   return (
     <section className={styles.container}>
@@ -27,6 +30,15 @@ const Main: FC = () => {
         </p>
       </div>
       <LoginForm />
+      <aside>
+        <Link
+          className={link}
+          to={ROUTES.FORGOT_PASSWORD}
+          aria-label="Forgot password"
+        >
+          Forgot password?
+        </Link>
+      </aside>
     </section>
   )
 }

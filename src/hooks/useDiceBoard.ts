@@ -108,14 +108,11 @@ export const useDiceBoard = () => {
       .filter(({ dieIndex }) => !game.selection.includes(dieIndex))
 
     const updatedRollDice = nonSelectedEntries
-      .map(({ faceValue, dieIndex }, i) => {
-        const existingDice = rollDice[i]
-        return {
-          id: existingDice?.id || diceArray[dieIndex].id,
-          status: DiceStatus.ROLL,
-          value: faceValue
-        }
-      })
+      .map(({ faceValue, dieIndex }) => ({
+        id: diceArray[dieIndex].id,
+        status: DiceStatus.ROLL,
+        value: faceValue
+      }))
       .filter((dice) => dice.value > 0)
 
     const hasRollChanges = updatedRollDice.some(
@@ -148,7 +145,24 @@ export const useDiceBoard = () => {
                 )
                 .filter((_, index) => index < game.selectionOrder.length)
             : updatedSelectedDice,
-        roll: updatedRollDice
+        // preserve roll visual order by matching on stable dice ids
+        roll:
+          prevBoardSections.roll?.length > 0
+            ? [
+                ...(prevBoardSections.roll
+                  .map((dice) =>
+                    updatedRollDice.find(
+                      (updatedDice) => updatedDice.id === dice.id
+                    )
+                  )
+                  .filter(Boolean) as Dice[]),
+                // append newly deselected dice that weren't in roll before
+                ...updatedRollDice.filter(
+                  (dice) =>
+                    !prevBoardSections.roll.some((prev) => prev.id === dice.id)
+                )
+              ]
+            : updatedRollDice
       }))
 
       // reset animation flag after animation completes
