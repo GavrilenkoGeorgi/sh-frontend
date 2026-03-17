@@ -10,13 +10,13 @@ const baseQuery = fetchBaseQuery({
 export const apiSlice = createApi({
   reducerPath: 'user',
   baseQuery,
-  tagTypes: ['User'],
-  endpoints: (builder) => ({})
+  tagTypes: ['User', 'Auth'],
+  endpoints: () => ({})
 })
 
 export const gameSlice = createApi({
   reducerPath: 'game',
   baseQuery,
   tagTypes: ['Game'],
-  endpoints: (builder) => ({})
+  endpoints: () => ({})
 })

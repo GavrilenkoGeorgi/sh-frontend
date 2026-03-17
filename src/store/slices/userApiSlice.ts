@@ -1,5 +1,5 @@
 import { apiSlice } from './apiSlice'
-const USERS_URL = process.env.REACT_APP_USERS_URL
+export const USERS_URL = process.env.REACT_APP_USERS_URL
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -8,7 +8,8 @@ export const userApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/delete`,
         method: 'DELETE',
         credentials: 'include'
-      })
+      }),
+      invalidatesTags: ['Auth']
     }),
     login: builder.mutation({
       query: (data) => ({
@@ -16,14 +17,24 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         credentials: 'include',
         body: data
-      })
+      }),
+      invalidatesTags: ['Auth']
     }),
     logout: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/logout`,
         credentials: 'include',
         method: 'GET'
-      })
+      }),
+      invalidatesTags: ['Auth']
+    }),
+    authStatus: builder.query({
+      query: () => ({
+        url: `${USERS_URL}/status`,
+        credentials: 'include',
+        method: 'GET'
+      }),
+      providesTags: ['Auth']
     }),
     signup: builder.mutation({
       query: (data) => ({
@@ -62,7 +73,8 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data
       })
     })
-  })
+  }),
+  overrideExisting: false
 })
 
 export const {
@@ -71,6 +83,7 @@ export const {
   useUpdatePasswordMutation,
   useLoginMutation,
   useLogoutMutation,
+  useAuthStatusQuery,
   useSignupMutation,
   useUpdateUserMutation,
   useCheckAuthMutation

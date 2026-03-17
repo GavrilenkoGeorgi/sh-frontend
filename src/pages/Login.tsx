@@ -11,7 +11,11 @@ const Login: FC = () => {
       <h1>Login</h1>
       <LoginForm />
       <aside>
-        <Link to={ROUTES.FORGOT_PASSWORD} aria-label="Forgot password">
+        <Link
+          className={styles.link}
+          to={ROUTES.FORGOT_PASSWORD}
+          aria-label="Forgot password"
+        >
           Forgot password?
         </Link>
       </aside>

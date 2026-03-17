@@ -8,11 +8,13 @@ import { ToastTypes } from './types'
 import { getErrMsg } from './utils'
 import { useDispatch } from 'react-redux'
 import * as styles from './pages/SharedStyles.module.sass'
+import { useAuthStatus } from './hooks/auth/useAuthStatus'
 
 const App: FC = () => {
   const dispatch = useDispatch()
-  const [checkAuth] = useCheckAuthMutation()
+  const [checkAuth] = useCheckAuthMutation() // TODO: checks refresh token, needs to be renamed
   const { pathname } = useLocation()
+  const { data } = useAuthStatus()
 
   const refreshAuth = async (): Promise<void> => {
     try {
@@ -33,11 +35,10 @@ const App: FC = () => {
 
   useEffect(() => {
     // check if refresh is possible
-    const auth = Boolean(localStorage.getItem('accessToken'))
-    if (auth) {
+    if (Boolean(data?.isAuthenticated)) {
       void refreshAuth()
     }
-  }, [])
+  }, [data?.isAuthenticated])
 
   return (
     <motion.div
