@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const WorkboxPlugin = require('workbox-webpack-plugin')
@@ -22,7 +23,12 @@ const paths = [
   '/profile'
 ] //!
 
+const { version } = require('./package.json')
+
 const plugins = [
+  new webpack.DefinePlugin({
+    __APP_VERSION__: JSON.stringify(version)
+  }),
   new HtmlWebpackPlugin({
     template: './src/index.html',
     title: 'Progressive Web Application'
