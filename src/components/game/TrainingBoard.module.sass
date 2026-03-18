@@ -10,12 +10,14 @@
     padding: 0
     min-width: 6rem
 
-.result
-  min-height: 6rem
+.qualiResult
+  min-height: 6.5rem
   text-align: center
   display: flex
+  justify-content: center
   @media screen and (min-width: variables.$medium)
     min-height: auto
+    justify-content: flex-start
   div // for the result text
     display: flex
     flex-direction: column
@@ -24,12 +26,17 @@
       align-items: center
     svg
       width: 100%
+      max-width: 5rem
       cursor: pointer
       margin-bottom: .5rem
       @media screen and (min-width: variables.$medium)
         max-width: 2.5rem
         margin-bottom: 0
         margin-right: .5rem
+
+.qualiScore
+  font-size: 1.5rem
+  margin: 0
 
 svg, .result
   transition: color .25s linear

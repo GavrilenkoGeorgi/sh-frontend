@@ -37,7 +37,7 @@ const TrainingBoard: FC = () => {
         <div
           id={key}
           key={key}
-          className={cx(styles.result, {
+          className={cx(styles.qualiResult, {
             [styles.savable]:
               game.school[key].score != null && !game.school[key].final
           })}
@@ -53,7 +53,7 @@ const TrainingBoard: FC = () => {
         >
           <div>
             <Dice kind={index + 1} />
-            {game.school[key].score}
+            <p className={styles.qualiScore}>{game.school[key].score}</p>
           </div>
         </div>
       ))}
