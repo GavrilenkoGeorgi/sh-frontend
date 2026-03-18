@@ -118,12 +118,20 @@ input, textarea, select
   text-transform: capitalize
   width: 100%
   cursor: pointer
+  transition: border-color .3s, color .3s
   &:disabled
     opacity: .3
+  &:hover
+    border-color: colors.$color-orange
+    color: colors.$color-orange
 
 .deleteBtn
   border-color: colors.$error
   color: colors.$error
+  transition: border-color .3s, color .3s
+  &:hover
+    border-color: colors.$color-orange
+    color: colors.$color-orange
 
 .privacy
   text-align: center

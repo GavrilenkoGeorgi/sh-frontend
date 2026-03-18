@@ -3,6 +3,9 @@
     "browser": true,
     "es2021": true
   },
+  "globals": {
+    "__APP_VERSION__": "readonly"
+  },
   "extends": ["standard-with-typescript", "plugin:react/recommended"],
   "parserOptions": {
     "ecmaVersion": "latest",

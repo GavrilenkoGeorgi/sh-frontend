@@ -20,7 +20,7 @@ import { useAuthStatus } from '../../hooks/auth/useAuthStatus'
 const NavBar: FC = () => {
   const location = useLocation()
   const scrollDirection = useScrollDirection()
-  const { data, isUnauthenticated } = useAuthStatus()
+  const { isUnauthenticated } = useAuthStatus() // TODO: move this to store
 
   // mobile menu
   const { ref, isComponentVisible } = useComponentVisible(false)
@@ -114,8 +114,9 @@ const NavBar: FC = () => {
             [styles.open]: open
           })}
         >
-          <UserLink />
+          {!isUnauthenticated && <UserLink />}
           {navLinks}
+          <p className={styles.version}>v{__APP_VERSION__}</p>
         </div>
       </div>
     </nav>
