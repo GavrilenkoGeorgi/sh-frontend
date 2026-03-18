@@ -3,13 +3,21 @@
 
 .results
   display: flex
-  margin-bottom: .5rem
   flex-direction: column
   justify-content: space-between
-  gap: .75rem
+  flex-grow: 1
+  font-size: 1.4rem
+  gap: .5rem
+  margin: .5rem 0
+  @media (min-height: variables.$smallHeight)
+    font-size: 1.7rem
+  @media (min-height: variables.$largeHeight)
+    font-size: 1.9rem
+  @media screen and (min-height: variables.$xlargeHeight)
+    font-size: 2.1rem
   @media screen and (min-width: variables.$medium)
-    padding: 0
-    flex-grow: 1
+    font-size: 1.3rem
+    gap: 0
 
 .name
   text-transform: capitalize
