@@ -88,120 +88,133 @@ const plugins = [
   })
 ]
 
-plugins.push(
-  new WorkboxPlugin.InjectManifest({
-    swSrc: './src/service-worker.ts',
-    swDest: 'service-worker.js',
-    // in dev, skip precaching so the SW registers without 404s
-    ...(prod ? {} : { exclude: [/./] })
-  })
-)
+const workboxPlugin = new WorkboxPlugin.InjectManifest({
+  swSrc: './src/service-worker.ts',
+  swDest: 'service-worker.js',
+  // in dev, skip precaching so the SW registers without 404s
+  ...(prod ? {} : { exclude: [/./] })
+})
 
-module.exports = {
-  mode: prod ? 'production' : 'development',
-  entry: './src/index.tsx',
-  output: {
-    path: path.join(__dirname, '/dist/')
-  },
-  optimization: {
-    usedExports: 'global',
-    minimizer: [
-      new CssMinimizerPlugin({
-        parallel: true
-      }),
-      new TerserPlugin({
-        test: /\.js(\?.*)?$/i,
-        parallel: true
-      })
-    ],
-    runtimeChunk: 'single',
-    splitChunks: {
-      chunks: 'all',
-      maxInitialRequests: Infinity,
-      minSize: 0,
-      cacheGroups: {
-        vendor: {
-          test: /[\\\/]node_modules[\\\/]/,
-          name(module) {
-            // get the name. E.g. node_modules/pkgName/not/this/part.js
-            // or node_modules/pkgName
-            const pkg = module.context.match(
-              /[\\\/]node_modules[\\\/](.*?)([\\\/]|$)/
-            )
-            let pkgName
-            if (pkg !== null) {
-              // the last one is null
-              ;[, pkgName] = pkg // get the second item
-              // npm package names are URL-safe, but some servers don't like @ symbols
-              return `npm.${pkgName.replace('@', '')}`
-            } else return false
+plugins.push(workboxPlugin)
+
+module.exports = (env) => {
+  // workbox-webpack-plugin sets alreadyCalled after the first build, which
+  // breaks subsequent watch-mode rebuilds — reset it in non-production
+  if (env !== 'production') {
+    Object.defineProperty(workboxPlugin, 'alreadyCalled', {
+      get() {
+        return false
+      },
+      set() {}
+    })
+  }
+
+  return {
+    mode: prod ? 'production' : 'development',
+    entry: './src/index.tsx',
+    output: {
+      path: path.join(__dirname, '/dist/')
+    },
+    optimization: {
+      usedExports: 'global',
+      minimizer: [
+        new CssMinimizerPlugin({
+          parallel: true
+        }),
+        new TerserPlugin({
+          test: /\.js(\?.*)?$/i,
+          parallel: true
+        })
+      ],
+      runtimeChunk: 'single',
+      splitChunks: {
+        chunks: 'all',
+        maxInitialRequests: Infinity,
+        minSize: 0,
+        cacheGroups: {
+          vendor: {
+            test: /[\\\/]node_modules[\\\/]/,
+            name(module) {
+              // get the name. E.g. node_modules/pkgName/not/this/part.js
+              // or node_modules/pkgName
+              const pkg = module.context.match(
+                /[\\\/]node_modules[\\\/](.*?)([\\\/]|$)/
+              )
+              let pkgName
+              if (pkg !== null) {
+                // the last one is null
+                ;[, pkgName] = pkg // get the second item
+                // npm package names are URL-safe, but some servers don't like @ symbols
+                return `npm.${pkgName.replace('@', '')}`
+              } else return false
+            }
           }
         }
       }
-    }
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(ts|tsx)$/,
-        exclude: /node_modules/,
-        resolve: {
-          extensions: ['.ts', '.tsx', '.js', '.json']
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(ts|tsx)$/,
+          exclude: /node_modules/,
+          resolve: {
+            extensions: ['.ts', '.tsx', '.js', '.json']
+          },
+          use: 'ts-loader'
         },
-        use: 'ts-loader'
-      },
-      // 1️⃣ CSS-Module rule: only files ending in .module.scss/.module.css
-      {
-        test: /\.module\.(sa|sc|c)ss$/, // <-- notice the “.module.” in the pattern
-        exclude: /node_modules/, // ignore node_modules (if you never publish CSS modules to npm)
-        use: [
-          'style-loader', // 1. Injects <style> tags at runtime
-          {
-            loader: 'css-loader', // 2. Interprets @import and url() & enables "modules"
-            options: {
-              modules: {
-                // How the generated class names should look
-                localIdentName: '[local]--[hash:base64:5]'
+        // 1️⃣ CSS-Module rule: only files ending in .module.scss/.module.css
+        {
+          test: /\.module\.(sa|sc|c)ss$/, // <-- notice the “.module.” in the pattern
+          exclude: /node_modules/, // ignore node_modules (if you never publish CSS modules to npm)
+          use: [
+            'style-loader', // 1. Injects <style> tags at runtime
+            {
+              loader: 'css-loader', // 2. Interprets @import and url() & enables "modules"
+              options: {
+                modules: {
+                  // How the generated class names should look
+                  localIdentName: '[local]--[hash:base64:5]'
+                }
+              }
+            },
+            {
+              loader: 'sass-loader', // 3. Compiles Sass → CSS
+              options: {
+                // “modern” is fine, or remove if you don't need a special API
+                implementation: require('sass')
               }
             }
-          },
-          {
-            loader: 'sass-loader', // 3. Compiles Sass → CSS
-            options: {
-              // “modern” is fine, or remove if you don't need a special API
-              implementation: require('sass')
-            }
-          }
-        ]
-      },
+          ]
+        },
 
-      // 2️⃣ Global CSS/Sass rule: everything else (.scss/.css) except .module
-      {
-        test: /\.(sa|sc|c)ss$/, // match .scss/.sass/.css
-        exclude: [
-          /\.module\.(sa|sc|c)ss$/, // exclude any “.module.scss” or “.module.css”
-          /node_modules/ // <-- newly added exclusion
-        ],
-        use: [
-          'style-loader',
-          'css-loader', // No `modules: true` here
-          {
-            loader: 'sass-loader',
-            options: {
-              implementation: require('sass')
+        // 2️⃣ Global CSS/Sass rule: everything else (.scss/.css) except .module
+        {
+          test: /\.(sa|sc|c)ss$/, // match .scss/.sass/.css
+          exclude: [
+            /\.module\.(sa|sc|c)ss$/, // exclude any “.module.scss” or “.module.css”
+            /node_modules/ // <-- newly added exclusion
+          ],
+          use: [
+            'style-loader',
+            'css-loader', // No `modules: true` here
+            {
+              loader: 'sass-loader',
+              options: {
+                implementation: require('sass')
+              }
             }
-          }
-        ]
-      },
-      {
-        test: /\.svg$/,
-        use: ['@svgr/webpack']
-      }
-    ]
-  },
-  devtool: prod ? undefined : 'source-map',
-  plugins: [...plugins],
-  devServer: {
-    historyApiFallback: true
+          ]
+        },
+        {
+          test: /\.svg$/,
+          use: ['@svgr/webpack']
+        }
+      ]
+    },
+    devtool: prod ? undefined : 'source-map',
+    plugins: [...plugins],
+    devServer: {
+      historyApiFallback: true
+    }
   }
 }
