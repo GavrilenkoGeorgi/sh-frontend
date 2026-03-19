@@ -18,9 +18,9 @@ export function applyServiceWorkerUpdate(): void {
   waiting.postMessage({ type: 'SKIP_WAITING' })
 }
 
-// TODO: debug logs
+// TODO: cleanup debug logs
 export function registerSW(config?: SWConfig): void {
-  if (!('serviceWorker' in navigator)) return
+  if (!('serviceWorker' in navigator) || isLocalhost) return
 
   // reload once when a new SW takes control
   let reloading = false
