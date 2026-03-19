@@ -3,6 +3,7 @@ import { apiSlice, gameSlice } from './slices/apiSlice'
 import authReducer from './slices/authSlice'
 import shReducer from './slices/shSlice'
 import notificationReducer from './slices/notificationSlice'
+import swUpdateReducer from './slices/swUpdateSlice'
 
 const store = configureStore({
   reducer: {
@@ -10,7 +11,8 @@ const store = configureStore({
     [gameSlice.reducerPath]: gameSlice.reducer,
     sh: shReducer,
     auth: authReducer,
-    notification: notificationReducer
+    notification: notificationReducer,
+    swUpdate: swUpdateReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware, gameSlice.middleware),
