@@ -30,12 +30,32 @@
       cursor: pointer
       @media screen and (min-width: variables.$medium)
         max-width: 2.5rem
-        margin-bottom: 0
-        margin-right: .5rem
+        // margin-bottom: 0
+        margin-left: .5rem
 
 .qualiScore
   font-size: 1.8rem
   margin: 0
+  overflow: hidden
+  line-height: 1.2
+  transition: max-height .25s ease, opacity .2s ease, transform .2s ease
+  max-height: 0
+  opacity: 0
+  transform: translateY(-4px) // TODO: doesn't work for desktop, as the width is changing there
+  margin-bottom: .25rem
+  @media screen and (min-width: variables.$medium)
+    margin-bottom: 0
+    text-align: right
+
+.visible
+  max-height: 2.5rem // slightly above text height
+  opacity: 1
+  transform: translateY(0)
+
+.hidden
+  max-height: 0
+  opacity: 0
+  transform: translateY(-4px)
 
 svg, .result
   transition: color .25s linear

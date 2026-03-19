@@ -92,13 +92,15 @@
     visibility: hidden
 
 .navLink
-  // font-size: 1.3rem
   text-decoration: none
   margin: .5rem 0
   margin-left: 2rem
   display: flex
   align-items: center
   color: colors.$primary-color
+  transition: color .25s linear
+  @media (prefers-color-scheme: dark)
+    color: colors.$light-color
   @media (prefers-color-scheme: dark)
     color: inherit
   @media screen and (min-width: variables.$medium)
@@ -113,6 +115,13 @@
     cursor: pointer
     color: colors.$color-orange
     text-decoration: underline
+
+.disabled
+  color: colors.$primary-light-color
+  pointer-events: none
+  &:hover
+    cursor: default
+    text-decoration: none
 
 .current
   color: colors.$color-orange

@@ -4,7 +4,8 @@ import type { Notification } from '../../types'
 const initialState: Notification = {
   message: null,
   type: null,
-  busy: false
+  busy: false,
+  autoClose: true
 }
 
 const notificationSlice = createSlice({
@@ -12,11 +13,21 @@ const notificationSlice = createSlice({
   initialState,
   reducers: {
     setNotification: (state, action) => {
-      if (action.payload.msg != null) {
-        state.message = action.payload.msg
-        state.type = action.payload.type
+      const { msg, type, busy, autoClose } = action.payload
+
+      state.message = msg ?? null
+      state.type = type ?? null
+
+      if (busy !== undefined) {
+        state.busy = busy
+      }
+
+      // when showing a toast, default autoClose to true unless explicitly false
+      if (msg != null) {
+        state.autoClose = autoClose ?? true
       } else {
-        state.message = null
+        // reset when clearing
+        state.autoClose = true
       }
     },
     setBusy: (state, action) => {

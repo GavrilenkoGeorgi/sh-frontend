@@ -23,8 +23,7 @@ const TrainingBoard: FC = () => {
   }
 
   const canSave = ({ final, score }: CanSaveProps): boolean => {
-    if (!final && score != null) return true
-    else return false
+    return !final && score != null
   }
 
   const checkGameOver = (): void => {
@@ -33,30 +32,37 @@ const TrainingBoard: FC = () => {
 
   return (
     <div className={styles.training}>
-      {Object.values(SchoolCombinations).map((key, index) => (
-        <div
-          id={key}
-          key={key}
-          className={cx(styles.qualiResult, {
-            [styles.savable]:
-              game.school[key].score != null && !game.school[key].final
-          })}
-          onClick={
-            canSave(game.school[key])
-              ? () => {
-                  save(key)
-                }
-              : () => {
-                  checkGameOver()
-                }
-          }
-        >
-          <div>
-            <Dice kind={index + 1} />
-            <p className={styles.qualiScore}>{game.school[key].score}</p>
+      {Object.values(SchoolCombinations).map((key, index) => {
+        const score = game.school[key].score
+        const hasScore = score !== null && score !== undefined
+
+        return (
+          <div
+            id={key}
+            key={key}
+            className={cx(styles.qualiResult, {
+              [styles.savable]: hasScore && !game.school[key].final
+            })}
+            onClick={
+              canSave(game.school[key])
+                ? () => save(key)
+                : () => checkGameOver()
+            }
+          >
+            <div>
+              <p
+                className={cx(styles.qualiScore, {
+                  [styles.visible]: hasScore,
+                  [styles.hidden]: !hasScore
+                })}
+              >
+                {hasScore ? score : '\u00A0'}
+              </p>
+              <Dice kind={index + 1} />
+            </div>
           </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }
