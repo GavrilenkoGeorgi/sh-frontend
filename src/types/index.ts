@@ -53,6 +53,7 @@ export interface IAuth {
 export interface navLink {
   label: string
   url: string
+  disabled?: boolean
 }
 
 export interface iCombination {
@@ -126,6 +127,7 @@ export interface Notification {
   message: Nullable<string>
   type?: Nullable<string>
   busy: boolean
+  autoClose: boolean
 }
 
 export interface iErrorMessage {
@@ -169,7 +171,8 @@ export enum SchoolCombinations {
   SIXES = 'sixes'
 }
 
-export enum GameCombinations { // combination names?
+export enum GameCombinations {
+  // combination names?
   PAIR = 'pair',
   TWOPAIRS = 'twoPairs',
   TRIPLE = 'triple',

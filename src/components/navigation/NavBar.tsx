@@ -55,7 +55,8 @@ const NavBar: FC = () => {
       },
       {
         label: 'Profile',
-        url: ROUTES.PROFILE
+        url: ROUTES.PROFILE,
+        disabled: isUnauthenticated
       },
       {
         label: `${isUnauthenticated ? 'Login' : 'Logout'}`,
@@ -63,7 +64,8 @@ const NavBar: FC = () => {
       },
       {
         label: 'Stats',
-        url: ROUTES.STATS
+        url: ROUTES.STATS,
+        disabled: isUnauthenticated
       },
       {
         label: 'Register',
@@ -85,9 +87,11 @@ const NavBar: FC = () => {
     <NavLink
       to={link.url}
       key={link.url}
+      aria-disabled={link.disabled ? 'true' : 'false'}
       className={({ isActive }) =>
         cx(styles.navLink, {
-          [styles.current]: isActive
+          [styles.current]: isActive,
+          [styles.disabled]: link.disabled
         })
       }
     >
