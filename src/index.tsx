@@ -6,8 +6,7 @@ import { RouterProvider } from 'react-router'
 import store from './store'
 import router from './routes'
 import { registerSW } from './utils/serviceWorker'
-import { setNotification } from './store/slices/notificationSlice'
-import { ToastTypes } from './types'
+import { setUpdateAvailable } from './store/slices/swUpdateSlice'
 
 import './css/index.css' // fonts?
 
@@ -18,12 +17,7 @@ const root = createRoot(container)
 
 registerSW({
   onUpdate: () => {
-    store.dispatch(
-      setNotification({
-        msg: 'A new version is available — reload to update.',
-        type: ToastTypes.SUCCESS
-      })
-    )
+    store.dispatch(setUpdateAvailable(true))
   }
 })
 

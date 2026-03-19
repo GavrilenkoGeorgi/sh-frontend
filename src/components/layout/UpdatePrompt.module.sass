@@ -1,0 +1,43 @@
+@use '../../styles/colors'
+@use '../../styles/variables'
+
+.banner
+  position: fixed
+  bottom: 0
+  left: 0
+  right: 0
+  z-index: 3
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: .75rem
+  padding: .6rem 1rem
+  background-color: colors.$primary-color
+  color: #fff
+  font-size: .9rem
+  transform: translateY(100%)
+  animation: slideUp .4s ease forwards
+
+.message
+  flex: 1
+
+.refreshBtn, .dismissBtn
+  padding: .4rem .75rem
+  border-radius: .25rem
+  font-size: .85rem
+  cursor: pointer
+  border: none
+
+.refreshBtn
+  background-color: #fff
+  color: colors.$primary-color
+  font-weight: 600
+
+.dismissBtn
+  background-color: transparent
+  color: #fff
+  border: 1px solid rgba(255, 255, 255, .5)
+
+@keyframes slideUp
+  to
+    transform: translateY(0)

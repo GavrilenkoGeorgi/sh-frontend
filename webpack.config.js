@@ -88,14 +88,14 @@ const plugins = [
   })
 ]
 
-const wbxPlugin = new WorkboxPlugin.GenerateSW({
-  // these options encourage the ServiceWorkers to get in there fast
-  // and not allow any straggling 'old' SWs to hang around
-  clientsClaim: true,
-  skipWaiting: true
-})
-
-if (process.env.NODE_ENV === 'production') plugins.push(wbxPlugin) // ??
+plugins.push(
+  new WorkboxPlugin.InjectManifest({
+    swSrc: './src/service-worker.ts',
+    swDest: 'service-worker.js',
+    // in dev, skip precaching so the SW registers without 404s
+    ...(prod ? {} : { exclude: [/./] })
+  })
+)
 
 module.exports = {
   mode: prod ? 'production' : 'development',

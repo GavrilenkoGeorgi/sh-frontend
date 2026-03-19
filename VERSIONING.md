@@ -10,9 +10,9 @@ This project uses **Semantic Versioning** (SemVer) for releases. All versions fo
 
 ### Examples
 
-- `v0.1.0` → `v0.2.0`: Added new feature (MINOR bump)
-- `v0.2.0` → `v0.2.1`: Fixed a bug (PATCH bump)
-- `v0.2.1` → `v1.0.0`: Breaking changes (MAJOR bump)
+- `v0.1.0` → `v0.1.1`: Fixed a bug (PATCH bump)
+- `v0.1.1` → `v0.2.0`: Added new feature (MINOR bump)
+- `v0.2.0` → `v1.0.0`: Breaking changes (MAJOR bump)
 
 ## How to Release a New Version
 
@@ -45,13 +45,13 @@ Run one of the following commands:
 npm version patch
 ```
 
-**For a MINOR release** (e.g., 0.1.0 → 0.2.0):
+**For a MINOR release** (e.g., 0.1.1 → 0.2.0):
 
 ```bash
 npm version minor
 ```
 
-**For a MAJOR release** (e.g., 0.1.0 → 1.0.0):
+**For a MAJOR release** (e.g., 0.2.0 → 1.0.0):
 
 ```bash
 npm version major

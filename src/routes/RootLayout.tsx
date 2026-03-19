@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import NavBar from '../components/navigation/NavBar'
 import App from '../App'
 import Toast from '../components/layout/Toast'
+import UpdatePrompt from '../components/layout/UpdatePrompt'
 import { type RootState } from '../store'
 import * as styles from '../pages/SharedStyles.module.sass'
 
@@ -23,6 +24,7 @@ const RootLayout = (): React.JSX.Element => {
       <NavBar />
       {isCheckingAuth ? <LoadingOverlay /> : <App />}
       <Toast />
+      <UpdatePrompt />
     </>
   )
 }
