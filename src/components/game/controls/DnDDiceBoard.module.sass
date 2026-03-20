@@ -1,4 +1,3 @@
-@use '../../../styles/colors'
 @use '../../../styles/variables'
 
 .controls
@@ -26,11 +25,11 @@
 
 .board
   border-radius: .25rem
-  background-color: colors.$primary-light-color
+  background-color: var(--color-primary-light)
   flex-grow: 1
   height: 100%
   &:first-child
-    background-color: colors.$color-light-orange
+    background-color: var(--color-accent-transparent)
 
 .items
   display: flex
@@ -57,9 +56,9 @@
 
 .rollButton // less chars more mem??
   border: none
-  background-color: colors.$primary-color
+  background-color: var(--color-primary)
   border-radius: .25rem
-  color: colors.$primary-light-color
+  color: var(--color-primary-light)
   text-transform: uppercase
   width: 100%
   min-height: variables.$rollButtonHeight 
@@ -72,16 +71,16 @@
     width: variables.$controlsWidth + 1rem
 
 .rolled
-  background-color: colors.$primary-light-color
-  border: 1px solid colors.$primary-color
-  color: colors.$primary-color
+  background-color: var(--color-primary-light)
+  border: 1px solid var(--color-primary)
+  color: var(--color-primary)
 
 .lastRoll
-  background-color: colors.$color-light-orange
-  border: 1px solid colors.$color-orange
-  color: colors.$primary-color
+  background-color: var(--color-accent-transparent)
+  border: 1px solid var(--color-accent)
+  color: var(--color-primary)
 
 .locked
-  border: 1px solid colors.$color-orange
-  background-color: colors.$color-orange
-  color: #fff
+  border: 1px solid var(--color-accent)
+  background-color: var(--color-accent)
+  color: var(--color-surface)

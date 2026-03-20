@@ -1,19 +1,18 @@
-@use '../styles/colors'
 @use '../styles/variables'
 
 .container
   max-width: 50rem
   margin: 0 auto
   h1, h2
-    color: colors.$dark-gray
+    color: var(--color-text-heading)
   h2
     font-size: 1.25rem
     margin: 3rem 0 0
   h3
     margin-top: 1rem
-    color: colors.$light-color
+    color: var(--color-text-body)
   a
-    color: colors.$primary-color
+    color: var(--color-primary)
   ul
     padding-left: 2rem
     li
@@ -28,13 +27,13 @@
   font-size: .8rem
   text-align: right
   margin: 0 0 2rem
-  color: colors.$primary-color
+  color: var(--color-primary)
 
 .pageHeading
   text-align: center
 
 strong
-  color: colors.$primary-color
+  color: var(--color-primary)
   font-weight: 450
 
 .motionDiv

@@ -1,5 +1,4 @@
 @use '../styles/variables'
-@use '../styles/colors'
 @use '../styles/mixins'
 
 .container
@@ -13,6 +12,6 @@
     
 .link
   font-size: .8rem
-  color: colors.$primary-color
+  color: var(--color-primary)
   margin-left: auto
   @include mixins.link

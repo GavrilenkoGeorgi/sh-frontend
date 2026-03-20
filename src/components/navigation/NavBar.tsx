@@ -16,6 +16,8 @@ import { ROUTES } from '../../constants/routes'
 import { ScoreDisplay } from '../game/ScoreDisplay'
 import { UserLink } from './UserLink'
 import { useAuthStatus } from '../../hooks/auth/useAuthStatus'
+import { useColorScheme } from '../../hooks/useColorScheme'
+import { ThemeToggle } from '../layout/ThemeToggle'
 
 const NavBar: FC = () => {
   const location = useLocation()
@@ -25,6 +27,7 @@ const NavBar: FC = () => {
   // mobile menu
   const { ref, isComponentVisible } = useComponentVisible(false)
   const [open, setOpen] = useState(false)
+  const { isDark, toggleColorScheme } = useColorScheme()
 
   const toggleMenu = (): void => {
     setOpen(!open)
@@ -110,8 +113,9 @@ const NavBar: FC = () => {
       <div className={styles.navigationContainer}>
         <Logo />
         <ScoreDisplay />
-        <div className={styles.toggleBtnContainer} onClick={toggleMenu}>
-          <MenuToggleBtn open={open} />
+        <div className={styles.toggleBtnContainer}>
+          <ThemeToggle toggle={isDark} onClick={toggleColorScheme} />
+          <MenuToggleBtn open={open} onClick={toggleMenu} />
         </div>
         <div
           className={cx(styles.linksContainer, {

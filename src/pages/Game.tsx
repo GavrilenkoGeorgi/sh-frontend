@@ -87,20 +87,15 @@ const GamePage: FC = () => {
             />
           )}
           {game.turn === 34 && (
-            <>
-              <ConfettiAnimation />
-              <Modal
-                heading="🎉 Congrats! ✨"
-                score={game.score}
-                text="Your score is "
-                userName={userInfo?.name}
-                btnLabel="save"
-                isBusy={isSubmitting}
-                onClick={() => {
-                  void complete()
-                }}
-              />
-            </>
+            <Modal
+              heading="Congratulations!"
+              score={game.score}
+              text="Your score is "
+              userName={userInfo?.name}
+              btnLabel="save"
+              isBusy={isSubmitting}
+              onClick={() => complete()}
+            />
           )}
         </div>
       </section>

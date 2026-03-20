@@ -1,4 +1,3 @@
-@use "../../styles/colors"
 @use "../../styles/variables"
 
 .results
@@ -23,7 +22,7 @@
   margin: 0
   &:hover
     cursor: pointer
-    color: colors.$color-orange
+    color: var(--color-accent)
   @media screen and (min-width: variables.$small)
     margin: .3rem 0
   @media screen and (min-width: variables.$medium)
@@ -41,5 +40,5 @@
   cursor: pointer
 
 .preliminaryResult
-  color: colors.$color-orange
+  color: var(--color-accent)
   font-weight: 450
