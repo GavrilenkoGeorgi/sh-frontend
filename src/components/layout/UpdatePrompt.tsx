@@ -12,7 +12,7 @@ const UpdatePrompt: FC = () => {
 
   if (!updateAvailable) return null
 
-  const handleRefresh = () => {
+  const handleUpdate = () => {
     applyServiceWorkerUpdate()
   }
 
@@ -23,12 +23,8 @@ const UpdatePrompt: FC = () => {
   return (
     <div className={styles.banner}>
       <span className={styles.message}>A new version is available.</span>
-      <button
-        type="button"
-        className={styles.refreshBtn}
-        onClick={handleRefresh}
-      >
-        Refresh
+      <button type="button" className={styles.updateBtn} onClick={handleUpdate}>
+        Update
       </button>
       <button
         type="button"

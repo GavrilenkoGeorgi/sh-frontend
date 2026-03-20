@@ -15,7 +15,21 @@
       content="https://sharlushka.netlify.app/img/sh-og-img.webp"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="color-scheme" content="light dark" />
     <title>Sharlushka</title>
+    <script>
+      // apply saved color-scheme before first paint to avoid FOUC
+      ;(function () {
+        var stored = localStorage.getItem('color-scheme')
+        if (stored === 'dark' || stored === 'light') {
+          document.documentElement.dataset.colorScheme = stored
+        }
+      })()
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/theme-toggles@4.10.1/css/expand.min.css"
+    />
   </head>
   <body style="margin: 0">
     <main id="app-root">

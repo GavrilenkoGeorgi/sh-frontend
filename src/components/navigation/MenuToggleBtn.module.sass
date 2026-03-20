@@ -1,10 +1,13 @@
-@use '../../styles/colors'
+@use '../../styles/variables'
 
 .button
   padding: 0
   border: none
   background-color: transparent
   cursor: pointer
+  @media screen and (min-width: variables.$medium)
+    display: none
+    visibility: hidden
 
 .toggleIcon
   display: inline-block
@@ -12,9 +15,7 @@
   height: 2px
   width: 22px
   transform: translateY(-100%)
-  background-color: colors.$light-color
-  @media (prefers-color-scheme: dark)
-    background-color: white
+  background-color: var(--color-text-body)
   &:before,
   &:after
     display: inline-block
@@ -24,9 +25,7 @@
     height: 2px
     width: 22px
     transition: top 0.2s 0.4s ease, transform 0.2s ease, background-color 0.2s ease
-    background-color: colors.$light-color
-    @media (prefers-color-scheme: dark)
-      background-color: white
+    background-color: var(--color-text-body)
   &:before
     top: -7px
   &:after

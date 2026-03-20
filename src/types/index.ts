@@ -77,6 +77,7 @@ export interface iHelpDice {
 // navbar
 export interface ToggleBtnProps {
   open: boolean
+  onClick: () => void
 }
 
 export interface iStats {

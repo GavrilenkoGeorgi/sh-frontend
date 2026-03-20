@@ -1,5 +1,4 @@
 @use 'sass:math'
-@use '../../styles/colors'
 @use '../../styles/variables'
 
 $mobileWidth: 250px
@@ -7,7 +6,6 @@ $desktopWidth: 400px
 $toast-position: 32px
 $toast-hidden-position: -300px
 
-// The toast - position is at the bottom, in the middle of the screen
 .toast
   visibility: hidden
   position: fixed
@@ -18,10 +16,10 @@ $toast-hidden-position: -300px
   min-width: $mobileWidth
   max-width: $desktopWidth
   // Styles
-  color: colors.$primary-color
+  color: var(--color-primary)
   text-align: left
   padding: .75rem .5rem .75rem .75rem
-  background-color: colors.$primary-light-color
+  background-color: var(--color-toast-success)
   border-radius: .25rem
   display: flex
   justify-content: space-between
@@ -38,18 +36,18 @@ $toast-hidden-position: -300px
     -webkit-animation: fadeout 0.5s
     animation: fadeout 0.5s
   &.error
-    background-color: colors.$toast-error
-    border-color: colors.$error
-    color: colors.$error
+    background-color: var(--color-toast-error)
+    border-color: var(--color-error)
+    color: var(--color-error)
   &.success
-    background-color: colors.$toast-success
+    background-color: var(--color-toast-success)
   @media screen and (min-width: variables.$medium)
 
 .iconContainer
   font-size: 0
   opacity: .5
   margin-left: 1rem
-  transition: opacity variables.$defaultAnimLength ease-in
+  transition: opacity var(--duration-default) ease-in
   &:hover
     opacity: 1
     cursor: pointer
