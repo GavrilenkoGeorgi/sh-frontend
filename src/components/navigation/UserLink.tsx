@@ -3,32 +3,34 @@ import { FC } from 'react'
 import * as styles from './UserLink.module.sass'
 import LoadingIndicator from '../layout/LoadingIndicator'
 import UserIcon from '../../assets/svg/icon-user.svg'
-import { RootState } from '../../store'
+import { selectCurrentUser } from '../../store/slices/authSlice'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { ROUTES } from '../../constants/routes'
 
 export const UserLink: FC = () => {
-  const { userInfo } = useSelector((state: RootState) => state.auth)
-  const { busy } = useSelector((state: RootState) => state.notification)
+  const user = useSelector(selectCurrentUser)
+  const { busy } = useSelector(
+    (state: { notification: { busy: boolean } }) => state.notification
+  )
 
   return (
     <>
       <div className={styles.user}>
         <Link
-          to={userInfo != null ? ROUTES.PROFILE : ROUTES.LOGIN}
+          to={user != null ? ROUTES.PROFILE : ROUTES.LOGIN}
           className={styles.userName}
-          aria-label={userInfo?.name ?? 'Guest'}
+          aria-label={user?.name ?? 'Guest'}
         >
           <UserIcon />
         </Link>
-        {userInfo && (
+        {user && (
           <Link
             to={ROUTES.STATS}
             className={styles.userName}
-            aria-label={userInfo.name}
+            aria-label={user.name}
           >
-            {userInfo.name}
+            {user.name}
           </Link>
         )}
         {busy && <LoadingIndicator dark />}

@@ -1,4 +1,5 @@
 import { apiSlice } from './apiSlice'
+import { setCredentials, setAuthInitialized } from './authSlice'
 export const USERS_URL = process.env.REACT_APP_USERS_URL
 
 export const userApiSlice = apiSlice.injectEndpoints({
@@ -8,8 +9,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/delete`,
         method: 'DELETE',
         credentials: 'include'
-      }),
-      invalidatesTags: ['Auth']
+      })
     }),
     login: builder.mutation({
       query: (data) => ({
@@ -17,24 +17,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         credentials: 'include',
         body: data
-      }),
-      invalidatesTags: ['Auth']
+      })
     }),
     logout: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/logout`,
         credentials: 'include',
         method: 'GET'
-      }),
-      invalidatesTags: ['Auth']
-    }),
-    authStatus: builder.query({
-      query: () => ({
-        url: `${USERS_URL}/status`,
-        credentials: 'include',
-        method: 'GET'
-      }),
-      providesTags: ['Auth']
+      })
     }),
     signup: builder.mutation({
       query: (data) => ({
@@ -51,13 +41,27 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data
       })
     }),
-    checkAuth: builder.mutation({
-      query: (data) => ({
+    refreshToken: builder.query<unknown, void>({
+      query: () => ({
         url: `${USERS_URL}/refresh`,
         method: 'POST',
-        credentials: 'include',
-        body: data
-      })
+        credentials: 'include'
+      }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled
+          const response = data as {
+            user?: { _id: string; name: string; email: string }
+          }
+          if (response?.user) {
+            dispatch(setCredentials({ user: response.user }))
+          }
+        } catch {
+          // silent failure — user stays unauthenticated
+        } finally {
+          dispatch(setAuthInitialized())
+        }
+      }
     }),
     sendRecoveryEmail: builder.mutation({
       query: (data) => ({
@@ -83,8 +87,7 @@ export const {
   useUpdatePasswordMutation,
   useLoginMutation,
   useLogoutMutation,
-  useAuthStatusQuery,
   useSignupMutation,
   useUpdateUserMutation,
-  useCheckAuthMutation
+  useRefreshTokenQuery
 } = userApiSlice

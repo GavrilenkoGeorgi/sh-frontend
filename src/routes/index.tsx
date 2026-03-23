@@ -19,7 +19,6 @@ import ProtectedRoute from './ProtectedRoute'
 import RootLayout from './RootLayout'
 import Fallback from '../components/layout/Fallback'
 import Toast from '../components/layout/Toast'
-import { authLoader } from './authLoader'
 
 // root
 const MainPage = lazy(async () => await import('../pages/Main')) // s
@@ -29,7 +28,7 @@ const GamePage = lazy(async () => await import('../pages/Game'))
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" loader={authLoader} element={<RootLayout />}>
+    <Route path="/" element={<RootLayout />}>
       <Route
         index={true}
         path={ROUTES.HOME}

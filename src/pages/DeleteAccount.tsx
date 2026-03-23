@@ -1,11 +1,11 @@
 import React, { type FC } from 'react'
 import { useSelector } from 'react-redux'
-import type { RootState } from '../store'
+import { selectCurrentUser } from '../store/slices/authSlice'
 import DeleteAccountForm from '../components/forms/DeleteAccount'
 import * as styles from './SharedStyles.module.sass'
 
 const DeleteAccount: FC = () => {
-  const { userInfo } = useSelector((state: RootState) => state.auth)
+  const user = useSelector(selectCurrentUser)
 
   return (
     <section className={styles.container}>
@@ -55,7 +55,7 @@ const DeleteAccount: FC = () => {
         </a>
         .
       </p>
-      {userInfo != null && <DeleteAccountForm />}
+      {user != null && <DeleteAccountForm />}
     </section>
   )
 }

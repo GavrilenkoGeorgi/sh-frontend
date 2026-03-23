@@ -2,14 +2,18 @@ import React, { type FC } from 'react'
 import { Navigate, Outlet } from 'react-router'
 import { useSelector } from 'react-redux'
 
-import { type RootState } from '../store'
+import {
+  selectIsAuthenticated,
+  selectAuthInitialized
+} from '../store/slices/authSlice'
 
 const ProtectedRoute: FC = () => {
-  const { userInfo } = useSelector((state: RootState) => state.auth)
+  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const authInitialized = useSelector(selectAuthInitialized)
 
-  if (userInfo != null) {
-    return <Outlet />
-  } else return <Navigate to="/login" replace />
+  if (!authInitialized) return null
+  if (!isAuthenticated) return <Navigate to="/login" replace />
+  return <Outlet />
 }
 
 export default ProtectedRoute

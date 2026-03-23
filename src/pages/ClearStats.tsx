@@ -1,12 +1,12 @@
 import React, { type FC } from 'react'
 import { useSelector } from 'react-redux'
 
-import { type RootState } from '../store'
+import { selectCurrentUser } from '../store/slices/authSlice'
 import ClearStatsForm from '../components/forms/ClearStats'
 import * as styles from './SharedStyles.module.sass'
 
 const ClearStats: FC = () => {
-  const { userInfo } = useSelector((state: RootState) => state.auth)
+  const user = useSelector(selectCurrentUser)
 
   return (
     <section className={styles.container}>
@@ -21,7 +21,7 @@ const ClearStats: FC = () => {
         </a>
         .
       </p>
-      {userInfo != null && (
+      {user != null && (
         <>
           <p>Please note that this action is irreversible.</p>
           <ClearStatsForm />
