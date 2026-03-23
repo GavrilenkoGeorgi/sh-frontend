@@ -19,12 +19,10 @@ import cx from 'classnames'
 import * as styles from './Form.module.sass'
 import Logout from './Logout'
 import LoadingIndicator from '../layout/LoadingIndicator'
-import { useAuthStatus } from '../../hooks/auth/useAuthStatus'
 
 const Login: FC = () => {
   const navigate = useNavigate()
   const [login] = useLoginMutation()
-  const { data } = useAuthStatus()
 
   const dispatch = useDispatch()
 

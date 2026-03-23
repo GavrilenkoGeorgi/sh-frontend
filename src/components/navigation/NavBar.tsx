@@ -1,5 +1,6 @@
 import React, { type FC, useState, useEffect, useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import type { navLink } from '../../types'
 import {
   useScrollDirection,
@@ -15,14 +16,14 @@ import * as styles from './NavBar.module.sass'
 import { ROUTES } from '../../constants/routes'
 import { ScoreDisplay } from '../game/ScoreDisplay'
 import { UserLink } from './UserLink'
-import { useAuthStatus } from '../../hooks/auth/useAuthStatus'
+import { selectIsAuthenticated } from '../../store/slices/authSlice'
 import { useColorScheme } from '../../hooks/useColorScheme'
 import { ThemeToggle } from '../layout/ThemeToggle'
 
 const NavBar: FC = () => {
   const location = useLocation()
   const scrollDirection = useScrollDirection()
-  const { isUnauthenticated } = useAuthStatus() // TODO: move this to store
+  const isAuthenticated = useSelector(selectIsAuthenticated)
 
   // mobile menu
   const { ref, isComponentVisible } = useComponentVisible(false)
@@ -59,16 +60,16 @@ const NavBar: FC = () => {
       {
         label: 'Profile',
         url: ROUTES.PROFILE,
-        disabled: isUnauthenticated
+        disabled: !isAuthenticated
       },
       {
-        label: `${isUnauthenticated ? 'Login' : 'Logout'}`,
+        label: `${!isAuthenticated ? 'Login' : 'Logout'}`,
         url: ROUTES.LOGIN
       },
       {
         label: 'Stats',
         url: ROUTES.STATS,
-        disabled: isUnauthenticated
+        disabled: !isAuthenticated
       },
       {
         label: 'Register',
@@ -83,7 +84,7 @@ const NavBar: FC = () => {
         url: ROUTES.HELP
       }
     ],
-    [isUnauthenticated]
+    [isAuthenticated]
   )
 
   const navLinks = navigation.map((link) => (
@@ -122,7 +123,7 @@ const NavBar: FC = () => {
             [styles.open]: open
           })}
         >
-          {!isUnauthenticated && <UserLink />}
+          {isAuthenticated && <UserLink />}
           {navLinks}
           <p className={styles.version}>v{__APP_VERSION__}</p>
         </div>

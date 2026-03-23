@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router'
 import { useDeleteAccMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { logout } from '../../store/slices/authSlice'
+import { apiSlice, gameSlice } from '../../store/slices/apiSlice'
 import { getErrMsg } from '../../utils'
 import { ToastTypes } from '../../types'
 
@@ -23,6 +24,8 @@ const DeleteAccount: FC = () => {
       setLoading(true)
       await deleteAcc({}).unwrap()
       dispatch(logout())
+      dispatch(apiSlice.util.resetApiState())
+      dispatch(gameSlice.util.resetApiState())
       dispatch(
         setNotification({
           msg: 'Account deleted',

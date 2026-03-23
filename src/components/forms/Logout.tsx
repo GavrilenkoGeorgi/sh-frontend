@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router'
 
 import { useLogoutMutation } from '../../store/slices/userApiSlice'
 import { logout } from '../../store/slices/authSlice'
+import { selectCurrentUser } from '../../store/slices/authSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
-import { type RootState } from '../../store'
+import { apiSlice, gameSlice } from '../../store/slices/apiSlice'
 import LoadingIndicator from '../layout/LoadingIndicator'
 import { getErrMsg } from '../../utils'
 import { ToastTypes } from '../../types'
@@ -16,13 +17,15 @@ const Logout: FC = () => {
   const dispatch = useDispatch()
   const [logoutApiCall] = useLogoutMutation()
   const [loading, setLoading] = useState(false)
-  const { userInfo } = useSelector((state: RootState) => state.auth)
+  const user = useSelector(selectCurrentUser)
 
   const logoutHandler = async (): Promise<void> => {
     try {
       setLoading(true)
       await logoutApiCall({}).unwrap()
       dispatch(logout())
+      dispatch(apiSlice.util.resetApiState())
+      dispatch(gameSlice.util.resetApiState())
       navigate('/')
     } catch (err: unknown) {
       dispatch(
@@ -42,7 +45,7 @@ const Logout: FC = () => {
       onClick={() => {
         void logoutHandler()
       }}
-      disabled={userInfo == null}
+      disabled={user == null}
       className={styles.button}
     >
       {loading ? <LoadingIndicator dark /> : 'logout'}

@@ -1,20 +1,21 @@
 import React, { type FC, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router'
+import { useSelector } from 'react-redux'
 
 import LoginForm from '../components/forms/Login'
 import * as styles from './Main.module.sass'
 import { link } from './Login.module.sass'
 import Logo from '../assets/svg/sharlushka-logo.svg'
 import { ROUTES } from '../constants/routes'
-import { useAuthStatus } from '../hooks/auth/useAuthStatus'
+import { selectIsAuthenticated } from '../store/slices/authSlice'
 
 const Main: FC = () => {
   const navigate = useNavigate()
-  const { data } = useAuthStatus()
+  const isAuthenticated = useSelector(selectIsAuthenticated)
 
   useEffect(() => {
-    if (Boolean(data?.isAuthenticated)) navigate('/game')
-  }, [data?.isAuthenticated])
+    if (isAuthenticated) navigate('/game')
+  }, [isAuthenticated])
 
   return (
     <section className={styles.container}>

@@ -7,6 +7,7 @@ import type { RootState } from '../store'
 import { useSaveResultsMutation } from '../store/slices/gameApiSlice'
 import { setScore, reset } from '../store/slices/shSlice'
 import { setNotification } from '../store/slices/notificationSlice'
+import { selectCurrentUser } from '../store/slices/authSlice'
 import { getErrMsg } from '../utils'
 import { ToastTypes } from '../types'
 
@@ -23,7 +24,7 @@ const GamePage: FC = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const dispatch = useDispatch()
   const { game } = useSelector((state: RootState) => state.sh)
-  const { userInfo } = useSelector((state: RootState) => state.auth)
+  const user = useSelector(selectCurrentUser)
   const [saveResults] = useSaveResultsMutation()
   const navigate = useNavigate()
 
@@ -37,7 +38,7 @@ const GamePage: FC = () => {
       }
 
       setIsSubmitting(true)
-      if (userInfo != null) await saveResults(data)
+      if (user != null) await saveResults(data)
       dispatch(reset())
       dispatch(
         setNotification({
@@ -91,7 +92,7 @@ const GamePage: FC = () => {
               heading="Congratulations!"
               score={game.score}
               text="Your score is "
-              userName={userInfo?.name}
+              userName={user?.name}
               btnLabel="save"
               isBusy={isSubmitting}
               onClick={() => complete()}

@@ -4,7 +4,8 @@ import NavBar from '../components/navigation/NavBar'
 import App from '../App'
 import Toast from '../components/layout/Toast'
 import UpdatePrompt from '../components/layout/UpdatePrompt'
-import { type RootState } from '../store'
+import { selectAuthInitialized } from '../store/slices/authSlice'
+import { useAuthBootstrap } from '../hooks/auth/useAuthBootstrap'
 import * as styles from '../pages/SharedStyles.module.sass'
 
 const LoadingOverlay = () => (
@@ -17,12 +18,13 @@ const LoadingOverlay = () => (
 )
 
 const RootLayout = (): React.JSX.Element => {
-  const { isCheckingAuth } = useSelector((state: RootState) => state.auth)
+  useAuthBootstrap()
+  const authInitialized = useSelector(selectAuthInitialized)
 
   return (
     <>
       <NavBar />
-      {isCheckingAuth ? <LoadingOverlay /> : <App />}
+      {authInitialized ? <App /> : <LoadingOverlay />}
       <Toast />
       <UpdatePrompt />
     </>
