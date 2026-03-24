@@ -14,6 +14,7 @@ const Login: FC = () => {
         <Link
           className={styles.link}
           to={ROUTES.FORGOT_PASSWORD}
+          viewTransition
           aria-label="Forgot password"
         >
           Forgot password?

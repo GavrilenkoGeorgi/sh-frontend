@@ -32,7 +32,7 @@ const DeleteAccount: FC = () => {
           type: ToastTypes.SUCCESS
         })
       )
-      navigate('/')
+      navigate('/', { viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({

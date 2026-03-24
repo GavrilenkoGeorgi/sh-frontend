@@ -39,7 +39,7 @@ const plugins = [
   process.env.NODE_ENV === 'development' ? new BundleAnalyzerPlugin() : '',
   new MiniCssExtractPlugin(),
   new SitemapPlugin({
-    base: 'https://sharlushka.net',
+    base: 'https://sharlushka.netlify.app',
     paths,
     options: {
       lastmod: true,

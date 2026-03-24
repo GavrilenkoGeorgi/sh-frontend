@@ -9,7 +9,7 @@ export const ScoreDisplay: FC = () => {
   const { game } = useSelector((state: RootState) => state.sh)
 
   return (
-    <NavLink to="/game" className={styles.gameLink}>
+    <NavLink to="/game" viewTransition className={styles.gameLink}>
       <div className={styles.score}>
         <div className={styles.label}>
           <div className={styles.dropCap}>S</div>

@@ -67,7 +67,7 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
           type: ToastTypes.SUCCESS
         })
       )
-      navigate('/login')
+      navigate('/login', { viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({

@@ -19,6 +19,7 @@ export const UserLink: FC = () => {
       <div className={styles.user}>
         <Link
           to={user != null ? ROUTES.PROFILE : ROUTES.LOGIN}
+          viewTransition
           className={styles.userName}
           aria-label={user?.name ?? 'Guest'}
         >
@@ -27,6 +28,7 @@ export const UserLink: FC = () => {
         {user && (
           <Link
             to={ROUTES.STATS}
+            viewTransition
             className={styles.userName}
             aria-label={user.name}
           >
