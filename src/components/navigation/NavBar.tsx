@@ -73,7 +73,8 @@ const NavBar: FC = () => {
       },
       {
         label: 'Register',
-        url: ROUTES.REGISTER
+        url: ROUTES.REGISTER,
+        disabled: isAuthenticated
       },
       {
         label: 'Privacy',
@@ -114,7 +115,7 @@ const NavBar: FC = () => {
     >
       <div className={styles.navigationContainer}>
         <Logo />
-        <ScoreDisplay />
+        {location.pathname === ROUTES.GAME && <ScoreDisplay />}
         <div className={styles.toggleBtnContainer}>
           <ThemeToggle toggle={isDark} onClick={toggleColorScheme} />
           <MenuToggleBtn open={open} onClick={toggleMenu} />
