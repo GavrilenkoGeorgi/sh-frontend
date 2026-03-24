@@ -26,7 +26,7 @@ const Logout: FC = () => {
       dispatch(logout())
       dispatch(apiSlice.util.resetApiState())
       dispatch(gameSlice.util.resetApiState())
-      navigate('/')
+      navigate('/', { viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({

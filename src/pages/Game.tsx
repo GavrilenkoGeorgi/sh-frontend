@@ -46,7 +46,7 @@ const GamePage: FC = () => {
           type: ToastTypes.SUCCESS
         })
       )
-      navigate('/stats')
+      navigate('/stats', { viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({

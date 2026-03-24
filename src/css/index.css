@@ -120,7 +120,7 @@ html {
 }
 
 body {
-  font-family: 'Quicksand';
+  font-family: 'Quicksand', 'Roboto', Verdana, Tahoma, sans-serif;
   box-sizing: border-box;
   background-color: var(--color-surface);
   color: var(--color-text-heading);
@@ -141,4 +141,61 @@ h2 {
 button {
   font-family: 'Quicksand';
   letter-spacing: 0.05rem;
+}
+
+/* ── view transitions ── */
+
+/*
+  --vt-slide-y controls the slide direction and feel:
+    -8px  → slide down  (new page enters from top)   ← default
+     8px  → slide up    (new page enters from bottom)
+     0    → pure fade, no movement
+  --vt-duration controls the speed, defaults to the site-wide motion token.
+*/
+:root {
+  --vt-slide-y: 0;
+  --vt-duration: var(--duration-default);
+}
+
+::view-transition-old(root) {
+  animation: vt-fade-out var(--vt-duration) ease-out;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in var(--vt-duration) ease-in;
+}
+
+@keyframes vt-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--vt-slide-y)));
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--vt-slide-y));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* navbar stays fixed during page transitions */
+::view-transition-old(navbar),
+::view-transition-new(navbar) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0s;
+  }
 }

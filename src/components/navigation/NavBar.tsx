@@ -91,6 +91,7 @@ const NavBar: FC = () => {
     <NavLink
       to={link.url}
       key={link.url}
+      viewTransition
       aria-disabled={link.disabled ? 'true' : 'false'}
       className={({ isActive }) =>
         cx(styles.navLink, {

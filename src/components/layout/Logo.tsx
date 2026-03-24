@@ -7,7 +7,12 @@ import * as styles from './Logo.module.sass'
 const Logo: FC = () => {
   return (
     <div className={styles.logoContainer}>
-      <Link to="/" className={styles.logo} aria-label="Main page">
+      <Link
+        to="/"
+        viewTransition
+        className={styles.logo}
+        aria-label="Main page"
+      >
         <LogoSVG />
       </Link>
     </div>

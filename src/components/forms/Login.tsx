@@ -57,7 +57,7 @@ const Login: FC = () => {
     try {
       const res = await login({ email, password }).unwrap()
       dispatch(setCredentials({ ...res }))
-      navigate('/game')
+      navigate('/game', { viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({

@@ -62,7 +62,7 @@ const Register: FC = () => {
           type: ToastTypes.SUCCESS
         })
       )
-      navigate('/login', { replace: true })
+      navigate('/login', { replace: true, viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({
@@ -195,7 +195,10 @@ const Register: FC = () => {
 
       <p className={styles.privacy}>
         Will be used in accourdance with our{' '}
-        <Link to="/privacy">Privacy Policy</Link>.
+        <Link to="/privacy" viewTransition>
+          Privacy Policy
+        </Link>
+        .
       </p>
     </form>
   )

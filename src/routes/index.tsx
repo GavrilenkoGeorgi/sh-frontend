@@ -8,6 +8,7 @@ import {
 import App from '../App'
 import { ROUTES } from '../constants/routes'
 import LoginPage from '../pages/Login'
+import MainPage from '../pages/Main'
 import ProfilePage from '../pages/Profile'
 import HelpPage from '../pages/Help'
 import RegisterPage from '../pages/Register'
@@ -20,8 +21,6 @@ import RootLayout from './RootLayout'
 import Fallback from '../components/layout/Fallback'
 import Toast from '../components/layout/Toast'
 
-// root
-const MainPage = lazy(async () => await import('../pages/Main')) // s
 // heaviest routes
 const StatsPage = lazy(async () => await import('../pages/Stats'))
 const GamePage = lazy(async () => await import('../pages/Game'))
@@ -29,15 +28,7 @@ const GamePage = lazy(async () => await import('../pages/Game'))
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
-      <Route
-        index={true}
-        path={ROUTES.HOME}
-        element={
-          <Suspense fallback={<Fallback />}>
-            <MainPage />
-          </Suspense>
-        }
-      />
+      <Route index={true} path={ROUTES.HOME} element={<MainPage />} />
 
       <Route
         path={ROUTES.GAME}

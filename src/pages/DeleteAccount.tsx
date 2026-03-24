@@ -8,7 +8,7 @@ const DeleteAccount: FC = () => {
   const user = useSelector(selectCurrentUser)
 
   return (
-    <section className={styles.container}>
+    <section className={styles.contentPage}>
       <h1 className={styles.pageHeading}>Delete account</h1>
       <h2>Account Deletion Process</h2>
       <p>

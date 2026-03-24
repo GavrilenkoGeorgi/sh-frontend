@@ -16,8 +16,15 @@ const Profile: FC = () => {
       <ProfileForm data={user} />
       <aside className={styles.text}>
         <p>
-          Looking for a way to <Link to="/deleteacc">delete your account</Link>{' '}
-          or <Link to="/clearstats">clear stats</Link>?
+          Looking for a way to{' '}
+          <Link to="/deleteacc" viewTransition>
+            delete your account
+          </Link>{' '}
+          or{' '}
+          <Link to="/clearstats" viewTransition>
+            clear stats
+          </Link>
+          ?
         </p>
       </aside>
     </section>

@@ -9,7 +9,7 @@ const ClearStats: FC = () => {
   const user = useSelector(selectCurrentUser)
 
   return (
-    <section className={styles.container}>
+    <section className={styles.contentPage}>
       <h1 className={styles.pageHeading}>Clear stats</h1>
       <p>
         To delete all your saved game results and clear stats login into your

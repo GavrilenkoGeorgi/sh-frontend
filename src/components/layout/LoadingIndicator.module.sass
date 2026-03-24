@@ -1,23 +1,60 @@
 .loader
+  position: relative
   min-width: 1.2rem
   min-height: 1.2rem
-  border: .15rem solid var(--color-primary-light)
-  border-bottom-color: transparent
-  border-radius: 50%
   display: inline-block
   box-sizing: border-box
-  animation: rotation 1.5s linear infinite
+  border-radius: 50%
+  border: .18rem solid color-mix(in srgb, var(--color-primary-light) 88%, transparent)
+  border-top-color: var(--color-primary)
+  border-right-color: transparent
+  border-bottom-color: transparent
+  animation: rotation .9s linear infinite
+  filter: drop-shadow(0 0 .35rem color-mix(in srgb, var(--color-primary-light) 55%, transparent))
+
+  // pulsing ring (handles scale instead of main element)
+  &::before
+    content: ""
+    position: absolute
+    inset: -.18rem
+    border-radius: inherit
+    border: .08rem solid color-mix(in srgb, var(--color-primary-light) 35%, transparent)
+    opacity: .5
+    animation: pulse-ring 1.8s ease-in-out infinite
+
+  // glowing center
+  &::after
+    content: ""
+    position: absolute
+    inset: 30%
+    border-radius: 50%
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .9), var(--color-primary-light))
+    box-shadow: 0 0 .5rem color-mix(in srgb, var(--color-primary-light) 60%, transparent)
 
 .dark
-  border: .15rem solid var(--color-primary)
+  border: .18rem solid color-mix(in srgb, var(--color-primary) 88%, transparent)
+  border-top-color: var(--color-primary)
+  border-right-color: transparent
   border-bottom-color: transparent
+  filter: drop-shadow(0 0 .35rem color-mix(in srgb, var(--color-primary) 45%, transparent))
 
 .large
   min-width: 2rem
   min-height: 2rem
+
+  &::after
+    inset: 28%
 
 @keyframes rotation
   0%
     transform: rotate(0deg)
   100%
     transform: rotate(360deg)
+
+@keyframes pulse-ring
+  0%, 100%
+    opacity: .25
+    transform: scale(1)
+  50%
+    opacity: .65
+    transform: scale(1.12)

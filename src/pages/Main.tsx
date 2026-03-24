@@ -25,9 +25,16 @@ const Main: FC = () => {
       <h1>Hi, Anonymous!</h1>
       <div className={styles.intro}>
         <p>
-          You <Link to="/game">can play unregistered</Link>, but you will not be
-          able to save the results or checkout other player&apos;s stats,
-          consider <Link to="/register">registering</Link>.
+          You{' '}
+          <Link to="/game" viewTransition>
+            can play unregistered
+          </Link>
+          , but you will not be able to save the results or checkout other
+          player&apos;s stats, consider{' '}
+          <Link to="/register" viewTransition>
+            registering
+          </Link>
+          .
         </p>
       </div>
       <LoginForm />
@@ -35,6 +42,7 @@ const Main: FC = () => {
         <Link
           className={link}
           to={ROUTES.FORGOT_PASSWORD}
+          viewTransition
           aria-label="Forgot password"
         >
           Forgot password?
