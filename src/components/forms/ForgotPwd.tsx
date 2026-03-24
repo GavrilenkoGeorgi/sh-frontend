@@ -1,6 +1,6 @@
 import React, { type FC, useState, type FocusEvent } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useDispatch } from 'react-redux'
 
 import {
@@ -32,7 +32,7 @@ const ForgotPwd: FC = () => {
     formState: { errors, isSubmitting },
     handleSubmit
   } = useForm<RecoveryEmailSchemaType>({
-    resolver: zodResolver(RecoveryEmailSchema)
+    resolver: standardSchemaResolver(RecoveryEmailSchema)
   })
 
   const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {

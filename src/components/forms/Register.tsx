@@ -1,7 +1,7 @@
 import React, { type FC, useState, type FocusEvent } from 'react'
 import { useDispatch } from 'react-redux'
 import { type SubmitHandler, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useNavigate, Link } from 'react-router'
 import cx from 'classnames'
 
@@ -37,7 +37,7 @@ const Register: FC = () => {
     formState: { errors, isSubmitting },
     handleSubmit
   } = useForm<RegisterFormSchemaType>({
-    resolver: zodResolver(RegisterFormSchema)
+    resolver: standardSchemaResolver(RegisterFormSchema)
   })
 
   const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {

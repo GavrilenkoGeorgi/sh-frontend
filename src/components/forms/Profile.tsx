@@ -1,7 +1,7 @@
 import React, { type FC, useState, useEffect, type FocusEvent } from 'react'
 import { useDispatch } from 'react-redux'
 import { type SubmitHandler, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 
 import { useUpdateUserMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
@@ -41,7 +41,7 @@ const Profile: FC<iProps> = ({ data }) => {
     formState: { errors, isSubmitting },
     handleSubmit
   } = useForm<ProfileFormSchemaType>({
-    resolver: zodResolver(ProfileFormSchema)
+    resolver: standardSchemaResolver(ProfileFormSchema)
   })
 
   const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {

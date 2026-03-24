@@ -1,14 +1,17 @@
 import React, { type FC, useState, type FocusEvent } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useNavigate } from 'react-router'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import {
   LoginFormSchema,
   type LoginFormSchemaType
 } from '../../schemas/LoginFormSchema'
-import { setCredentials } from '../../store/slices/authSlice'
+import {
+  selectIsAuthenticated,
+  setCredentials
+} from '../../store/slices/authSlice'
 import { useLoginMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { ToastTypes } from '../../types'
@@ -19,11 +22,12 @@ import cx from 'classnames'
 import * as styles from './Form.module.sass'
 import Logout from './Logout'
 import LoadingIndicator from '../layout/LoadingIndicator'
+import { ROUTES } from '../../constants/routes'
 
 const Login: FC = () => {
   const navigate = useNavigate()
   const [login] = useLoginMutation()
-
+  const isAuthenticated = useSelector(selectIsAuthenticated)
   const dispatch = useDispatch()
 
   const [focused, setFocused] = useState<FocusedStates>({})
@@ -36,7 +40,7 @@ const Login: FC = () => {
     formState: { errors, isSubmitting },
     handleSubmit
   } = useForm<LoginFormSchemaType>({
-    resolver: zodResolver(LoginFormSchema)
+    resolver: standardSchemaResolver(LoginFormSchema)
   })
 
   const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
@@ -57,7 +61,7 @@ const Login: FC = () => {
     try {
       const res = await login({ email, password }).unwrap()
       dispatch(setCredentials({ ...res }))
-      navigate('/game', { viewTransition: true })
+      navigate(ROUTES.GAME, { viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({
@@ -72,7 +76,6 @@ const Login: FC = () => {
     <form
       noValidate
       autoComplete="off"
-      // eslint-disable-next-line
       onSubmit={handleSubmit(onSubmit)}
       id="login"
       className={styles.form}
@@ -132,7 +135,7 @@ const Login: FC = () => {
         <div className={styles.buttons}>
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isAuthenticated}
             className={styles.button}
           >
             {isSubmitting ? <LoadingIndicator dark /> : 'Login'}

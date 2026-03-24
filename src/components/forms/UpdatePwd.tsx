@@ -2,7 +2,7 @@ import React, { useEffect, type FC, useState, type FocusEvent } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { type SubmitHandler, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 
 import { useUpdatePasswordMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
@@ -42,7 +42,7 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
     formState: { errors, isSubmitting },
     handleSubmit
   } = useForm<PwdUpdateFormSchemaType>({
-    resolver: zodResolver(PwdUpdateFormSchema)
+    resolver: standardSchemaResolver(PwdUpdateFormSchema)
   })
 
   const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
