@@ -15,7 +15,7 @@
   z-index: 2
   background-color: var(--color-surface)
   box-shadow: 0px 0px 11px 0px var(--color-shadow)
-  transition: opacity var(--duration-default), top var(--duration-default)
+  transition: background-color var(--duration-default), top var(--duration-default)
 
 .hiddenNav
   top: -(variables.$navbarHeight)
@@ -64,7 +64,8 @@
   padding: 0
   width: 50vw
   transform: translate(60vw)
-  transition: transform var(--duration-nav-open) ease-out
+  transition-property: background-color, transform
+  transition-duration: var(--duration-default)
   margin-top: variables.$navbarHeight
   background-color: var(--color-surface)
   &.open
