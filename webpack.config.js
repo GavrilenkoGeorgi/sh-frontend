@@ -5,14 +5,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const WorkboxPlugin = require('workbox-webpack-plugin')
 const WebpackPwaManifest = require('webpack-pwa-manifest')
 const Dotenv = require('dotenv-webpack')
-const BundleAnalyzerPlugin =
-  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const SitemapPlugin = require('sitemap-webpack-plugin').default
 const CopyPlugin = require('copy-webpack-plugin')
 
-const prod = process.env.NODE_ENV === 'production'
+const { version } = require('./package.json')
+
 const paths = [
   '/',
   '/login',
@@ -21,198 +21,193 @@ const paths = [
   '/register',
   '/stats',
   '/profile'
-] //!
-
-const { version } = require('./package.json')
-
-const plugins = [
-  new webpack.DefinePlugin({
-    __APP_VERSION__: JSON.stringify(version)
-  }),
-  new HtmlWebpackPlugin({
-    template: './src/index.html',
-    title: 'Progressive Web Application'
-  }),
-  new Dotenv({
-    systemvars: true
-  }),
-  process.env.NODE_ENV === 'development' ? new BundleAnalyzerPlugin() : '',
-  new MiniCssExtractPlugin(),
-  new SitemapPlugin({
-    base: 'https://sharlushka.netlify.app',
-    paths,
-    options: {
-      lastmod: true,
-      changefreq: 'yearly',
-      priority: 0.4
-    }
-  }),
-  new CopyPlugin({
-    patterns: [
-      { from: './src/public/robots.txt', to: 'robots.txt' },
-      { from: './src/public/img', to: 'img' },
-      { from: './src/public/.well-known', to: '.well-known' }
-    ]
-  }),
-  new WebpackPwaManifest({
-    name: 'Sh dice game',
-    publicPath: '/',
-    fingerprints: true,
-    launch_handler: {
-      client_mode: 'navigate-existing'
-    },
-    start_url: '/',
-    id: '/?homescreen=1',
-    scope: '/',
-    display: 'standalone',
-    short_name: 'Sharlushka',
-    filename: 'manifest.json',
-    description: 'Dice game with stats.',
-    categories: ['games'],
-    dir: 'ltr',
-    lang: 'en',
-    prefer_related_applications: false,
-    theme_color: '#7B1FA2',
-    background_color: '#7B1FA2',
-    crossorigin: 'use-credentials', // can be null, use-credentials or anonymous
-    icons: [
-      {
-        src: path.resolve('src/assets/icons/android-chrome-192x192.png'),
-        size: '192x192' // you can also use the specifications pattern
-      },
-      {
-        src: path.resolve('src/assets/icons/android-chrome-512x512.png'),
-        size: '512x512'
-      }
-    ]
-  })
 ]
 
-const workboxPlugin = new WorkboxPlugin.InjectManifest({
-  swSrc: './src/service-worker.ts',
-  swDest: 'service-worker.js',
-  // in dev, skip precaching so the SW registers without 404s
-  ...(prod ? {} : { exclude: [/./] })
-})
+module.exports = (_env, argv) => {
+  const prod =
+    argv.mode === 'production' || process.env.NODE_ENV === 'production'
 
-plugins.push(workboxPlugin)
+  const plugins = [
+    new webpack.DefinePlugin({
+      __APP_VERSION__: JSON.stringify(version)
+    }),
 
-module.exports = (env) => {
-  // workbox-webpack-plugin sets alreadyCalled after the first build, which
-  // breaks subsequent watch-mode rebuilds — reset it in non-production
-  if (env !== 'production') {
-    Object.defineProperty(workboxPlugin, 'alreadyCalled', {
-      get() {
-        return false
-      },
-      set() {}
-    })
-  }
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      title: 'Progressive Web Application'
+    }),
+
+    new Dotenv({
+      systemvars: true
+    }),
+
+    !prod && new BundleAnalyzerPlugin(),
+
+    prod &&
+      new MiniCssExtractPlugin({
+        filename: '[name].[contenthash].css',
+        chunkFilename: '[name].[contenthash].css'
+      }),
+
+    new SitemapPlugin({
+      base: 'https://sharlushka.netlify.app',
+      paths,
+      options: {
+        lastmod: true,
+        changefreq: 'yearly',
+        priority: 0.4
+      }
+    }),
+
+    new CopyPlugin({
+      patterns: [
+        { from: './src/public/robots.txt', to: 'robots.txt' },
+        { from: './src/public/img', to: 'img' },
+        { from: './src/public/.well-known', to: '.well-known' }
+      ]
+    }),
+
+    new WebpackPwaManifest({
+      name: 'Sh dice game',
+      short_name: 'Sharlushka',
+      description: 'Dice game with stats.',
+      publicPath: '/',
+      filename: 'manifest.json',
+
+      start_url: '/',
+      scope: '/',
+      display: 'standalone',
+      id: '/?homescreen=1',
+
+      theme_color: '#7B1FA2',
+      background_color: '#7B1FA2',
+
+      categories: ['games'],
+      lang: 'en',
+      dir: 'ltr',
+      prefer_related_applications: false,
+
+      fingerprints: true,
+      crossorigin: 'use-credentials',
+
+      icons: [
+        {
+          src: path.resolve('src/assets/icons/android-chrome-192x192.png'),
+          size: '192x192'
+        },
+        {
+          src: path.resolve('src/assets/icons/android-chrome-512x512.png'),
+          size: '512x512'
+        }
+      ]
+    }),
+
+    prod &&
+      new WorkboxPlugin.InjectManifest({
+        swSrc: './src/service-worker.ts',
+        swDest: 'service-worker.js'
+      })
+  ].filter(Boolean)
 
   return {
     mode: prod ? 'production' : 'development',
+
     entry: './src/index.tsx',
+
     output: {
-      path: path.join(__dirname, '/dist/')
+      path: path.resolve(__dirname, 'dist'),
+      clean: true
     },
+
+    devtool: prod ? false : 'source-map',
+
+    resolve: {
+      extensions: ['.ts', '.tsx', '.js', '.json']
+    },
+
     optimization: {
-      usedExports: 'global',
+      usedExports: true,
+
       minimizer: [
-        new CssMinimizerPlugin({
-          parallel: true
-        }),
+        new CssMinimizerPlugin({ parallel: true }),
         new TerserPlugin({
           test: /\.js(\?.*)?$/i,
           parallel: true
         })
       ],
+
       runtimeChunk: 'single',
+
       splitChunks: {
         chunks: 'all',
         maxInitialRequests: Infinity,
         minSize: 0,
+
         cacheGroups: {
           vendor: {
-            test: /[\\\/]node_modules[\\\/]/,
+            test: /[\\/]node_modules[\\/]/,
             name(module) {
-              // get the name. E.g. node_modules/pkgName/not/this/part.js
-              // or node_modules/pkgName
               const pkg = module.context.match(
-                /[\\\/]node_modules[\\\/](.*?)([\\\/]|$)/
+                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
               )
-              let pkgName
-              if (pkg !== null) {
-                // the last one is null
-                ;[, pkgName] = pkg // get the second item
-                // npm package names are URL-safe, but some servers don't like @ symbols
-                return `npm.${pkgName.replace('@', '')}`
-              } else return false
+
+              if (!pkg) return false
+
+              const pkgName = pkg[1].replace('@', '')
+              return `npm.${pkgName}`
             }
           }
         }
       }
     },
+
     module: {
       rules: [
         {
           test: /\.(ts|tsx)$/,
           exclude: /node_modules/,
-          resolve: {
-            extensions: ['.ts', '.tsx', '.js', '.json']
-          },
           use: 'ts-loader'
         },
-        // 1️⃣ CSS-Module rule: only files ending in .module.scss/.module.css
+
+        // CSS Modules
         {
-          test: /\.module\.(sa|sc|c)ss$/, // <-- notice the “.module.” in the pattern
-          exclude: /node_modules/, // ignore node_modules (if you never publish CSS modules to npm)
+          test: /\.module\.(sa|sc|c)ss$/,
+          exclude: /node_modules/,
           use: [
-            'style-loader', // 1. Injects <style> tags at runtime
+            prod ? MiniCssExtractPlugin.loader : 'style-loader',
             {
-              loader: 'css-loader', // 2. Interprets @import and url() & enables "modules"
+              loader: 'css-loader',
               options: {
+                importLoaders: 1,
                 modules: {
-                  // How the generated class names should look
                   localIdentName: '[local]--[hash:base64:5]'
                 }
               }
             },
-            {
-              loader: 'sass-loader', // 3. Compiles Sass → CSS
-              options: {
-                // “modern” is fine, or remove if you don't need a special API
-                implementation: require('sass')
-              }
-            }
+            'sass-loader'
           ]
         },
 
-        // 2️⃣ Global CSS/Sass rule: everything else (.scss/.css) except .module
+        // Global styles
         {
-          test: /\.(sa|sc|c)ss$/, // match .scss/.sass/.css
-          exclude: [
-            /\.module\.(sa|sc|c)ss$/, // exclude any “.module.scss” or “.module.css”
-            /node_modules/ // <-- newly added exclusion
-          ],
+          test: /\.(sa|sc|c)ss$/,
+          exclude: /\.module\.(sa|sc|c)ss$/,
           use: [
-            'style-loader',
-            'css-loader', // No `modules: true` here
-            {
-              loader: 'sass-loader',
-              options: {
-                implementation: require('sass')
-              }
-            }
+            prod ? MiniCssExtractPlugin.loader : 'style-loader',
+            'css-loader',
+            'sass-loader'
           ]
         },
+
         {
           test: /\.svg$/,
           use: ['@svgr/webpack']
         }
       ]
     },
-    devtool: prod ? undefined : 'source-map',
-    plugins: [...plugins],
+
+    plugins,
+
     devServer: {
       historyApiFallback: true
     }
