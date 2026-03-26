@@ -59,8 +59,8 @@ const Login: FC = () => {
     password
   }): Promise<void> => {
     try {
-      const res = await login({ email, password }).unwrap()
-      dispatch(setCredentials({ ...res }))
+      const user = await login({ email, password }).unwrap()
+      dispatch(setCredentials({ user }))
       navigate(ROUTES.GAME, { viewTransition: true })
     } catch (err: unknown) {
       dispatch(

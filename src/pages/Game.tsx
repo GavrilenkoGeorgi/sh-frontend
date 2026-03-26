@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router'
 // state
 import type { RootState } from '../store'
 import { useSaveResultsMutation } from '../store/slices/gameApiSlice'
-import { setScore, reset } from '../store/slices/shSlice'
+import { setScore, reset, GameState } from '../store/slices/shSlice'
 import { setNotification } from '../store/slices/notificationSlice'
 import { selectCurrentUser } from '../store/slices/authSlice'
 import { getErrMsg } from '../utils'
@@ -17,15 +17,19 @@ import ScoreBoard from '../components/game/ScoreBoard'
 import ProgressBar from '../components/layout/ProgressBar'
 import DnDDiceBoard from '../components/game/controls/DnDDiceBoard'
 import Modal from '../components/layout/Modal'
-import ConfettiAnimation from '../components/layout/ConfettiAnimation'
 import * as styles from './Game.module.sass'
+import { ROUTES } from '../constants/routes'
+
+export interface SaveResultsData extends Pick<
+  GameState,
+  'score' | 'schoolScore' | 'stats' | 'favDiceValues'
+> {}
 
 const GamePage: FC = () => {
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const dispatch = useDispatch()
   const { game } = useSelector((state: RootState) => state.sh)
   const user = useSelector(selectCurrentUser)
-  const [saveResults] = useSaveResultsMutation()
+  const [saveResults, { isLoading }] = useSaveResultsMutation()
   const navigate = useNavigate()
 
   const complete = async (): Promise<void> => {
@@ -35,10 +39,9 @@ const GamePage: FC = () => {
         schoolScore: game.schoolScore,
         stats: game.stats,
         favDiceValues: game.favDiceValues
-      }
+      } as SaveResultsData
 
-      setIsSubmitting(true)
-      if (user != null) await saveResults(data)
+      if (user) await saveResults(data)
       dispatch(reset())
       dispatch(
         setNotification({
@@ -46,7 +49,7 @@ const GamePage: FC = () => {
           type: ToastTypes.SUCCESS
         })
       )
-      navigate('/stats', { viewTransition: true })
+      navigate(ROUTES.STATS, { viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({
@@ -54,8 +57,6 @@ const GamePage: FC = () => {
           type: ToastTypes.ERROR
         })
       )
-    } finally {
-      setIsSubmitting(false)
     }
   }
 
@@ -94,7 +95,7 @@ const GamePage: FC = () => {
               text="Your score is "
               userName={user?.name}
               btnLabel="save"
-              isBusy={isSubmitting}
+              isBusy={isLoading}
               onClick={() => complete()}
             />
           )}

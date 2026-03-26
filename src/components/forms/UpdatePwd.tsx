@@ -21,6 +21,7 @@ import { getErrMsg } from '../../utils'
 import cx from 'classnames'
 import * as styles from './Form.module.sass'
 import LoadingIndicator from '../layout/LoadingIndicator'
+import { ROUTES } from '../../constants/routes'
 
 interface PwdUpdateProps {
   token?: string
@@ -57,17 +58,18 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
 
   const onSubmit: SubmitHandler<PwdUpdateFormSchemaType> = async ({
     password,
+    confirm,
     token
   }): Promise<void> => {
     try {
-      await updatePassword({ password, token }).unwrap()
+      await updatePassword({ password, confirm, token }).unwrap()
       dispatch(
         setNotification({
           msg: 'Password update ok.',
           type: ToastTypes.SUCCESS
         })
       )
-      navigate('/login', { viewTransition: true })
+      navigate(ROUTES.LOGIN, { viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({
@@ -86,8 +88,6 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
     <form
       noValidate
       id="updatePwd"
-      // https://github.com/orgs/react-hook-form/discussions/8020
-      // eslint-disable-next-line
       onSubmit={handleSubmit(onSubmit)}
       className={styles.form}
     >

@@ -1,29 +1,32 @@
+import { GAME_API_ROUTES } from '../../constants/routes'
+import { SaveResultsData } from '../../pages/Game'
+import { Stats } from '../../types'
 import { gameSlice } from './apiSlice'
-const GAME_URL = process.env.REACT_APP_GAME_URL
 
 export const gameApiSlice = gameSlice.injectEndpoints({
   endpoints: (builder) => ({
-    saveResults: builder.mutation({
+    saveResults: builder.mutation<void, SaveResultsData>({
       query: (data) => ({
-        url: `${GAME_URL}/save`,
+        url: GAME_API_ROUTES.SAVE_RESULTS,
         method: 'POST',
         credentials: 'include',
         body: data
       })
     }),
-    clearStats: builder.mutation({
+    clearStats: builder.mutation<void, void>({
       query: () => ({
-        url: `${GAME_URL}/clearstats`,
+        url: GAME_API_ROUTES.CLEAR_STATS,
         method: 'DELETE',
         credentials: 'include'
       })
     }),
-    getStats: builder.mutation({
+    getStats: builder.query<Stats, void>({
       query: () => ({
-        url: `${GAME_URL}/stats`,
+        url: GAME_API_ROUTES.GET_STATS,
         method: 'GET',
         credentials: 'include'
-      })
+      }),
+      providesTags: ['Game']
     })
   })
 })
@@ -31,5 +34,5 @@ export const gameApiSlice = gameSlice.injectEndpoints({
 export const {
   useSaveResultsMutation,
   useClearStatsMutation,
-  useGetStatsMutation
+  useGetStatsQuery
 } = gameApiSlice
