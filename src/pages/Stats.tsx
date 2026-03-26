@@ -1,59 +1,40 @@
-import React, { useEffect, type FC, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { type FC } from 'react'
 import CountUp from 'react-countup'
-import { useGetStatsMutation } from '../store/slices/gameApiSlice'
-import { setNotification } from '../store/slices/notificationSlice'
-import { type iStats } from '../types'
-import { formatChartAxisData } from '../utils'
+import { useGetStatsQuery } from '../store/slices/gameApiSlice'
+import { formatDateChartAxisData, formatLabelChartAxisData } from '../utils'
 import AreaChart from '../components/charts/AreaChart'
 import BarChart from '../components/charts/BarChart'
 import VertBarChart from '../components/charts/VertBarChart'
 import * as styles from './Stats.module.sass'
+import Fallback from '../components/layout/Fallback'
 
 const StatsPage: FC = () => {
-  const dispatch = useDispatch()
-  const [getStats] = useGetStatsMutation()
-  const [stats, setStats] = useState<iStats>()
+  const { data, isLoading } = useGetStatsQuery()
 
-  const loadStats = async (): Promise<void> => {
-    try {
-      const data = await getStats({}).unwrap()
-      setStats({
-        ...data,
-        scores: formatChartAxisData(data.scores),
-        schoolScores: formatChartAxisData(data.schoolScores)
-      })
-    } catch (err: any) {
-      dispatch(setNotification({ msg: err.error, type: 'error' }))
-    }
-  }
-
-  useEffect(() => {
-    void loadStats()
-  }, [])
-
-  if (!stats) return null
+  if (!data || isLoading) return <Fallback />
 
   return (
     <section className={styles.statsPage}>
       <div className={styles.stats}>
         <h1>Stats</h1>
+
         <h2>
           Highest score:{' '}
           <span>
-            <CountUp start={0} end={stats.max} delay={0.75} duration={3} />
+            <CountUp start={0} end={data.max} delay={0.75} duration={3} />
           </span>
         </h2>
+
         <h3>
           Average:&nbsp;
           <span>
-            <CountUp start={0} end={stats.average} delay={1.25} duration={3} />
+            <CountUp start={0} end={data.average} delay={1.25} duration={3} />
           </span>{' '}
           which is&nbsp;
           <span>
             <CountUp
               start={0}
-              end={stats.percentFromMax}
+              end={data.percentFromMax}
               delay={1.75}
               duration={4}
               suffix="%"
@@ -61,29 +42,34 @@ const StatsPage: FC = () => {
           </span>{' '}
           from max
         </h3>
-        <h4>{stats.games} games so far</h4>
+
+        <h4>{data.games} games so far</h4>
+
         <aside>
           <h4>School scores</h4>
           <div className={styles.hChart}>
-            <AreaChart data={stats.schoolScores} />
+            <AreaChart data={formatDateChartAxisData(data.schoolScores)} />
           </div>
         </aside>
+
         <aside>
           <h4>Scores</h4>
           <div className={styles.hChart}>
-            <AreaChart data={stats.scores} />
+            <AreaChart data={formatDateChartAxisData(data.scores)} />
           </div>
         </aside>
+
         <aside>
           <h4>Fav dice values</h4>
           <div className={styles.hChart}>
-            <BarChart data={stats.favDiceValues} />
+            <BarChart data={formatLabelChartAxisData(data.favDiceValues)} />
           </div>
         </aside>
+
         <aside>
           <h4>Freq combinations</h4>
           <div className={styles.sChart}>
-            <VertBarChart data={stats.favComb} />
+            <VertBarChart data={formatLabelChartAxisData(data.favComb)} />
           </div>
         </aside>
       </div>

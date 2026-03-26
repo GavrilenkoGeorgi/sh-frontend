@@ -4,7 +4,7 @@ import * as styles from './pages/SharedStyles.module.sass'
 
 const App: FC = () => {
   return (
-    <div className={styles.motionDiv}>
+    <div className={styles.centeredContent}>
       <Outlet />
     </div>
   )

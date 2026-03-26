@@ -1,67 +1,59 @@
-import React, { type FC, useState, useEffect, type FocusEvent } from 'react'
+import { type FC, useState, type FocusEvent } from 'react'
 import { useDispatch } from 'react-redux'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 
-import { useUpdateUserMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
 import {
   ProfileFormSchema,
   type ProfileFormSchemaType
 } from '../../schemas/ProfileFormSchema'
 import { ToastTypes } from '../../types'
-import type {
-  IUser,
-  Nullable,
-  FocusedStates,
-  InputValues,
-  ProfileFormErrors
-} from '../../types'
+import type { User, Nullable, FocusedStates } from '../../types'
 import { getErrMsg } from '../../utils'
 
 import cx from 'classnames'
 import * as styles from './Form.module.sass'
 import LoadingIndicator from '../layout/LoadingIndicator'
+import { useUpdateProfileMutation } from '../../store/slices/userApiSlice'
 
-interface iProps {
-  data: Nullable<IUser>
+interface Props {
+  data: Nullable<User>
 }
-const Profile: FC<iProps> = ({ data }) => {
+const Profile: FC<Props> = ({ data }) => {
   const dispatch = useDispatch()
+  const [updateProfile] = useUpdateProfileMutation()
   const [focused, setFocused] = useState<FocusedStates>({})
-  const [values, setValues] = useState<InputValues>({})
-  const [formErrors, setFormErrors] = useState<ProfileFormErrors>({})
-
-  const [updateProfile] = useUpdateUserMutation()
 
   const {
     register,
-    getValues,
-    setValue,
+    watch,
     formState: { errors, isSubmitting },
     handleSubmit
   } = useForm<ProfileFormSchemaType>({
-    resolver: standardSchemaResolver(ProfileFormSchema)
+    mode: 'onBlur',
+    resolver: standardSchemaResolver(ProfileFormSchema),
+    defaultValues: {
+      name: data?.name ?? '',
+      email: data?.email ?? ''
+    }
   })
 
-  const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
-    setFocused({ [event.target.name]: true })
-  }
+  const watchedValues = watch()
 
-  const blurInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
-    setFocused({ [event.target.name]: false })
-    setValues({ ...getValues() })
-    setFormErrors({ ...errors })
-  }
-
-  useEffect(() => {
-    if (data !== null) {
-      setFocused({ name: true })
-      setValue('email', data.email)
-      setValue('name', data.name)
-      setValues({ ...data })
+  const registerWithFocus = (name: keyof ProfileFormSchemaType) => {
+    const { onBlur, ...rest } = register(name)
+    return {
+      ...rest,
+      onFocus: (event: FocusEvent<HTMLInputElement, Element>) => {
+        setFocused({ [event.target.name]: true })
+      },
+      onBlur: (event: FocusEvent<HTMLInputElement, Element>) => {
+        setFocused({ [event.target.name]: false })
+        void onBlur(event)
+      }
     }
-  }, [])
+  }
 
   const onSubmit: SubmitHandler<ProfileFormSchemaType> = async ({
     name,
@@ -76,10 +68,13 @@ const Profile: FC<iProps> = ({ data }) => {
       await updateProfile(update).unwrap()
       dispatch(
         setNotification({
-          msg: 'Profile update ok. Please relogin.',
+          msg: 'Profile update ok.',
           type: ToastTypes.SUCCESS
         })
       )
+      // TODO: decide what to do next
+      // need to update the user data in store
+      // to refill the form with new values and other places this data is used
     } catch (err: unknown) {
       dispatch(
         setNotification({
@@ -94,8 +89,6 @@ const Profile: FC<iProps> = ({ data }) => {
     <form
       noValidate
       id="updateProfile"
-      // https://github.com/orgs/react-hook-form/discussions/8020
-      // eslint-disable-next-line
       onSubmit={handleSubmit(onSubmit)}
       className={styles.form}
     >
@@ -104,8 +97,8 @@ const Profile: FC<iProps> = ({ data }) => {
           <div
             className={cx(styles.formInput, {
               [styles.focused]: focused.name,
-              [styles.hasValue]: values.name,
-              [styles.error]: formErrors.name
+              [styles.hasValue]: watchedValues.name,
+              [styles.error]: errors.name
             })}
           >
             <label className={styles.formLabel} htmlFor="name">
@@ -115,14 +108,12 @@ const Profile: FC<iProps> = ({ data }) => {
               className={styles.formInput}
               type="text"
               aria-label="Name"
-              {...register('name')}
-              onFocus={focusInput}
-              onBlur={blurInput}
+              {...registerWithFocus('name')}
               autoComplete="name"
             />
           </div>
-          {formErrors.name != null && (
-            <p className={styles.errorMsg}>{formErrors.name.message}</p>
+          {errors.name != null && (
+            <p className={styles.errorMsg}>{errors.name.message}</p>
           )}
         </div>
 
@@ -130,8 +121,8 @@ const Profile: FC<iProps> = ({ data }) => {
           <div
             className={cx(styles.formInput, {
               [styles.focused]: focused.email,
-              [styles.hasValue]: values.email,
-              [styles.error]: formErrors.email
+              [styles.hasValue]: watchedValues.email,
+              [styles.error]: errors.email
             })}
           >
             <label className={styles.formLabel} htmlFor="email">
@@ -141,18 +132,16 @@ const Profile: FC<iProps> = ({ data }) => {
               className={styles.formInput}
               type="email"
               aria-label="Email"
-              {...register('email')}
-              onFocus={focusInput}
-              onBlur={blurInput}
+              {...registerWithFocus('email')}
               autoComplete="email"
             />
           </div>
-          {formErrors.email != null && (
-            <p className={styles.errorMsg}>{formErrors.email.message}</p>
+          {errors.email != null && (
+            <p className={styles.errorMsg}>{errors.email.message}</p>
           )}
         </div>
 
-        <button type="submit" className={styles.button}>
+        <button type="submit" className={styles.button} disabled={isSubmitting}>
           {isSubmitting ? <LoadingIndicator dark /> : 'Update'}
         </button>
       </fieldset>

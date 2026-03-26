@@ -1,41 +1,47 @@
+import { API_ROUTES } from '../../constants/routes'
+import { LoginFormSchemaType } from '../../schemas/LoginFormSchema'
+import { ProfileFormSchemaType } from '../../schemas/ProfileFormSchema'
+import { PwdUpdateFormSchemaType } from '../../schemas/PwdUpdateSchema'
+import { RecoveryEmailSchemaType } from '../../schemas/RecoveryEmailSchema'
+import { RegisterFormSchemaType } from '../../schemas/RegisterFormSchema'
+import { User } from '../../types'
 import { apiSlice } from './apiSlice'
 import { setCredentials, setAuthInitialized } from './authSlice'
-export const USERS_URL = process.env.REACT_APP_USERS_URL
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    deleteAcc: builder.mutation({
+    deleteAcc: builder.mutation<void, void>({
       query: () => ({
-        url: `${USERS_URL}/delete`,
+        url: API_ROUTES.DELETE_ACC,
         method: 'DELETE',
         credentials: 'include'
       })
     }),
-    login: builder.mutation({
+    login: builder.mutation<User, LoginFormSchemaType>({
       query: (data) => ({
-        url: `${USERS_URL}/login`,
+        url: API_ROUTES.LOGIN,
         method: 'POST',
         credentials: 'include',
         body: data
       })
     }),
-    logout: builder.mutation({
+    logout: builder.mutation<void, void>({
       query: () => ({
-        url: `${USERS_URL}/logout`,
+        url: API_ROUTES.LOGOUT,
         credentials: 'include',
-        method: 'GET'
+        method: 'POST'
       })
     }),
-    signup: builder.mutation({
+    signup: builder.mutation<void, RegisterFormSchemaType>({
       query: (data) => ({
-        url: `${USERS_URL}/register`,
+        url: API_ROUTES.SIGNUP,
         method: 'POST',
         body: data
       })
     }),
-    updateUser: builder.mutation({
+    updateProfile: builder.mutation<void, ProfileFormSchemaType>({
       query: (data) => ({
-        url: `${USERS_URL}/profile`,
+        url: API_ROUTES.UPDATE_PROFILE,
         method: 'POST',
         credentials: 'include',
         body: data
@@ -43,7 +49,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     refreshToken: builder.query<unknown, void>({
       query: () => ({
-        url: `${USERS_URL}/refresh`,
+        url: API_ROUTES.REFRESH_TOKEN,
         method: 'POST',
         credentials: 'include'
       }),
@@ -63,16 +69,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
         }
       }
     }),
-    sendRecoveryEmail: builder.mutation({
+    sendRecoveryEmail: builder.mutation<void, RecoveryEmailSchemaType>({
       query: (data) => ({
-        url: `${USERS_URL}/forgotpwd`,
+        url: API_ROUTES.SEND_RECOVERY_EMAIL,
         method: 'POST',
         body: data
       })
     }),
-    updatePassword: builder.mutation({
+    updatePassword: builder.mutation<void, PwdUpdateFormSchemaType>({
       query: (data) => ({
-        url: `${USERS_URL}/updatepwd`,
+        url: API_ROUTES.UPDATE_PASSWORD,
         method: 'PUT',
         body: data
       })
@@ -88,6 +94,6 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useSignupMutation,
-  useUpdateUserMutation,
+  useUpdateProfileMutation,
   useRefreshTokenQuery
 } = userApiSlice

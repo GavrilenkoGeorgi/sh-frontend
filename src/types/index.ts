@@ -35,7 +35,7 @@ export type LoginFormErrors = FieldErrors<{
 }>
 
 // Interfaces
-export interface IUser {
+export interface User {
   _id: string
   name: string
   email: string
@@ -80,7 +80,7 @@ export interface ToggleBtnProps {
   onClick: () => void
 }
 
-export interface iStats {
+export interface Stats {
   average: number
   games: number
   max: number

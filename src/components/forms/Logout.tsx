@@ -1,32 +1,43 @@
-import React, { type FC, useState } from 'react'
+import { type FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 
-import { useLogoutMutation } from '../../store/slices/userApiSlice'
-import { logout } from '../../store/slices/authSlice'
-import { selectCurrentUser } from '../../store/slices/authSlice'
+import { logout, selectCurrentUser } from '../../store/slices/authSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { apiSlice, gameSlice } from '../../store/slices/apiSlice'
 import LoadingIndicator from '../layout/LoadingIndicator'
 import { getErrMsg } from '../../utils'
 import { ToastTypes } from '../../types'
 import * as styles from './Form.module.sass'
+import { useLogoutMutation } from '../../store/slices/userApiSlice'
+import { ROUTES } from '../../constants/routes'
 
 const Logout: FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [logoutApiCall] = useLogoutMutation()
-  const [loading, setLoading] = useState(false)
   const user = useSelector(selectCurrentUser)
+
+  const [logoutApiCall, { isLoading }] = useLogoutMutation()
 
   const logoutHandler = async (): Promise<void> => {
     try {
-      setLoading(true)
-      await logoutApiCall({}).unwrap()
+      await logoutApiCall().unwrap()
+
+      // Clear client state
       dispatch(logout())
       dispatch(apiSlice.util.resetApiState())
       dispatch(gameSlice.util.resetApiState())
-      navigate('/', { viewTransition: true })
+
+      // Notify user
+      dispatch(
+        setNotification({
+          msg: 'You have been logged out',
+          type: ToastTypes.SUCCESS
+        })
+      )
+
+      // Navigate after state is clean
+      navigate(ROUTES.HOME, { viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({
@@ -34,21 +45,18 @@ const Logout: FC = () => {
           type: ToastTypes.ERROR
         })
       )
-    } finally {
-      setLoading(false)
     }
   }
 
   return (
     <button
       type="button"
-      onClick={() => {
-        void logoutHandler()
-      }}
-      disabled={user == null}
+      onClick={logoutHandler}
+      disabled={user == null || isLoading}
       className={styles.button}
+      aria-busy={isLoading}
     >
-      {loading ? <LoadingIndicator dark /> : 'logout'}
+      {isLoading ? <LoadingIndicator dark /> : 'logout'}
     </button>
   )
 }

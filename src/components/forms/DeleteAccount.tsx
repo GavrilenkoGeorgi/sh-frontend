@@ -22,7 +22,7 @@ const DeleteAccount: FC = () => {
   const deleteHandler = async (): Promise<void> => {
     try {
       setLoading(true)
-      await deleteAcc({}).unwrap()
+      await deleteAcc().unwrap()
       dispatch(logout())
       dispatch(apiSlice.util.resetApiState())
       dispatch(gameSlice.util.resetApiState())

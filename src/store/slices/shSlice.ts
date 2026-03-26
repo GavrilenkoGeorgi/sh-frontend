@@ -25,7 +25,7 @@ type SchoolCell = { final: boolean; score: number | null }
 type CombinationsState = Record<string, number[]>
 type SchoolState = Record<string, SchoolCell>
 
-interface GameState {
+export interface GameState {
   score: number
   schoolScore: number
   turn: number

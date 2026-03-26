@@ -11,14 +11,12 @@ import * as styles from './Form.module.sass'
 
 const ClearStats: FC = () => {
   const dispatch = useDispatch()
-  const [clearStats] = useClearStatsMutation()
-  const [loading, setLoading] = useState(false)
+  const [clearStats, { isLoading }] = useClearStatsMutation()
   const [openModal, setOpenModal] = useState(false)
 
   const deleteHandler = async (): Promise<void> => {
     try {
-      setLoading(true)
-      await clearStats({}).unwrap()
+      await clearStats().unwrap()
       dispatch(
         setNotification({
           msg: 'Stats cleared',
@@ -33,8 +31,6 @@ const ClearStats: FC = () => {
           type: ToastTypes.ERROR
         })
       )
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -58,10 +54,8 @@ const ClearStats: FC = () => {
           heading="Are you sure?"
           text="You are about to delete all your game results and clear stats!"
           btnLabel="delete"
-          isBusy={loading}
-          onClick={() => {
-            void deleteHandler()
-          }}
+          isBusy={isLoading}
+          onClick={() => deleteHandler()}
           close={() => {
             setOpenModal(false)
           }}
