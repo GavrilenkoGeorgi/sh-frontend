@@ -1,4 +1,4 @@
-import React, { type FC, useState, type FocusEvent } from 'react'
+import React, { type FC } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useDispatch } from 'react-redux'
@@ -10,8 +10,8 @@ import {
 import { useSendRecoveryEmailMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { ToastTypes } from '../../types'
-import type { FocusedStates, InputValues, LoginFormErrors } from '../../types'
 import { getErrMsg } from '../../utils'
+import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
 import * as styles from './Form.module.sass'
@@ -22,29 +22,18 @@ const ForgotPwd: FC = () => {
 
   const dispatch = useDispatch()
 
-  const [focused, setFocused] = useState<FocusedStates>({})
-  const [values, setValues] = useState<InputValues>({})
-  const [formErrors, setFormErrors] = useState<LoginFormErrors>({})
-
   const {
     register,
-    getValues,
+    watch,
     formState: { errors, isSubmitting },
     handleSubmit
   } = useForm<RecoveryEmailSchemaType>({
+    mode: 'onBlur',
     resolver: standardSchemaResolver(RecoveryEmailSchema)
   })
 
-  const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
-    setFocused({ [event.target.name]: true })
-  }
-
-  const blurInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
-    setFocused({ [event.target.name]: false })
-    const values = getValues()
-    setValues({ ...values })
-    setFormErrors({ ...errors })
-  }
+  const { focused, registerWithFocus } = useFormFocus(register)
+  const watchedValues = watch()
 
   const onSubmit: SubmitHandler<RecoveryEmailSchemaType> = async ({
     email
@@ -81,25 +70,24 @@ const ForgotPwd: FC = () => {
           <div
             className={cx(styles.formInput, {
               [styles.focused]: focused.email,
-              [styles.hasValue]: values.email,
-              [styles.error]: formErrors.email
+              [styles.hasValue]: watchedValues.email,
+              [styles.error]: errors.email
             })}
           >
             <label className={styles.formLabel} htmlFor="email">
               Email
             </label>
             <input
+              id="email"
               className={styles.formInput}
               aria-label="Email"
               type="email"
-              {...register('email')}
-              onFocus={focusInput}
-              onBlur={blurInput}
+              {...registerWithFocus('email')}
               autoComplete="email"
             />
           </div>
-          {formErrors.email != null && (
-            <p className={styles.errorMsg}>{formErrors.email.message}</p>
+          {errors.email != null && (
+            <p className={styles.errorMsg}>{errors.email.message}</p>
           )}
         </div>
 

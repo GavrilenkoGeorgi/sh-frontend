@@ -1,4 +1,4 @@
-import React, { type FC, useState, type FocusEvent } from 'react'
+import { type FC } from 'react'
 import { useDispatch } from 'react-redux'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
@@ -11,45 +11,37 @@ import {
   RegisterFormSchema,
   type RegisterFormSchemaType
 } from '../../schemas/RegisterFormSchema'
-import type {
-  FocusedStates,
-  InputValues,
-  RegisterFormErrors
-} from '../../types'
 import { ToastTypes } from '../../types'
 import { getErrMsg } from '../../utils'
+import { useFormFocus } from '../../hooks'
 
 import LoadingIndicator from '../layout/LoadingIndicator'
 import * as styles from './Form.module.sass'
+import { usePasswordVisibility } from '../../hooks/usePasswordVisibility'
+import { ROUTES } from '../../constants/routes'
+import IconEye from '../../assets/svg/icon-eye.svg'
+import IconEyeOff from '../../assets/svg/icon-eye-off.svg'
 
 const Register: FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [signup] = useSignupMutation()
 
-  const [focused, setFocused] = useState<FocusedStates>({})
-  const [values, setValues] = useState<InputValues>({})
-  const [formErrors, setFormErrors] = useState<RegisterFormErrors>({})
+  const passwordVisibility = usePasswordVisibility()
+  const confirmPasswordVisibility = usePasswordVisibility()
 
   const {
     register,
-    getValues,
+    watch,
     formState: { errors, isSubmitting },
     handleSubmit
   } = useForm<RegisterFormSchemaType>({
+    mode: 'onBlur',
     resolver: standardSchemaResolver(RegisterFormSchema)
   })
 
-  const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
-    setFocused({ [event.target.name]: true })
-  }
-
-  const blurInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
-    setFocused({ [event.target.name]: false })
-    const values = getValues()
-    setValues({ ...values })
-    setFormErrors({ ...errors })
-  }
+  const { focused, registerWithFocus } = useFormFocus(register)
+  const watchedValues = watch()
 
   const onSubmit: SubmitHandler<RegisterFormSchemaType> = async (
     data
@@ -62,7 +54,7 @@ const Register: FC = () => {
           type: ToastTypes.SUCCESS
         })
       )
-      navigate('/login', { replace: true, viewTransition: true })
+      navigate(ROUTES.LOGIN, { replace: true, viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({
@@ -76,7 +68,6 @@ const Register: FC = () => {
   return (
     <form
       noValidate
-      // eslint-disable-next-line
       onSubmit={handleSubmit(onSubmit)}
       id="register"
       className={styles.form}
@@ -86,25 +77,24 @@ const Register: FC = () => {
           <div
             className={cx(styles.formInput, {
               [styles.focused]: focused.name,
-              [styles.hasValue]: values.name,
-              [styles.error]: formErrors.name
+              [styles.hasValue]: watchedValues.name,
+              [styles.error]: errors.name
             })}
           >
             <label htmlFor="name" className={styles.formLabel}>
               Name
             </label>
             <input
+              id="name"
               className={styles.formInput}
               type="text"
               aria-label="Name"
-              {...register('name')}
-              onFocus={focusInput}
-              onBlur={blurInput}
+              {...registerWithFocus('name')}
               autoComplete="name"
             />
           </div>
-          {formErrors.name != null && (
-            <p className={styles.errorMsg}>{formErrors.name.message}</p>
+          {errors.name != null && (
+            <p className={styles.errorMsg}>{errors.name.message}</p>
           )}
         </div>
 
@@ -112,25 +102,24 @@ const Register: FC = () => {
           <div
             className={cx(styles.formInput, {
               [styles.focused]: focused.email,
-              [styles.hasValue]: values.email,
-              [styles.error]: formErrors.email
+              [styles.hasValue]: watchedValues.email,
+              [styles.error]: errors.email
             })}
           >
             <label className={styles.formLabel} htmlFor="email">
               Email
             </label>
             <input
+              id="email"
               className={styles.formInput}
               type="email"
               aria-label="Email"
-              {...register('email')}
-              onFocus={focusInput}
-              onBlur={blurInput}
+              {...registerWithFocus('email')}
               autoComplete="email"
             />
           </div>
-          {formErrors.email != null && (
-            <p className={styles.errorMsg}>{formErrors.email.message}</p>
+          {errors.email != null && (
+            <p className={styles.errorMsg}>{errors.email.message}</p>
           )}
         </div>
 
@@ -138,25 +127,39 @@ const Register: FC = () => {
           <div
             className={cx(styles.formInput, {
               [styles.focused]: focused.password,
-              [styles.hasValue]: values.password,
-              [styles.error]: formErrors.password
+              [styles.hasValue]: watchedValues.password,
+              [styles.error]: errors.password
             })}
           >
             <label htmlFor="password" className={styles.formLabel}>
               Password
             </label>
-            <input
-              className={styles.formInput}
-              type="password"
-              aria-label="Password"
-              {...register('password')}
-              onFocus={focusInput}
-              onBlur={blurInput}
-              autoComplete="new-password"
-            />
+            <div className={styles.passwordInputWrap}>
+              <input
+                id="password"
+                className={styles.formInput}
+                type={passwordVisibility.inputType}
+                aria-label="Password"
+                {...registerWithFocus('password')}
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                onClick={passwordVisibility.toggleVisibility}
+                aria-label={
+                  passwordVisibility.isVisible
+                    ? 'Hide password'
+                    : 'Show password'
+                }
+                aria-pressed={passwordVisibility.isVisible}
+              >
+                {passwordVisibility.isVisible ? <IconEyeOff /> : <IconEye />}
+              </button>
+            </div>
           </div>
-          {formErrors.password != null && (
-            <p className={styles.errorMsg}>{formErrors.password.message}</p>
+          {errors.password != null && (
+            <p className={styles.errorMsg}>{errors.password.message}</p>
           )}
         </div>
 
@@ -164,25 +167,41 @@ const Register: FC = () => {
           <div
             className={cx(styles.formInput, {
               [styles.focused]: focused.confirm,
-              [styles.hasValue]: values.confirm,
-              [styles.error]: formErrors.confirm
+              [styles.hasValue]: watchedValues.confirm,
+              [styles.error]: errors.confirm
             })}
           >
             <label className={styles.formLabel} htmlFor="confirm">
               Confirm password
             </label>
             <input
+              id="confirm"
               className={styles.formInput}
-              type="password"
+              type={confirmPasswordVisibility.inputType}
               aria-label="Confirm password"
-              {...register('confirm')}
-              onFocus={focusInput}
-              onBlur={blurInput}
+              {...registerWithFocus('confirm')}
               autoComplete="new-password"
             />
+            <button
+              type="button"
+              className={styles.passwordToggle}
+              onClick={confirmPasswordVisibility.toggleVisibility}
+              aria-label={
+                confirmPasswordVisibility.isVisible
+                  ? 'Hide password'
+                  : 'Show password'
+              }
+              aria-pressed={confirmPasswordVisibility.isVisible}
+            >
+              {confirmPasswordVisibility.isVisible ? (
+                <IconEyeOff />
+              ) : (
+                <IconEye />
+              )}
+            </button>
           </div>
-          {formErrors.confirm != null && (
-            <p className={styles.errorMsg}>{formErrors.confirm.message}</p>
+          {errors.confirm != null && (
+            <p className={styles.errorMsg}>{errors.confirm.message}</p>
           )}
         </div>
       </fieldset>

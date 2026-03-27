@@ -23,7 +23,7 @@ fieldset
 
 .formInput
   position: relative
-  margin: 1rem 0 1.75rem
+  margin: 1.2rem 0 1.75rem
   &:after
     height: 2px
     background-color: var(--color-primary-light)
@@ -52,7 +52,7 @@ fieldset
   position: absolute
   background: transparent
   color: var(--color-error)
-  font-size: .8rem
+  font-size: .7rem
   bottom: .6rem
 
 .formLabel
@@ -72,8 +72,6 @@ fieldset
   .focused &
     transform: translateY(-220%) scale(.9)
     color: var(--color-primary)
-  .error.focused &
-    color: var(--color-error)
   .hasValue &
     transform: translateY(-220%) scale(.9)
 
@@ -94,10 +92,33 @@ input, textarea, select
     font-size: 16px
     font-weight: 500
     appearance: none
-    background-color: transparent
     &:focus
       box-shadow: none
       background: none
+
+.passwordInputWrap
+  position: relative
+  width: 100%
+
+.passwordInputWrap input
+  padding-right: 2.25rem
+
+.passwordToggle
+  position: absolute
+  right: 6px
+  top: 50%
+  transform: translateY(-50%)
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  background: transparent
+  border: 0
+  padding: 0
+  cursor: pointer
+  color: var(--color-primary)
+  transition: color var(--duration-default)
+  &:hover
+    color: var(--color-accent)
 
 .buttons
   display: flex
@@ -105,6 +126,7 @@ input, textarea, select
   gap: .5rem
 
 .button, .deleteBtn
+  font-size: 1rem
   min-width: 8rem
   padding: .5rem 1.5rem
   background-color: transparent
@@ -113,7 +135,7 @@ input, textarea, select
   display: flex
   justify-content: center
   align-items: center
-  margin-top: 1.4rem
+  margin-top: 1rem
   text-transform: capitalize
   width: 100%
   cursor: pointer

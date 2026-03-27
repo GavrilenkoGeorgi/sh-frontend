@@ -1,38 +1,11 @@
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { type ReactNode } from 'react'
-import { type FieldErrors } from 'react-hook-form/dist/types'
 
 // Types
 export type Nullable<T> = T | null
 
 // forms
 export type FocusedStates = Record<string, boolean>
-
-export type InputValues = Record<string, string>
-
-export type RegisterFormErrors = FieldErrors<{
-  name: string
-  email: string
-  password: string
-  confirm: string
-}>
-
-export type ProfileFormErrors = FieldErrors<{
-  name: string
-  email: string
-}>
-
-export type UpdatePwdFormErrors = FieldErrors<{
-  password: string
-  confirm: string
-  token: string
-}>
-
-export type LoginFormErrors = FieldErrors<{
-  email: string
-  password: string
-  name?: string
-}>
 
 // Interfaces
 export interface User {

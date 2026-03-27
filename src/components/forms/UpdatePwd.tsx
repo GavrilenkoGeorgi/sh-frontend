@@ -1,4 +1,4 @@
-import React, { useEffect, type FC, useState, type FocusEvent } from 'react'
+import React, { useEffect, type FC } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { type SubmitHandler, useForm } from 'react-hook-form'
@@ -11,17 +11,16 @@ import {
   type PwdUpdateFormSchemaType
 } from '../../schemas/PwdUpdateSchema'
 import { ToastTypes } from '../../types'
-import type {
-  FocusedStates,
-  InputValues,
-  UpdatePwdFormErrors
-} from '../../types'
 import { getErrMsg } from '../../utils'
+import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
 import * as styles from './Form.module.sass'
 import LoadingIndicator from '../layout/LoadingIndicator'
 import { ROUTES } from '../../constants/routes'
+import { usePasswordVisibility } from '../../hooks/usePasswordVisibility'
+import IconEye from '../../assets/svg/icon-eye.svg'
+import IconEyeOff from '../../assets/svg/icon-eye-off.svg'
 
 interface PwdUpdateProps {
   token?: string
@@ -30,31 +29,24 @@ interface PwdUpdateProps {
 const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [focused, setFocused] = useState<FocusedStates>({})
-  const [values, setValues] = useState<InputValues>({})
-  const [formErrors, setFormErrors] = useState<UpdatePwdFormErrors>({})
-
   const [updatePassword] = useUpdatePasswordMutation()
+
+  const passwordVisibility = usePasswordVisibility()
+  const confirmPasswordVisibility = usePasswordVisibility()
 
   const {
     register,
-    getValues,
+    watch,
     setValue,
     formState: { errors, isSubmitting },
     handleSubmit
   } = useForm<PwdUpdateFormSchemaType>({
+    mode: 'onBlur',
     resolver: standardSchemaResolver(PwdUpdateFormSchema)
   })
 
-  const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
-    setFocused({ [event.target.name]: true })
-  }
-
-  const blurInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
-    setFocused({ [event.target.name]: false })
-    setValues({ ...getValues() })
-    setFormErrors({ ...errors })
-  }
+  const { focused, registerWithFocus } = useFormFocus(register)
+  const watchedValues = watch()
 
   const onSubmit: SubmitHandler<PwdUpdateFormSchemaType> = async ({
     password,
@@ -97,9 +89,7 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
             className={styles.formInput}
             type="hidden"
             aria-label="Token"
-            {...register('token')}
-            onFocus={focusInput}
-            onBlur={blurInput}
+            {...registerWithFocus('token')}
             autoComplete="off"
           />
         </div>
@@ -108,25 +98,38 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
           <div
             className={cx(styles.formInput, {
               [styles.focused]: focused.password,
-              [styles.hasValue]: values.password,
-              [styles.error]: formErrors.password
+              [styles.hasValue]: watchedValues.password,
+              [styles.error]: errors.password
             })}
           >
             <label htmlFor="password" className={styles.formLabel}>
               Password
             </label>
-            <input
-              className={styles.formInput}
-              type="password"
-              aria-label="Password"
-              {...register('password')}
-              onFocus={focusInput}
-              onBlur={blurInput}
-              autoComplete="new-password"
-            />
+            <div className={styles.passwordInputWrap}>
+              <input
+                className={styles.formInput}
+                type={passwordVisibility.inputType}
+                aria-label="Password"
+                {...registerWithFocus('password')}
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                onClick={passwordVisibility.toggleVisibility}
+                aria-label={
+                  passwordVisibility.isVisible
+                    ? 'Hide password'
+                    : 'Show password'
+                }
+                aria-pressed={passwordVisibility.isVisible}
+              >
+                {passwordVisibility.isVisible ? <IconEyeOff /> : <IconEye />}
+              </button>
+            </div>
           </div>
-          {formErrors.password != null && (
-            <p className={styles.errorMsg}>{formErrors.password.message}</p>
+          {errors.password != null && (
+            <p className={styles.errorMsg}>{errors.password.message}</p>
           )}
         </div>
 
@@ -134,25 +137,42 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
           <div
             className={cx(styles.formInput, {
               [styles.focused]: focused.confirm,
-              [styles.hasValue]: values.confirm,
-              [styles.error]: formErrors.confirm
+              [styles.hasValue]: watchedValues.confirm,
+              [styles.error]: errors.confirm
             })}
           >
             <label className={styles.formLabel} htmlFor="confirm">
               Confirm password
             </label>
-            <input
-              className={styles.formInput}
-              type="password"
-              aria-label="Confirm password"
-              {...register('confirm')}
-              onFocus={focusInput}
-              onBlur={blurInput}
-              autoComplete="new-password"
-            />
+            <div className={styles.passwordInputWrap}>
+              <input
+                className={styles.formInput}
+                type={confirmPasswordVisibility.inputType}
+                aria-label="Confirm password"
+                {...registerWithFocus('confirm')}
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                onClick={confirmPasswordVisibility.toggleVisibility}
+                aria-label={
+                  confirmPasswordVisibility.isVisible
+                    ? 'Hide password'
+                    : 'Show password'
+                }
+                aria-pressed={confirmPasswordVisibility.isVisible}
+              >
+                {confirmPasswordVisibility.isVisible ? (
+                  <IconEyeOff />
+                ) : (
+                  <IconEye />
+                )}
+              </button>
+            </div>
           </div>
-          {formErrors.confirm != null && (
-            <p className={styles.errorMsg}>{formErrors.confirm.message}</p>
+          {errors.confirm != null && (
+            <p className={styles.errorMsg}>{errors.confirm.message}</p>
           )}
         </div>
 
