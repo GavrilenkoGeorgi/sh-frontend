@@ -1,4 +1,4 @@
-import { type FC, useState, type FocusEvent } from 'react'
+import { type FC } from 'react'
 import { useDispatch } from 'react-redux'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
@@ -9,8 +9,9 @@ import {
   type ProfileFormSchemaType
 } from '../../schemas/ProfileFormSchema'
 import { ToastTypes } from '../../types'
-import type { User, Nullable, FocusedStates } from '../../types'
+import type { User, Nullable } from '../../types'
 import { getErrMsg } from '../../utils'
+import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
 import * as styles from './Form.module.sass'
@@ -23,7 +24,6 @@ interface Props {
 const Profile: FC<Props> = ({ data }) => {
   const dispatch = useDispatch()
   const [updateProfile] = useUpdateProfileMutation()
-  const [focused, setFocused] = useState<FocusedStates>({})
 
   const {
     register,
@@ -39,21 +39,8 @@ const Profile: FC<Props> = ({ data }) => {
     }
   })
 
+  const { focused, registerWithFocus } = useFormFocus(register)
   const watchedValues = watch()
-
-  const registerWithFocus = (name: keyof ProfileFormSchemaType) => {
-    const { onBlur, ...rest } = register(name)
-    return {
-      ...rest,
-      onFocus: (event: FocusEvent<HTMLInputElement, Element>) => {
-        setFocused({ [event.target.name]: true })
-      },
-      onBlur: (event: FocusEvent<HTMLInputElement, Element>) => {
-        setFocused({ [event.target.name]: false })
-        void onBlur(event)
-      }
-    }
-  }
 
   const onSubmit: SubmitHandler<ProfileFormSchemaType> = async ({
     name,

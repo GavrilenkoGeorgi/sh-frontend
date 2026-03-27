@@ -1,4 +1,4 @@
-import React, { type FC, useState, type FocusEvent } from 'react'
+import { type FC } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useNavigate } from 'react-router'
@@ -15,14 +15,17 @@ import {
 import { useLoginMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { ToastTypes } from '../../types'
-import type { FocusedStates, InputValues, LoginFormErrors } from '../../types'
 import { getErrMsg } from '../../utils'
+import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
 import * as styles from './Form.module.sass'
 import Logout from './Logout'
 import LoadingIndicator from '../layout/LoadingIndicator'
 import { ROUTES } from '../../constants/routes'
+import IconEye from '../../assets/svg/icon-eye.svg'
+import IconEyeOff from '../../assets/svg/icon-eye-off.svg'
+import { usePasswordVisibility } from '../../hooks/usePasswordVisibility'
 
 const Login: FC = () => {
   const navigate = useNavigate()
@@ -30,29 +33,19 @@ const Login: FC = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated)
   const dispatch = useDispatch()
 
-  const [focused, setFocused] = useState<FocusedStates>({})
-  const [values, setValues] = useState<InputValues>({})
-  const [formErrors, setFormErrors] = useState<LoginFormErrors>({})
-
   const {
     register,
-    getValues,
+    watch,
     formState: { errors, isSubmitting },
     handleSubmit
   } = useForm<LoginFormSchemaType>({
+    mode: 'onBlur',
     resolver: standardSchemaResolver(LoginFormSchema)
   })
 
-  const focusInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
-    setFocused({ [event.target.name]: true })
-  }
-
-  const blurInput = (event: FocusEvent<HTMLInputElement, Element>): void => {
-    setFocused({ [event.target.name]: false })
-    const values = getValues()
-    setValues({ ...values })
-    setFormErrors({ ...errors })
-  }
+  const { focused, registerWithFocus } = useFormFocus(register)
+  const watchedValues = watch()
+  const { isVisible, toggleVisibility, inputType } = usePasswordVisibility()
 
   const onSubmit: SubmitHandler<LoginFormSchemaType> = async ({
     email,
@@ -85,8 +78,8 @@ const Login: FC = () => {
           <div
             className={cx(styles.formInput, {
               [styles.focused]: focused.email,
-              [styles.hasValue]: values.email,
-              [styles.error]: formErrors.email
+              [styles.hasValue]: watchedValues.email,
+              [styles.error]: errors.email
             })}
           >
             <label className={styles.formLabel} htmlFor="email">
@@ -96,14 +89,12 @@ const Login: FC = () => {
               className={styles.formInput}
               aria-label="Email"
               type="email"
-              {...register('email')}
-              onFocus={focusInput}
-              onBlur={blurInput}
+              {...registerWithFocus('email')}
               autoComplete="email"
             />
           </div>
-          {formErrors.email != null && (
-            <p className={styles.errorMsg}>{formErrors.email.message}</p>
+          {errors.email != null && (
+            <p className={styles.errorMsg}>{errors.email.message}</p>
           )}
         </div>
 
@@ -111,25 +102,34 @@ const Login: FC = () => {
           <div
             className={cx(styles.formInput, {
               [styles.focused]: focused.password,
-              [styles.hasValue]: values.password,
-              [styles.error]: formErrors.password
+              [styles.hasValue]: watchedValues.password,
+              [styles.error]: errors.password
             })}
           >
             <label htmlFor="password" className={styles.formLabel}>
               Password
             </label>
-            <input
-              className={styles.formInput}
-              type="password"
-              aria-label="Password"
-              {...register('password')}
-              onFocus={focusInput}
-              onBlur={blurInput}
-              autoComplete="current-password"
-            />
+            <div className={styles.passwordInputWrap}>
+              <input
+                className={styles.formInput}
+                type={inputType}
+                aria-label="Password"
+                {...registerWithFocus('password')}
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                onClick={toggleVisibility}
+                aria-label={isVisible ? 'Hide password' : 'Show password'}
+                aria-pressed={isVisible}
+              >
+                {isVisible ? <IconEyeOff /> : <IconEye />}
+              </button>
+            </div>
           </div>
-          {formErrors.password != null && (
-            <p className={styles.errorMsg}>{formErrors.password.message}</p>
+          {errors.password != null && (
+            <p className={styles.errorMsg}>{errors.password.message}</p>
           )}
         </div>
         <div className={styles.buttons}>
