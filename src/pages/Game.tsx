@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router'
 // state
 import type { RootState } from '../store'
 import { useSaveResultsMutation } from '../store/slices/gameApiSlice'
-import { setScore, reset, GameState } from '../store/slices/shSlice'
+import { setScore, reset, GameState, MAX_TURNS } from '../store/slices/shSlice'
 import { setNotification } from '../store/slices/notificationSlice'
 import { selectCurrentUser } from '../store/slices/authSlice'
 import { getErrMsg } from '../utils'
@@ -80,26 +80,26 @@ const GamePage: FC = () => {
           {/* Game controls */}
           <DnDDiceBoard />
           {/* Modals */}
-          {game.over && (
-            <Modal
-              heading="Game over"
-              text="Better luck next time!"
-              btnLabel="ok"
-              onClick={() => dispatch(reset())}
-            />
-          )}
-          {game.turn === 34 && (
-            <Modal
-              heading="Congratulations!"
-              score={game.score}
-              text="Your score is "
-              userName={user?.name}
-              btnLabel="save"
-              isBusy={isLoading}
-              onClick={() => complete()}
-            />
-          )}
         </div>
+        {game.over && (
+          <Modal
+            heading="Game over"
+            text="Better luck next time!"
+            btnLabel="ok"
+            onClick={() => dispatch(reset())}
+          />
+        )}
+        {game.turn === MAX_TURNS && (
+          <Modal
+            heading="Congratulations!"
+            score={game.score}
+            text="Your score is "
+            userName={user?.name}
+            btnLabel="save"
+            isBusy={isLoading}
+            onClick={() => complete()}
+          />
+        )}
       </section>
       <ProgressBar count={game.rollCount} />
     </>

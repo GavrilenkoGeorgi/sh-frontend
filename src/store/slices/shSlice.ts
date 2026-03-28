@@ -14,7 +14,7 @@ import {
 const DICE_COUNT = 5
 const MAX_ROLLS = 3
 const SCHOOL_TURNS = 6
-const MAX_TURNS = 34
+export const MAX_TURNS = 34
 const MAX_SAVES_PER_COMBINATION = 3
 
 const schoolCombNames = Object.values(SchoolCombinations)

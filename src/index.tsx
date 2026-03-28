@@ -1,4 +1,3 @@
-import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { RouterProvider } from 'react-router'
@@ -10,7 +9,6 @@ import { setUpdateAvailable } from './store/slices/swUpdateSlice'
 
 import './css/index.css' // fonts?
 
-// eslint-disable-next-line
 const container = document.getElementById('app-root')!
 
 const root = createRoot(container)

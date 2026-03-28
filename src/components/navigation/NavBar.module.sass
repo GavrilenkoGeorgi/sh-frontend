@@ -1,16 +1,14 @@
 @use '../../styles/variables'
+@use '../../styles/mixins'
 
 .nav
   height: variables.$navbarHeight
   min-height: variables.$navbarHeight
   width: 100%
-  padding: 0 1.5rem
-  padding: 0
-  // view-transition-name: navbar // removes from page transition
   display: flex
   justify-content: flex-end
   align-items: center
-  position: sticky
+  position: relative
   top: 0px
   z-index: 2
   background-color: var(--color-surface)
@@ -24,26 +22,6 @@
 .visibleNav
   top: 0px
   opacity: 1
-
-.overlay:empty:before
-   content: ''
-
-.overlay
-  position: fixed
-  z-index: 1
-  width: 100vw
-  height: 0
-  opacity: 0
-  overflow: hidden
-  // delay!
-  transition: height 0s var(--duration-nav-open), opacity var(--duration-nav-open)
-  background-color: var(--color-overlay)
-  backdrop-filter: blur(1px)
-
-.openOverlay
-  height: 100dvh
-  opacity: 1
-  transition: height 0s, opacity var(--duration-nav-open)
 
 .navigationContainer
   width: 100%
@@ -60,20 +38,19 @@
   top: 0
   right: 0
   bottom: 0
-  margin-left: auto
   padding: 0
+  margin-left: auto
+  margin-top: variables.$navbarHeight
   width: 50vw
   transform: translate(60vw)
   transition-property: background-color, transform
   transition-duration: var(--duration-default)
-  margin-top: variables.$navbarHeight
   background-color: var(--color-surface)
   &.open
-    transform: translate(0vw)
+    transform: translateX(0)
   @media screen and (min-width: variables.$medium)
-    transform: translate(0vw)
+    transform: translateX(0)
     flex-wrap: nowrap
-    padding: 0
     margin: 0
     position: static
     flex-direction: row
@@ -137,3 +114,25 @@
   @media screen and (min-width: variables.$medium)
     margin: 0
     margin-top: .75rem
+
+.backdrop
+  position: fixed
+  inset: 0
+  z-index: -1
+  opacity: 0
+  backdrop-filter: blur(0px)
+  transition: backdrop-filter var(--duration-nav-open) ease, opacity var(--duration-nav-open) ease
+  // gradient mask: strongest on right (drawer side), fades left
+  mask-image: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.9) 25%,
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.2) 70%,
+    rgba(0, 0, 0, 0) 100%
+  )
+
+.backdropOpen
+  z-index: 1
+  opacity: 1
+  @include mixins.backdropFilterBlur
