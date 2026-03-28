@@ -1,3 +1,5 @@
+@use '../../styles/mixins'
+
 .modal
   position: absolute
   top: 50%
@@ -13,11 +15,9 @@
 .blur
   z-index: -1
   position: fixed
-  background-color: var(--color-overlay)
-  backdrop-filter: blur(2px)
-  border-radius: .25rem
   height: 100%
   width: 100%
+  @include mixins.backdropFilterBlur
 
 .message
   align-self: center

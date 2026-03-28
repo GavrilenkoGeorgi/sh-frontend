@@ -1,4 +1,4 @@
-import React, { type FC, useState, useEffect, useMemo } from 'react'
+import { type FC, useState, useEffect, useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import type { navLink } from '../../types'
@@ -25,65 +25,42 @@ const NavBar: FC = () => {
   const scrollDirection = useScrollDirection()
   const isAuthenticated = useSelector(selectIsAuthenticated)
 
-  // mobile menu
   const { ref, isComponentVisible } = useComponentVisible(false)
   const [open, setOpen] = useState(false)
   const { isDark, toggleColorScheme } = useColorScheme()
 
   const toggleMenu = (): void => {
-    setOpen(!open)
+    setOpen((prev) => !prev)
   }
 
-  // hide on route change
-  useEffect(() => {
+  const closeMenu = (): void => {
     setOpen(false)
-  }, [location])
+  }
 
-  // hide on outside click
   useEffect(() => {
-    if (!isComponentVisible) setOpen(false)
-  }, [isComponentVisible])
+    if (open) closeMenu()
+  }, [location.pathname])
 
-  // close mobile menu and hide overlay on scroll
   useEffect(() => {
-    setOpen((prevState) => {
-      return prevState && false
-    })
+    if (open && !isComponentVisible) closeMenu()
+  }, [isComponentVisible, open])
+
+  useEffect(() => {
+    if (open) closeMenu()
   }, [scrollDirection])
 
   const navigation: navLink[] = useMemo(
     () => [
+      { label: 'Game', url: ROUTES.GAME },
+      { label: 'Profile', url: ROUTES.PROFILE, disabled: !isAuthenticated },
       {
-        label: 'Game',
-        url: ROUTES.GAME
-      },
-      {
-        label: 'Profile',
-        url: ROUTES.PROFILE,
-        disabled: !isAuthenticated
-      },
-      {
-        label: `${!isAuthenticated ? 'Login' : 'Logout'}`,
+        label: !isAuthenticated ? 'Login' : 'Logout',
         url: ROUTES.LOGIN
       },
-      {
-        label: 'Stats',
-        url: ROUTES.STATS,
-        disabled: !isAuthenticated
-      },
-      {
-        label: 'Register',
-        url: ROUTES.REGISTER,
-        disabled: isAuthenticated
-      },
-      {
-        label: 'Privacy',
-        url: ROUTES.PRIVACY
-      },
-      {
-        label: 'Help',
-        url: ROUTES.HELP
-      }
+      { label: 'Stats', url: ROUTES.STATS, disabled: !isAuthenticated },
+      { label: 'Register', url: ROUTES.REGISTER, disabled: isAuthenticated },
+      { label: 'Privacy', url: ROUTES.PRIVACY },
+      { label: 'Help', url: ROUTES.HELP }
     ],
     [isAuthenticated]
   )
@@ -106,31 +83,41 @@ const NavBar: FC = () => {
   ))
 
   return (
-    <nav
-      className={cx(styles.nav, {
-        [styles.hiddenNav]: scrollDirection === SCROLL_DIRECTION.DOWN,
-        [styles.visibleNav]: scrollDirection !== SCROLL_DIRECTION.DOWN
-      })}
-      ref={ref}
-    >
-      <div className={styles.navigationContainer}>
-        <Logo />
-        {location.pathname === ROUTES.GAME && <ScoreDisplay />}
-        <div className={styles.toggleBtnContainer}>
-          <ThemeToggle toggle={isDark} onClick={toggleColorScheme} />
-          <MenuToggleBtn open={open} onClick={toggleMenu} />
+    <>
+      <nav
+        className={cx(styles.nav, {
+          [styles.hiddenNav]: scrollDirection === SCROLL_DIRECTION.DOWN,
+          [styles.visibleNav]: scrollDirection !== SCROLL_DIRECTION.DOWN
+        })}
+        ref={ref}
+      >
+        <div className={styles.navigationContainer}>
+          <Logo />
+          {location.pathname === ROUTES.GAME && <ScoreDisplay />}
+
+          <div className={styles.toggleBtnContainer}>
+            <ThemeToggle toggle={isDark} onClick={toggleColorScheme} />
+            <MenuToggleBtn open={open} onClick={toggleMenu} />
+          </div>
+
+          <div
+            className={cx(styles.linksContainer, {
+              [styles.open]: open
+            })}
+          >
+            {isAuthenticated && <UserLink />}
+            {navLinks}
+            <p className={styles.version}>v{__APP_VERSION__}</p>
+          </div>
         </div>
-        <div
-          className={cx(styles.linksContainer, {
-            [styles.open]: open
-          })}
-        >
-          {isAuthenticated && <UserLink />}
-          {navLinks}
-          <p className={styles.version}>v{__APP_VERSION__}</p>
-        </div>
-      </div>
-    </nav>
+      </nav>
+      <div
+        className={cx(styles.backdrop, {
+          [styles.backdropOpen]: open
+        })}
+        onClick={closeMenu}
+      />
+    </>
   )
 }
 
