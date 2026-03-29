@@ -1,6 +1,6 @@
 {
   "name": "sh-frontend",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "description": "Sharlushka v2",
   "main": "index.js",
   "scripts": {
@@ -47,10 +47,14 @@
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.15.0",
+    "i18next": "^26.0.1",
+    "i18next-browser-languagedetector": "^8.2.1",
     "react": "19.2.4",
     "react-countup": "^6.5.3",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.56.4",
+    "react-i18next": "^17.0.1",
+    "react-joyride": "^3.0.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.1",
     "recharts": "^3.8.0",

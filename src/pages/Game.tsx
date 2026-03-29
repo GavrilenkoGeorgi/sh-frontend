@@ -17,6 +17,7 @@ import ScoreBoard from '../components/game/ScoreBoard'
 import ProgressBar from '../components/layout/ProgressBar'
 import DnDDiceBoard from '../components/game/controls/DnDDiceBoard'
 import Modal from '../components/layout/Modal'
+import GameTour from '../components/tour/GameTour'
 import * as styles from './Game.module.sass'
 import { ROUTES } from '../constants/routes'
 
@@ -81,6 +82,7 @@ const GamePage: FC = () => {
           <DnDDiceBoard />
           {/* Modals */}
         </div>
+        <GameTour />
         {game.over && (
           <Modal
             heading="Game over"

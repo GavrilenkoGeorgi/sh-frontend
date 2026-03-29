@@ -8,7 +8,7 @@ export const ScoreDisplay: FC = () => {
   const { game } = useSelector((state: RootState) => state.sh)
 
   return (
-    <div className={styles.score}>
+    <div className={styles.score} data-tour="score-display">
       <div className={styles.label}>
         <div className={styles.dropCap}>S</div>
         <div>

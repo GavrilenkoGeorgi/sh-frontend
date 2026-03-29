@@ -45,7 +45,7 @@ const DnDDiceBoard: FC = () => {
   })
 
   return (
-    <div className={styles.controls}>
+    <div className={styles.controls} data-tour="dice-controls">
       <MainButton />
       <div className={styles.boardSections}>
         <DnDContextWrapper
