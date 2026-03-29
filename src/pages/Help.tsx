@@ -4,6 +4,7 @@ import HelpDice from '../components/layout/HelpDice'
 import * as styles from './SharedStyles.module.sass'
 
 import data from '../assets/data/HelpPage.json'
+import { RunTourButton } from '../components/tour/RunTourButton'
 
 const Help: FC = () => {
   return (
@@ -15,7 +16,8 @@ const Help: FC = () => {
         time, he may pick up and use any number of dice, providing a score is
         taken on the last roll. It is the skillful use of these two optional
         rolls of the dice that can turn an unlucky first or second roll into a
-        high scoring turn.
+        high scoring turn. Take a <RunTourButton label="tour" /> to see how the
+        game works in practice.
       </article>
       <h2>Some example scores</h2>
       <aside>

@@ -1,0 +1,16 @@
+{
+  "tour": {
+    "game": {
+      "step1": "Dies ist deine Punkteanzeige. Sie kann manchmal negativ werden, aber mach dir darüber keine Sorgen.",
+      "step2": "Das hier sind deine Spielsteuerungen: Ziehe Würfel, um sie auszuwählen, und klicke/berühre den ausgewählten Punktwert, den du speichern möchtest.",
+      "step3": "Die Punktetafel zeigt die Kombinationen an, die du bisher erzielt hast; klicke, um sie zu speichern.",
+      "step4": "Um eine Null zu speichern, wenn es keine wertbare Kombination gibt, klicke/berühre den Namen der Kombination."
+    },
+    "actions": {
+      "next": "Weiter",
+      "back": "Zurück",
+      "skip": "Überspringen",
+      "done": "Fertig"
+    }
+  }
+}

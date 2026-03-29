@@ -6,6 +6,7 @@ import store from './store'
 import router from './routes'
 import { registerSW } from './utils/serviceWorker'
 import { setUpdateAvailable } from './store/slices/swUpdateSlice'
+import './i18n'
 
 import './css/index.css' // fonts?
 

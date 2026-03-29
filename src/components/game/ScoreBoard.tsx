@@ -17,9 +17,13 @@ const ScoreBoard: FC = () => {
   }
 
   return (
-    <div className={styles.results}>
+    <div className={styles.results} data-tour="score-board">
       {Object.keys(game.combinations).map((key) => (
-        <div className={styles.score} key={key}>
+        <div
+          className={styles.score}
+          key={key}
+          {...(key === 'poker' ? { 'data-tour': 'combination-poker' } : {})}
+        >
           <div
             className={styles.name}
             onClick={() => {

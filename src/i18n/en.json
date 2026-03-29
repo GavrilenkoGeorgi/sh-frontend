@@ -1,0 +1,16 @@
+{
+  "tour": {
+    "game": {
+      "step1": "This is your score display, can go to negative sometimes, but don't worry about it.",
+      "step2": "This is your game controls, drag dice to select them, and click/touch the selected score you want to save.",
+      "step3": "Score board will show combinations you have scored so far, click to save.",
+      "step4": "To save zero when there is no scoring combination, click/touch the combination name."
+    },
+    "actions": {
+      "next": "Next",
+      "back": "Back",
+      "skip": "Skip",
+      "done": "Done"
+    }
+  }
+}

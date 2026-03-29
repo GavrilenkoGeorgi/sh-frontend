@@ -4,6 +4,7 @@ import authReducer from './slices/authSlice'
 import shReducer from './slices/shSlice'
 import notificationReducer from './slices/notificationSlice'
 import swUpdateReducer from './slices/swUpdateSlice'
+import tourReducer from './slices/tourSlice'
 
 const store = configureStore({
   reducer: {
@@ -12,7 +13,8 @@ const store = configureStore({
     sh: shReducer,
     auth: authReducer,
     notification: notificationReducer,
-    swUpdate: swUpdateReducer
+    swUpdate: swUpdateReducer,
+    tour: tourReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware, gameSlice.middleware),
