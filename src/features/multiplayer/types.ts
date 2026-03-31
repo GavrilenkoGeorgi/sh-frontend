@@ -6,3 +6,7 @@ export interface OnlineUser {
 export interface PresenceOnlineUsersPayload {
   users: OnlineUser[]
 }
+
+export interface InviteSendPayload {
+  toUserId: string
+}
