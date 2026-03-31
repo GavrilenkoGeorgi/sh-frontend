@@ -3,16 +3,17 @@ const GAME_URL = process.env.REACT_APP_GAME_URL
 
 export const ROUTES = {
   HOME: '/',
-  GAME: '/game',
-  LOGIN: '/login',
-  HELP: '/help',
-  REGISTER: '/register',
-  FORGOT_PASSWORD: '/forgotpwd',
-  PRIVACY: '/privacy',
-  DELETE_ACCOUNT: '/deleteacc',
-  CLEAR_STATS: '/clearstats',
-  STATS: '/stats',
-  PROFILE: '/profile'
+  PLAY: 'play',
+  LOGIN: 'login',
+  HELP: 'help',
+  REGISTER: 'register',
+  FORGOT_PASSWORD: 'forgotpwd',
+  PRIVACY: 'privacy',
+  DELETE_ACCOUNT: 'deleteacc',
+  CLEAR_STATS: 'clearstats',
+  STATS: 'stats',
+  PROFILE: 'profile',
+  MULTIPLAYER: 'multiplayer'
 } as const
 
 export const API_ROUTES = {

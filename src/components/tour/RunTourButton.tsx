@@ -1,14 +1,15 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { useGameTour } from '../../hooks/useGameTour'
 import { ROUTES } from '../../constants/routes'
 import * as styles from '../../pages/Profile.module.sass'
+import { toPath } from '../../utils'
 
 export const RunTourButton = ({ label }: { label: string }) => {
   const navigate = useNavigate()
-  const { hasSeenGameTour, resetGameTour } = useGameTour()
+  const { resetGameTour } = useGameTour()
   const handleResetTour = (): void => {
     resetGameTour()
-    navigate(ROUTES.GAME, { viewTransition: true })
+    navigate(toPath(ROUTES.PLAY), { viewTransition: true })
   }
 
   return (

@@ -15,7 +15,7 @@ import {
 import { useLoginMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { ToastTypes } from '../../types'
-import { getErrMsg } from '../../utils'
+import { getErrMsg, toPath } from '../../utils'
 import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
@@ -54,7 +54,7 @@ const Login: FC = () => {
     try {
       const user = await login({ email, password }).unwrap()
       dispatch(setCredentials({ user }))
-      navigate(ROUTES.GAME, { viewTransition: true })
+      navigate(toPath(ROUTES.PLAY), { viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({

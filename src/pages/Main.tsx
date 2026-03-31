@@ -1,4 +1,4 @@
-import React, { type FC, useEffect } from 'react'
+import { type FC, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 
@@ -8,13 +8,14 @@ import { link } from './Login.module.sass'
 import Logo from '../assets/svg/sharlushka-logo.svg'
 import { ROUTES } from '../constants/routes'
 import { selectIsAuthenticated } from '../store/slices/authSlice'
+import { toPath } from '../utils'
 
 const Main: FC = () => {
   const navigate = useNavigate()
   const isAuthenticated = useSelector(selectIsAuthenticated)
 
   useEffect(() => {
-    if (isAuthenticated) navigate('/game')
+    if (isAuthenticated) navigate(toPath(ROUTES.PLAY))
   }, [isAuthenticated])
 
   return (
@@ -26,12 +27,12 @@ const Main: FC = () => {
       <div className={styles.intro}>
         <p>
           You{' '}
-          <Link to="/game" viewTransition>
+          <Link to={toPath(ROUTES.PLAY)} viewTransition>
             can play unregistered
           </Link>
           , but you will not be able to save the results or checkout other
           player&apos;s stats, consider{' '}
-          <Link to="/register" viewTransition>
+          <Link to={toPath(ROUTES.REGISTER)} viewTransition>
             registering
           </Link>
           .
@@ -41,7 +42,7 @@ const Main: FC = () => {
       <aside>
         <Link
           className={link}
-          to={ROUTES.FORGOT_PASSWORD}
+          to={toPath(ROUTES.FORGOT_PASSWORD)}
           viewTransition
           aria-label="Forgot password"
         >
