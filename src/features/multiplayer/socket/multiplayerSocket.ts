@@ -38,3 +38,11 @@ export const disconnectMultiplayerSocket = () => {
 export const emitInviteSend = (toUserId: string) => {
   multiplayerSocket.emit('invite:send', { toUserId })
 }
+
+export const emitInviteAccept = (inviteId: string) => {
+  multiplayerSocket.emit('invite:accept', { inviteId })
+}
+
+export const emitInviteDecline = (inviteId: string) => {
+  multiplayerSocket.emit('invite:decline', { inviteId })
+}

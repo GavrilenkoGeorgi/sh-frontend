@@ -5,7 +5,11 @@ import {
   disconnectMultiplayerSocket,
   multiplayerSocket
 } from '../features/multiplayer/socket/multiplayerSocket'
-import type { PresenceOnlineUsersPayload } from '../features/multiplayer/types'
+import type {
+  InviteReceivedPayload,
+  InviteStatusPayload,
+  PresenceOnlineUsersPayload
+} from '../features/multiplayer/types'
 import {
   resetMultiplayerState,
   setMultiplayerError,
@@ -17,9 +21,11 @@ import {
   selectAuthInitialized,
   selectIsAuthenticated
 } from '../store/slices/authSlice'
+import { apiSlice } from '../store/slices/apiSlice'
+import type { AppDispatch } from '../store'
 
 export const useMultiplayerSocket = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const authInitialized = useSelector(selectAuthInitialized)
   const isAuthenticated = useSelector(selectIsAuthenticated)
 
@@ -28,9 +34,17 @@ export const useMultiplayerSocket = () => {
       return
     }
 
+    const invalidateInvites = () => {
+      dispatch(
+        apiSlice.util.invalidateTags(['IncomingInvites', 'OutgoingInvites'])
+      )
+    }
+
     const handleConnect = () => {
       dispatch(setSocketConnected(true))
       dispatch(setMultiplayerError(null))
+      // refetch invites on reconnect
+      invalidateInvites()
     }
 
     const handleDisconnect = () => {
@@ -45,10 +59,20 @@ export const useMultiplayerSocket = () => {
       dispatch(setOnlineUsers(payload.users))
     }
 
+    const handleInviteReceived = (_payload: InviteReceivedPayload) => {
+      dispatch(apiSlice.util.invalidateTags(['IncomingInvites']))
+    }
+
+    const handleInviteStatus = (_payload: InviteStatusPayload) => {
+      invalidateInvites()
+    }
+
     multiplayerSocket.on('connect', handleConnect)
     multiplayerSocket.on('disconnect', handleDisconnect)
     multiplayerSocket.on('connect_error', handleConnectError)
     multiplayerSocket.on('presence:online-users', handleOnlineUsers)
+    multiplayerSocket.on('invite:received', handleInviteReceived)
+    multiplayerSocket.on('invite:status', handleInviteStatus)
 
     if (isAuthenticated) {
       connectMultiplayerSocket()
@@ -62,6 +86,8 @@ export const useMultiplayerSocket = () => {
       multiplayerSocket.off('disconnect', handleDisconnect)
       multiplayerSocket.off('connect_error', handleConnectError)
       multiplayerSocket.off('presence:online-users', handleOnlineUsers)
+      multiplayerSocket.off('invite:received', handleInviteReceived)
+      multiplayerSocket.off('invite:status', handleInviteStatus)
     }
   }, [authInitialized, dispatch, isAuthenticated])
 }
