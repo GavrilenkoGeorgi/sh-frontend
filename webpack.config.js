@@ -16,7 +16,7 @@ const { version } = require('./package.json')
 const paths = [
   '/',
   '/login',
-  '/game',
+  '/play',
   '/help',
   '/register',
   '/stats',

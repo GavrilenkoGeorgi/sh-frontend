@@ -17,6 +17,7 @@ import cx from 'classnames'
 import * as styles from './Form.module.sass'
 import LoadingIndicator from '../layout/LoadingIndicator'
 import { useUpdateProfileMutation } from '../../store/slices/userApiSlice'
+import Logout from './Logout'
 
 interface Props {
   data: Nullable<User>
@@ -132,6 +133,8 @@ const Profile: FC<Props> = ({ data }) => {
           {isSubmitting ? <LoadingIndicator dark /> : 'Update'}
         </button>
       </fieldset>
+      <div style={{ marginTop: '1rem', textAlign: 'center' }}>or</div>
+      <Logout />
     </form>
   )
 }

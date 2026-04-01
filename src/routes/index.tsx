@@ -1,11 +1,10 @@
-import React, { Suspense, lazy } from 'react'
+import { Suspense, lazy } from 'react'
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route
 } from 'react-router'
 
-import App from '../App'
 import { ROUTES } from '../constants/routes'
 import LoginPage from '../pages/Login'
 import MainPage from '../pages/Main'
@@ -16,10 +15,10 @@ import PasswordPage from '../pages/Password'
 import PrivacyPage from '../pages/Privacy'
 import DeleteAccountPage from '../pages/DeleteAccount'
 import ClearStatsPage from '../pages/ClearStats'
+import Multiplayer from '../pages/Multiplayer'
 import ProtectedRoute from './ProtectedRoute'
 import RootLayout from './RootLayout'
 import Fallback from '../components/layout/Fallback'
-import Toast from '../components/layout/Toast'
 
 // heaviest routes
 const StatsPage = lazy(async () => await import('../pages/Stats'))
@@ -27,11 +26,11 @@ const GamePage = lazy(async () => await import('../pages/Game'))
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<RootLayout />}>
-      <Route index={true} path={ROUTES.HOME} element={<MainPage />} />
+    <Route path={ROUTES.HOME} element={<RootLayout />}>
+      <Route index element={<MainPage />} />
 
       <Route
-        path={ROUTES.GAME}
+        path={ROUTES.PLAY}
         element={
           <Suspense fallback={<Fallback />}>
             <GamePage />
@@ -47,7 +46,7 @@ const router = createBrowserRouter(
       <Route path={ROUTES.DELETE_ACCOUNT} element={<DeleteAccountPage />} />
       <Route path={ROUTES.CLEAR_STATS} element={<ClearStatsPage />} />
 
-      <Route path="" element={<ProtectedRoute />}>
+      <Route element={<ProtectedRoute />}>
         <Route
           path={ROUTES.STATS}
           element={
@@ -57,6 +56,7 @@ const router = createBrowserRouter(
           }
         />
         <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+        <Route path={ROUTES.MULTIPLAYER} element={<Multiplayer />} />
       </Route>
     </Route>
   )

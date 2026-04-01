@@ -1,4 +1,4 @@
-import React, { useEffect, type FC } from 'react'
+import { useEffect, type FC } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { type SubmitHandler, useForm } from 'react-hook-form'
@@ -11,7 +11,7 @@ import {
   type PwdUpdateFormSchemaType
 } from '../../schemas/PwdUpdateSchema'
 import { ToastTypes } from '../../types'
-import { getErrMsg } from '../../utils'
+import { getErrMsg, toPath } from '../../utils'
 import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
@@ -61,7 +61,7 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
           type: ToastTypes.SUCCESS
         })
       )
-      navigate(ROUTES.LOGIN, { viewTransition: true })
+      navigate(toPath(ROUTES.LOGIN), { viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({

@@ -1,4 +1,4 @@
-import React, { type FC, useState } from 'react'
+import { type FC, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 
@@ -6,11 +6,12 @@ import { useDeleteAccMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { logout } from '../../store/slices/authSlice'
 import { apiSlice, gameSlice } from '../../store/slices/apiSlice'
-import { getErrMsg } from '../../utils'
+import { getErrMsg, toPath } from '../../utils'
 import { ToastTypes } from '../../types'
 
 import Modal from '../layout/Modal'
 import * as styles from './Form.module.sass'
+import { ROUTES } from '../../constants/routes'
 
 const DeleteAccount: FC = () => {
   const navigate = useNavigate()
@@ -32,7 +33,7 @@ const DeleteAccount: FC = () => {
           type: ToastTypes.SUCCESS
         })
       )
-      navigate('/', { viewTransition: true })
+      navigate(toPath(ROUTES.HOME), { viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({

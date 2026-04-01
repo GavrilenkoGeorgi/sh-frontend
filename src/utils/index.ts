@@ -31,3 +31,5 @@ export const formatLabelChartAxisData = (
     id: String(item.id),
     value: item.value
   }))
+
+export const toPath = (route: string) => `/${route}`

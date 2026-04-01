@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 import {
   Area,
   AreaChart,
@@ -22,8 +22,12 @@ const Chart: FC<ChartProps> = ({ data }) => {
   }
 
   return (
-    <ResponsiveContainer>
-      <AreaChart data={data} margin={margin}>
+    <ResponsiveContainer
+      width="100%"
+      height="100%"
+      initialDimension={{ width: 100, height: 50 }}
+    >
+      <AreaChart data={data} margin={margin} width={500} height={300}>
         <defs>
           <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="#AB47BC" stopOpacity={0.5} />

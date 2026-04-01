@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 import {
   BarChart,
   XAxis,
@@ -13,7 +13,6 @@ import { type ChartProps } from '../../types'
 import { tickStyles } from './BarChart'
 
 const Chart: FC<ChartProps> = ({ data }) => {
-
   const margin = {
     top: 10,
     right: 30,
@@ -21,43 +20,45 @@ const Chart: FC<ChartProps> = ({ data }) => {
     bottom: 10
   }
 
-  return <ResponsiveContainer>
-    <BarChart
-      data={data}
-      margin={margin}
-      layout='vertical'
+  return (
+    <ResponsiveContainer
+      width="100%"
+      height="100%"
+      initialDimension={{ width: 100, height: 50 }}
     >
-      <CartesianGrid
-        strokeDasharray='4 6'
-        strokeWidth={0.6}
-        horizontal={false}
-      />
-      <XAxis
-        type='number'
-        tickSize={0}
-        tickMargin={10}
-        tickCount={7}
-        axisLine={false}
-        style={tickStyles}
-        domain={[0, 100]}
-      />
-      <YAxis
-        type='category'
-        dataKey='id'
-        tickSize={0}
-        tickMargin={10}
-        axisLine={false}
-        style={tickStyles}
-      />
-      <Bar
-        dataKey='value'
-        fill='#AB47BC'
-        maxBarSize={18}
-        animationDuration={4000}
-        animationBegin={500}
-      />
-    </BarChart>
-  </ResponsiveContainer>
+      <BarChart data={data} margin={margin} layout="vertical">
+        <CartesianGrid
+          strokeDasharray="4 6"
+          strokeWidth={0.6}
+          horizontal={false}
+        />
+        <XAxis
+          type="number"
+          tickSize={0}
+          tickMargin={10}
+          tickCount={7}
+          axisLine={false}
+          style={tickStyles}
+          domain={[0, 100]}
+        />
+        <YAxis
+          type="category"
+          dataKey="id"
+          tickSize={0}
+          tickMargin={10}
+          axisLine={false}
+          style={tickStyles}
+        />
+        <Bar
+          dataKey="value"
+          fill="#AB47BC"
+          maxBarSize={18}
+          animationDuration={4000}
+          animationBegin={500}
+        />
+      </BarChart>
+    </ResponsiveContainer>
+  )
 }
 
 export default Chart
