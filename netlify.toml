@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = "build"
+  publish = "dist"
 
 [context.production.environment]
   REACT_APP_USERS_URL = "https://sharlushka-5f463ae1030f.herokuapp.com/users"
