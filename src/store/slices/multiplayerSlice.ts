@@ -1,5 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import type {
+  BasicUser,
+  MultiplayerGameState,
   OnlineUser,
   PresenceOnlineUsersPayload
 } from '../../features/multiplayer/types'
@@ -9,13 +11,17 @@ interface MultiplayerState {
   onlineUsers: OnlineUser[]
   selectedInviteId: string | null
   lastError: string | null
+  activeGame: MultiplayerGameState | null
+  opponent: BasicUser | null
 }
 
 const initialState: MultiplayerState = {
   socketConnected: false,
   onlineUsers: [],
   selectedInviteId: null,
-  lastError: null
+  lastError: null,
+  activeGame: null,
+  opponent: null
 }
 
 const multiplayerSlice = createSlice({
@@ -41,6 +47,23 @@ const multiplayerSlice = createSlice({
     setMultiplayerError: (state, action: PayloadAction<string | null>) => {
       state.lastError = action.payload
     },
+    setActiveGame: (
+      state,
+      action: PayloadAction<{
+        gameState: MultiplayerGameState
+        opponent: BasicUser
+      }>
+    ) => {
+      state.activeGame = action.payload.gameState
+      state.opponent = action.payload.opponent
+    },
+    updateGameState: (state, action: PayloadAction<MultiplayerGameState>) => {
+      state.activeGame = action.payload
+    },
+    clearActiveGame: (state) => {
+      state.activeGame = null
+      state.opponent = null
+    },
     resetMultiplayerState: () => initialState
   }
 })
@@ -51,6 +74,9 @@ export const {
   setOnlineUsers,
   setSelectedInviteId,
   setMultiplayerError,
+  setActiveGame,
+  updateGameState,
+  clearActiveGame,
   resetMultiplayerState
 } = multiplayerSlice.actions
 
@@ -66,5 +92,9 @@ export const selectSelectedInviteId = (state: {
 export const selectMultiplayerError = (state: {
   multiplayer: MultiplayerState
 }) => state.multiplayer.lastError
+export const selectActiveGame = (state: { multiplayer: MultiplayerState }) =>
+  state.multiplayer.activeGame
+export const selectOpponent = (state: { multiplayer: MultiplayerState }) =>
+  state.multiplayer.opponent
 
 export default multiplayerSlice.reducer

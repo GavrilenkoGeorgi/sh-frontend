@@ -1,5 +1,6 @@
 import { FC, useMemo } from 'react'
 import {
+  selectActiveGame,
   selectOnlineUsers,
   selectSocketConnected
 } from '../store/slices/multiplayerSlice'
@@ -13,11 +14,13 @@ import CircleSvg from '../public/img/circle.svg'
 import LoadingIndicator from '../components/layout/LoadingIndicator'
 import InviteInbox from '../features/multiplayer/components/InviteInbox'
 import OutgoingInvitesPanel from '../features/multiplayer/components/OutgoingInvitesPanel'
+import MultiplayerGameBoard from '../features/multiplayer/components/MultiplayerGameBoard'
 
 const Multiplayer: FC = () => {
   const socketConnected = useSelector(selectSocketConnected)
   const onlineUsers = useSelector(selectOnlineUsers)
   const currentUser = useSelector(selectCurrentUser)
+  const activeGame = useSelector(selectActiveGame)
 
   const otherUsers = useMemo(
     () => onlineUsers.filter((user) => user.userId !== currentUser?._id),
@@ -26,6 +29,14 @@ const Multiplayer: FC = () => {
 
   if (!socketConnected) {
     return <LoadingIndicator />
+  }
+
+  if (activeGame) {
+    return (
+      <section>
+        <MultiplayerGameBoard />
+      </section>
+    )
   }
 
   return (
