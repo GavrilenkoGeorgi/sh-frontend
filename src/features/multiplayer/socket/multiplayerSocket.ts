@@ -1,6 +1,8 @@
 import { io, type Socket } from 'socket.io-client'
 
 const resolveSocketUrl = (): string => {
+  // optional oveerride via env variable
+  // defalutls to same origin as frontend
   const socketUrl = process.env.REACT_APP_SOCKET_URL
   if (socketUrl !== undefined && socketUrl.trim() !== '') {
     return socketUrl
