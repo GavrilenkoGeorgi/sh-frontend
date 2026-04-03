@@ -19,10 +19,12 @@ import { UserLink } from './UserLink'
 import { selectIsAuthenticated } from '../../store/slices/authSlice'
 import { useColorScheme } from '../../hooks/useColorScheme'
 import { ThemeToggle } from '../layout/ThemeToggle'
+import TurnDisplay from '../../features/multiplayer/components/TurnDisplay'
 
 const NavBar: FC = () => {
   const location = useLocation()
   const playRoute = useMatch(ROUTES.PLAY)
+  const multiplayerRoute = useMatch(ROUTES.MULTIPLAYER)
   const scrollDirection = useScrollDirection()
   const isAuthenticated = useSelector(selectIsAuthenticated)
 
@@ -96,6 +98,7 @@ const NavBar: FC = () => {
         <div className={styles.navigationContainer}>
           <Logo />
           {playRoute && <ScoreDisplay />}
+          {multiplayerRoute && <TurnDisplay />}
 
           <div className={styles.toggleBtnContainer}>
             <ThemeToggle toggle={isDark} onClick={toggleColorScheme} />

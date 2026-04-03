@@ -55,11 +55,6 @@ const MultiplayerGameBoard: FC = () => {
 
   return (
     <section className={styles.gameBoard}>
-      <header className={styles.header}>
-        <h2 className={styles.title}>vs {opponent.username}</h2>
-        <p className={styles.turnNumber}>Turn {activeGame.turnNumber}</p>
-      </header>
-
       <div
         className={`${styles.turnIndicator} ${isMyTurn ? styles.myTurn : styles.waitingTurn}`}
       >
@@ -99,11 +94,13 @@ const MultiplayerGameBoard: FC = () => {
         onCategorySelect={isMyTurn ? selectCategory : undefined}
       />
 
-      {isMyTurn && canSubmit && (
-        <button className={styles.submitButton} onClick={submitTurn}>
-          Submit turn
-        </button>
-      )}
+      <button
+        disabled={!isMyTurn || !canSubmit}
+        className={styles.submitButton}
+        onClick={submitTurn}
+      >
+        Submit turn
+      </button>
 
       {!isMyTurn && (
         <p className={styles.waitingMessage}>

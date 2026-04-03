@@ -32,11 +32,7 @@ const Multiplayer: FC = () => {
   }
 
   if (activeGame) {
-    return (
-      <section>
-        <MultiplayerGameBoard />
-      </section>
-    )
+    return <MultiplayerGameBoard />
   }
 
   return (
