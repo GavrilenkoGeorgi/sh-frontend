@@ -46,3 +46,10 @@ export const emitInviteAccept = (inviteId: string) => {
 export const emitInviteDecline = (inviteId: string) => {
   multiplayerSocket.emit('invite:decline', { inviteId })
 }
+
+export const emitSubmitTurn = (
+  gameId: string,
+  move: { category: string; score: number; dice: number[] }
+) => {
+  multiplayerSocket.emit('game:submit-turn', { gameId, move })
+}

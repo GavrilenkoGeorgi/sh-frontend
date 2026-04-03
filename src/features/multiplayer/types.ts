@@ -82,6 +82,17 @@ export interface MultiplayerGameState {
   endedReason?: 'completed' | 'disconnect'
 }
 
+export interface TurnMoveInput {
+  category: ScoreCategory
+  score: number
+  dice: number[]
+}
+
+export interface GameSubmitTurnPayload {
+  gameId: string
+  move: TurnMoveInput
+}
+
 export interface GameStartedPayload {
   gameId: string
   currentTurnPlayerId: string

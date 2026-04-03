@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from 'react'
 import ShScore from '../utils/sh-score'
+import { emitSubmitTurn } from '../features/multiplayer/socket/multiplayerSocket'
 import type {
   ScoreCategory,
   MultiplayerPlayerState,
@@ -46,7 +47,8 @@ const emptyDice = (): number[] => Array(DICE_COUNT).fill(0)
 
 export const useMultiplayerTurn = (
   playerState: MultiplayerPlayerState | null,
-  isMyTurn: boolean
+  isMyTurn: boolean,
+  gameId: string | null = null
 ) => {
   const [dice, setDice] = useState<number[]>(emptyDice)
   const [selectedIndices, setSelectedIndices] = useState<number[]>([])
@@ -142,6 +144,38 @@ export const useMultiplayerTurn = (
     setSelectedCategory(null)
   }, [])
 
+  const canSubmit = isMyTurn && rollCount > 0 && selectedCategory !== null
+
+  const submitTurn = useCallback(() => {
+    if (!gameId || !selectedCategory || rollCount === 0 || !isMyTurn) return
+
+    const score = previewScores[selectedCategory]
+    if (score === undefined) return
+
+    // dice payload: face values of selected dice (1..5 values, each 1..6)
+    const selectedDiceValues = selectedIndices.map((i) => dice[i])
+    // if nothing selected, send all dice
+    const dicePayload =
+      selectedDiceValues.length > 0 ? selectedDiceValues : [...dice]
+
+    emitSubmitTurn(gameId, {
+      category: selectedCategory,
+      score,
+      dice: dicePayload
+    })
+
+    resetTurn()
+  }, [
+    gameId,
+    selectedCategory,
+    rollCount,
+    isMyTurn,
+    previewScores,
+    selectedIndices,
+    dice,
+    resetTurn
+  ])
+
   return {
     dice,
     selectedIndices,
@@ -149,10 +183,12 @@ export const useMultiplayerTurn = (
     selectedCategory,
     previewScores,
     isLocked,
+    canSubmit,
     roll,
     selectDie,
     deselectDie,
     selectCategory,
+    submitTurn,
     resetTurn
   }
 }

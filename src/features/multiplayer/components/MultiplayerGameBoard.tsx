@@ -26,11 +26,13 @@ const MultiplayerGameBoard: FC = () => {
     selectedCategory,
     previewScores,
     isLocked,
+    canSubmit,
     roll,
     selectDie,
     deselectDie,
-    selectCategory
-  } = useMultiplayerTurn(myState, isMyTurn)
+    selectCategory,
+    submitTurn
+  } = useMultiplayerTurn(myState, isMyTurn, activeGame?.gameId ?? null)
 
   if (!activeGame || !opponent || !currentUser) {
     return null
@@ -96,6 +98,12 @@ const MultiplayerGameBoard: FC = () => {
         selectedCategory={selectedCategory}
         onCategorySelect={isMyTurn ? selectCategory : undefined}
       />
+
+      {isMyTurn && canSubmit && (
+        <button className={styles.submitButton} onClick={submitTurn}>
+          Submit turn
+        </button>
+      )}
 
       {!isMyTurn && (
         <p className={styles.waitingMessage}>
