@@ -1,0 +1,217 @@
+@use '../../../styles/variables'
+
+.gameBoard
+  width: 100%
+  max-width: variables.$desktopTextPagewidth
+  padding: 0 1rem
+  height: 100%
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  gap: .5rem
+
+.turnIndicator
+  text-align: center
+  padding: .5rem 1rem
+  border-radius: .25rem
+  font-weight: 500
+
+.myTurn
+  background-color: var(--color-accent-transparent)
+  color: var(--color-accent)
+  border: 1px solid var(--color-accent)
+
+.waitingTurn
+  background-color: var(--color-primary-light)
+  color: var(--color-text-dim)
+  border: 1px solid var(--color-primary-light)
+
+.scoreTable
+  width: 100%
+  border-collapse: collapse
+  margin-bottom: .75rem
+
+  th, td
+    padding: .35rem .5rem
+
+.playerHeader
+  font-size: .9rem
+  font-weight: 500
+  color: var(--color-primary)
+  width: 30%
+
+.categoryHeader
+  width: 40%
+
+.categoryName
+  text-align: center
+  text-transform: capitalize
+  color: var(--color-text-body)
+  font-size: .9rem
+
+.categoryCell
+  text-align: center
+  font-variant-numeric: tabular-nums
+
+.filledScore
+  color: var(--color-primary)
+  font-weight: 450
+
+.emptyScore
+  color: var(--color-text-dim)
+  opacity: .4
+
+.sectionDivider
+  td
+    padding: .35rem 0
+    border-bottom: 1px solid var(--color-primary-light)
+
+.totalRow
+  td
+    padding-top: .6rem
+    font-weight: 500
+
+.totalScore
+  text-align: center
+  font-size: 1.1rem
+  color: var(--color-primary)
+  font-variant-numeric: tabular-nums
+
+.waitingMessage
+  text-align: center
+  color: var(--color-text-dim)
+  font-size: .9rem
+  margin-top: .75rem
+
+// dice area (active player turn controls)
+.diceArea
+  margin-bottom: 1.25rem
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: .75rem
+
+.diceRow
+  display: flex
+  justify-content: center
+  gap: .5rem
+
+.dieWrapper
+  width: 3rem
+  cursor: pointer
+  border-radius: .25rem
+  padding: .2rem
+  border: 2px solid transparent
+  transition: border-color var(--duration-default)
+  font-size: 1.5rem
+  svg
+    display: block
+    width: 100%
+    color: var(--color-primary)
+
+.dieSelected
+  svg
+    color: var(--color-accent)
+
+.submitButton
+  display: block
+  width: 100%
+  padding: .6rem
+  background-color: var(--color-primary)
+  color: var(--color-surface)
+  border: none
+  border-radius: .25rem
+  font-size: 1rem
+  font-weight: 500
+  cursor: pointer
+  margin-bottom: 1rem
+  transition: background-color var(--duration-default)
+  &:hover
+    background-color: var(--color-accent)
+  &:disabled
+    background-color: var(--color-primary-light)
+    cursor: default
+
+.rollButton
+  background: transparent
+  border: 1px solid var(--color-primary)
+  color: var(--color-primary)
+  padding: .5rem 1.5rem
+  cursor: pointer
+  border-radius: .25rem
+  font-size: .9rem
+  width: 100%
+  transition: color var(--duration-default), border-color var(--duration-default)
+  &:hover:not(:disabled)
+    color: var(--color-accent)
+    border-color: var(--color-accent)
+  &:disabled
+    opacity: .4
+    cursor: default
+
+.rollButtonLocked
+  opacity: .4
+  cursor: default
+
+// scorecard interactive rows
+.previewScore
+  color: var(--color-accent)
+  font-weight: 400
+  opacity: .7
+
+.selectableCategory
+  cursor: pointer
+  &:hover
+    color: var(--color-accent)
+
+.selectedRow
+  background-color: var(--color-accent-transparent)
+
+// game end modal
+.endOverlay
+  position: fixed
+  inset: 0
+  z-index: 100
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 1rem
+  background-color: rgba(0, 0, 0, .55)
+
+.endModal
+  width: 100%
+  max-width: 24rem
+  padding: 1.5rem
+  background-color: var(--color-surface)
+  border-radius: .5rem
+  text-align: center
+
+.endHeading
+  margin: 0 0 .5rem
+  color: var(--color-primary)
+  font-size: 1.35rem
+
+.endMessage
+  margin: 0 0 1rem
+  color: var(--color-text-body)
+
+.endScores
+  margin: 0 0 1.5rem
+  color: var(--color-primary)
+  font-size: 1.5rem
+  font-weight: 600
+  font-variant-numeric: tabular-nums
+
+.endButton
+  display: inline-block
+  padding: .6rem 1.5rem
+  border: none
+  border-radius: .25rem
+  background-color: var(--color-primary)
+  color: var(--color-surface)
+  font-size: 1rem
+  cursor: pointer
+  transition: background-color var(--duration-default)
+  &:hover
+    background-color: var(--color-accent)

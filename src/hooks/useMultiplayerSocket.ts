@@ -6,16 +6,22 @@ import {
   multiplayerSocket
 } from '../features/multiplayer/socket/multiplayerSocket'
 import type {
+  GameEndedPayload,
+  GameStartedPayload,
+  GameStateUpdatedPayload,
   InviteReceivedPayload,
   InviteStatusPayload,
   PresenceOnlineUsersPayload
 } from '../features/multiplayer/types'
 import {
   resetMultiplayerState,
+  setActiveGame,
+  setGameEnded,
   setMultiplayerError,
   setOnlineUsers,
   setSocketConnected,
-  setSocketDisconnected
+  setSocketDisconnected,
+  updateGameState
 } from '../store/slices/multiplayerSlice'
 import {
   selectAuthInitialized,
@@ -67,12 +73,32 @@ export const useMultiplayerSocket = () => {
       invalidateInvites()
     }
 
+    const handleGameStarted = (payload: GameStartedPayload) => {
+      dispatch(
+        setActiveGame({
+          gameState: payload.gameState,
+          opponent: payload.opponent
+        })
+      )
+    }
+
+    const handleGameStateUpdated = (payload: GameStateUpdatedPayload) => {
+      dispatch(updateGameState(payload.gameState))
+    }
+
+    const handleGameEnded = (payload: GameEndedPayload) => {
+      dispatch(setGameEnded(payload))
+    }
+
     multiplayerSocket.on('connect', handleConnect)
     multiplayerSocket.on('disconnect', handleDisconnect)
     multiplayerSocket.on('connect_error', handleConnectError)
     multiplayerSocket.on('presence:online-users', handleOnlineUsers)
     multiplayerSocket.on('invite:received', handleInviteReceived)
     multiplayerSocket.on('invite:status', handleInviteStatus)
+    multiplayerSocket.on('game:started', handleGameStarted)
+    multiplayerSocket.on('game:state-updated', handleGameStateUpdated)
+    multiplayerSocket.on('game:ended', handleGameEnded)
 
     if (isAuthenticated) {
       connectMultiplayerSocket()
@@ -88,6 +114,9 @@ export const useMultiplayerSocket = () => {
       multiplayerSocket.off('presence:online-users', handleOnlineUsers)
       multiplayerSocket.off('invite:received', handleInviteReceived)
       multiplayerSocket.off('invite:status', handleInviteStatus)
+      multiplayerSocket.off('game:started', handleGameStarted)
+      multiplayerSocket.off('game:state-updated', handleGameStateUpdated)
+      multiplayerSocket.off('game:ended', handleGameEnded)
     }
   }, [authInitialized, dispatch, isAuthenticated])
 }
