@@ -1,6 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import type {
   BasicUser,
+  GameEndedPayload,
   MultiplayerGameState,
   OnlineUser,
   PresenceOnlineUsersPayload
@@ -13,6 +14,7 @@ interface MultiplayerState {
   lastError: string | null
   activeGame: MultiplayerGameState | null
   opponent: BasicUser | null
+  gameEndResult: GameEndedPayload | null
 }
 
 const initialState: MultiplayerState = {
@@ -21,7 +23,8 @@ const initialState: MultiplayerState = {
   selectedInviteId: null,
   lastError: null,
   activeGame: null,
-  opponent: null
+  opponent: null,
+  gameEndResult: null
 }
 
 const multiplayerSlice = createSlice({
@@ -60,6 +63,14 @@ const multiplayerSlice = createSlice({
     updateGameState: (state, action: PayloadAction<MultiplayerGameState>) => {
       state.activeGame = action.payload
     },
+    setGameEnded: (state, action: PayloadAction<GameEndedPayload>) => {
+      state.gameEndResult = action.payload
+    },
+    clearGameEnd: (state) => {
+      state.gameEndResult = null
+      state.activeGame = null
+      state.opponent = null
+    },
     clearActiveGame: (state) => {
       state.activeGame = null
       state.opponent = null
@@ -76,6 +87,8 @@ export const {
   setMultiplayerError,
   setActiveGame,
   updateGameState,
+  setGameEnded,
+  clearGameEnd,
   clearActiveGame,
   resetMultiplayerState
 } = multiplayerSlice.actions
@@ -96,5 +109,7 @@ export const selectActiveGame = (state: { multiplayer: MultiplayerState }) =>
   state.multiplayer.activeGame
 export const selectOpponent = (state: { multiplayer: MultiplayerState }) =>
   state.multiplayer.opponent
+export const selectGameEndResult = (state: { multiplayer: MultiplayerState }) =>
+  state.multiplayer.gameEndResult
 
 export default multiplayerSlice.reducer

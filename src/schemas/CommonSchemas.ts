@@ -1,18 +1,15 @@
-import { z } from 'zod'
+import { string } from 'zod'
 
-export const passwordSchema = z
-  .string()
-  .min(8, { message: 'Must be at least 8 characters long' })
-  .max(20, { message: 'Cannot exceed 20 characters' })
-  .refine((password) => /[A-Z]/.test(password), {
-    message: 'Must contain at least one uppercase letter'
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,64}$/
+
+const requiredString = (fieldName: string) =>
+  string({
+    error: (issue) =>
+      issue.input === undefined
+        ? `${fieldName} is required`
+        : `invalid ${fieldName}`
   })
-  .refine((password) => /[a-z]/.test(password), {
-    message: 'Must contain at least one lowercase letter'
-  })
-  .refine((password) => /[0-9]/.test(password), {
-    message: 'Must contain at least one number'
-  })
-  .refine((password) => /[!@#$%^&*]/.test(password), {
-    message: 'Must contain at least one special character'
-  })
+
+export const passwordSchema = requiredString('password').regex(PASSWORD_REGEX, {
+  error: '8-64 chars uppercase, lowercase, and a number'
+})

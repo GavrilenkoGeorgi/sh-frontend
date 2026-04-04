@@ -6,6 +6,7 @@ import {
   multiplayerSocket
 } from '../features/multiplayer/socket/multiplayerSocket'
 import type {
+  GameEndedPayload,
   GameStartedPayload,
   GameStateUpdatedPayload,
   InviteReceivedPayload,
@@ -15,6 +16,7 @@ import type {
 import {
   resetMultiplayerState,
   setActiveGame,
+  setGameEnded,
   setMultiplayerError,
   setOnlineUsers,
   setSocketConnected,
@@ -84,6 +86,10 @@ export const useMultiplayerSocket = () => {
       dispatch(updateGameState(payload.gameState))
     }
 
+    const handleGameEnded = (payload: GameEndedPayload) => {
+      dispatch(setGameEnded(payload))
+    }
+
     multiplayerSocket.on('connect', handleConnect)
     multiplayerSocket.on('disconnect', handleDisconnect)
     multiplayerSocket.on('connect_error', handleConnectError)
@@ -92,6 +98,7 @@ export const useMultiplayerSocket = () => {
     multiplayerSocket.on('invite:status', handleInviteStatus)
     multiplayerSocket.on('game:started', handleGameStarted)
     multiplayerSocket.on('game:state-updated', handleGameStateUpdated)
+    multiplayerSocket.on('game:ended', handleGameEnded)
 
     if (isAuthenticated) {
       connectMultiplayerSocket()
@@ -109,6 +116,7 @@ export const useMultiplayerSocket = () => {
       multiplayerSocket.off('invite:status', handleInviteStatus)
       multiplayerSocket.off('game:started', handleGameStarted)
       multiplayerSocket.off('game:state-updated', handleGameStateUpdated)
+      multiplayerSocket.off('game:ended', handleGameEnded)
     }
   }, [authInitialized, dispatch, isAuthenticated])
 }

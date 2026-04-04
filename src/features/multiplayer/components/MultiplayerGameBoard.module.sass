@@ -104,12 +104,15 @@
   padding: .2rem
   border: 2px solid transparent
   transition: border-color var(--duration-default)
+  font-size: 1.5rem
   svg
     display: block
     width: 100%
+    color: var(--color-primary)
 
 .dieSelected
-  border-color: var(--color-accent)
+  svg
+    color: var(--color-accent)
 
 .submitButton
   display: block
@@ -164,3 +167,51 @@
 
 .selectedRow
   background-color: var(--color-accent-transparent)
+
+// game end modal
+.endOverlay
+  position: fixed
+  inset: 0
+  z-index: 100
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 1rem
+  background-color: rgba(0, 0, 0, .55)
+
+.endModal
+  width: 100%
+  max-width: 24rem
+  padding: 1.5rem
+  background-color: var(--color-surface)
+  border-radius: .5rem
+  text-align: center
+
+.endHeading
+  margin: 0 0 .5rem
+  color: var(--color-primary)
+  font-size: 1.35rem
+
+.endMessage
+  margin: 0 0 1rem
+  color: var(--color-text-body)
+
+.endScores
+  margin: 0 0 1.5rem
+  color: var(--color-primary)
+  font-size: 1.5rem
+  font-weight: 600
+  font-variant-numeric: tabular-nums
+
+.endButton
+  display: inline-block
+  padding: .6rem 1.5rem
+  border: none
+  border-radius: .25rem
+  background-color: var(--color-primary)
+  color: var(--color-surface)
+  font-size: 1rem
+  cursor: pointer
+  transition: background-color var(--duration-default)
+  &:hover
+    background-color: var(--color-accent)
