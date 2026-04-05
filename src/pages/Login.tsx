@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import LoginForm from '../components/forms/Login'
 import * as styles from './Login.module.sass'
 import { ROUTES } from '../constants/routes'
+import { toPath } from '../utils'
 
 const Login: FC = () => {
   return (
@@ -13,7 +14,7 @@ const Login: FC = () => {
       <aside>
         <Link
           className={styles.link}
-          to={ROUTES.FORGOT_PASSWORD}
+          to={toPath(ROUTES.FORGOT_PASSWORD)}
           viewTransition
           aria-label="Forgot password"
         >

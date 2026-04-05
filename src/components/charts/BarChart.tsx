@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 import {
   BarChart,
   XAxis,
@@ -16,7 +16,6 @@ export const tickStyles = {
 }
 
 const Chart: FC<ChartProps> = ({ data }) => {
-
   const margin = {
     top: 0,
     right: 30,
@@ -24,41 +23,44 @@ const Chart: FC<ChartProps> = ({ data }) => {
     bottom: 10
   }
 
-  return <ResponsiveContainer>
-    <BarChart
-      data={data}
-      margin={margin}
+  return (
+    <ResponsiveContainer
+      width="100%"
+      height="100%"
+      initialDimension={{ width: 100, height: 50 }}
     >
-      <CartesianGrid
-        strokeDasharray='4 6'
-        strokeWidth={0.6}
-        vertical={false}
-      />
-      <XAxis
-        dataKey='id'
-        tickSize={0}
-        tickMargin={10}
-        axisLine={false}
-        style={tickStyles}
-      />
-      <YAxis
-        tickCount={3}
-        color='red'
-        tickSize={0}
-        tickMargin={10}
-        axisLine={false}
-        style={tickStyles}
-        domain={[0, 100]}
-      />
-      <Bar
-        dataKey='value'
-        fill='#AB47BC'
-        maxBarSize={18}
-        animationDuration={4000}
-        animationBegin={500}
-      />
-    </BarChart>
-  </ResponsiveContainer>
+      <BarChart data={data} margin={margin}>
+        <CartesianGrid
+          strokeDasharray="4 6"
+          strokeWidth={0.6}
+          vertical={false}
+        />
+        <XAxis
+          dataKey="id"
+          tickSize={0}
+          tickMargin={10}
+          axisLine={false}
+          style={tickStyles}
+        />
+        <YAxis
+          tickCount={3}
+          color="red"
+          tickSize={0}
+          tickMargin={10}
+          axisLine={false}
+          style={tickStyles}
+          domain={[0, 100]}
+        />
+        <Bar
+          dataKey="value"
+          fill="#AB47BC"
+          maxBarSize={18}
+          animationDuration={4000}
+          animationBegin={500}
+        />
+      </BarChart>
+    </ResponsiveContainer>
+  )
 }
 
 export default Chart

@@ -8,7 +8,7 @@ import { useSaveResultsMutation } from '../store/slices/gameApiSlice'
 import { setScore, reset, GameState, MAX_TURNS } from '../store/slices/shSlice'
 import { setNotification } from '../store/slices/notificationSlice'
 import { selectCurrentUser } from '../store/slices/authSlice'
-import { getErrMsg } from '../utils'
+import { getErrMsg, toPath } from '../utils'
 import { ToastTypes } from '../types'
 
 // components and styles
@@ -50,7 +50,7 @@ const GamePage: FC = () => {
           type: ToastTypes.SUCCESS
         })
       )
-      navigate(ROUTES.STATS, { viewTransition: true })
+      navigate(toPath(ROUTES.STATS), { viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({

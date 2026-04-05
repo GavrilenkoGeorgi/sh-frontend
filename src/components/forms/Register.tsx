@@ -12,7 +12,7 @@ import {
   type RegisterFormSchemaType
 } from '../../schemas/RegisterFormSchema'
 import { ToastTypes } from '../../types'
-import { getErrMsg } from '../../utils'
+import { getErrMsg, toPath } from '../../utils'
 import { useFormFocus } from '../../hooks'
 
 import LoadingIndicator from '../layout/LoadingIndicator'
@@ -54,7 +54,7 @@ const Register: FC = () => {
           type: ToastTypes.SUCCESS
         })
       )
-      navigate(ROUTES.LOGIN, { replace: true, viewTransition: true })
+      navigate(toPath(ROUTES.LOGIN), { replace: true, viewTransition: true })
     } catch (err: unknown) {
       dispatch(
         setNotification({
@@ -214,7 +214,7 @@ const Register: FC = () => {
 
       <p className={styles.privacy}>
         Will be used in accourdance with our{' '}
-        <Link to="/privacy" viewTransition>
+        <Link to={toPath(ROUTES.PRIVACY)} viewTransition>
           Privacy Policy
         </Link>
         .

@@ -1,12 +1,12 @@
-import React from 'react'
 import { FC } from 'react'
 import * as styles from './UserLink.module.sass'
 import LoadingIndicator from '../layout/LoadingIndicator'
 import UserIcon from '../../assets/svg/icon-user.svg'
 import { selectCurrentUser } from '../../store/slices/authSlice'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { ROUTES } from '../../constants/routes'
+import { toPath } from '../../utils'
 
 export const UserLink: FC = () => {
   const user = useSelector(selectCurrentUser)
@@ -18,7 +18,7 @@ export const UserLink: FC = () => {
     <>
       <div className={styles.user}>
         <Link
-          to={user != null ? ROUTES.PROFILE : ROUTES.LOGIN}
+          to={user != null ? toPath(ROUTES.PROFILE) : toPath(ROUTES.LOGIN)}
           viewTransition
           className={styles.userName}
           aria-label={user?.name ?? 'Guest'}
@@ -27,7 +27,7 @@ export const UserLink: FC = () => {
         </Link>
         {user && (
           <Link
-            to={ROUTES.STATS}
+            to={toPath(ROUTES.STATS)}
             viewTransition
             className={styles.userName}
             aria-label={user.name}

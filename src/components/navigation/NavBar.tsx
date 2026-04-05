@@ -1,5 +1,5 @@
 import { type FC, useState, useEffect, useMemo } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useMatch } from 'react-router' //dom?
 import { useSelector } from 'react-redux'
 import type { navLink } from '../../types'
 import {
@@ -19,9 +19,12 @@ import { UserLink } from './UserLink'
 import { selectIsAuthenticated } from '../../store/slices/authSlice'
 import { useColorScheme } from '../../hooks/useColorScheme'
 import { ThemeToggle } from '../layout/ThemeToggle'
+import TurnDisplay from '../../features/multiplayer/components/TurnDisplay'
 
 const NavBar: FC = () => {
   const location = useLocation()
+  const playRoute = useMatch(ROUTES.PLAY)
+  const multiplayerRoute = useMatch(ROUTES.MULTIPLAYER)
   const scrollDirection = useScrollDirection()
   const isAuthenticated = useSelector(selectIsAuthenticated)
 
@@ -51,13 +54,14 @@ const NavBar: FC = () => {
 
   const navigation: navLink[] = useMemo(
     () => [
-      { label: 'Game', url: ROUTES.GAME },
+      { label: 'Play', url: ROUTES.PLAY },
+      { label: 'Stats', url: ROUTES.STATS, disabled: !isAuthenticated },
       { label: 'Profile', url: ROUTES.PROFILE, disabled: !isAuthenticated },
       {
-        label: !isAuthenticated ? 'Login' : 'Logout',
-        url: ROUTES.LOGIN
+        label: 'Multiplayer',
+        url: ROUTES.MULTIPLAYER,
+        disabled: !isAuthenticated
       },
-      { label: 'Stats', url: ROUTES.STATS, disabled: !isAuthenticated },
       { label: 'Register', url: ROUTES.REGISTER, disabled: isAuthenticated },
       { label: 'Privacy', url: ROUTES.PRIVACY },
       { label: 'Help', url: ROUTES.HELP }
@@ -93,7 +97,8 @@ const NavBar: FC = () => {
       >
         <div className={styles.navigationContainer}>
           <Logo />
-          {location.pathname === ROUTES.GAME && <ScoreDisplay />}
+          {playRoute && <ScoreDisplay />}
+          {multiplayerRoute && <TurnDisplay />}
 
           <div className={styles.toggleBtnContainer}>
             <ThemeToggle toggle={isDark} onClick={toggleColorScheme} />
