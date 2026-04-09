@@ -13,8 +13,8 @@ import {
   initializeBoard
 } from '../components/game/controls/DnDHelpers'
 
-// constants for better maintainability
-const ANIMATION_DURATION = 2500
+// spring animation (~400ms) plus safety margin
+const ANIMATION_DURATION = 800
 
 export const useDiceBoard = () => {
   const { game } = useSelector((state: RootState) => state.sh)
