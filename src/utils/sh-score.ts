@@ -1,4 +1,4 @@
-import { type iCombination } from '../types'
+import { GameCombinations, type iCombination } from '../types'
 
 class ShScore {
   school: number[][]
@@ -81,6 +81,109 @@ class ShScore {
     return [...values].sort((a, b) => {
       return a - b
     })
+  }
+
+  // return only the dice face values that contribute to the given combination
+  getScoringDice = (
+    selectedValues: number[],
+    combination: string
+  ): number[] => {
+    const groups: number[][] = [[], [], [], [], [], []]
+    for (const value of selectedValues) {
+      if (value >= 1 && value <= 6) groups[value - 1].push(value)
+    }
+
+    // school combinations map to a single face value
+    const schoolFaces: Record<string, number> = {
+      ones: 1,
+      twos: 2,
+      threes: 3,
+      fours: 4,
+      fives: 5,
+      sixes: 6
+    }
+    if (combination in schoolFaces) {
+      return groups[schoolFaces[combination] - 1].slice()
+    }
+
+    const sorted = this.sort(selectedValues)
+
+    switch (combination) {
+      case GameCombinations.PAIR: {
+        for (let face = 6; face >= 1; face--) {
+          if (groups[face - 1].length >= 2) return Array(2).fill(face)
+        }
+        return []
+      }
+      case GameCombinations.TWOPAIRS: {
+        const pairs: number[] = []
+        for (let face = 6; face >= 1; face--) {
+          if (groups[face - 1].length >= 2) pairs.push(face, face)
+        }
+        return pairs.length >= 4 ? pairs.slice(0, 4) : []
+      }
+      case GameCombinations.TRIPLE: {
+        for (let face = 6; face >= 1; face--) {
+          if (groups[face - 1].length >= 3) return Array(3).fill(face)
+        }
+        return []
+      }
+      case GameCombinations.FULL: {
+        let tripleValue = 0
+        let pairValue = 0
+        for (let face = 6; face >= 1; face--) {
+          if (groups[face - 1].length >= 3 && tripleValue === 0)
+            tripleValue = face
+        }
+        for (let face = 6; face >= 1; face--) {
+          if (groups[face - 1].length >= 2 && face !== tripleValue) {
+            pairValue = face
+            break
+          }
+        }
+        if (tripleValue > 0 && pairValue > 0) {
+          return [...Array(3).fill(tripleValue), ...Array(2).fill(pairValue)]
+        }
+        return []
+      }
+      case GameCombinations.QUADS: {
+        for (let face = 6; face >= 1; face--) {
+          if (groups[face - 1].length >= 4) return Array(4).fill(face)
+        }
+        return []
+      }
+      case GameCombinations.POKER: {
+        if (sorted.length === 5 && sorted.every((v) => v === sorted[0])) {
+          return sorted.slice()
+        }
+        return []
+      }
+      case GameCombinations.SMALL: {
+        if (
+          sorted.length === 5 &&
+          this.isAscending(sorted) &&
+          sorted[0] === 1
+        ) {
+          return sorted.slice()
+        }
+        return []
+      }
+      case GameCombinations.LARGE: {
+        if (
+          sorted.length === 5 &&
+          this.isAscending(sorted) &&
+          sorted[0] === 2
+        ) {
+          return sorted.slice()
+        }
+        return []
+      }
+      case GameCombinations.CHANCE: {
+        return selectedValues.filter((v) => v >= 1 && v <= 6)
+      }
+      default:
+        return []
+    }
   }
 
   // Get combinations stats at the end of the game

@@ -159,6 +159,13 @@ const shSlice = createSlice({
           cell.final = true
           game.score += cell.score
           game.saved = true
+
+          // update fav dice for school saves
+          const selectedValues = game.selection.map((i) => game.roll[i])
+          const scoringDice = ShScore.getScoringDice(selectedValues, payload)
+          for (const face of scoringDice) {
+            game.favDiceValues[face - 1]++
+          }
         }
         clearTempSchoolScores(game.school)
         if (game.turn === SCHOOL_TURNS) {
@@ -175,10 +182,11 @@ const shSlice = createSlice({
         game.combinations[payload].push(value)
         game.score += value
 
-        // update fav dice using selection indices (safe)
-        for (const dieIndex of game.selection) {
-          const face = game.roll[dieIndex]
-          if (face && face >= 1 && face <= 6) game.favDiceValues[face - 1]++
+        // update fav dice using only dice that contribute to the saved combination
+        const selectedValues = game.selection.map((i) => game.roll[i])
+        const scoringDice = ShScore.getScoringDice(selectedValues, payload)
+        for (const face of scoringDice) {
+          game.favDiceValues[face - 1]++
         }
         clearTempResults(game.results)
         game.saved = true
