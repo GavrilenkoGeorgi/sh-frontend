@@ -67,11 +67,7 @@ const DnDDiceBoard: FC = () => {
           <Portal>
             <DragOverlay dropAnimation={dropAnimation}>
               {activeDice != null ? (
-                <DiceItem
-                  dice={activeDice}
-                  isDragging={true}
-                  shouldAnimate={false}
-                />
+                <DiceItem dice={activeDice} isDragging={true} />
               ) : null}
             </DragOverlay>
           </Portal>

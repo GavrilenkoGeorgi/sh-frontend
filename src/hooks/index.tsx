@@ -57,17 +57,6 @@ export function useComponentVisible(initialIsVisible: boolean) {
   return { ref, isComponentVisible, setIsComponentVisible }
 }
 
-export const useNextImageImageFade = (_className: string) => {
-  // tf is this?
-  const [className, setClassName] = useState(`${_className} opacity-0`)
-  return {
-    className,
-    onLoad: () => {
-      setClassName(`${_className} opacity-1`)
-    }
-  }
-}
-
 // export new dice board hooks
 export { useDiceBoard } from './useDiceBoard'
 export { useDragHandlers } from './useDragHandlers'

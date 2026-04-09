@@ -55,12 +55,6 @@ const MultiplayerGameBoard: FC = () => {
 
   return (
     <section className={styles.gameBoard}>
-      <div
-        className={`${styles.turnIndicator} ${isMyTurn ? styles.myTurn : styles.waitingTurn}`}
-      >
-        {isMyTurn ? 'Your turn' : `${opponent.username}'s turn`}
-      </div>
-
       {isMyTurn && (
         <div className={styles.diceArea}>
           <div className={styles.diceRow}>
