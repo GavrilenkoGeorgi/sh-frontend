@@ -6,11 +6,13 @@ import { UniqueIdentifier } from '@dnd-kit/core'
 interface SortableDiceItemProps {
   children: React.ReactNode
   id: UniqueIdentifier
+  shouldAnimate?: boolean
 }
 
 const SortableDiceItem = ({
   children,
-  id
+  id,
+  shouldAnimate = false
 }: SortableDiceItemProps): ReactElement => {
   const {
     attributes,
@@ -23,7 +25,7 @@ const SortableDiceItem = ({
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition: shouldAnimate ? 'none' : transition,
     opacity: isDragging ? 0 : 1
   }
 

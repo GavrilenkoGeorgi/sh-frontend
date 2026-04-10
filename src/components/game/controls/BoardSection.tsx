@@ -15,12 +15,14 @@ interface BoardSectionProps {
   title: string
   dice: Dice[]
   shouldAnimateNewDice?: boolean
+  rollCount: number
 }
 
 const BoardSection = ({
   id,
   dice,
-  shouldAnimateNewDice = false
+  shouldAnimateNewDice = false,
+  rollCount = 0
 }: BoardSectionProps): React.JSX.Element => {
   const { setNodeRef } = useDroppable({
     id
@@ -33,14 +35,22 @@ const BoardSection = ({
       strategy={horizontalListSortingStrategy}
     >
       <div ref={setNodeRef} className={styles.items}>
-        {dice.map((item) => (
-          <SortableDiceItem key={item.id} id={item.id}>
-            <DiceItem
-              dice={item}
-              shouldAnimate={shouldAnimateNewDice && id === DiceStatus.ROLL}
-            />
-          </SortableDiceItem>
-        ))}
+        {dice.map((item) => {
+          const shouldAnimate = shouldAnimateNewDice && id === DiceStatus.ROLL
+          return (
+            <SortableDiceItem
+              key={item.id}
+              id={item.id}
+              shouldAnimate={shouldAnimate}
+            >
+              <DiceItem
+                dice={item}
+                shouldAnimate={shouldAnimate}
+                rollCount={rollCount}
+              />
+            </SortableDiceItem>
+          )
+        })}
       </div>
     </SortableContext>
   )
