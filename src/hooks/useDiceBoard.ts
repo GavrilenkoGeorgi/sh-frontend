@@ -13,8 +13,8 @@ import {
   initializeBoard
 } from '../components/game/controls/DnDHelpers'
 
-// constants for better maintainability
-const ANIMATION_DURATION = 2500
+// spring animation (~400ms) plus safety margin
+const ANIMATION_DURATION = 800
 
 export const useDiceBoard = () => {
   const { game } = useSelector((state: RootState) => state.sh)
@@ -22,6 +22,7 @@ export const useDiceBoard = () => {
 
   const [diceState, setDiceState] = useState<Dice[]>(diceArray)
   const [hasNewRoll, setHasNewRoll] = useState<boolean>(false)
+  const [rollCount, setRollCount] = useState<number>(0)
   const [boardSections, setBoardSections] = useState<BoardSections>(() =>
     initializeBoard(diceArray)
   )
@@ -167,6 +168,7 @@ export const useDiceBoard = () => {
 
       // reset animation flag after animation completes
       if (hasRollChanges && game.roll.some((val) => val > 0)) {
+        setRollCount((prev) => prev + 1)
         setTimeout(() => setHasNewRoll(false), ANIMATION_DURATION)
       }
     }
@@ -190,6 +192,7 @@ export const useDiceBoard = () => {
     boardSections,
     setBoardSections,
     hasNewRoll,
+    rollCount,
     restoreDiceStateFromRedux,
     handleDiceSelection,
     handleDiceDeselection,

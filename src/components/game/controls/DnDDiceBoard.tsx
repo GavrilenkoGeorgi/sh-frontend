@@ -18,6 +18,7 @@ const DnDDiceBoard: FC = () => {
     boardSections,
     setBoardSections,
     hasNewRoll,
+    rollCount,
     restoreDiceStateFromRedux,
     handleDiceSelection,
     handleDiceDeselection,
@@ -60,6 +61,7 @@ const DnDDiceBoard: FC = () => {
                 title={boardSectionKey}
                 dice={boardSections[boardSectionKey]}
                 shouldAnimateNewDice={hasNewRoll}
+                rollCount={rollCount}
               />
             </div>
           ))}
@@ -67,11 +69,7 @@ const DnDDiceBoard: FC = () => {
           <Portal>
             <DragOverlay dropAnimation={dropAnimation}>
               {activeDice != null ? (
-                <DiceItem
-                  dice={activeDice}
-                  isDragging={true}
-                  shouldAnimate={false}
-                />
+                <DiceItem dice={activeDice} isDragging={true} />
               ) : null}
             </DragOverlay>
           </Portal>

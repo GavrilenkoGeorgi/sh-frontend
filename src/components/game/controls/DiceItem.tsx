@@ -8,19 +8,20 @@ interface DiceItemProps {
   dice: Dice
   isDragging?: boolean
   shouldAnimate?: boolean
+  rollCount?: number
 }
 
 const DiceItem = ({
   dice,
   isDragging = false,
-  shouldAnimate = false
+  shouldAnimate = false,
+  rollCount = 0
 }: DiceItemProps): React.JSX.Element => {
   const animationProps: Pick<
     HTMLMotionProps<'div'>,
     'initial' | 'animate' | 'transition'
-  > = isDragging || !shouldAnimate
-    ? {}
-    : {
+  > = shouldAnimate && !isDragging
+    ? {
         initial: { y: -10, opacity: 0 },
         animate: { y: 0, opacity: 1 },
         transition: {
@@ -29,12 +30,12 @@ const DiceItem = ({
           damping: 20
         }
       }
+    : { initial: false }
 
   return (
     <motion.div
-      key={`${dice.id}-${dice.status}-${dice.value}`}
+      key={shouldAnimate ? `roll-${rollCount}` : 'static'}
       {...animationProps}
-      layout={!isDragging && shouldAnimate}
     >
       <div className={styles.dice}>
         <DiceSVG kind={dice.value} />
