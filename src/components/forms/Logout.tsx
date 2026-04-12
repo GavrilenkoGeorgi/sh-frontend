@@ -11,6 +11,7 @@ import { ToastTypes } from '../../types'
 import * as styles from './Form.module.sass'
 import { useLogoutMutation } from '../../store/slices/userApiSlice'
 import { ROUTES } from '../../constants/routes'
+import { clearAuthSessionHint } from '../../utils/authSessionHint'
 
 const Logout: FC = () => {
   const navigate = useNavigate()
@@ -22,6 +23,7 @@ const Logout: FC = () => {
   const logoutHandler = async (): Promise<void> => {
     try {
       await logoutApiCall().unwrap()
+      clearAuthSessionHint()
 
       // Clear client state
       dispatch(logout())
