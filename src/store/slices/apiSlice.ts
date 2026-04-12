@@ -10,6 +10,37 @@ import {
   type FetchBaseQueryMeta,
   type QueryReturnValue
 } from '@reduxjs/toolkit/query'
+import { type User, ToastTypes } from '../../types'
+import {
+  clearAuthSessionHint,
+  setAuthSessionHint
+} from '../../utils/authSessionHint'
+import { logout, setCredentials } from './authSlice'
+import { setNotification } from './notificationSlice'
+
+interface RefreshResponse {
+  user: User
+}
+
+// this looks weird but it's a type guard to ensure the refresh response has the expected shape
+const isRefreshResponse = (data: unknown): data is RefreshResponse => {
+  if (typeof data !== 'object' || data === null || !('user' in data)) {
+    return false
+  }
+
+  const { user } = data as { user: unknown }
+
+  return (
+    typeof user === 'object' &&
+    user !== null &&
+    '_id' in user &&
+    'name' in user &&
+    'email' in user &&
+    typeof user._id === 'string' &&
+    typeof user.name === 'string' &&
+    typeof user.email === 'string'
+  )
+}
 
 type BaseQueryResult = QueryReturnValue<
   unknown,
@@ -38,6 +69,8 @@ export const baseQueryWithReauth: BaseQueryFn<
     result.error.status === 401 &&
     !url.includes('/refresh')
   ) {
+    const startedRefresh = !refreshPromise
+
     if (!refreshPromise) {
       refreshPromise = Promise.resolve(
         baseQuery(
@@ -51,20 +84,33 @@ export const baseQueryWithReauth: BaseQueryFn<
       )
     }
 
-    const refreshResult = await refreshPromise!
-    refreshPromise = null
+    let refreshResult: BaseQueryResult
 
-    if (refreshResult.data) {
-      api.dispatch({
-        type: 'auth/setCredentials',
-        payload: refreshResult.data
-      })
+    try {
+      refreshResult = await refreshPromise
+    } finally {
+      refreshPromise = null
+    }
+
+    if (isRefreshResponse(refreshResult.data)) {
+      setAuthSessionHint()
+      api.dispatch(setCredentials(refreshResult.data))
 
       result = await baseQuery(args, api, extraOptions)
     } else {
-      api.dispatch({ type: 'auth/logout' })
+      clearAuthSessionHint()
+      api.dispatch(logout())
       api.dispatch(apiSlice.util.resetApiState())
       api.dispatch(gameSlice.util.resetApiState())
+
+      if (startedRefresh) {
+        api.dispatch(
+          setNotification({
+            msg: 'Your session expired. Please log in again.',
+            type: ToastTypes.WARNING
+          })
+        )
+      }
     }
   }
 

@@ -26,6 +26,7 @@ import { ROUTES } from '../../constants/routes'
 import IconEye from '../../assets/svg/icon-eye.svg'
 import IconEyeOff from '../../assets/svg/icon-eye-off.svg'
 import { usePasswordVisibility } from '../../hooks/usePasswordVisibility'
+import { setAuthSessionHint } from '../../utils/authSessionHint'
 
 const Login: FC = () => {
   const navigate = useNavigate()
@@ -53,6 +54,7 @@ const Login: FC = () => {
   }): Promise<void> => {
     try {
       const user = await login({ email, password }).unwrap()
+      setAuthSessionHint()
       dispatch(setCredentials({ user }))
       navigate(toPath(ROUTES.PLAY), { viewTransition: true })
     } catch (err: unknown) {

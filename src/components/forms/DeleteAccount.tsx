@@ -12,6 +12,7 @@ import { ToastTypes } from '../../types'
 import Modal from '../layout/Modal'
 import * as styles from './Form.module.sass'
 import { ROUTES } from '../../constants/routes'
+import { clearAuthSessionHint } from '../../utils/authSessionHint'
 
 const DeleteAccount: FC = () => {
   const navigate = useNavigate()
@@ -24,6 +25,7 @@ const DeleteAccount: FC = () => {
     try {
       setLoading(true)
       await deleteAcc().unwrap()
+      clearAuthSessionHint()
       dispatch(logout())
       dispatch(apiSlice.util.resetApiState())
       dispatch(gameSlice.util.resetApiState())
