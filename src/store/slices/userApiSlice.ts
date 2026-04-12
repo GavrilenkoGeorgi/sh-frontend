@@ -7,6 +7,10 @@ import { RegisterFormSchemaType } from '../../schemas/RegisterFormSchema'
 import { User } from '../../types'
 import { apiSlice } from './apiSlice'
 import { setCredentials, setAuthInitialized } from './authSlice'
+import {
+  clearAuthSessionHint,
+  setAuthSessionHint
+} from '../../utils/authSessionHint'
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -60,9 +64,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
             user?: { _id: string; name: string; email: string }
           }
           if (response?.user) {
+            setAuthSessionHint()
             dispatch(setCredentials({ user: response.user }))
+          } else {
+            clearAuthSessionHint()
           }
         } catch {
+          clearAuthSessionHint()
           // silent failure — user stays unauthenticated
         } finally {
           dispatch(setAuthInitialized())
