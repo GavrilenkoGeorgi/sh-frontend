@@ -16,11 +16,13 @@ import { useFormFocus } from '../../hooks'
 import cx from 'classnames'
 import * as styles from './Form.module.sass'
 import LoadingIndicator from '../layout/LoadingIndicator'
+import { useTranslation } from 'react-i18next'
 
 const ForgotPwd: FC = () => {
   const [sendRecoveryEmail] = useSendRecoveryEmailMutation()
 
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const {
     register,
@@ -42,7 +44,7 @@ const ForgotPwd: FC = () => {
       await sendRecoveryEmail({ email })
       dispatch(
         setNotification({
-          msg: 'Recovery email sent, check your inbox.',
+          msg: t('ui.toastMessages.recoveryEmailSent'),
           type: ToastTypes.SUCCESS
         })
       )
@@ -75,12 +77,12 @@ const ForgotPwd: FC = () => {
             })}
           >
             <label className={styles.formLabel} htmlFor="email">
-              Email
+              {t('ui.inputLabels.email')}
             </label>
             <input
               id="email"
               className={styles.formInput}
-              aria-label="Email"
+              aria-label={t('ui.inputLabels.email')}
               type="email"
               {...registerWithFocus('email')}
               autoComplete="email"
@@ -92,7 +94,11 @@ const ForgotPwd: FC = () => {
         </div>
 
         <button type="submit" disabled={isSubmitting} className={styles.button}>
-          {isSubmitting ? <LoadingIndicator dark /> : 'Send email'}
+          {isSubmitting ? (
+            <LoadingIndicator dark />
+          ) : (
+            t('ui.buttonLabels.sendEmail')
+          )}
         </button>
       </fieldset>
     </form>

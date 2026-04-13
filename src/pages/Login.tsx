@@ -5,11 +5,13 @@ import LoginForm from '../components/forms/Login'
 import * as styles from './Login.module.sass'
 import { ROUTES } from '../constants/routes'
 import { toPath } from '../utils'
+import { useTranslation } from 'react-i18next'
 
 const Login: FC = () => {
+  const { t } = useTranslation()
   return (
     <section className={styles.container}>
-      <h1>Login</h1>
+      <h1>{t('ui.headings.login')}</h1>
       <LoginForm />
       <aside>
         <Link

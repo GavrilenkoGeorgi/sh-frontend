@@ -20,6 +20,7 @@ import { selectIsAuthenticated } from '../../store/slices/authSlice'
 import { useColorScheme } from '../../hooks/useColorScheme'
 import { ThemeToggle } from '../layout/ThemeToggle'
 import TurnDisplay from '../../features/multiplayer/components/TurnDisplay'
+import { useTranslation } from 'react-i18next'
 
 const NavBar: FC = () => {
   const location = useLocation()
@@ -27,6 +28,7 @@ const NavBar: FC = () => {
   const multiplayerRoute = useMatch(ROUTES.MULTIPLAYER)
   const scrollDirection = useScrollDirection()
   const isAuthenticated = useSelector(selectIsAuthenticated)
+  const { t } = useTranslation()
 
   const { ref, isComponentVisible } = useComponentVisible(false)
   const [open, setOpen] = useState(false)
@@ -54,17 +56,29 @@ const NavBar: FC = () => {
 
   const navigation: navLink[] = useMemo(
     () => [
-      { label: 'Play', url: ROUTES.PLAY },
-      { label: 'Stats', url: ROUTES.STATS, disabled: !isAuthenticated },
-      { label: 'Profile', url: ROUTES.PROFILE, disabled: !isAuthenticated },
+      { label: t('ui.navLinks.play'), url: ROUTES.PLAY },
       {
-        label: 'Multiplayer',
+        label: t('ui.navLinks.stats'),
+        url: ROUTES.STATS,
+        disabled: !isAuthenticated
+      },
+      {
+        label: t('ui.navLinks.profile'),
+        url: ROUTES.PROFILE,
+        disabled: !isAuthenticated
+      },
+      {
+        label: t('ui.navLinks.multiplayer'),
         url: ROUTES.MULTIPLAYER,
         disabled: !isAuthenticated
       },
-      { label: 'Register', url: ROUTES.REGISTER, disabled: isAuthenticated },
-      { label: 'Privacy', url: ROUTES.PRIVACY },
-      { label: 'Help', url: ROUTES.HELP }
+      {
+        label: t('ui.navLinks.register'),
+        url: ROUTES.REGISTER,
+        disabled: isAuthenticated
+      },
+      { label: t('ui.navLinks.privacy'), url: ROUTES.PRIVACY },
+      { label: t('ui.navLinks.help'), url: ROUTES.HELP }
     ],
     [isAuthenticated]
   )

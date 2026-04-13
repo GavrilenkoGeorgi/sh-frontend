@@ -27,12 +27,14 @@ import IconEye from '../../assets/svg/icon-eye.svg'
 import IconEyeOff from '../../assets/svg/icon-eye-off.svg'
 import { usePasswordVisibility } from '../../hooks/usePasswordVisibility'
 import { setAuthSessionHint } from '../../utils/authSessionHint'
+import { useTranslation } from 'react-i18next'
 
 const Login: FC = () => {
   const navigate = useNavigate()
   const [login] = useLoginMutation()
   const isAuthenticated = useSelector(selectIsAuthenticated)
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const {
     register,
@@ -85,11 +87,11 @@ const Login: FC = () => {
             })}
           >
             <label className={styles.formLabel} htmlFor="email">
-              Email
+              {t('ui.inputLabels.email')}
             </label>
             <input
               className={styles.formInput}
-              aria-label="Email"
+              aria-label={t('ui.inputLabels.email')}
               type="email"
               {...registerWithFocus('email')}
               autoComplete="email"
@@ -109,13 +111,13 @@ const Login: FC = () => {
             })}
           >
             <label htmlFor="password" className={styles.formLabel}>
-              Password
+              {t('ui.inputLabels.password')}
             </label>
             <div className={styles.passwordInputWrap}>
               <input
                 className={styles.formInput}
                 type={inputType}
-                aria-label="Password"
+                aria-label={t('ui.inputLabels.password')}
                 {...registerWithFocus('password')}
                 autoComplete="current-password"
               />
@@ -123,7 +125,11 @@ const Login: FC = () => {
                 type="button"
                 className={styles.passwordToggle}
                 onClick={toggleVisibility}
-                aria-label={isVisible ? 'Hide password' : 'Show password'}
+                aria-label={
+                  isVisible
+                    ? t('ui.inputLabels.hidePassword')
+                    : t('ui.inputLabels.showPassword')
+                }
                 aria-pressed={isVisible}
               >
                 {isVisible ? <IconEyeOff /> : <IconEye />}
@@ -140,7 +146,11 @@ const Login: FC = () => {
             disabled={isSubmitting || isAuthenticated}
             className={styles.button}
           >
-            {isSubmitting ? <LoadingIndicator dark /> : 'Login'}
+            {isSubmitting ? (
+              <LoadingIndicator dark />
+            ) : (
+              t('ui.buttonLabels.login')
+            )}
           </button>
           <Logout />
         </div>

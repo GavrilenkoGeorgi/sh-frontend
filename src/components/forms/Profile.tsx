@@ -18,6 +18,7 @@ import * as styles from './Form.module.sass'
 import LoadingIndicator from '../layout/LoadingIndicator'
 import { useUpdateProfileMutation } from '../../store/slices/userApiSlice'
 import Logout from './Logout'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   data: Nullable<User>
@@ -25,6 +26,7 @@ interface Props {
 const Profile: FC<Props> = ({ data }) => {
   const dispatch = useDispatch()
   const [updateProfile] = useUpdateProfileMutation()
+  const { t } = useTranslation()
 
   const {
     register,
@@ -56,7 +58,7 @@ const Profile: FC<Props> = ({ data }) => {
       await updateProfile(update).unwrap()
       dispatch(
         setNotification({
-          msg: 'Profile update ok.',
+          msg: t('ui.toastMessages.profileUpdated'),
           type: ToastTypes.SUCCESS
         })
       )
@@ -90,12 +92,12 @@ const Profile: FC<Props> = ({ data }) => {
             })}
           >
             <label className={styles.formLabel} htmlFor="name">
-              Name
+              {t('ui.inputLabels.name')}
             </label>
             <input
               className={styles.formInput}
               type="text"
-              aria-label="Name"
+              aria-label={t('ui.inputLabels.name')}
               {...registerWithFocus('name')}
               autoComplete="name"
             />
@@ -114,12 +116,12 @@ const Profile: FC<Props> = ({ data }) => {
             })}
           >
             <label className={styles.formLabel} htmlFor="email">
-              Email
+              {t('ui.inputLabels.email')}
             </label>
             <input
               className={styles.formInput}
               type="email"
-              aria-label="Email"
+              aria-label={t('ui.inputLabels.email')}
               {...registerWithFocus('email')}
               autoComplete="email"
             />
@@ -130,7 +132,11 @@ const Profile: FC<Props> = ({ data }) => {
         </div>
 
         <button type="submit" className={styles.button} disabled={isSubmitting}>
-          {isSubmitting ? <LoadingIndicator dark /> : 'Update'}
+          {isSubmitting ? (
+            <LoadingIndicator dark />
+          ) : (
+            t('ui.buttonLabels.update')
+          )}
         </button>
       </fieldset>
       <div style={{ marginTop: '1rem', textAlign: 'center' }}>or</div>

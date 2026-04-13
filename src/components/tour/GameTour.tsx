@@ -1,10 +1,9 @@
-import React, { type FC, useCallback, useEffect, useState } from 'react'
+import { type FC, useCallback, useEffect, useState } from 'react'
 import { Joyride, type EventData, STATUS } from 'react-joyride'
 import { useTranslation } from 'react-i18next'
 
 import { createGameTourSteps } from './createGameTourSteps'
 import { useGameTour } from '../../hooks/useGameTour'
-import * as styles from './GameTour.module.sass'
 
 const TOUR_TARGETS = [
   '[data-tour="score-display"]',

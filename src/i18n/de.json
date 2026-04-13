@@ -12,5 +12,55 @@
       "skip": "Überspringen",
       "done": "Fertig"
     }
+  },
+  "ui": {
+    "buttonLabels": {
+      "login": "Anmelden",
+      "logout": "Abmelden",
+      "register": "Registrieren",
+      "play": "Spielen",
+      "update": "Aktualisieren",
+      "clearStats": "Statistik löschen",
+      "sendEmail": "E-Mail senden"
+    },
+    "navLinks": {
+      "play": "Spielen",
+      "stats": "Statistik",
+      "profile": "Profil",
+      "multiplayer": "Mehrspieler",
+      "register": "Registrieren",
+      "privacy": "Datenschutz",
+      "help": "Hilfe"
+    },
+    "inputLabels": {
+      "name": "Name",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "hidePassword": "Passwort verbergen",
+      "showPassword": "Passwort anzeigen",
+      "delete": "Löschen"
+    },
+    "toastMessages": {
+      "logoutSuccess": "Du hast dich erfolgreich abgemeldet.",
+      "registerSuccess": "Registrierung erfolgreich! Du kannst dich jetzt anmelden.",
+      "passwordUpdateSuccess": "Passwort erfolgreich aktualisiert!",
+      "savedResults": "Ergebnisse erfolgreich gespeichert!",
+      "statsCleared": "Statistik erfolgreich gelöscht!",
+      "recoveryEmailSent": "Eine E-Mail zum Zurücksetzen des Passworts wurde an deine Adresse gesendet, falls ein Konto mit dieser E-Mail existiert.",
+      "accountDeleted": "Dein Konto wurde erfolgreich gelöscht. Wir hoffen, dich bald wiederzusehen!",
+      "saveWarning": "Bitte wähle eine Kombination aus, um deine Spielergebnisse zu speichern.",
+      "profileUpdated": "Profil erfolgreich aktualisiert!"
+    },
+    "headings": {
+      "updateProfile": "Profil aktualisieren",
+      "multiplayer": "Mehrspieler",
+      "login": "Anmelden",
+      "register": "Registrieren"
+    },
+    "multiplayer": {
+      "noPlayersOnline": "Keine anderen Spieler online",
+      "selectPlayerToInvite": "Wähle einen Spieler aus, den du einladen möchtest"
+    }
   }
 }
