@@ -1,4 +1,4 @@
-import { type FC } from 'react'
+import { useTransition, type FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 
@@ -12,11 +12,13 @@ import * as styles from './Form.module.sass'
 import { useLogoutMutation } from '../../store/slices/userApiSlice'
 import { ROUTES } from '../../constants/routes'
 import { clearAuthSessionHint } from '../../utils/authSessionHint'
+import { useTranslation } from 'react-i18next'
 
 const Logout: FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector(selectCurrentUser)
+  const { t } = useTranslation()
 
   const [logoutApiCall, { isLoading }] = useLogoutMutation()
 
@@ -33,7 +35,7 @@ const Logout: FC = () => {
       // Notify user
       dispatch(
         setNotification({
-          msg: 'You have been logged out',
+          msg: t('ui.toastMessages.logoutSuccess'),
           type: ToastTypes.SUCCESS
         })
       )
@@ -58,7 +60,7 @@ const Logout: FC = () => {
       className={styles.button}
       aria-busy={isLoading}
     >
-      {isLoading ? <LoadingIndicator dark /> : 'logout'}
+      {isLoading ? <LoadingIndicator dark /> : t('ui.buttonLabels.logout')}
     </button>
   )
 }

@@ -17,8 +17,10 @@ import InviteInbox from '../features/multiplayer/components/InviteInbox'
 import OutgoingInvitesPanel from '../features/multiplayer/components/OutgoingInvitesPanel'
 import MultiplayerGameBoard from '../features/multiplayer/components/MultiplayerGameBoard'
 import MultiplayerGameEndModal from '../features/multiplayer/components/MultiplayerGameEndModal'
+import { useTranslation } from 'react-i18next'
 
 const Multiplayer: FC = () => {
+  const { t } = useTranslation()
   const socketConnected = useSelector(selectSocketConnected)
   const onlineUsers = useSelector(selectOnlineUsers)
   const currentUser = useSelector(selectCurrentUser)
@@ -44,16 +46,18 @@ const Multiplayer: FC = () => {
 
   return (
     <section className={sharedStyles.contentPage}>
-      <h1 style={{ margin: 0 }}>Multiplayer</h1>
+      <h1 style={{ margin: 0 }}>{t('ui.headings.multiplayer')}</h1>
       <p className={styles.userCounter}>{otherUsers.length} online</p>
       <InviteInbox />
       <OutgoingInvitesPanel />
       {otherUsers.length === 0 ? (
-        <p className={styles.emptyState}>No other players online right now</p>
+        <p className={styles.emptyState}>
+          {t('ui.multiplayer.noPlayersOnline')}
+        </p>
       ) : (
         <>
           <h2 className={inviteStyles.heading} style={{ marginTop: '.75rem' }}>
-            Select a player to send an invite
+            {t('ui.multiplayer.selectPlayerToInvite')}
           </h2>
           <ul className={styles.userList}>
             {otherUsers.map((user) => (

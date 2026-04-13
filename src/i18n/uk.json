@@ -12,5 +12,55 @@
       "skip": "Пропустити",
       "done": "Готово"
     }
+  },
+  "ui": {
+    "buttonLabels": {
+      "login": "Логін",
+      "logout": "Вихід",
+      "register": "Реєстрація",
+      "play": "Грати",
+      "update": "Оновити",
+      "clearStats": "Очистити статистику",
+      "sendEmail": "Відправити лист"
+    },
+    "navLinks": {
+      "play": "Грати",
+      "stats": "Статистика",
+      "profile": "Профіль",
+      "multiplayer": "Мультиплеер",
+      "register": "Реєстрація",
+      "privacy": "Конфіденційність",
+      "help": "Допомога"
+    },
+    "inputLabels": {
+      "name": "Ім'я",
+      "email": "Електронна пошта",
+      "password": "Пароль",
+      "confirmPassword": "Підтвердіть пароль",
+      "hidePassword": "Сховати пароль",
+      "showPassword": "Показати пароль",
+      "delete": "Видалити"
+    },
+    "toastMessages": {
+      "logoutSuccess": "Ви успішно вийшли з аккаунта.",
+      "registerSuccess": "Реєстрація пройшла успішно! Тепер ви можете увійти.",
+      "passwordUpdateSuccess": "Пароль успішно обновлено!",
+      "savedResults": "Результати успішно збережено!",
+      "statsCleared": "Статистика успішно очищена!",
+      "recoveryEmailSent": "Лист для відновлення пароля відправлено на вашу пошту, якщо аккаунт з таким email існує.",
+      "accountDeleted": "Ваш аккаунт успішно видалено. Сподіваємося побачити вас знову!",
+      "saveWarning": "Будь ласка, оберіть комбінацію для збереження результатів гри.",
+      "profileUpdated": "Профіль успішно обновлено!"
+    },
+    "headings": {
+      "updateProfile": "Оновити профіль",
+      "multiplayer": "Мультиплеер",
+      "login": "Логін",
+      "register": "Реєстрація"
+    },
+    "multiplayer": {
+      "noPlayersOnline": "Немає інших гравців онлайн",
+      "selectPlayerToInvite": "Виберіть гравця для відправки запрошення"
+    }
   }
 }

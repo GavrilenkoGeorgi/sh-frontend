@@ -10,13 +10,14 @@ import { ToastTypes } from '../../../types'
 
 import SaveIcon from '../../../assets/svg/save-result.svg'
 import { PlayButtonIcon } from './PlayButtonIcon'
+import { useTranslation } from 'react-i18next'
 
 const MainButton: FC = () => {
   const {
     game: { lock, rollCount }
   } = useSelector((state: RootState) => state.sh)
-
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const roll = (): void => {
     dispatch(rollDice())
@@ -27,7 +28,7 @@ const MainButton: FC = () => {
       e.preventDefault()
       dispatch(
         setNotification({
-          msg: 'Please choose one of the results before rolling again',
+          msg: t('ui.toastMessages.saveWarning'),
           type: ToastTypes.SUCCESS
         })
       )

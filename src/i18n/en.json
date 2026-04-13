@@ -12,5 +12,55 @@
       "skip": "Skip",
       "done": "Done"
     }
+  },
+  "ui": {
+    "buttonLabels": {
+      "login": "Login",
+      "logout": "Logout",
+      "register": "Register",
+      "play": "Play",
+      "update": "Update",
+      "clearStats": "Clear stats",
+      "sendEmail": "Send email"
+    },
+    "navLinks": {
+      "play": "Play",
+      "stats": "Stats",
+      "profile": "Profile",
+      "multiplayer": "Multiplayer",
+      "register": "Register",
+      "privacy": "Privacy",
+      "help": "Help"
+    },
+    "inputLabels": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "hidePassword": "Hide password",
+      "showPassword": "Show password",
+      "delete": "Delete"
+    },
+    "toastMessages": {
+      "logoutSuccess": "You have successfully logged out.",
+      "registerSuccess": "Registration successful! You can now log in.",
+      "passwordUpdateSuccess": "Password updated successfully!",
+      "savedResults": "Results saved successfully!",
+      "statsCleared": "Stats cleared successfully!",
+      "recoveryEmailSent": "A password recovery email has been sent to your address if an account with that email exists.",
+      "accountDeleted": "Your account has been deleted successfully. We hope to see you again!",
+      "saveWarning": "Please select a combination to save your game results.",
+      "profileUpdated": "Profile updated successfully!"
+    },
+    "headings": {
+      "updateProfile": "Update Profile",
+      "multiplayer": "Multiplayer",
+      "login": "Login",
+      "register": "Register"
+    },
+    "multiplayer": {
+      "noPlayersOnline": "No other players online",
+      "selectPlayerToInvite": "Select a player to invite"
+    }
   }
 }

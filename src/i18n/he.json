@@ -12,5 +12,55 @@
       "skip": "דלג",
       "done": "סיום"
     }
+  },
+  "ui": {
+    "buttonLabels": {
+      "login": "התחברות",
+      "logout": "התנתקות",
+      "register": "הרשמה",
+      "play": "שחק",
+      "update": "עדכן",
+      "clearStats": "נקה סטטיסטיקה",
+      "sendEmail": "שלח אימייל"
+    },
+    "navLinks": {
+      "play": "שחק",
+      "stats": "סטטיסטיקה",
+      "profile": "פרופיל",
+      "multiplayer": "מרובה משתתפים",
+      "register": "הרשמה",
+      "privacy": "פרטיות",
+      "help": "עזרה"
+    },
+    "inputLabels": {
+      "name": "שם",
+      "email": "אימייל",
+      "password": "סיסמה",
+      "confirmPassword": "אשר סיסמה",
+      "hidePassword": "הסתר סיסמה",
+      "showPassword": "הצג סיסמה",
+      "delete": "מחק"
+    },
+    "toastMessages": {
+      "logoutSuccess": "התנתקת בהצלחה.",
+      "registerSuccess": "ההרשמה הושלמה בהצלחה! כעת אפשר להתחבר.",
+      "passwordUpdateSuccess": "הסיסמה עודכנה בהצלחה!",
+      "savedResults": "התוצאות נשמרו בהצלחה!",
+      "statsCleared": "הסטטיסטיקה נוקתה בהצלחה!",
+      "recoveryEmailSent": "אימייל לשחזור סיסמה נשלח לכתובת שלך, אם קיים חשבון עם האימייל הזה.",
+      "accountDeleted": "החשבון שלך נמחק בהצלחה. נשמח לראות אותך שוב!",
+      "saveWarning": "נא לבחור צירוף כדי לשמור את תוצאות המשחק שלך.",
+      "profileUpdated": "הפרופיל עודכן בהצלחה!"
+    },
+    "headings": {
+      "updateProfile": "עדכון פרופיל",
+      "multiplayer": "מרובה משתתפים",
+      "login": "התחברות",
+      "register": "הרשמה"
+    },
+    "multiplayer": {
+      "noPlayersOnline": "אין שחקנים אחרים מחוברים",
+      "selectPlayerToInvite": "בחר שחקן להזמנה"
+    }
   }
 }

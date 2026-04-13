@@ -20,6 +20,7 @@ import Modal from '../components/layout/Modal'
 import GameTour from '../components/tour/GameTour'
 import * as styles from './Game.module.sass'
 import { ROUTES } from '../constants/routes'
+import { useTranslation } from 'react-i18next'
 
 export interface SaveResultsData extends Pick<
   GameState,
@@ -32,6 +33,7 @@ const GamePage: FC = () => {
   const user = useSelector(selectCurrentUser)
   const [saveResults, { isLoading }] = useSaveResultsMutation()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const complete = async (): Promise<void> => {
     try {
@@ -46,7 +48,7 @@ const GamePage: FC = () => {
       dispatch(reset())
       dispatch(
         setNotification({
-          msg: 'Saved',
+          msg: t('ui.toastMessages.resultsSaved'),
           type: ToastTypes.SUCCESS
         })
       )
