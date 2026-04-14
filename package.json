@@ -61,5 +61,12 @@
     "socket.io-client": "^4.8.3",
     "use-confetti-svg": "^1.0.2",
     "zod": "^4.3.6"
+  },
+  "engines": {
+    "node": "22.x",
+    "npm": ">= 6"
+  },
+  "volta": {
+    "node": "22.12.0"
   }
 }

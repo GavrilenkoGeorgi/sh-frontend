@@ -37,18 +37,17 @@ const GamePage: FC = () => {
 
   const handleComplete = async (): Promise<void> => {
     try {
+      if (!user) {
+        dispatch(reset())
+        return
+      }
+
       const data = {
         score: game.score,
         schoolScore: game.schoolScore,
         stats: game.stats,
         favDiceValues: game.favDiceValues
       } as SaveResultsData
-
-      if (!user) {
-        dispatch(reset())
-        navigate(toPath(ROUTES.STATS), { viewTransition: true })
-        return
-      }
 
       await saveResults(data).unwrap()
       dispatch(reset())
@@ -105,8 +104,8 @@ const GamePage: FC = () => {
             score={game.score}
             text="Your score is "
             userName={user?.name}
-            btnLabel="save"
-            isBusy={isLoading}
+            btnLabel={user ? 'save' : 'ok'}
+            isBusy={Boolean(user) && isLoading}
             onClick={() => handleComplete()}
           />
         )}

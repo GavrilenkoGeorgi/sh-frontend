@@ -1,4 +1,3 @@
-// store/sh/shSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import ShScore from '../../utils/sh-score'
 import {
