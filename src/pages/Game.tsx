@@ -1,4 +1,4 @@
-import React, { type FC, useEffect, useState } from 'react'
+import React, { type FC, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 
@@ -35,7 +35,7 @@ const GamePage: FC = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
-  const complete = async (): Promise<void> => {
+  const handleComplete = async (): Promise<void> => {
     try {
       const data = {
         score: game.score,
@@ -44,11 +44,17 @@ const GamePage: FC = () => {
         favDiceValues: game.favDiceValues
       } as SaveResultsData
 
-      if (user) await saveResults(data)
+      if (!user) {
+        dispatch(reset())
+        navigate(toPath(ROUTES.STATS), { viewTransition: true })
+        return
+      }
+
+      await saveResults(data).unwrap()
       dispatch(reset())
       dispatch(
         setNotification({
-          msg: t('ui.toastMessages.resultsSaved'),
+          msg: t('ui.toastMessages.savedResults'),
           type: ToastTypes.SUCCESS
         })
       )
@@ -101,7 +107,7 @@ const GamePage: FC = () => {
             userName={user?.name}
             btnLabel="save"
             isBusy={isLoading}
-            onClick={() => complete()}
+            onClick={() => handleComplete()}
           />
         )}
       </section>
