@@ -21,11 +21,13 @@ import { usePasswordVisibility } from '../../hooks/usePasswordVisibility'
 import { ROUTES } from '../../constants/routes'
 import IconEye from '../../assets/svg/icon-eye.svg'
 import IconEyeOff from '../../assets/svg/icon-eye-off.svg'
+import { useTranslation } from 'react-i18next'
 
 const Register: FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [signup] = useSignupMutation()
+  const { t } = useTranslation()
 
   const passwordVisibility = usePasswordVisibility()
   const confirmPasswordVisibility = usePasswordVisibility()
@@ -50,7 +52,7 @@ const Register: FC = () => {
       await signup(data).unwrap()
       dispatch(
         setNotification({
-          msg: 'All ok, you can login after activating your account.',
+          msg: t('ui.toastMessages.registerSuccess'),
           type: ToastTypes.SUCCESS
         })
       )
@@ -82,7 +84,7 @@ const Register: FC = () => {
             })}
           >
             <label htmlFor="name" className={styles.formLabel}>
-              Name
+              {t('ui.inputLabels.name')}
             </label>
             <input
               id="name"
@@ -107,7 +109,7 @@ const Register: FC = () => {
             })}
           >
             <label className={styles.formLabel} htmlFor="email">
-              Email
+              {t('ui.inputLabels.email')}
             </label>
             <input
               id="email"
@@ -132,14 +134,14 @@ const Register: FC = () => {
             })}
           >
             <label htmlFor="password" className={styles.formLabel}>
-              Password
+              {t('ui.inputLabels.password')}
             </label>
             <div className={styles.passwordInputWrap}>
               <input
                 id="password"
                 className={styles.formInput}
                 type={passwordVisibility.inputType}
-                aria-label="Password"
+                aria-label={t('ui.inputLabels.password')}
                 {...registerWithFocus('password')}
                 autoComplete="new-password"
               />
@@ -149,8 +151,8 @@ const Register: FC = () => {
                 onClick={passwordVisibility.toggleVisibility}
                 aria-label={
                   passwordVisibility.isVisible
-                    ? 'Hide password'
-                    : 'Show password'
+                    ? t('ui.inputLabels.hidePassword')
+                    : t('ui.inputLabels.showPassword')
                 }
                 aria-pressed={passwordVisibility.isVisible}
               >
@@ -172,13 +174,13 @@ const Register: FC = () => {
             })}
           >
             <label className={styles.formLabel} htmlFor="confirm">
-              Confirm password
+              {t('ui.inputLabels.confirmPassword')}
             </label>
             <input
               id="confirm"
               className={styles.formInput}
               type={confirmPasswordVisibility.inputType}
-              aria-label="Confirm password"
+              aria-label={t('ui.inputLabels.confirmPassword')}
               {...registerWithFocus('confirm')}
               autoComplete="new-password"
             />
@@ -208,7 +210,11 @@ const Register: FC = () => {
 
       <fieldset>
         <button type="submit" className={styles.button}>
-          {isSubmitting ? <LoadingIndicator dark /> : 'Register'}
+          {isSubmitting ? (
+            <LoadingIndicator dark />
+          ) : (
+            t('ui.buttonLabels.register')
+          )}
         </button>
       </fieldset>
 

@@ -13,6 +13,7 @@ import Modal from '../layout/Modal'
 import * as styles from './Form.module.sass'
 import { ROUTES } from '../../constants/routes'
 import { clearAuthSessionHint } from '../../utils/authSessionHint'
+import { useTranslation } from 'react-i18next'
 
 const DeleteAccount: FC = () => {
   const navigate = useNavigate()
@@ -20,6 +21,7 @@ const DeleteAccount: FC = () => {
   const [deleteAcc] = useDeleteAccMutation()
   const [loading, setLoading] = useState(false)
   const [openModal, setOpenModal] = useState(false)
+  const { t } = useTranslation()
 
   const deleteHandler = async (): Promise<void> => {
     try {
@@ -31,7 +33,7 @@ const DeleteAccount: FC = () => {
       dispatch(gameSlice.util.resetApiState())
       dispatch(
         setNotification({
-          msg: 'Account deleted',
+          msg: t('ui.toastMessages.accountDeleted'),
           type: ToastTypes.SUCCESS
         })
       )
@@ -69,7 +71,7 @@ const DeleteAccount: FC = () => {
         <Modal
           heading="Are you sure?"
           text="You are about to delete your account and all game results!"
-          btnLabel="delete"
+          btnLabel={t('ui.buttonLabels.delete')}
           isBusy={loading}
           onClick={() => {
             void deleteHandler()

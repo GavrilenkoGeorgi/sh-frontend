@@ -21,6 +21,7 @@ import { ROUTES } from '../../constants/routes'
 import { usePasswordVisibility } from '../../hooks/usePasswordVisibility'
 import IconEye from '../../assets/svg/icon-eye.svg'
 import IconEyeOff from '../../assets/svg/icon-eye-off.svg'
+import { useTranslation } from 'react-i18next'
 
 interface PwdUpdateProps {
   token?: string
@@ -30,6 +31,7 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [updatePassword] = useUpdatePasswordMutation()
+  const { t } = useTranslation()
 
   const passwordVisibility = usePasswordVisibility()
   const confirmPasswordVisibility = usePasswordVisibility()
@@ -57,7 +59,7 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
       await updatePassword({ password, confirm, token }).unwrap()
       dispatch(
         setNotification({
-          msg: 'Password update ok.',
+          msg: t('ui.toastMessages.passwordUpdateSuccess'),
           type: ToastTypes.SUCCESS
         })
       )
@@ -103,7 +105,7 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
             })}
           >
             <label htmlFor="password" className={styles.formLabel}>
-              Password
+              {t('ui.inputLabels.password')}
             </label>
             <div className={styles.passwordInputWrap}>
               <input
@@ -142,13 +144,13 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
             })}
           >
             <label className={styles.formLabel} htmlFor="confirm">
-              Confirm password
+              {t('ui.inputLabels.confirmPassword')}
             </label>
             <div className={styles.passwordInputWrap}>
               <input
                 className={styles.formInput}
                 type={confirmPasswordVisibility.inputType}
-                aria-label="Confirm password"
+                aria-label={t('ui.inputLabels.confirmPassword')}
                 {...registerWithFocus('confirm')}
                 autoComplete="new-password"
               />
@@ -158,8 +160,8 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
                 onClick={confirmPasswordVisibility.toggleVisibility}
                 aria-label={
                   confirmPasswordVisibility.isVisible
-                    ? 'Hide password'
-                    : 'Show password'
+                    ? t('ui.inputLabels.hidePassword')
+                    : t('ui.inputLabels.showPassword')
                 }
                 aria-pressed={confirmPasswordVisibility.isVisible}
               >
@@ -177,7 +179,11 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
         </div>
 
         <button type="submit" className={styles.button}>
-          {isSubmitting ? <LoadingIndicator dark /> : 'Update'}
+          {isSubmitting ? (
+            <LoadingIndicator dark />
+          ) : (
+            t('ui.buttonLabels.update')
+          )}
         </button>
       </fieldset>
     </form>

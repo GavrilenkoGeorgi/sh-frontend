@@ -1,4 +1,4 @@
-import React, { type FC, useEffect, useState } from 'react'
+import React, { type FC, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 
@@ -20,6 +20,7 @@ import Modal from '../components/layout/Modal'
 import GameTour from '../components/tour/GameTour'
 import * as styles from './Game.module.sass'
 import { ROUTES } from '../constants/routes'
+import { useTranslation } from 'react-i18next'
 
 export interface SaveResultsData extends Pick<
   GameState,
@@ -32,9 +33,15 @@ const GamePage: FC = () => {
   const user = useSelector(selectCurrentUser)
   const [saveResults, { isLoading }] = useSaveResultsMutation()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
-  const complete = async (): Promise<void> => {
+  const handleComplete = async (): Promise<void> => {
     try {
+      if (!user) {
+        dispatch(reset())
+        return
+      }
+
       const data = {
         score: game.score,
         schoolScore: game.schoolScore,
@@ -42,11 +49,11 @@ const GamePage: FC = () => {
         favDiceValues: game.favDiceValues
       } as SaveResultsData
 
-      if (user) await saveResults(data)
+      await saveResults(data).unwrap()
       dispatch(reset())
       dispatch(
         setNotification({
-          msg: 'Saved',
+          msg: t('ui.toastMessages.savedResults'),
           type: ToastTypes.SUCCESS
         })
       )
@@ -97,9 +104,9 @@ const GamePage: FC = () => {
             score={game.score}
             text="Your score is "
             userName={user?.name}
-            btnLabel="save"
-            isBusy={isLoading}
-            onClick={() => complete()}
+            btnLabel={user ? 'save' : 'ok'}
+            isBusy={Boolean(user) && isLoading}
+            onClick={() => handleComplete()}
           />
         )}
       </section>

@@ -8,18 +8,20 @@ import { ToastTypes } from '../../types'
 
 import Modal from '../layout/Modal'
 import * as styles from './Form.module.sass'
+import { useTranslation } from 'react-i18next'
 
 const ClearStats: FC = () => {
   const dispatch = useDispatch()
   const [clearStats, { isLoading }] = useClearStatsMutation()
   const [openModal, setOpenModal] = useState(false)
+  const { t } = useTranslation()
 
   const deleteHandler = async (): Promise<void> => {
     try {
       await clearStats().unwrap()
       dispatch(
         setNotification({
-          msg: 'Stats cleared',
+          msg: t('ui.toastMessages.statsCleared'),
           type: ToastTypes.SUCCESS
         })
       )
@@ -45,7 +47,7 @@ const ClearStats: FC = () => {
               setOpenModal(true)
             }}
           >
-            Clear stats
+            {t('ui.buttonLabels.clearStats')}
           </button>
         </fieldset>
       </form>
@@ -53,7 +55,7 @@ const ClearStats: FC = () => {
         <Modal
           heading="Are you sure?"
           text="You are about to delete all your game results and clear stats!"
-          btnLabel="delete"
+          btnLabel={t('ui.buttonLabels.delete')}
           isBusy={isLoading}
           onClick={() => deleteHandler()}
           close={() => {

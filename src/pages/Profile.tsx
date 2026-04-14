@@ -8,13 +8,15 @@ import { ROUTES } from '../constants/routes'
 
 import * as styles from './Profile.module.sass'
 import { toPath } from '../utils'
+import { useTranslation } from 'react-i18next'
 
 const Profile: FC = () => {
   const user = useSelector(selectCurrentUser)
+  const { t } = useTranslation()
 
   return (
     <section className={styles.container}>
-      <h1>Update profile</h1>
+      <h1>{t('ui.headings.updateProfile')}</h1>
       <ProfileForm data={user} />
       <aside className={styles.text}>
         Looking for a way to{' '}
