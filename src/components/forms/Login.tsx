@@ -72,7 +72,6 @@ const Login: FC = () => {
   return (
     <form
       noValidate
-      autoComplete="off"
       onSubmit={handleSubmit(onSubmit)}
       id="login"
       className={styles.form}
