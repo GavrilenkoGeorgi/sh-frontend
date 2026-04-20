@@ -1,6 +1,6 @@
 {
   "name": "sh-frontend",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Sharlushka v2",
   "main": "index.js",
   "scripts": {
