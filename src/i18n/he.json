@@ -21,7 +21,8 @@
       "play": "שחק",
       "update": "עדכן",
       "clearStats": "נקה סטטיסטיקה",
-      "sendEmail": "שלח אימייל"
+      "sendEmail": "שלח אימייל",
+      "delete": "מחק"
     },
     "navLinks": {
       "play": "שחק",

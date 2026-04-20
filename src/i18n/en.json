@@ -21,7 +21,8 @@
       "play": "Play",
       "update": "Update",
       "clearStats": "Clear stats",
-      "sendEmail": "Send email"
+      "sendEmail": "Send email",
+      "delete": "Delete"
     },
     "navLinks": {
       "play": "Play",
