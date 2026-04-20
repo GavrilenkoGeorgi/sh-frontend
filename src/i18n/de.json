@@ -21,7 +21,8 @@
       "play": "Spielen",
       "update": "Aktualisieren",
       "clearStats": "Statistik löschen",
-      "sendEmail": "E-Mail senden"
+      "sendEmail": "E-Mail senden",
+      "delete": "Löschen"
     },
     "navLinks": {
       "play": "Spielen",
