@@ -53,6 +53,11 @@
       "saveWarning": "Please select a combination to save your game results.",
       "profileUpdated": "Profile updated successfully!"
     },
+    "theme": {
+      "system": "Theme: system",
+      "dark": "Theme: dark",
+      "light": "Theme: light"
+    },
     "headings": {
       "updateProfile": "Update Profile",
       "multiplayer": "Multiplayer",

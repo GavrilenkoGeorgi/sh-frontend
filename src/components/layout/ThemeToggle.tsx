@@ -1,19 +1,26 @@
+import type { ThemeMode } from '../../hooks/useColorScheme'
+import { useTranslation } from 'react-i18next'
 import * as styles from './ThemeToggle.module.sass'
 
 export const ThemeToggle = ({
-  toggle,
+  isDark,
+  mode,
   onClick
 }: {
-  toggle: boolean
+  isDark: boolean
+  mode: ThemeMode
   onClick: () => void
 }) => {
+  const { t } = useTranslation()
+  const label = t(`ui.theme.${mode}`)
+
   return (
     <div className={styles.themeToggleContainer}>
       <button
-        className={`theme-toggle ${toggle ? 'theme-toggle--toggled' : ''}`}
+        className={`theme-toggle ${isDark ? 'theme-toggle--toggled' : ''}`}
         type="button"
-        title="Toggle theme"
-        aria-label="Toggle theme"
+        title={label}
+        aria-label={label}
         onClick={onClick}
       >
         <svg

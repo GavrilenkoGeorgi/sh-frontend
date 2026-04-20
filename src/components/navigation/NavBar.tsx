@@ -32,7 +32,7 @@ const NavBar: FC = () => {
 
   const { ref, isComponentVisible } = useComponentVisible(false)
   const [open, setOpen] = useState(false)
-  const { isDark, toggleColorScheme } = useColorScheme()
+  const { isDark, mode, toggleColorScheme } = useColorScheme()
 
   const toggleMenu = (): void => {
     setOpen((prev) => !prev)
@@ -115,7 +115,11 @@ const NavBar: FC = () => {
           {multiplayerRoute && <TurnDisplay />}
 
           <div className={styles.toggleBtnContainer}>
-            <ThemeToggle toggle={isDark} onClick={toggleColorScheme} />
+            <ThemeToggle
+              isDark={isDark}
+              mode={mode}
+              onClick={toggleColorScheme}
+            />
             <MenuToggleBtn open={open} onClick={toggleMenu} />
           </div>
 

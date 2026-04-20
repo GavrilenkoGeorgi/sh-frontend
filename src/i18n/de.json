@@ -53,6 +53,11 @@
       "saveWarning": "Bitte wähle eine Kombination aus, um deine Spielergebnisse zu speichern.",
       "profileUpdated": "Profil erfolgreich aktualisiert!"
     },
+    "theme": {
+      "system": "Design: System",
+      "dark": "Design: Dunkel",
+      "light": "Design: Hell"
+    },
     "headings": {
       "updateProfile": "Profil aktualisieren",
       "multiplayer": "Mehrspieler",
