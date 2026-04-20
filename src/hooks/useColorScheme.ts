@@ -61,5 +61,12 @@ export function useColorScheme() {
     })
   }, [])
 
-  return { isDark, mode, toggleColorScheme }
+  const setThemeMode = useCallback((next: ThemeMode) => {
+    applyMode(next)
+    localStorage.setItem(STORAGE_KEY, next)
+    setIsDark(resolveIsDark(next))
+    setMode(next)
+  }, [])
+
+  return { isDark, mode, toggleColorScheme, setThemeMode }
 }

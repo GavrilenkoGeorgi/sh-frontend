@@ -31,7 +31,8 @@
       "multiplayer": "מרובה משתתפים",
       "register": "הרשמה",
       "privacy": "פרטיות",
-      "help": "עזרה"
+      "help": "עזרה",
+      "settings": "הגדרות"
     },
     "inputLabels": {
       "name": "שם",
@@ -62,7 +63,25 @@
       "updateProfile": "עדכון פרופיל",
       "multiplayer": "מרובה משתתפים",
       "login": "התחברות",
-      "register": "הרשמה"
+      "register": "הרשמה",
+      "settings": "הגדרות"
+    },
+    "settings": {
+      "themeLabel": "ערכת נושא",
+      "themeHint": "בחר את מראה האפליקציה. מערכת עוקב אחר הגדרות המכשיר שלך.",
+      "languageLabel": "שפה",
+      "languageHint": "בחר את שפת התצוגה המועדפת עליך.",
+      "themeOptions": {
+        "system": "מערכת",
+        "dark": "כהה",
+        "light": "בהיר"
+      },
+      "languageNames": {
+        "en": "English",
+        "de": "Deutsch",
+        "uk": "Українська",
+        "he": "עברית"
+      }
     },
     "multiplayer": {
       "noPlayersOnline": "אין שחקנים אחרים מחוברים",

@@ -31,7 +31,8 @@
       "multiplayer": "Multiplayer",
       "register": "Register",
       "privacy": "Privacy",
-      "help": "Help"
+      "help": "Help",
+      "settings": "Settings"
     },
     "inputLabels": {
       "name": "Name",
@@ -62,7 +63,25 @@
       "updateProfile": "Update Profile",
       "multiplayer": "Multiplayer",
       "login": "Login",
-      "register": "Register"
+      "register": "Register",
+      "settings": "Settings"
+    },
+    "settings": {
+      "themeLabel": "Theme",
+      "themeHint": "Choose how the app looks. System follows your device settings.",
+      "languageLabel": "Language",
+      "languageHint": "Choose your preferred display language.",
+      "themeOptions": {
+        "system": "System",
+        "dark": "Dark",
+        "light": "Light"
+      },
+      "languageNames": {
+        "en": "English",
+        "de": "Deutsch",
+        "uk": "Українська",
+        "he": "עברית"
+      }
     },
     "multiplayer": {
       "noPlayersOnline": "No other players online",

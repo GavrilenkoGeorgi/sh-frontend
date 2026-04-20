@@ -68,6 +68,10 @@ const NavBar: FC = () => {
         disabled: !isAuthenticated
       },
       {
+        label: t('ui.navLinks.settings'),
+        url: ROUTES.SETTINGS
+      },
+      {
         label: t('ui.navLinks.multiplayer'),
         url: ROUTES.MULTIPLAYER,
         disabled: !isAuthenticated

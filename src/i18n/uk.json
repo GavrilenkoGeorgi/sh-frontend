@@ -31,7 +31,8 @@
       "multiplayer": "Мультиплеер",
       "register": "Реєстрація",
       "privacy": "Конфіденційність",
-      "help": "Допомога"
+      "help": "Допомога",
+      "settings": "Налаштування"
     },
     "inputLabels": {
       "name": "Ім'я",
@@ -62,7 +63,25 @@
       "updateProfile": "Оновити профіль",
       "multiplayer": "Мультиплеер",
       "login": "Логін",
-      "register": "Реєстрація"
+      "register": "Реєстрація",
+      "settings": "Налаштування"
+    },
+    "settings": {
+      "themeLabel": "Тема",
+      "themeHint": "Оберіть зовнішній вигляд додатку. Системна тема слідує за налаштуваннями пристрою.",
+      "languageLabel": "Мова",
+      "languageHint": "Оберіть бажану мову відображення.",
+      "themeOptions": {
+        "system": "Системна",
+        "dark": "Темна",
+        "light": "Світла"
+      },
+      "languageNames": {
+        "en": "English",
+        "de": "Deutsch",
+        "uk": "Українська",
+        "he": "עברית"
+      }
     },
     "multiplayer": {
       "noPlayersOnline": "Немає інших гравців онлайн",

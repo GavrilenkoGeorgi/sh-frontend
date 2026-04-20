@@ -14,7 +14,8 @@ export const ROUTES = {
   CLEAR_STATS: 'clearstats',
   STATS: 'stats',
   PROFILE: 'profile',
-  MULTIPLAYER: 'multiplayer'
+  MULTIPLAYER: 'multiplayer',
+  SETTINGS: 'settings'
 } as const
 
 export const API_ROUTES = {
