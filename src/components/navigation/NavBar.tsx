@@ -84,7 +84,7 @@ const NavBar: FC = () => {
       { label: t('ui.navLinks.privacy'), url: ROUTES.PRIVACY },
       { label: t('ui.navLinks.help'), url: ROUTES.HELP }
     ],
-    [isAuthenticated]
+    [isAuthenticated, t]
   )
 
   const navLinks = navigation.map((link) => (
