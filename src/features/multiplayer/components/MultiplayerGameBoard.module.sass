@@ -84,37 +84,6 @@
   font-size: .9rem
   margin-top: .75rem
 
-// dice area (active player turn controls)
-.diceArea
-  margin-bottom: 1.25rem
-  display: flex
-  flex-direction: column
-  align-items: center
-  gap: .75rem
-  width: 100%
-
-.diceRow
-  display: flex
-  justify-content: center
-  gap: .5rem
-
-.dieWrapper
-  width: 3rem
-  cursor: pointer
-  border-radius: .25rem
-  padding: .2rem
-  border: 2px solid transparent
-  transition: border-color var(--duration-default)
-  font-size: 1.5rem
-  svg
-    display: block
-    width: 100%
-    color: var(--color-primary)
-
-.dieSelected
-  svg
-    color: var(--color-accent)
-
 .submitButton
   display: block
   width: 100%
@@ -126,7 +95,6 @@
   font-size: 1rem
   font-weight: 500
   cursor: pointer
-  margin-bottom: 1rem
   transition: background-color var(--duration-default)
   &:hover
     background-color: var(--color-accent)
@@ -134,26 +102,8 @@
     background-color: var(--color-primary-light)
     cursor: default
 
-.rollButton
-  background: transparent
-  border: 1px solid var(--color-primary)
-  color: var(--color-primary)
-  padding: .5rem 1.5rem
-  cursor: pointer
-  border-radius: .25rem
-  font-size: .9rem
+.diceControlsContainer
   width: 100%
-  transition: color var(--duration-default), border-color var(--duration-default)
-  &:hover:not(:disabled)
-    color: var(--color-accent)
-    border-color: var(--color-accent)
-  &:disabled
-    opacity: .4
-    cursor: default
-
-.rollButtonLocked
-  opacity: .4
-  cursor: default
 
 // scorecard interactive rows
 .previewScore

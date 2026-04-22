@@ -27,21 +27,32 @@ const Multiplayer: FC = () => {
   const activeGame = useSelector(selectActiveGame)
   const gameEndResult = useSelector(selectGameEndResult)
 
+  // dev-only: allow forcing the multiplayer board to be shown for styling/debug.
+  // enable by adding `?forceBoard=1` to the URL or setting `localStorage.setItem('sh.forceMultiplayerBoard','1')`
+  const urlSearch = typeof window !== 'undefined' ? window.location.search : ''
+  const params = new URLSearchParams(urlSearch)
+  const devQueryForce = params.get('forceBoard') === '1'
+  const devLocalForce =
+    typeof window !== 'undefined' &&
+    localStorage.getItem('sh.forceMultiplayerBoard') === '1'
+  const debugForceBoard =
+    process.env.NODE_ENV === 'development' && (devQueryForce || devLocalForce)
+
   const otherUsers = useMemo(
     () => onlineUsers.filter((user) => user.userId !== currentUser?._id),
     [onlineUsers, currentUser]
   )
 
-  if (!socketConnected) {
+  if (!socketConnected && !debugForceBoard) {
     return <LoadingIndicator />
   }
 
-  if (gameEndResult) {
+  if (gameEndResult && !debugForceBoard) {
     return <MultiplayerGameEndModal />
   }
 
-  if (activeGame) {
-    return <MultiplayerGameBoard />
+  if (activeGame || debugForceBoard) {
+    return <MultiplayerGameBoard forcePreview={debugForceBoard} />
   }
 
   return (
