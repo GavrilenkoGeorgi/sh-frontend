@@ -15,6 +15,7 @@ import PasswordPage from '../pages/Password'
 import PrivacyPage from '../pages/Privacy'
 import DeleteAccountPage from '../pages/DeleteAccount'
 import ClearStatsPage from '../pages/ClearStats'
+import SettingsPage from '../pages/Settings'
 import Multiplayer from '../pages/Multiplayer'
 import ProtectedRoute from './ProtectedRoute'
 import RootLayout from './RootLayout'
@@ -45,6 +46,7 @@ const router = createBrowserRouter(
       <Route path={ROUTES.PRIVACY} element={<PrivacyPage />} />
       <Route path={ROUTES.DELETE_ACCOUNT} element={<DeleteAccountPage />} />
       <Route path={ROUTES.CLEAR_STATS} element={<ClearStatsPage />} />
+      <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
 
       <Route element={<ProtectedRoute />}>
         <Route

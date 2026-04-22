@@ -1,49 +1,72 @@
 import { useState, useLayoutEffect, useEffect, useCallback } from 'react'
 
+export type ThemeMode = 'system' | 'dark' | 'light'
+
 const STORAGE_KEY = 'color-scheme'
 const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
-function getStoredScheme(): 'dark' | 'light' | null {
+// cycle order: system → dark → light → system
+const nextMode: Record<ThemeMode, ThemeMode> = {
+  system: 'dark',
+  dark: 'light',
+  light: 'system'
+}
+
+function getStoredMode(): ThemeMode {
   const value = localStorage.getItem(STORAGE_KEY)
-  return value === 'dark' || value === 'light' ? value : null
+  if (value === 'dark' || value === 'light' || value === 'system') return value
+  return 'system'
+}
+
+function applyMode(mode: ThemeMode): void {
+  if (mode === 'system') {
+    delete document.documentElement.dataset.colorScheme
+  } else {
+    document.documentElement.dataset.colorScheme = mode
+  }
+}
+
+function resolveIsDark(mode: ThemeMode): boolean {
+  if (mode === 'dark') return true
+  if (mode === 'light') return false
+  return mediaQuery.matches
 }
 
 export function useColorScheme() {
-  const [isDark, setIsDark] = useState(
-    () =>
-      getStoredScheme() === 'dark' ||
-      (getStoredScheme() === null && mediaQuery.matches)
-  )
+  const [mode, setMode] = useState<ThemeMode>(getStoredMode)
+  const [isDark, setIsDark] = useState(() => resolveIsDark(getStoredMode()))
 
   useLayoutEffect(() => {
-    // only pin the attribute when the user explicitly chose a scheme;
-    // without a stored preference, the CSS @media rule handles it automatically
-    const stored = getStoredScheme()
-    if (stored !== null) {
-      document.documentElement.dataset.colorScheme = stored
-    }
+    applyMode(mode)
   }, [])
 
+  // keep effective theme in sync when OS preference changes in system mode
   useEffect(() => {
-    // keep the toggle icon in sync when the OS preference changes,
-    // but only when the user hasn't pinned a scheme manually
     const handleChange = (event: MediaQueryListEvent): void => {
-      if (getStoredScheme() === null) {
+      if (mode === 'system') {
         setIsDark(event.matches)
       }
     }
     mediaQuery.addEventListener('change', handleChange)
     return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [])
+  }, [mode])
 
   const toggleColorScheme = useCallback(() => {
-    setIsDark((prev) => {
-      const next = !prev
-      document.documentElement.dataset.colorScheme = next ? 'dark' : 'light'
-      localStorage.setItem(STORAGE_KEY, next ? 'dark' : 'light')
+    setMode((prev) => {
+      const next = nextMode[prev]
+      applyMode(next)
+      localStorage.setItem(STORAGE_KEY, next)
+      setIsDark(resolveIsDark(next))
       return next
     })
   }, [])
 
-  return { isDark, toggleColorScheme }
+  const setThemeMode = useCallback((next: ThemeMode) => {
+    applyMode(next)
+    localStorage.setItem(STORAGE_KEY, next)
+    setIsDark(resolveIsDark(next))
+    setMode(next)
+  }, [])
+
+  return { isDark, mode, toggleColorScheme, setThemeMode }
 }

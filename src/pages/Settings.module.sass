@@ -1,0 +1,82 @@
+@use '../styles/variables'
+
+.container
+  align-self: flex-start
+  width: 100%
+  max-width: variables.$desktopTextPagewidth
+  padding: calc(variables.$navbarHeight - 1rem) 1rem 5rem
+
+  @media screen and (min-width: variables.$medium)
+    padding: calc(variables.$navbarHeight + 3rem) 1rem 5rem
+
+  h1
+    text-align: center
+
+.card
+  max-width: variables.$formWidth
+  margin: 2rem auto 0
+  display: flex
+  flex-direction: column
+  gap: 2rem
+
+.setting
+  display: flex
+  flex-direction: column
+  gap: .25rem
+
+.label
+  font-weight: 600
+  color: var(--color-primary)
+
+.hint
+  font-size: .8rem
+  color: var(--color-text-body)
+  line-height: 1.4
+
+.selectControl
+  margin-top: .25rem
+  padding: .4rem .5rem
+  font-size: 1rem
+  font-family: inherit
+  background-color: var(--color-surface)
+  border: 1px solid var(--color-primary)
+  transition: border-color var(--duration-default)
+  cursor: pointer
+  &:focus-within
+    outline: none
+    border-color: var(--color-accent)
+
+.selectMenu
+  margin-top: .25rem
+  background-color: var(--color-surface)
+  border: 1px solid var(--color-primary)
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15)
+  z-index: 10
+
+.selectMenuList
+  padding: .25rem 0
+
+// :not(._) adds a second class to specificity (0,2,0) to beat emotion's (0,1,0)
+.selectOption:not(._)
+  padding: .4rem .5rem
+  font-size: 1rem
+  color: var(--color-text-dim)
+  cursor: pointer
+
+.selectOptionFocused:not(._)
+  background-color: var(--color-primary-light)
+
+.selectOptionSelected:not(._)
+  color: var(--color-primary)
+  font-weight: 600
+
+.selectSingleValue
+  color: var(--color-text-dim)
+
+.selectDropdownIndicator
+  color: var(--color-primary)
+  padding-left: .5rem
+  cursor: pointer
+
+.selectIndicatorSeparator
+  display: none
