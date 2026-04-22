@@ -32,7 +32,7 @@ const NavBar: FC = () => {
 
   const { ref, isComponentVisible } = useComponentVisible(false)
   const [open, setOpen] = useState(false)
-  const { isDark, toggleColorScheme } = useColorScheme()
+  const { isDark, mode, toggleColorScheme } = useColorScheme()
 
   const toggleMenu = (): void => {
     setOpen((prev) => !prev)
@@ -68,6 +68,10 @@ const NavBar: FC = () => {
         disabled: !isAuthenticated
       },
       {
+        label: t('ui.navLinks.settings'),
+        url: ROUTES.SETTINGS
+      },
+      {
         label: t('ui.navLinks.multiplayer'),
         url: ROUTES.MULTIPLAYER,
         disabled: !isAuthenticated
@@ -80,7 +84,7 @@ const NavBar: FC = () => {
       { label: t('ui.navLinks.privacy'), url: ROUTES.PRIVACY },
       { label: t('ui.navLinks.help'), url: ROUTES.HELP }
     ],
-    [isAuthenticated]
+    [isAuthenticated, t]
   )
 
   const navLinks = navigation.map((link) => (
@@ -115,7 +119,11 @@ const NavBar: FC = () => {
           {multiplayerRoute && <TurnDisplay />}
 
           <div className={styles.toggleBtnContainer}>
-            <ThemeToggle toggle={isDark} onClick={toggleColorScheme} />
+            <ThemeToggle
+              isDark={isDark}
+              mode={mode}
+              onClick={toggleColorScheme}
+            />
             <MenuToggleBtn open={open} onClick={toggleMenu} />
           </div>
 

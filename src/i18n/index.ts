@@ -7,7 +7,8 @@ import uk from './uk.json'
 import de from './de.json'
 import he from './he.json'
 
-const supportedLanguages = ['en', 'uk', 'de', 'he'] as const
+export const supportedLanguages = ['en', 'uk', 'de', 'he'] as const
+export type SupportedLanguage = (typeof supportedLanguages)[number]
 const rtlLanguages = new Set(['he'])
 
 const getLanguageBase = (language: string | undefined): string =>
