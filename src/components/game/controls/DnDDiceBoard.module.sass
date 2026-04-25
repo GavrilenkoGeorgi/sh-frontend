@@ -5,6 +5,26 @@
     display: flex
     gap: .6rem
 
+// multiplayer overrides: keep mobile layout on desktop
+.controls[data-multiplayer]
+  @media screen and (min-width: variables.$medium)
+    display: block
+
+.controls[data-multiplayer] .boardSections
+  @media screen and (min-width: variables.$medium)
+    flex-direction: row
+    height: auto
+    margin-top: .5rem
+
+.controls[data-multiplayer] .rollButton
+  @media screen and (min-width: variables.$medium)
+    width: 100%
+
+.controls[data-multiplayer] .items
+  @media screen and (min-width: variables.$medium)
+    flex-direction: row
+    max-width: 100%
+
 .boardSections
   display: flex
   justify-content: space-between

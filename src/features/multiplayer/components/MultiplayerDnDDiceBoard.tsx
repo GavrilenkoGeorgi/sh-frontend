@@ -58,7 +58,7 @@ const MultiplayerDnDDiceBoard: FC<MultiplayerDnDDiceBoardProps> = ({
     })
 
   return (
-    <div className={styles.controls}>
+    <div className={styles.controls} data-multiplayer>
       <button
         onClick={roll}
         disabled={isLocked}
