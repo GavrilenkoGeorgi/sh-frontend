@@ -22,7 +22,11 @@
       "update": "עדכן",
       "clearStats": "נקה סטטיסטיקה",
       "sendEmail": "שלח אימייל",
-      "delete": "מחק"
+      "delete": "מחק",
+      "invite": "הזמן",
+      "accept": "קבל",
+      "decline": "דחה",
+      "endGame": "סיים משחק"
     },
     "navLinks": {
       "play": "שחק",
@@ -52,7 +56,8 @@
       "recoveryEmailSent": "אימייל לשחזור סיסמה נשלח לכתובת שלך, אם קיים חשבון עם האימייל הזה.",
       "accountDeleted": "החשבון שלך נמחק בהצלחה. נשמח לראות אותך שוב!",
       "saveWarning": "נא לבחור צירוף כדי לשמור את תוצאות המשחק שלך.",
-      "profileUpdated": "הפרופיל עודכן בהצלחה!"
+      "profileUpdated": "הפרופיל עודכן בהצלחה!",
+      "schoolCheck": "יש לך קוביות שיכולות להשיג צירוף בית ספר."
     },
     "theme": {
       "system": "ערכת נושא: מערכת",
@@ -85,7 +90,10 @@
     },
     "multiplayer": {
       "noPlayersOnline": "אין שחקנים אחרים מחוברים",
-      "selectPlayerToInvite": "בחר שחקן להזמנה"
+      "selectPlayerToInvite": "בחר שחקן להזמנה",
+      "noSchoolCombination": "אין צירוף בית ספר שניתן להשיג.",
+      "incomingInvites": "הזמנות נכנסות",
+      "outgoingInvites": "הזמנות יוצאות"
     }
   }
 }

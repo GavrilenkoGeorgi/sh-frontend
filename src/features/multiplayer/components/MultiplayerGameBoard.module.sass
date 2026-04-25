@@ -2,13 +2,13 @@
 
 .gameBoard
   width: 100%
-  max-width: variables.$desktopTextPagewidth
-  padding: 0 1rem
+  max-width: 30rem
+  padding: 0 .5rem
   height: 100%
   display: flex
   flex-direction: column
   align-items: center
-  justify-content: center
+  justify-content: space-evenly
   gap: .5rem
 
 .turnIndicator
@@ -64,12 +64,11 @@
 
 .sectionDivider
   td
-    padding: .35rem 0
+    padding: 0
     border-bottom: 1px solid var(--color-primary-light)
 
 .totalRow
   td
-    padding-top: .6rem
     font-weight: 500
 
 .totalScore
@@ -84,36 +83,20 @@
   font-size: .9rem
   margin-top: .75rem
 
-// dice area (active player turn controls)
-.diceArea
-  margin-bottom: 1.25rem
+.schoolFailedMessage
+  text-align: center
+  padding: .5rem 0
+  border-radius: .25rem
+  background-color: var(--color-primary-light)
+  color: var(--color-text-body)
+  font-size: .9rem
   display: flex
   flex-direction: column
   align-items: center
-  gap: .75rem
-  width: 100%
-
-.diceRow
-  display: flex
-  justify-content: center
   gap: .5rem
-
-.dieWrapper
-  width: 3rem
-  cursor: pointer
-  border-radius: .25rem
-  padding: .2rem
-  border: 2px solid transparent
-  transition: border-color var(--duration-default)
-  font-size: 1.5rem
-  svg
-    display: block
-    width: 100%
-    color: var(--color-primary)
-
-.dieSelected
-  svg
-    color: var(--color-accent)
+  width: 100%
+  p
+    margin: 0
 
 .submitButton
   display: block
@@ -126,7 +109,6 @@
   font-size: 1rem
   font-weight: 500
   cursor: pointer
-  margin-bottom: 1rem
   transition: background-color var(--duration-default)
   &:hover
     background-color: var(--color-accent)
@@ -134,26 +116,8 @@
     background-color: var(--color-primary-light)
     cursor: default
 
-.rollButton
-  background: transparent
-  border: 1px solid var(--color-primary)
-  color: var(--color-primary)
-  padding: .5rem 1.5rem
-  cursor: pointer
-  border-radius: .25rem
-  font-size: .9rem
+.diceControlsContainer
   width: 100%
-  transition: color var(--duration-default), border-color var(--duration-default)
-  &:hover:not(:disabled)
-    color: var(--color-accent)
-    border-color: var(--color-accent)
-  &:disabled
-    opacity: .4
-    cursor: default
-
-.rollButtonLocked
-  opacity: .4
-  cursor: default
 
 // scorecard interactive rows
 .previewScore
