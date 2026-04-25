@@ -1,5 +1,5 @@
-import { FC, useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import { FC, useEffect, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentUser } from '../../../store/slices/authSlice'
 import {
   selectActiveGame,
@@ -14,6 +14,9 @@ import type {
   MultiplayerPlayerState
 } from '../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
+import { setNotification } from '../../../store/slices/notificationSlice'
+import { ToastTypes } from '../../../types'
+import { useTranslation } from 'react-i18next'
 
 const PREVIEW_OPPONENT: BasicUser = {
   id: 'debug-opponent',
@@ -49,9 +52,11 @@ interface MultiplayerGameBoardProps {
 const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
   forcePreview = false
 }) => {
+  const dispatch = useDispatch()
   const activeGame = useSelector(selectActiveGame)
   const opponent = useSelector(selectOpponent)
   const currentUser = useSelector(selectCurrentUser)
+  const { t } = useTranslation()
 
   const previewPlayerId = currentUser?._id ?? 'debug-player'
   const previewGame = useMemo<MultiplayerGameState>(
@@ -90,11 +95,14 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
     previewScores,
     isLocked,
     canSubmit,
+    schoolFailed,
+    hasUnselectedScoringDice,
     roll,
     selectDie,
     deselectDie,
     selectCategory,
-    submitTurn
+    submitTurn,
+    failSchool
   } = useMultiplayerTurn(
     myState,
     isMyTurn,
@@ -103,32 +111,42 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
 
   const opponentState = gameToRender.players[opponentToRender.id]
 
+  useEffect(() => {
+    if (hasUnselectedScoringDice) {
+      dispatch(
+        setNotification({
+          msg: t('ui.toastMessages.schoolCheck'),
+          type: ToastTypes.WARNING
+        })
+      )
+    }
+  }, [hasUnselectedScoringDice, dispatch, t])
+
   if (!myState || !opponentState) {
     return null
   }
 
   return (
     <section className={styles.gameBoard}>
-      <button
-        disabled={!isMyTurn || !canSubmit}
-        className={styles.submitButton}
-        onClick={submitTurn}
-      >
-        Submit turn
-      </button>
-      {!isMyTurn && (
-        <p className={styles.waitingMessage}>
-          Waiting for {opponentToRender.username} to finish their turn…
-        </p>
+      {schoolFailed && isMyTurn && (
+        <div className={styles.schoolFailedMessage}>
+          <p>{t('ui.multiplayer.noSchoolCombination')}</p>
+          <button className={styles.endButton} onClick={failSchool}>
+            {t('ui.buttonLabels.endGame')}
+          </button>
+        </div>
       )}
       <MultiplayerScoreCard
-        playerState={myState}
-        opponentState={opponentState}
-        playerName="You"
-        opponentName={opponentToRender.username}
-        previewScores={isMyTurn ? previewScores : undefined}
-        selectedCategory={selectedCategory}
-        onCategorySelect={isMyTurn ? selectCategory : undefined}
+        player={{ state: myState, name: 'You' }}
+        opponent={{ state: opponentState, name: opponentToRender.username }}
+        turnControls={{
+          isMyTurn,
+          canSubmit,
+          previewScores: isMyTurn ? previewScores : undefined,
+          selectedCategory,
+          onCategorySelect: isMyTurn ? selectCategory : undefined,
+          onSubmitTurn: submitTurn
+        }}
       />
       {isMyTurn && (
         <div className={styles.diceControlsContainer}>

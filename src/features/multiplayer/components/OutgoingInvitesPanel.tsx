@@ -2,9 +2,11 @@ import { FC } from 'react'
 import { useGetOutgoingInvitesQuery } from '../../../store/slices/inviteApiSlice'
 import type { OutgoingInvite } from '../types'
 import * as styles from './InviteInbox.module.sass'
+import { useTranslation } from 'react-i18next'
 
 const OutgoingInvitesPanel: FC = () => {
   const { data, isLoading } = useGetOutgoingInvitesQuery()
+  const { t } = useTranslation()
 
   if (isLoading || data?.invites.length === 0) {
     return null
@@ -12,7 +14,7 @@ const OutgoingInvitesPanel: FC = () => {
 
   return (
     <section className={styles.inviteInbox}>
-      <h2 className={styles.heading}>Outgoing invites</h2>
+      <h2 className={styles.heading}>{t('ui.multiplayer.outgoingInvites')}</h2>
       <ul className={styles.inviteList}>
         {data?.invites.map((invite) => (
           <OutgoingInviteItem key={invite.inviteId} invite={invite} />

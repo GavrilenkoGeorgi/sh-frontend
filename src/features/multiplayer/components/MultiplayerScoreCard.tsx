@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import type { MultiplayerPlayerState, ScoreCategory } from '../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
+import LoadingIndicator from '../../../components/layout/LoadingIndicator'
 
 const schoolCategories: ScoreCategory[] = [
   'ones',
@@ -23,14 +24,24 @@ const gameCategories: ScoreCategory[] = [
   'chance'
 ]
 
-interface MultiplayerScoreCardProps {
-  playerState: MultiplayerPlayerState
-  opponentState: MultiplayerPlayerState
-  playerName: string
-  opponentName: string
+interface ScoreCardParticipant {
+  state: MultiplayerPlayerState
+  name: string
+}
+
+interface TurnControls {
+  isMyTurn: boolean
+  canSubmit: boolean
   previewScores?: Partial<Record<ScoreCategory, number>>
   selectedCategory?: ScoreCategory | null
   onCategorySelect?: (category: ScoreCategory) => void
+  onSubmitTurn: () => void
+}
+
+interface MultiplayerScoreCardProps {
+  player: ScoreCardParticipant
+  opponent: ScoreCardParticipant
+  turnControls: TurnControls
 }
 
 const formatCategoryName = (category: ScoreCategory): string => {
@@ -38,21 +49,31 @@ const formatCategoryName = (category: ScoreCategory): string => {
 }
 
 const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
-  playerState,
-  opponentState,
-  playerName,
-  opponentName,
-  previewScores = {},
-  selectedCategory = null,
-  onCategorySelect
+  player,
+  opponent,
+  turnControls
 }) => {
+  const {
+    isMyTurn,
+    canSubmit,
+    previewScores = {},
+    selectedCategory = null,
+    onCategorySelect,
+    onSubmitTurn
+  } = turnControls
+
   const renderRow = (category: ScoreCategory) => {
-    const playerScore = playerState.scoreCard[category]
-    const opponentScore = opponentState.scoreCard[category]
+    const playerScore = player.state.scoreCard[category]
+    const opponentScore = opponent.state.scoreCard[category]
     const preview = previewScores[category]
     const isSelected = selectedCategory === category
-    const isUsed = playerState.usedCategories.includes(category)
-    const canSelect = !isUsed && preview !== undefined && onCategorySelect
+    const isUsed = player.state.usedCategories.includes(category)
+    // for game categories, 0 means no match — treat same as no preview
+    const isSchoolCategory = schoolCategories.includes(category)
+    const effectivePreview =
+      !isSchoolCategory && preview === 0 ? undefined : preview
+    const canSelect =
+      !isUsed && effectivePreview !== undefined && onCategorySelect
 
     return (
       <tr
@@ -63,8 +84,8 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
         <td className={styles.categoryCell}>
           {playerScore !== null ? (
             <span className={styles.filledScore}>{playerScore}</span>
-          ) : preview !== undefined ? (
-            <span className={styles.previewScore}>{preview}</span>
+          ) : effectivePreview !== undefined ? (
+            <span className={styles.previewScore}>{effectivePreview}</span>
           ) : (
             <span className={styles.emptyScore}>–</span>
           )}
@@ -89,23 +110,42 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
     <table className={styles.scoreTable}>
       <thead>
         <tr>
-          <th className={styles.playerHeader}>{playerName}</th>
-          <th className={styles.categoryHeader}></th>
-          <th className={styles.playerHeader}>{opponentName}</th>
+          <th className={styles.playerHeader}>{player.name}</th>
+          <th className={styles.categoryHeader}>
+            {isMyTurn && (
+              <button
+                disabled={!isMyTurn || !canSubmit}
+                className={styles.submitButton}
+                onClick={onSubmitTurn}
+              >
+                Submit turn
+              </button>
+            )}
+
+            {!isMyTurn && (
+              <div>
+                <LoadingIndicator />
+                <p className={styles.waitingMessage}>
+                  Waiting for {opponent.name}
+                </p>
+              </div>
+            )}
+          </th>
+          <th className={styles.playerHeader}>{opponent.name}</th>
         </tr>
       </thead>
       <tbody>
         {schoolCategories.map(renderRow)}
         <tr className={styles.sectionDivider}>
-          <td colSpan={3}></td>
+          <td colSpan={3} />
         </tr>
         {gameCategories.map(renderRow)}
       </tbody>
       <tfoot>
         <tr className={styles.totalRow}>
-          <td className={styles.totalScore}>{playerState.totalScore}</td>
+          <td className={styles.totalScore}>{player.state.totalScore}</td>
           <td className={styles.categoryName}>total</td>
-          <td className={styles.totalScore}>{opponentState.totalScore}</td>
+          <td className={styles.totalScore}>{opponent.state.totalScore}</td>
         </tr>
       </tfoot>
     </table>

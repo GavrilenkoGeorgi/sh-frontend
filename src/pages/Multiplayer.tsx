@@ -18,6 +18,7 @@ import OutgoingInvitesPanel from '../features/multiplayer/components/OutgoingInv
 import MultiplayerGameBoard from '../features/multiplayer/components/MultiplayerGameBoard'
 import MultiplayerGameEndModal from '../features/multiplayer/components/MultiplayerGameEndModal'
 import { useTranslation } from 'react-i18next'
+import { InviteButton } from '../features/multiplayer/components/InviteButton'
 
 const Multiplayer: FC = () => {
   const { t } = useTranslation()
@@ -84,18 +85,6 @@ const Multiplayer: FC = () => {
         </>
       )}
     </section>
-  )
-}
-
-interface InviteButtonProps {
-  onClick: () => void
-}
-
-const InviteButton: FC<InviteButtonProps> = ({ onClick }) => {
-  return (
-    <button onClick={onClick} className={styles.inviteButton}>
-      Invite
-    </button>
   )
 }
 

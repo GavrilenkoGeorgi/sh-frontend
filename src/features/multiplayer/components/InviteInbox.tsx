@@ -8,9 +8,11 @@ import {
 } from '../socket/multiplayerSocket'
 import type { IncomingInvite } from '../types'
 import * as styles from './InviteInbox.module.sass'
+import { useTranslation } from 'react-i18next'
 
 const InviteInbox: FC = () => {
   const { data } = useGetIncomingInvitesQuery()
+  const { t } = useTranslation()
 
   if (!data || data.invites.length === 0) {
     return null
@@ -18,7 +20,7 @@ const InviteInbox: FC = () => {
 
   return (
     <section className={styles.inviteInbox}>
-      <h2 className={styles.heading}>Incoming invites</h2>
+      <h2 className={styles.heading}>{t('ui.multiplayer.incomingInvites')}</h2>
       <ul className={styles.inviteList}>
         {data.invites.map((invite) => (
           <InviteItem key={invite.inviteId} invite={invite} />
@@ -34,6 +36,7 @@ interface InviteItemProps {
 
 const InviteItem: FC<InviteItemProps> = ({ invite }) => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const handleAccept = useCallback(() => {
     emitInviteAccept(invite.inviteId)
@@ -50,10 +53,10 @@ const InviteItem: FC<InviteItemProps> = ({ invite }) => {
       <span className={styles.fromUser}>{invite.fromUser.username}</span>
       <div className={styles.actions}>
         <button className={styles.acceptButton} onClick={handleAccept}>
-          Accept
+          {t('ui.buttonLabels.accept')}
         </button>
         <button className={styles.declineButton} onClick={handleDecline}>
-          Decline
+          {t('ui.buttonLabels.decline')}
         </button>
       </div>
     </li>

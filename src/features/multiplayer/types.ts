@@ -79,7 +79,7 @@ export interface MultiplayerGameState {
   turnNumber: number
   players: Record<string, MultiplayerPlayerState>
   winnerId?: string | null
-  endedReason?: 'completed' | 'disconnect'
+  endedReason?: 'completed' | 'disconnect' | 'school-incomplete'
 }
 
 export interface TurnMoveInput {
