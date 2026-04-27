@@ -1,12 +1,13 @@
 import { FC } from 'react'
 import { DragOverlay } from '@dnd-kit/core'
+import cx from 'classnames'
 import { useMultiplayerDiceBoard } from '../../../hooks/useMultiplayerDiceBoard'
 import { useDragHandlers } from '../../../hooks/useDragHandlers'
 import BoardSection from '../../../components/game/controls/BoardSection'
 import DiceItem from '../../../components/game/controls/DiceItem'
 import DnDContextWrapper from '../../../components/game/controls/DnDContextWrapper'
 import { dropAnimation } from '../../../components/game/controls/DnDHelpers'
-import { PlayButtonIcon } from '../../../components/game/controls/PlayButtonIcon'
+import RollActionButton from '../../../components/game/controls/RollActionButton'
 import { Portal } from '../../../components/layout/Portal'
 import * as styles from '../../../components/game/controls/DnDDiceBoard.module.sass'
 
@@ -59,13 +60,16 @@ const MultiplayerDnDDiceBoard: FC<MultiplayerDnDDiceBoardProps> = ({
 
   return (
     <div className={styles.controls} data-multiplayer>
-      <button
-        onClick={roll}
-        disabled={isLocked}
-        className={`${styles.rollButton} ${rollCount === 1 ? styles.rolled : ''} ${rollCount >= 2 ? styles.lastRoll : ''}`}
-      >
-        <PlayButtonIcon rollCount={rollCount} />
-      </button>
+      <RollActionButton
+        rollCount={rollCount}
+        isLocked={isLocked}
+        onRoll={roll}
+        className={cx(styles.rollButton, {
+          [styles.locked]: isLocked,
+          [styles.rolled]: rollCount === 1,
+          [styles.lastRoll]: rollCount >= 2
+        })}
+      />
       <div className={styles.boardSections}>
         <DnDContextWrapper
           onDragStart={handleDragStart}

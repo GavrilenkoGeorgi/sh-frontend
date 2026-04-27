@@ -85,9 +85,16 @@
   transition-property: background-color, color, border
   transition-duration: var(--duration-default)
   cursor: pointer
+  display: flex
+  align-items: center
+  justify-content: center
   @media screen and (min-width: variables.$medium)
     margin-top: 0
     width: variables.$controlsWidth + 1rem
+  > svg
+    pointer-events: none
+    user-select: none
+    -webkit-user-drag: none
 
 .rolled
   background-color: var(--color-primary-light)
