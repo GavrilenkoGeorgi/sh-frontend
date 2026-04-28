@@ -93,7 +93,21 @@
       "selectPlayerToInvite": "בחר שחקן להזמנה",
       "noSchoolCombination": "אין צירוף בית ספר שניתן להשיג.",
       "incomingInvites": "הזמנות נכנסות",
-      "outgoingInvites": "הזמנות יוצאות"
+      "outgoingInvites": "הזמנות יוצאות",
+      "opponent": "יריב",
+      "opponentDisconnected": "היריב התנתק",
+      "opponentLeft": "עזב את המשחק",
+      "gameOver": "המשחק הסתיים",
+      "tie": "תיקו!",
+      "tieMessage": "שניכם השגתם את אותו מספר נקודות.",
+      "youWon": "ניצחת!",
+      "youWonMessage": "מזל טוב! ניצחת את",
+      "youLost": "הפסדת!",
+      "youLostMessage": "לצערנו, הפסדת את",
+      "backToLobby": "חזרה ללובי",
+      "submitTurn": "שלח תור",
+      "schoolFailed": "בית הספר נכשל",
+      "total": "סה\"כ"
     }
   }
 }

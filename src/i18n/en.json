@@ -93,7 +93,21 @@
       "selectPlayerToInvite": "Select a player to invite",
       "noSchoolCombination": "No school combination can be scored.",
       "incomingInvites": "Incoming invites",
-      "outgoingInvites": "Outgoing invites"
+      "outgoingInvites": "Outgoing invites",
+      "opponent": "Opponent",
+      "opponentDisconnected": "Opponent disconnected",
+      "opponentLeft": "left the game",
+      "gameOver": "Game over",
+      "tie": "It's a tie!",
+      "tieMessage": "You both scored the same.",
+      "youWon": "You won!",
+      "youWonMessage": "Congratulations! You beat",
+      "youLost": "You lost",
+      "youLostMessage": "won this time.",
+      "backToLobby": "Back to lobby",
+      "submitTurn": "Submit turn",
+      "schoolFailed": "School failed",
+      "total": "total"
     }
   }
 }

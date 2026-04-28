@@ -93,7 +93,21 @@
       "selectPlayerToInvite": "Wähle einen Spieler aus, den du einladen möchtest",
       "noSchoolCombination": "Keine Schul-Kombination kann erzielt werden.",
       "incomingInvites": "Eingehende Einladungen",
-      "outgoingInvites": "Ausgehende Einladungen"
+      "outgoingInvites": "Ausgehende Einladungen",
+      "opponent": "Gegner",
+      "gameOver": "Spiel vorbei",
+      "opponentDisconnected": "Gegner getrennt",
+      "opponentLeft": "hat das Spiel verlassen",
+      "tie": "Unentschieden!",
+      "tieMessage": "Ihr habt beide die gleiche Punktzahl erzielt.",
+      "youWon": "Du hast gewonnen!",
+      "youWonMessage": "Glückwunsch! Du hast besiegt",
+      "youLost": "Du hast verloren",
+      "youLostMessage": "hast gewonnen.",
+      "backToLobby": "Zurück zur Lobby",
+      "submitTurn": "Zug abschicken",
+      "schoolFailed": "Schule fehlgeschlagen",
+      "total": "gesamt"
     }
   }
 }

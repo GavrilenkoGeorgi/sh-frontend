@@ -1,7 +1,8 @@
-import { FC } from 'react'
+import { FC, use } from 'react'
 import type { MultiplayerPlayerState, ScoreCategory } from '../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
 import LoadingIndicator from '../../../components/layout/LoadingIndicator'
+import { useTranslation } from 'react-i18next'
 
 const schoolCategories: ScoreCategory[] = [
   'ones',
@@ -32,10 +33,12 @@ interface ScoreCardParticipant {
 interface TurnControls {
   isMyTurn: boolean
   canSubmit: boolean
+  schoolFailed?: boolean
   previewScores?: Partial<Record<ScoreCategory, number>>
   selectedCategory?: ScoreCategory | null
   onCategorySelect?: (category: ScoreCategory) => void
   onSubmitTurn: () => void
+  onFailSchool?: () => void
 }
 
 interface MultiplayerScoreCardProps {
@@ -56,11 +59,14 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
   const {
     isMyTurn,
     canSubmit,
+    schoolFailed = false,
     previewScores = {},
     selectedCategory = null,
     onCategorySelect,
-    onSubmitTurn
+    onSubmitTurn,
+    onFailSchool
   } = turnControls
+  const { t } = useTranslation()
 
   const renderRow = (category: ScoreCategory) => {
     const playerScore = player.state.scoreCard[category]
@@ -112,21 +118,26 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
         <tr>
           <th className={styles.playerHeader}>{player.name}</th>
           <th className={styles.categoryHeader}>
-            {isMyTurn && (
+            {isMyTurn && !schoolFailed && (
               <button
-                disabled={!isMyTurn || !canSubmit}
+                disabled={!canSubmit}
                 className={styles.submitButton}
                 onClick={onSubmitTurn}
               >
-                Submit turn
+                {t('ui.multiplayer.submitTurn')}
+              </button>
+            )}
+
+            {isMyTurn && schoolFailed && (
+              <button className={styles.submitButton} onClick={onFailSchool}>
+                {t('ui.multiplayer.schoolFailed')}
               </button>
             )}
 
             {!isMyTurn && (
               <div>
-                <LoadingIndicator />
                 <p className={styles.waitingMessage}>
-                  Waiting for {opponent.name}
+                  <span>{opponent.name}</span> <LoadingIndicator />
                 </p>
               </div>
             )}
@@ -144,7 +155,7 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
       <tfoot>
         <tr className={styles.totalRow}>
           <td className={styles.totalScore}>{player.state.totalScore}</td>
-          <td className={styles.categoryName}>total</td>
+          <td className={styles.categoryName}>{t('ui.multiplayer.total')}</td>
           <td className={styles.totalScore}>{opponent.state.totalScore}</td>
         </tr>
       </tfoot>

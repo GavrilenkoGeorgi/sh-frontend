@@ -122,45 +122,48 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
     }
   }, [hasUnselectedScoringDice, dispatch, t])
 
+  useEffect(() => {
+    if (schoolFailed) {
+      dispatch(
+        setNotification({
+          msg: t('ui.multiplayer.noSchoolCombination'),
+          type: ToastTypes.WARNING
+        })
+      )
+    }
+  }, [schoolFailed, dispatch, t])
+
   if (!myState || !opponentState) {
     return null
   }
 
   return (
     <section className={styles.gameBoard}>
-      {schoolFailed && isMyTurn && (
-        <div className={styles.schoolFailedMessage}>
-          <p>{t('ui.multiplayer.noSchoolCombination')}</p>
-          <button className={styles.endButton} onClick={failSchool}>
-            {t('ui.buttonLabels.endGame')}
-          </button>
-        </div>
-      )}
       <MultiplayerScoreCard
         player={{ state: myState, name: 'You' }}
         opponent={{ state: opponentState, name: opponentToRender.username }}
         turnControls={{
           isMyTurn,
           canSubmit,
+          schoolFailed: isMyTurn ? schoolFailed : undefined,
           previewScores: isMyTurn ? previewScores : undefined,
           selectedCategory,
           onCategorySelect: isMyTurn ? selectCategory : undefined,
-          onSubmitTurn: submitTurn
+          onSubmitTurn: submitTurn,
+          onFailSchool: isMyTurn ? failSchool : undefined
         }}
       />
-      {isMyTurn && (
-        <div className={styles.diceControlsContainer}>
-          <MultiplayerDnDDiceBoard
-            dice={dice}
-            selectedIndices={selectedIndices}
-            rollCount={rollCount}
-            isLocked={isLocked}
-            selectDie={selectDie}
-            deselectDie={deselectDie}
-            roll={roll}
-          />
-        </div>
-      )}
+      <div className={styles.diceControlsContainer}>
+        <MultiplayerDnDDiceBoard
+          dice={isMyTurn ? dice : [0, 0, 0, 0, 0]}
+          selectedIndices={isMyTurn ? selectedIndices : []}
+          rollCount={isMyTurn ? rollCount : 0}
+          isLocked={!isMyTurn || isLocked}
+          selectDie={selectDie}
+          deselectDie={deselectDie}
+          roll={roll}
+        />
+      </div>
     </section>
   )
 }
