@@ -9,7 +9,7 @@ import * as styles from './DnDDiceBoard.module.sass'
 import { ToastTypes } from '../../../types'
 
 import SaveIcon from '../../../assets/svg/save-result.svg'
-import { PlayButtonIcon } from './PlayButtonIcon'
+import RollActionButton from './RollActionButton'
 import { useTranslation } from 'react-i18next'
 
 const MainButton: FC = () => {
@@ -23,31 +23,30 @@ const MainButton: FC = () => {
     dispatch(rollDice())
   }
 
-  const handleButtonClick = (e: React.MouseEvent): void => {
+  const handleLockedPress = (): void => {
     if (lock) {
-      e.preventDefault()
       dispatch(
         setNotification({
           msg: t('ui.toastMessages.saveWarning'),
           type: ToastTypes.SUCCESS
         })
       )
-    } else {
-      roll()
     }
   }
 
   return (
-    <button
-      onClick={handleButtonClick}
+    <RollActionButton
+      rollCount={rollCount}
+      isLocked={lock}
+      onRoll={roll}
+      onLockedPress={handleLockedPress}
+      lockedIcon={<SaveIcon />}
       className={cx(styles.rollButton, {
         [styles.locked]: lock,
         [styles.rolled]: rollCount === 1,
         [styles.lastRoll]: rollCount === 2
       })}
-    >
-      {lock ? <SaveIcon /> : <PlayButtonIcon rollCount={rollCount} />}
-    </button>
+    />
   )
 }
 

@@ -7,12 +7,14 @@ import {
   selectOpponent
 } from '../../../store/slices/multiplayerSlice'
 import * as styles from './MultiplayerGameBoard.module.sass'
+import { useTranslation } from 'react-i18next'
 
 const MultiplayerGameEndModal: FC = () => {
   const dispatch = useDispatch()
   const gameEndResult = useSelector(selectGameEndResult)
   const opponent = useSelector(selectOpponent)
   const currentUser = useSelector(selectCurrentUser)
+  const { t } = useTranslation()
 
   if (!gameEndResult) {
     return null
@@ -28,26 +30,26 @@ const MultiplayerGameEndModal: FC = () => {
     ? players?.[opponentPlayerId]?.totalScore
     : undefined
 
-  const opponentName = opponent?.username ?? 'opponent'
+  const opponentName = opponent?.username ?? t('ui.multiplayer.opponent')
 
-  let heading = 'Game over'
+  let heading = t('ui.multiplayer.gameOver')
   let message = ''
 
   if (gameEndResult.reason === 'opponent_disconnected') {
-    heading = 'Opponent disconnected'
-    message = `${opponentName} left the game.`
+    heading = t('ui.multiplayer.opponentDisconnected')
+    message = `${opponentName} ${t('ui.multiplayer.opponentLeft')}`
   } else if (
     gameEndResult.winnerId === undefined ||
     gameEndResult.winnerId === null
   ) {
-    heading = "It's a tie!"
-    message = 'You both scored the same.'
+    heading = t('ui.multiplayer.tie')
+    message = t('ui.multiplayer.tieMessage')
   } else if (gameEndResult.winnerId === myId) {
-    heading = 'You won!'
-    message = `Congratulations! You beat ${opponentName}.`
+    heading = t('ui.multiplayer.youWon')
+    message = `${t('ui.multiplayer.youWonMessage')} ${opponentName}`
   } else {
-    heading = 'You lost'
-    message = `${opponentName} won this time.`
+    heading = t('ui.multiplayer.youLost')
+    message = `${opponentName} ${t('ui.multiplayer.youLostMessage')}`
   }
 
   const handleBackToLobby = () => {
@@ -61,7 +63,7 @@ const MultiplayerGameEndModal: FC = () => {
         <p className={styles.endMessage}>{message}</p>
         {myScore !== undefined && opponentScore !== undefined && (
           <p className={styles.endScores}>
-            {myScore} - {opponentScore}
+            {myScore} : {opponentScore}
           </p>
         )}
         <button
@@ -69,7 +71,7 @@ const MultiplayerGameEndModal: FC = () => {
           className={styles.endButton}
           onClick={handleBackToLobby}
         >
-          Back to lobby
+          {t('ui.multiplayer.backToLobby')}
         </button>
       </div>
     </div>

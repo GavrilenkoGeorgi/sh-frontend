@@ -22,7 +22,11 @@
       "update": "Aktualisieren",
       "clearStats": "Statistik löschen",
       "sendEmail": "E-Mail senden",
-      "delete": "Löschen"
+      "delete": "Löschen",
+      "invite": "Einladen",
+      "accept": "Akzeptieren",
+      "decline": "Ablehnen",
+      "endGame": "Spiel beenden"
     },
     "navLinks": {
       "play": "Spielen",
@@ -52,7 +56,8 @@
       "recoveryEmailSent": "Eine E-Mail zum Zurücksetzen des Passworts wurde an deine Adresse gesendet, falls ein Konto mit dieser E-Mail existiert.",
       "accountDeleted": "Dein Konto wurde erfolgreich gelöscht. Wir hoffen, dich bald wiederzusehen!",
       "saveWarning": "Bitte wähle eine Kombination aus, um deine Spielergebnisse zu speichern.",
-      "profileUpdated": "Profil erfolgreich aktualisiert!"
+      "profileUpdated": "Profil erfolgreich aktualisiert!",
+      "schoolCheck": "Du hast Würfel, die eine Schul-Kombination erzielen können."
     },
     "theme": {
       "system": "Design: System",
@@ -85,7 +90,24 @@
     },
     "multiplayer": {
       "noPlayersOnline": "Keine anderen Spieler online",
-      "selectPlayerToInvite": "Wähle einen Spieler aus, den du einladen möchtest"
+      "selectPlayerToInvite": "Wähle einen Spieler aus, den du einladen möchtest",
+      "noSchoolCombination": "Keine Schul-Kombination kann erzielt werden.",
+      "incomingInvites": "Eingehende Einladungen",
+      "outgoingInvites": "Ausgehende Einladungen",
+      "opponent": "Gegner",
+      "gameOver": "Spiel vorbei",
+      "opponentDisconnected": "Gegner getrennt",
+      "opponentLeft": "hat das Spiel verlassen",
+      "tie": "Unentschieden!",
+      "tieMessage": "Ihr habt beide die gleiche Punktzahl erzielt.",
+      "youWon": "Du hast gewonnen!",
+      "youWonMessage": "Glückwunsch! Du hast besiegt",
+      "youLost": "Du hast verloren",
+      "youLostMessage": "hast gewonnen.",
+      "backToLobby": "Zurück zur Lobby",
+      "submitTurn": "Zug abschicken",
+      "schoolFailed": "Schule fehlgeschlagen",
+      "total": "gesamt"
     }
   }
 }

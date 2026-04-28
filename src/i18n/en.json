@@ -22,7 +22,11 @@
       "update": "Update",
       "clearStats": "Clear stats",
       "sendEmail": "Send email",
-      "delete": "Delete"
+      "delete": "Delete",
+      "invite": "Invite",
+      "accept": "Accept",
+      "decline": "Decline",
+      "endGame": "End game"
     },
     "navLinks": {
       "play": "Play",
@@ -52,7 +56,8 @@
       "recoveryEmailSent": "A password recovery email has been sent to your address if an account with that email exists.",
       "accountDeleted": "Your account has been deleted successfully. We hope to see you again!",
       "saveWarning": "Please select a combination to save your game results.",
-      "profileUpdated": "Profile updated successfully!"
+      "profileUpdated": "Profile updated successfully!",
+      "schoolCheck": "You have dice that can score a school combination."
     },
     "theme": {
       "system": "Theme: system",
@@ -85,7 +90,24 @@
     },
     "multiplayer": {
       "noPlayersOnline": "No other players online",
-      "selectPlayerToInvite": "Select a player to invite"
+      "selectPlayerToInvite": "Select a player to invite",
+      "noSchoolCombination": "No school combination can be scored.",
+      "incomingInvites": "Incoming invites",
+      "outgoingInvites": "Outgoing invites",
+      "opponent": "Opponent",
+      "opponentDisconnected": "Opponent disconnected",
+      "opponentLeft": "left the game",
+      "gameOver": "Game over",
+      "tie": "It's a tie!",
+      "tieMessage": "You both scored the same.",
+      "youWon": "You won!",
+      "youWonMessage": "Congratulations! You beat",
+      "youLost": "You lost",
+      "youLostMessage": "won this time.",
+      "backToLobby": "Back to lobby",
+      "submitTurn": "Submit turn",
+      "schoolFailed": "School failed",
+      "total": "total"
     }
   }
 }

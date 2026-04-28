@@ -16,6 +16,8 @@ export const PlayButtonIcon: FC<ButtonIconProps> = ({ rollCount = 0 }) => {
       strokeWidth="1"
       strokeLinecap="round"
       strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
     >
       {rollCount === 0 && <line x1="6" y1="8" x2="6" y2="16" />}
       {rollCount <= 1 && <line x1="8" y1="8" x2="8" y2="16" />}

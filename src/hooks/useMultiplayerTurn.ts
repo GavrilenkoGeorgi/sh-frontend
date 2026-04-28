@@ -1,6 +1,9 @@
 import { useState, useCallback, useMemo } from 'react'
 import ShScore from '../utils/sh-score'
-import { emitSubmitTurn } from '../features/multiplayer/socket/multiplayerSocket'
+import {
+  emitSubmitTurn,
+  emitSchoolFailed
+} from '../features/multiplayer/socket/multiplayerSocket'
 import type {
   ScoreCategory,
   MultiplayerPlayerState,
@@ -63,7 +66,15 @@ export const useMultiplayerTurn = (
     [playerState?.usedCategories]
   )
 
+  const isInSchoolPhase = useMemo(() => {
+    const usedSchoolCount = schoolCategories.filter((c) =>
+      usedCategories.has(c)
+    ).length
+    return usedSchoolCount < 6
+  }, [usedCategories])
+
   // compute preview scores based on currently selected dice values
+  // during school phase only school categories are shown, afterwards only game categories
   const previewScores = useMemo<Partial<Record<ScoreCategory, number>>>(() => {
     if (rollCount === 0 || !isMyTurn) return {}
 
@@ -72,25 +83,53 @@ export const useMultiplayerTurn = (
 
     const scores: Partial<Record<ScoreCategory, number>> = {}
 
-    // school scores
-    const schoolScores = ShScore.getSchoolScore(selectedValues)
-    schoolCategories.forEach((category, index) => {
-      if (!usedCategories.has(category) && schoolScores[index] !== null) {
-        scores[category] = schoolScores[index] as number
-      }
-    })
-
-    // game combination scores
-    const sorted = ShScore.sort(selectedValues)
-    const combinationScores: iCombination = ShScore.getScore(sorted)
-    gameCategories.forEach((category) => {
-      if (!usedCategories.has(category)) {
-        scores[category] = combinationScores[category as keyof iCombination]
-      }
-    })
+    if (isInSchoolPhase) {
+      // school phase: only school scores
+      const schoolScores = ShScore.getSchoolScore(selectedValues)
+      schoolCategories.forEach((category, index) => {
+        if (!usedCategories.has(category) && schoolScores[index] !== null) {
+          scores[category] = schoolScores[index] as number
+        }
+      })
+    } else {
+      // game phase: only game combination scores
+      const sorted = ShScore.sort(selectedValues)
+      const combinationScores: iCombination = ShScore.getScore(sorted)
+      gameCategories.forEach((category) => {
+        if (!usedCategories.has(category)) {
+          scores[category] = combinationScores[category as keyof iCombination]
+        }
+      })
+    }
 
     return scores
-  }, [dice, selectedIndices, rollCount, isMyTurn, usedCategories])
+  }, [
+    dice,
+    selectedIndices,
+    rollCount,
+    isMyTurn,
+    usedCategories,
+    isInSchoolPhase
+  ])
+
+  // check whether any remaining school category can be scored from ALL rolled dice
+  // mirrors single-player gameOver: checks the full roll, not just selected dice
+  const canScoreFromAllDice = useMemo(() => {
+    if (!isInSchoolPhase || rollCount === 0) return false
+    const schoolScores = ShScore.getSchoolScore(dice)
+    return schoolCategories.some(
+      (category, index) =>
+        !usedCategories.has(category) && schoolScores[index] !== null
+    )
+  }, [isInSchoolPhase, rollCount, dice, usedCategories])
+
+  // true when locked, school phase, and no die in the roll can score any remaining school category
+  const schoolFailed =
+    isLocked && isInSchoolPhase && rollCount > 0 && !canScoreFromAllDice
+
+  // true when locked, school phase, but the roll does contain scoreable dice — user hasn't selected them yet
+  const hasUnselectedScoringDice =
+    isLocked && isInSchoolPhase && canScoreFromAllDice
 
   const roll = useCallback(() => {
     if (!isMyTurn || rollCount >= MAX_ROLLS) return
@@ -176,6 +215,12 @@ export const useMultiplayerTurn = (
     resetTurn
   ])
 
+  const failSchool = useCallback(() => {
+    if (!gameId) return
+    emitSchoolFailed(gameId)
+    resetTurn()
+  }, [gameId, resetTurn])
+
   return {
     dice,
     selectedIndices,
@@ -183,12 +228,16 @@ export const useMultiplayerTurn = (
     selectedCategory,
     previewScores,
     isLocked,
+    isInSchoolPhase,
+    schoolFailed,
+    hasUnselectedScoringDice,
     canSubmit,
     roll,
     selectDie,
     deselectDie,
     selectCategory,
     submitTurn,
+    failSchool,
     resetTurn
   }
 }

@@ -101,6 +101,22 @@ Run TypeScript checks:
 npm run type-check
 ```
 
+## Multiplayer Board Debug Mode
+
+When working on multiplayer board styles, you can force-render the board without
+starting a real multiplayer game.
+
+- open the multiplayer route with `?forceBoard=1`:
+  `http://localhost:3000/multiplayer?forceBoard=1`
+- or enable it via local storage in browser devtools:
+  `localStorage.setItem('sh.forceMultiplayerBoard', '1')`
+
+Notes:
+
+- this is development-only (`NODE_ENV=development`)
+- if there is no active game, the app renders a local preview game state for UI work
+- disable with `localStorage.removeItem('sh.forceMultiplayerBoard')`
+
 ## Build and Deployment
 
 - Production build is generated with Webpack in `dist`.

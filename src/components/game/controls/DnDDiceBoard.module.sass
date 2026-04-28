@@ -5,6 +5,26 @@
     display: flex
     gap: .6rem
 
+// multiplayer overrides: keep mobile layout on desktop
+.controls[data-multiplayer]
+  @media screen and (min-width: variables.$medium)
+    display: block
+
+.controls[data-multiplayer] .boardSections
+  @media screen and (min-width: variables.$medium)
+    flex-direction: row
+    height: auto
+    margin-top: .5rem
+
+.controls[data-multiplayer] .rollButton
+  @media screen and (min-width: variables.$medium)
+    width: 100%
+
+.controls[data-multiplayer] .items
+  @media screen and (min-width: variables.$medium)
+    flex-direction: row
+    max-width: 100%
+
 .boardSections
   display: flex
   justify-content: space-between
@@ -18,9 +38,10 @@
 
 .boardSections > div
   padding: .5rem
-  min-width: variables.$emptyDropZoneWidth
-  @media screen and (max-width: variables.$medium)
-    min-height: variables.$diceMaxHeight
+  // min-width: variables.$emptyDropZoneWidth
+  min-height: variables.$diceMaxHeight
+  /* @media screen and (max-width: variables.$medium)
+    min-height: variables.$diceMaxHeight */
 
 
 .board
@@ -65,9 +86,16 @@
   transition-property: background-color, color, border
   transition-duration: var(--duration-default)
   cursor: pointer
+  display: flex
+  align-items: center
+  justify-content: center
   @media screen and (min-width: variables.$medium)
     margin-top: 0
     width: variables.$controlsWidth + 1rem
+  > svg
+    pointer-events: none
+    user-select: none
+    -webkit-user-drag: none
 
 .rolled
   background-color: var(--color-primary-light)

@@ -55,3 +55,7 @@ export const emitSubmitTurn = (
 ) => {
   multiplayerSocket.emit('game:submit-turn', { gameId, move })
 }
+
+export const emitSchoolFailed = (gameId: string) => {
+  multiplayerSocket.emit('game:school-failed', { gameId })
+}
