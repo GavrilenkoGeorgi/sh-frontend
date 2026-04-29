@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { type RootState } from '../store'
 import {
@@ -22,9 +22,12 @@ export const useDiceBoard = () => {
 
   const [diceState, setDiceState] = useState<Dice[]>(diceArray)
   const [hasNewRoll, setHasNewRoll] = useState<boolean>(false)
-  const [rollCount, setRollCount] = useState<number>(0)
   const [boardSections, setBoardSections] = useState<BoardSections>(() =>
     initializeBoard(diceArray)
+  )
+  const prevRollCountRef = useRef(game.rollCount)
+  const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
   )
 
   const restoreDiceStateFromRedux = useCallback(() => {
@@ -94,6 +97,10 @@ export const useDiceBoard = () => {
     setBoardSections(init)
     setDiceState(resetDiceArray)
     setHasNewRoll(false)
+    if (animationTimeoutRef.current != null) {
+      clearTimeout(animationTimeoutRef.current)
+      animationTimeoutRef.current = null
+    }
   }, [])
 
   // sync with Redux state changes
@@ -102,6 +109,10 @@ export const useDiceBoard = () => {
     const holdDice = diceState.filter(
       (item) => item.status === DiceStatus.SELECTED
     )
+    const isNewRoll =
+      game.rollCount > 0 && game.rollCount > prevRollCountRef.current
+
+    prevRollCountRef.current = game.rollCount
 
     // build roll dice from non-selected positions
     const nonSelectedEntries = game.roll
@@ -127,10 +138,14 @@ export const useDiceBoard = () => {
       value: game.roll[dieIndex]
     }))
 
-    if (hasRollChanges || holdDice.length !== updatedSelectedDice.length) {
+    if (
+      isNewRoll ||
+      hasRollChanges ||
+      holdDice.length !== updatedSelectedDice.length
+    ) {
       const newDiceState = [...updatedSelectedDice, ...updatedRollDice]
       setDiceState(newDiceState)
-      setHasNewRoll(hasRollChanges && game.roll.some((val) => val > 0))
+      setHasNewRoll(isNewRoll)
 
       setBoardSections((prevBoardSections) => ({
         ...prevBoardSections,
@@ -167,12 +182,25 @@ export const useDiceBoard = () => {
       }))
 
       // reset animation flag after animation completes
-      if (hasRollChanges && game.roll.some((val) => val > 0)) {
-        setRollCount((prev) => prev + 1)
-        setTimeout(() => setHasNewRoll(false), ANIMATION_DURATION)
+      if (isNewRoll) {
+        if (animationTimeoutRef.current != null) {
+          clearTimeout(animationTimeoutRef.current)
+        }
+        animationTimeoutRef.current = setTimeout(() => {
+          setHasNewRoll(false)
+          animationTimeoutRef.current = null
+        }, ANIMATION_DURATION)
       }
     }
-  }, [game.roll, game.selection, game.selectionOrder, diceState])
+  }, [game.roll, game.selection, game.selectionOrder, game.rollCount, diceState])
+
+  useEffect(() => {
+    return () => {
+      if (animationTimeoutRef.current != null) {
+        clearTimeout(animationTimeoutRef.current)
+      }
+    }
+  }, [])
 
   // reset board when game is saved or over
   useEffect(() => {
@@ -192,7 +220,7 @@ export const useDiceBoard = () => {
     boardSections,
     setBoardSections,
     hasNewRoll,
-    rollCount,
+    rollCount: game.rollCount,
     restoreDiceStateFromRedux,
     handleDiceSelection,
     handleDiceDeselection,

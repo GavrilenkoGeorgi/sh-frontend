@@ -24,6 +24,9 @@ export const useMultiplayerDiceBoard = (
   )
   const [hasNewRoll, setHasNewRoll] = useState(false)
   const prevRollCountRef = useRef(rollCount)
+  const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  )
 
   useEffect(() => {
     const selectedDice: Dice[] = selectedIndices.map((idx) => ({
@@ -43,7 +46,7 @@ export const useMultiplayerDiceBoard = (
 
     setDiceState([...selectedDice, ...rollDice])
 
-    const isNewRoll = rollCount !== prevRollCountRef.current
+    const isNewRoll = rollCount > 0 && rollCount > prevRollCountRef.current
     prevRollCountRef.current = rollCount
 
     setBoardSections((prev) => {
@@ -65,15 +68,25 @@ export const useMultiplayerDiceBoard = (
       return { selected: selectedDice, roll: rollDice }
     })
 
-    let timer: ReturnType<typeof setTimeout> | null = null
     if (isNewRoll) {
       setHasNewRoll(true)
-      timer = setTimeout(() => setHasNewRoll(false), ANIMATION_DURATION)
-    }
-    return () => {
-      if (timer) clearTimeout(timer)
+      if (animationTimeoutRef.current != null) {
+        clearTimeout(animationTimeoutRef.current)
+      }
+      animationTimeoutRef.current = setTimeout(() => {
+        setHasNewRoll(false)
+        animationTimeoutRef.current = null
+      }, ANIMATION_DURATION)
     }
   }, [dice, selectedIndices, rollCount])
+
+  useEffect(() => {
+    return () => {
+      if (animationTimeoutRef.current != null) {
+        clearTimeout(animationTimeoutRef.current)
+      }
+    }
+  }, [])
 
   const handleDiceSelection = useCallback(
     (diceIndex: number) => {

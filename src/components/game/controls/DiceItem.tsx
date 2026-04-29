@@ -8,14 +8,14 @@ interface DiceItemProps {
   dice: Dice
   isDragging?: boolean
   shouldAnimate?: boolean
-  rollCount?: number
+  rollAnimationKey?: number
 }
 
 const DiceItem = ({
   dice,
   isDragging = false,
   shouldAnimate = false,
-  rollCount = 0
+  rollAnimationKey = 0
 }: DiceItemProps): React.JSX.Element => {
   const animationProps: Pick<
     HTMLMotionProps<'div'>,
@@ -34,7 +34,7 @@ const DiceItem = ({
 
   return (
     <motion.div
-      key={shouldAnimate ? `roll-${rollCount}` : 'static'}
+      key={shouldAnimate ? `roll-${rollAnimationKey}` : 'static'}
       {...animationProps}
     >
       <div className={styles.dice}>
