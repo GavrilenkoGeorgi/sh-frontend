@@ -57,14 +57,27 @@ const StatsPage: FC = () => {
             <aside>
               <h4>School scores</h4>
               <div className={styles.hChart}>
-                <AreaChart data={formatDateChartAxisData(data.schoolScores)} />
+                <AreaChart
+                  data={formatDateChartAxisData(data.schoolScores)}
+                  syncId="shStats"
+                  referenceValue={
+                    data.schoolScores.reduce(
+                      (sum, item) => sum + item.value,
+                      0
+                    ) / (data.schoolScores.length || 1)
+                  }
+                />
               </div>
             </aside>
 
             <aside>
               <h4>Scores</h4>
               <div className={styles.hChart}>
-                <AreaChart data={formatDateChartAxisData(data.scores)} />
+                <AreaChart
+                  data={formatDateChartAxisData(data.scores)}
+                  syncId="shStats"
+                  referenceValue={data.average}
+                />
               </div>
             </aside>
 

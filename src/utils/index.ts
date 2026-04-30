@@ -20,7 +20,7 @@ export const formatDateChartAxisData = (
   data: ChartAxisData[]
 ): ChartAxisData[] =>
   data.map((item) => ({
-    id: format(new Date(item.id), 'kk:mm MMM do'),
+    id: format(new Date(item.id), 'HH:mm MMM do'),
     value: item.value
   }))
 
