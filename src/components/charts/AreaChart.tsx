@@ -74,7 +74,7 @@ const Chart: FC<ChartProps> = ({ data, syncId, referenceValue }) => {
             </feMerge>
           </filter>
         </defs>
-        <CartesianGrid strokeDasharray="4 6" strokeWidth={0.6} />
+        <CartesianGrid strokeDasharray="4 6" strokeWidth={0.5} />
         <XAxis dataKey="id" hide />
         <YAxis
           tickCount={4}
@@ -88,8 +88,8 @@ const Chart: FC<ChartProps> = ({ data, syncId, referenceValue }) => {
           <ReferenceLine
             y={referenceValue}
             stroke={chartColors.primaryMuted}
-            strokeDasharray="6 3"
-            strokeWidth={1}
+            strokeDasharray="6 4"
+            strokeWidth={0.5}
           />
         )}
         <Area

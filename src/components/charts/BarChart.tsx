@@ -19,7 +19,7 @@ export const tickStyles = {
 
 const Chart: FC<ChartProps> = ({ data }) => {
   const margin = {
-    top: 0,
+    top: 10,
     right: 30,
     left: -10,
     bottom: 10
@@ -55,7 +55,7 @@ const Chart: FC<ChartProps> = ({ data }) => {
           style={tickStyles}
         />
         <YAxis
-          tickCount={3}
+          tickCount={5}
           tickSize={0}
           tickMargin={10}
           axisLine={false}
