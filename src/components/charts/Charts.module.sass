@@ -1,2 +1,26 @@
 .axisTicks
   opacity: .75
+
+.customTooltip
+  background: var(--color-surface)
+  border-radius: .5rem
+  box-shadow: 0 4px 16px var(--color-chart-shadow)
+  padding: .25rem .5rem
+  border: 1px solid var(--color-chart-border)
+  display: inline-block
+
+.tooltipLabel
+  color: var(--color-primary)
+  font-weight: bold
+  font-size: .8rem
+  margin: 0 0 .15rem
+
+.tooltipValue
+  color: var(--color-text-dim)
+  font-size: .9rem
+  margin: 0
+
+// recharts renders focusable SVG elements; suppress the browser focus ring on click
+:global(.recharts-wrapper),
+:global(.recharts-wrapper) *
+  outline: none

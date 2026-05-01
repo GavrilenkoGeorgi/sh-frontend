@@ -14,75 +14,87 @@ const StatsPage: FC = () => {
 
   if (!data || isLoading) return <Fallback />
 
+  if (data.games === 0)
+    return <h2 className={styles.noGames}>No games played yet</h2>
+
+  // TODO: calculate on backend and send as part of the response
+  const schoolAverage =
+    data.schoolScores.reduce((sum, item) => sum + item.value, 0) /
+    (data.schoolScores.length || 1)
+
   return (
     <section className={sharedStyles.contentPage}>
       <div className={styles.stats}>
         <h1>Stats</h1>
-        {data.games === 0 ? (
-          <h2 className={styles.noGames}>No games played yet</h2>
-        ) : (
-          <>
-            <h2>
-              Highest score:{' '}
-              <span>
-                <CountUp start={0} end={data.max} delay={0.75} duration={3} />
-              </span>
-            </h2>
 
-            <h3>
-              Average:&nbsp;
-              <span>
-                <CountUp
-                  start={0}
-                  end={data.average}
-                  delay={1.25}
-                  duration={3}
-                />
-              </span>{' '}
-              which is&nbsp;
-              <span>
-                <CountUp
-                  start={0}
-                  end={data.percentFromMax}
-                  delay={1.75}
-                  duration={4}
-                  suffix="%"
-                />
-              </span>{' '}
-              from max
-            </h3>
+        <h2>
+          Highest score:{' '}
+          <span className={styles.threeNums}>
+            <CountUp start={0} end={data.max} delay={0.75} duration={3} />
+          </span>
+        </h2>
 
-            <h4>{data.games} games so far</h4>
+        <h3>
+          Average:&nbsp;
+          <span className={styles.threeNums}>
+            <CountUp start={0} end={data.average} delay={1.25} duration={3} />
+          </span>{' '}
+          which is&nbsp;
+          <span className={styles.threeNums}>
+            <CountUp
+              start={0}
+              end={data.percentFromMax}
+              delay={1.75}
+              duration={4}
+              suffix="%"
+            />
+          </span>{' '}
+          from max
+        </h3>
 
-            <aside>
-              <h4>School scores</h4>
-              <div className={styles.hChart}>
-                <AreaChart data={formatDateChartAxisData(data.schoolScores)} />
-              </div>
-            </aside>
+        <h4>{data.games} games so far</h4>
 
-            <aside>
-              <h4>Scores</h4>
-              <div className={styles.hChart}>
-                <AreaChart data={formatDateChartAxisData(data.scores)} />
-              </div>
-            </aside>
+        <aside>
+          <h4>School scores</h4>
+          <div className={styles.hChart}>
+            <AreaChart
+              data={formatDateChartAxisData(data.schoolScores)}
+              syncId="shStats"
+              referenceValue={schoolAverage}
+            />
+          </div>
+        </aside>
 
-            <aside>
-              <h4>Fav dice values</h4>
-              <div className={styles.hChart}>
-                <BarChart data={formatLabelChartAxisData(data.favDiceValues)} />
-              </div>
-            </aside>
+        <aside>
+          <h4>Scores</h4>
+          <div className={styles.hChart}>
+            <AreaChart
+              data={formatDateChartAxisData(data.scores)}
+              syncId="shStats"
+              referenceValue={data.average}
+            />
+          </div>
+        </aside>
 
-            <aside>
-              <h4>Freq combinations</h4>
-              <div className={styles.sChart}>
-                <VertBarChart data={formatLabelChartAxisData(data.favComb)} />
-              </div>
-            </aside>
-          </>
-        )}
+        <aside>
+          <h4>
+            Favourite
+            <br /> dice values
+          </h4>
+          <div className={styles.hChart}>
+            <BarChart data={formatLabelChartAxisData(data.favDiceValues)} />
+          </div>
+        </aside>
+
+        <aside>
+          <h4>
+            Favourite
+            <br /> combinations
+          </h4>
+          <div className={styles.sChart}>
+            <VertBarChart data={formatLabelChartAxisData(data.favComb)} />
+          </div>
+        </aside>
       </div>
     </section>
   )

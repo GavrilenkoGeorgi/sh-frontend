@@ -71,6 +71,8 @@ export interface ChartAxisData {
 
 export interface ChartProps {
   data: ChartAxisData[]
+  syncId?: string
+  referenceValue?: number
 }
 
 export interface CanSaveProps {
