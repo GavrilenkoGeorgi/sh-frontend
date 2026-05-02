@@ -20,7 +20,7 @@ const Login: FC = () => {
           viewTransition
           aria-label="Forgot password"
         >
-          Forgot password?
+          {t('pages.login.forgotPassword')}
         </Link>
       </aside>
     </section>

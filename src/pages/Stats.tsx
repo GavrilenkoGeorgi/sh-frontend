@@ -1,5 +1,6 @@
 import { type FC } from 'react'
 import CountUp from 'react-countup'
+import { useTranslation } from 'react-i18next'
 import { useGetStatsQuery } from '../store/slices/gameApiSlice'
 import { formatDateChartAxisData, formatLabelChartAxisData } from '../utils'
 import AreaChart from '../components/charts/AreaChart'
@@ -11,11 +12,12 @@ import Fallback from '../components/layout/Fallback'
 
 const StatsPage: FC = () => {
   const { data, isLoading } = useGetStatsQuery()
+  const { t } = useTranslation()
 
   if (!data || isLoading) return <Fallback />
 
   if (data.games === 0)
-    return <h2 className={styles.noGames}>No games played yet</h2>
+    return <h2 className={styles.noGames}>{t('pages.stats.noGames')}</h2>
 
   // TODO: calculate on backend and send as part of the response
   const schoolAverage =
@@ -25,21 +27,21 @@ const StatsPage: FC = () => {
   return (
     <section className={sharedStyles.contentPage}>
       <div className={styles.stats}>
-        <h1>Stats</h1>
+        <h1>{t('pages.stats.title')}</h1>
 
         <h2>
-          Highest score:{' '}
+          {t('pages.stats.highestScoreLabel')}{' '}
           <span className={styles.threeNums}>
             <CountUp start={0} end={data.max} delay={0.75} duration={3} />
           </span>
         </h2>
 
         <h3>
-          Average:&nbsp;
+          {t('pages.stats.averageLabel')}&nbsp;
           <span className={styles.threeNums}>
             <CountUp start={0} end={data.average} delay={1.25} duration={3} />
           </span>{' '}
-          which is&nbsp;
+          {t('pages.stats.averageWhichIs')}&nbsp;
           <span className={styles.threeNums}>
             <CountUp
               start={0}
@@ -49,13 +51,13 @@ const StatsPage: FC = () => {
               suffix="%"
             />
           </span>{' '}
-          from max
+          {t('pages.stats.averageFromMax')}
         </h3>
 
-        <h4>{data.games} games so far</h4>
+        <h4>{t('pages.stats.gamesSoFar', { count: data.games })}</h4>
 
         <aside>
-          <h4>School scores</h4>
+          <h4>{t('pages.stats.schoolScores')}</h4>
           <div className={styles.hChart}>
             <AreaChart
               data={formatDateChartAxisData(data.schoolScores)}
@@ -66,7 +68,7 @@ const StatsPage: FC = () => {
         </aside>
 
         <aside>
-          <h4>Scores</h4>
+          <h4>{t('pages.stats.scores')}</h4>
           <div className={styles.hChart}>
             <AreaChart
               data={formatDateChartAxisData(data.scores)}
@@ -78,8 +80,8 @@ const StatsPage: FC = () => {
 
         <aside>
           <h4>
-            Favourite
-            <br /> dice values
+            {t('pages.stats.favouriteDiceValuesLine1')}
+            <br /> {t('pages.stats.favouriteDiceValuesLine2')}
           </h4>
           <div className={styles.hChart}>
             <BarChart data={formatLabelChartAxisData(data.favDiceValues)} />
@@ -88,8 +90,8 @@ const StatsPage: FC = () => {
 
         <aside>
           <h4>
-            Favourite
-            <br /> combinations
+            {t('pages.stats.favouriteCombinationsLine1')}
+            <br /> {t('pages.stats.favouriteCombinationsLine2')}
           </h4>
           <div className={styles.sChart}>
             <VertBarChart data={formatLabelChartAxisData(data.favComb)} />
