@@ -107,7 +107,85 @@
       "backToLobby": "Zurück zur Lobby",
       "submitTurn": "Zug abschicken",
       "schoolFailed": "Schule fehlgeschlagen",
-      "total": "gesamt"
+      "total": "gesamt",
+      "yourTurn": "Dein",
+      "opponentTurn": "{{name}}s",
+      "turn": "Zug"
+    }
+  },
+  "pages": {
+    "main": {
+      "greeting": "Hallo, Anonym!",
+      "intro": "Du kannst <1>unregistriert spielen</1>, aber du wirst nicht in der Lage sein, die Ergebnisse zu speichern oder die Statistiken anderer Spieler einzusehen. Erwäge, dich zu <3>registrieren</3>."
+    },
+    "login": {
+      "forgotPassword": "Passwort vergessen?"
+    },
+    "profile": {
+      "accountManagement": "Möchtest du dein <1>Konto löschen</1> oder deine <3>Statistik löschen</3>?"
+    },
+    "help": {
+      "title": "Hilfe",
+      "intro": "Jeder Zug besteht aus maximal drei Würfen — der erste Wurf erfolgt mit allen fünf Würfeln. Wenn der Spieler einen zweiten und dritten Wurf wählt, kann er beliebig viele Würfel aufnehmen und verwenden, sofern beim letzten Wurf ein Ergebnis genommen wird. Es ist der geschickte Einsatz dieser zwei optionalen Würfe, der einen ungewöhnlichen ersten oder zweiten Wurf in eine punktereiche Runde verwandeln kann. Mach eine <1></1>, um zu sehen, wie das Spiel in der Praxis funktioniert.",
+      "tourButtonLabel": "Tour",
+      "exampleScoresHeading": "Einige Beispielpunkte",
+      "schoolHeading": "Schule",
+      "gameHeading": "Spiel"
+    },
+    "privacy": {
+      "title": "Datenschutzrichtlinie für Sharlushka Dice Game",
+      "lastUpdated": "Zuletzt aktualisiert: 13.12.2023",
+      "intro": "Danke, dass du Sharlushka Dice Game ('wir', 'uns' oder 'unser') verwendest. Wir sind verpflichtet, deine persönlichen Daten und dein Recht auf Privatsphäre zu schützen. Wenn du Fragen oder Bedenken zu unserer Richtlinie hast, kontaktiere uns bitte unter <1>gavrilenko.georgi@gmail.com</1>. Durch die Nutzung von Sharlushka Dice Game stimmst du den Bedingungen dieser Datenschutzrichtlinie zu. Bitte nimm dir die Zeit, die folgenden Informationen durchzulesen.",
+      "infoWeCollect": {
+        "heading": "Informationen, die wir sammeln",
+        "personalInfoHeading": "1. Persönliche Informationen",
+        "personalInfoText": "Um dir Zugang zu bestimmten Funktionen des Spiels zu ermöglichen und dir das Speichern deiner Ergebnisse zu erlauben, können wir folgende persönliche Informationen erfassen:",
+        "personalInfoItems": ["Name", "E-Mail-Adresse"],
+        "autoCollectedHeading": "2. Automatisch erfasste Informationen",
+        "autoCollectedText": "Zusätzlich zu den oben genannten persönlichen Informationen können wir auch bestimmte Informationen automatisch erfassen, wenn du unsere Anwendung nutzt. Dazu können die IP-Adresse deines Geräts, das Betriebssystem, der Browsertyp und andere technische Informationen gehören."
+      },
+      "howWeUse": {
+        "heading": "Wie wir deine Informationen verwenden",
+        "intro": "Wir verwenden die gesammelten Informationen für folgende Zwecke:",
+        "items": [
+          "Zur Erstellung und Verwaltung von Benutzerkonten.",
+          "Zur Bereitstellung und Aufrechterhaltung unserer Dienste.",
+          "Zur Verbesserung und Personalisierung der Benutzererfahrung.",
+          "Zur Kommunikation mit Nutzern über ihre Konten und zur Bereitstellung von Kundensupport.",
+          "Zur Überwachung der Nutzung unserer Dienste und zur Erkennung, Verhinderung und Behebung technischer Probleme."
+        ]
+      },
+      "sharing": {
+        "heading": "Weitergabe deiner Informationen",
+        "text": "Wir verkaufen oder teilen deine persönlichen Daten nicht mit Dritten, außer wie in dieser Datenschutzrichtlinie beschrieben."
+      },
+      "security": {
+        "heading": "Sicherheit",
+        "text": "Wir ergreifen angemessene Maßnahmen zum Schutz deiner persönlichen Daten vor unbefugtem Zugriff oder Offenlegung. Allerdings ist keine Übertragungsmethode über das Internet oder elektronische Speicherung vollständig sicher, daher können wir keine absolute Sicherheit garantieren."
+      },
+      "changes": {
+        "heading": "Änderungen dieser Datenschutzrichtlinie",
+        "text": "Wir können unsere Datenschutzrichtlinie von Zeit zu Zeit aktualisieren. Änderungen werden auf dieser Seite mit einem aktualisierten Datum veröffentlicht. Es liegt in deiner Verantwortung, diese Seite regelmäßig auf Änderungen zu überprüfen."
+      },
+      "contact": {
+        "heading": "Kontakt",
+        "text": "Wenn du Fragen zu dieser Datenschutzrichtlinie hast, kontaktiere uns bitte unter <1>gavrilenko.georgi@gmail.com</1>."
+      }
+    },
+    "stats": {
+      "title": "Statistik",
+      "noGames": "Noch keine Spiele gespielt",
+      "highestScoreLabel": "Höchste Punktzahl:",
+      "averageLabel": "Durchschnitt:",
+      "averageWhichIs": "was",
+      "averageFromMax": "vom Maximum",
+      "gamesSoFar": "{{count}} Spiele bisher",
+      "schoolScores": "Schulwertungen",
+      "scores": "Ergebnisse",
+      "favouriteDiceValuesLine1": "Bevorzugte",
+      "favouriteDiceValuesLine2": "Würfelwerte",
+      "favouriteCombinationsLine1": "Bevorzugte",
+      "favouriteCombinationsLine2": "Kombinationen"
     }
   }
 }

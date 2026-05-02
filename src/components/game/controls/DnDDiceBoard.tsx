@@ -55,7 +55,11 @@ const DnDDiceBoard: FC = () => {
           onDragEnd={handleDragEnd}
         >
           {Object.keys(boardSections).map((boardSectionKey) => (
-            <div key={boardSectionKey} className={styles.board}>
+            <div
+              key={boardSectionKey}
+              className={styles.board}
+              data-board-section={boardSectionKey}
+            >
               <BoardSection
                 id={boardSectionKey}
                 title={boardSectionKey}

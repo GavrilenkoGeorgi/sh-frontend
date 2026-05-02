@@ -46,6 +46,11 @@
   --color-shadow: rgba(0, 0, 0, 0.23);
   --color-blur-surface: rgba(0, 0, 0, 0.2);
 
+  /* chart */
+  --color-chart-primary-muted: #ce93d8;
+  --color-chart-border: #e1bee7;
+  --color-chart-shadow: rgba(171, 71, 188, 0.18);
+
   /* feedback */
   --color-error: #ff0101;
   --color-toast-bg: #ab47bc;

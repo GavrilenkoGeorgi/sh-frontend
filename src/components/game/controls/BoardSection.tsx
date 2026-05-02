@@ -46,7 +46,7 @@ const BoardSection = ({
               <DiceItem
                 dice={item}
                 shouldAnimate={shouldAnimate}
-                rollCount={rollCount}
+                rollAnimationKey={rollCount}
               />
             </SortableDiceItem>
           )

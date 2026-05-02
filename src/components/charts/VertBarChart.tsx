@@ -11,6 +11,7 @@ import {
 import { type ChartProps } from '../../types'
 
 import { tickStyles } from './BarChart'
+import { chartColors } from './chartColors'
 
 const Chart: FC<ChartProps> = ({ data }) => {
   const margin = {
@@ -27,6 +28,20 @@ const Chart: FC<ChartProps> = ({ data }) => {
       initialDimension={{ width: 100, height: 50 }}
     >
       <BarChart data={data} margin={margin} layout="vertical">
+        <defs>
+          <linearGradient id="vertBarGradient" x1="0" y1="0" x2="1" y2="0">
+            <stop
+              offset="0%"
+              stopColor={chartColors.primaryMuted}
+              stopOpacity={0.6}
+            />
+            <stop
+              offset="100%"
+              stopColor={chartColors.primary}
+              stopOpacity={1}
+            />
+          </linearGradient>
+        </defs>
         <CartesianGrid
           strokeDasharray="4 6"
           strokeWidth={0.6}
@@ -51,8 +66,9 @@ const Chart: FC<ChartProps> = ({ data }) => {
         />
         <Bar
           dataKey="value"
-          fill="#AB47BC"
+          fill="url(#vertBarGradient)"
           maxBarSize={18}
+          radius={[0, 4, 4, 0]}
           animationDuration={4000}
           animationBegin={500}
         />

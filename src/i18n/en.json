@@ -107,7 +107,85 @@
       "backToLobby": "Back to lobby",
       "submitTurn": "Submit turn",
       "schoolFailed": "School failed",
-      "total": "total"
+      "total": "total",
+      "yourTurn": "Your",
+      "opponentTurn": "{{name}}'s",
+      "turn": "turn"
+    }
+  },
+  "pages": {
+    "main": {
+      "greeting": "Hi, Anonymous!",
+      "intro": "You <1>can play unregistered</1>, but you will not be able to save the results or checkout other player's stats, consider <3>registering</3>."
+    },
+    "login": {
+      "forgotPassword": "Forgot password?"
+    },
+    "profile": {
+      "accountManagement": "Looking for a way to <1>delete your account</1> or <3>clear stats</3>?"
+    },
+    "help": {
+      "title": "Help",
+      "intro": "Each turn consists of a maximum of three rolls — the first roll to be made with all five dice. If the player elects to roll a second and third time, he may pick up and use any number of dice, providing a score is taken on the last roll. It is the skillful use of these two optional rolls of the dice that can turn an unlucky first or second roll into a high scoring turn. Take a <1></1> to see how the game works in practice.",
+      "tourButtonLabel": "tour",
+      "exampleScoresHeading": "Some example scores",
+      "schoolHeading": "School",
+      "gameHeading": "Game"
+    },
+    "privacy": {
+      "title": "Privacy Policy for Sharlushka Dice Game",
+      "lastUpdated": "Last updated: 13.12.2023",
+      "intro": "Thank you for choosing to use Sharlushka Dice Game ('us', 'we', or 'our'). We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy or practices with regards to your personal information, please contact us at <1>gavrilenko.georgi@gmail.com</1>. By using the Sharlushka Dice Game, you agree to the terms of this privacy policy. Please take the time to read through the following information.",
+      "infoWeCollect": {
+        "heading": "Information We Collect",
+        "personalInfoHeading": "1. Personal Information",
+        "personalInfoText": "To provide you with access to certain features of the game and to enable you to save your results, we may collect the following personal information:",
+        "personalInfoItems": ["Name", "Email address"],
+        "autoCollectedHeading": "2. Automatically Collected Information",
+        "autoCollectedText": "In addition to the personal information listed above, we may also collect certain information automatically when you use our application. This may include your device's IP address, operating system, browser type, and other technical information."
+      },
+      "howWeUse": {
+        "heading": "How We Use Your Information",
+        "intro": "We use the information we collect for the following purposes:",
+        "items": [
+          "To create and manage user accounts.",
+          "To provide and maintain our services.",
+          "To improve and personalize user experience.",
+          "To communicate with users about their accounts and provide customer support.",
+          "To monitor the usage of our services and detect, prevent, and address technical issues."
+        ]
+      },
+      "sharing": {
+        "heading": "Sharing Your Information",
+        "text": "We do not sell or share your personal information with third parties except as described in this privacy policy."
+      },
+      "security": {
+        "heading": "Security",
+        "text": "We take reasonable measures to protect your personal information from unauthorized access or disclosure. However, no method of transmission over the internet or electronic storage is completely secure, so we cannot guarantee absolute security."
+      },
+      "changes": {
+        "heading": "Changes to This Privacy Policy",
+        "text": "We may update our privacy policy from time to time. Any changes will be posted on this page with an updated date. It is your responsibility to check this page periodically for changes."
+      },
+      "contact": {
+        "heading": "Contact Us",
+        "text": "If you have any questions about this privacy policy, please contact us at <1>gavrilenko.georgi@gmail.com</1>."
+      }
+    },
+    "stats": {
+      "title": "Stats",
+      "noGames": "No games played yet",
+      "highestScoreLabel": "Highest score:",
+      "averageLabel": "Average:",
+      "averageWhichIs": "which is",
+      "averageFromMax": "from max",
+      "gamesSoFar": "{{count}} games so far",
+      "schoolScores": "School scores",
+      "scores": "Scores",
+      "favouriteDiceValuesLine1": "Favourite",
+      "favouriteDiceValuesLine2": "dice values",
+      "favouriteCombinationsLine1": "Favourite",
+      "favouriteCombinationsLine2": "combinations"
     }
   }
 }

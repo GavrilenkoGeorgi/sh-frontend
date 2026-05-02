@@ -1,5 +1,6 @@
 import { type FC } from 'react'
 import CountUp from 'react-countup'
+import { useTranslation } from 'react-i18next'
 import { useGetStatsQuery } from '../store/slices/gameApiSlice'
 import { formatDateChartAxisData, formatLabelChartAxisData } from '../utils'
 import AreaChart from '../components/charts/AreaChart'
@@ -11,78 +12,91 @@ import Fallback from '../components/layout/Fallback'
 
 const StatsPage: FC = () => {
   const { data, isLoading } = useGetStatsQuery()
+  const { t } = useTranslation()
 
   if (!data || isLoading) return <Fallback />
+
+  if (data.games === 0)
+    return <h2 className={styles.noGames}>{t('pages.stats.noGames')}</h2>
+
+  // TODO: calculate on backend and send as part of the response
+  const schoolAverage =
+    data.schoolScores.reduce((sum, item) => sum + item.value, 0) /
+    (data.schoolScores.length || 1)
 
   return (
     <section className={sharedStyles.contentPage}>
       <div className={styles.stats}>
-        <h1>Stats</h1>
-        {data.games === 0 ? (
-          <h2 className={styles.noGames}>No games played yet</h2>
-        ) : (
-          <>
-            <h2>
-              Highest score:{' '}
-              <span>
-                <CountUp start={0} end={data.max} delay={0.75} duration={3} />
-              </span>
-            </h2>
+        <h1>{t('pages.stats.title')}</h1>
 
-            <h3>
-              Average:&nbsp;
-              <span>
-                <CountUp
-                  start={0}
-                  end={data.average}
-                  delay={1.25}
-                  duration={3}
-                />
-              </span>{' '}
-              which is&nbsp;
-              <span>
-                <CountUp
-                  start={0}
-                  end={data.percentFromMax}
-                  delay={1.75}
-                  duration={4}
-                  suffix="%"
-                />
-              </span>{' '}
-              from max
-            </h3>
+        <h2>
+          {t('pages.stats.highestScoreLabel')}{' '}
+          <span className={styles.threeNums}>
+            <CountUp start={0} end={data.max} delay={0.75} duration={3} />
+          </span>
+        </h2>
 
-            <h4>{data.games} games so far</h4>
+        <h3>
+          {t('pages.stats.averageLabel')}&nbsp;
+          <span className={styles.threeNums}>
+            <CountUp start={0} end={data.average} delay={1.25} duration={3} />
+          </span>{' '}
+          {t('pages.stats.averageWhichIs')}&nbsp;
+          <span className={styles.threeNums}>
+            <CountUp
+              start={0}
+              end={data.percentFromMax}
+              delay={1.75}
+              duration={4}
+              suffix="%"
+            />
+          </span>{' '}
+          {t('pages.stats.averageFromMax')}
+        </h3>
 
-            <aside>
-              <h4>School scores</h4>
-              <div className={styles.hChart}>
-                <AreaChart data={formatDateChartAxisData(data.schoolScores)} />
-              </div>
-            </aside>
+        <h4>{t('pages.stats.gamesSoFar', { count: data.games })}</h4>
 
-            <aside>
-              <h4>Scores</h4>
-              <div className={styles.hChart}>
-                <AreaChart data={formatDateChartAxisData(data.scores)} />
-              </div>
-            </aside>
+        <aside>
+          <h4>{t('pages.stats.schoolScores')}</h4>
+          <div className={styles.hChart}>
+            <AreaChart
+              data={formatDateChartAxisData(data.schoolScores)}
+              syncId="shStats"
+              referenceValue={schoolAverage}
+            />
+          </div>
+        </aside>
 
-            <aside>
-              <h4>Fav dice values</h4>
-              <div className={styles.hChart}>
-                <BarChart data={formatLabelChartAxisData(data.favDiceValues)} />
-              </div>
-            </aside>
+        <aside>
+          <h4>{t('pages.stats.scores')}</h4>
+          <div className={styles.hChart}>
+            <AreaChart
+              data={formatDateChartAxisData(data.scores)}
+              syncId="shStats"
+              referenceValue={data.average}
+            />
+          </div>
+        </aside>
 
-            <aside>
-              <h4>Freq combinations</h4>
-              <div className={styles.sChart}>
-                <VertBarChart data={formatLabelChartAxisData(data.favComb)} />
-              </div>
-            </aside>
-          </>
-        )}
+        <aside>
+          <h4>
+            {t('pages.stats.favouriteDiceValuesLine1')}
+            <br /> {t('pages.stats.favouriteDiceValuesLine2')}
+          </h4>
+          <div className={styles.hChart}>
+            <BarChart data={formatLabelChartAxisData(data.favDiceValues)} />
+          </div>
+        </aside>
+
+        <aside>
+          <h4>
+            {t('pages.stats.favouriteCombinationsLine1')}
+            <br /> {t('pages.stats.favouriteCombinationsLine2')}
+          </h4>
+          <div className={styles.sChart}>
+            <VertBarChart data={formatLabelChartAxisData(data.favComb)} />
+          </div>
+        </aside>
       </div>
     </section>
   )

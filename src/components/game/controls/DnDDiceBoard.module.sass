@@ -33,15 +33,29 @@
 
   @media screen and (min-width: variables.$medium)
     flex-direction: column-reverse
+    align-self: stretch
     height: 100%
+    justify-content: flex-start
     margin-top: 0
 
 .boardSections > div
   padding: .5rem
-  // min-width: variables.$emptyDropZoneWidth
+  min-width: variables.$emptyDropZoneWidth
   min-height: variables.$diceMaxHeight
-  /* @media screen and (max-width: variables.$medium)
-    min-height: variables.$diceMaxHeight */
+  @media screen and (max-width: variables.$medium)
+    min-height: variables.$diceMaxHeight
+
+.controls:not([data-multiplayer]) .boardSections > div
+  @media screen and (min-width: variables.$medium)
+    min-height: variables.$emptyDropZoneWidth
+
+.controls:not([data-multiplayer]) .boardSections > .board:has(.items:empty)
+  @media screen and (min-width: variables.$medium)
+    flex-grow: 1
+
+.controls:not([data-multiplayer]) .boardSections:has(.board[data-board-section='selected'] .items:not(:empty)) > .board[data-board-section='roll']
+  @media screen and (min-width: variables.$medium)
+    flex-grow: 1
 
 
 .board
@@ -49,6 +63,10 @@
   background-color: var(--color-primary-light)
   flex-grow: 1
   height: 100%
+  align-content: center
+  @media screen and (min-width: variables.$medium)
+    flex-grow: 0
+    height: auto
   &:first-child
     background-color: var(--color-accent-transparent)
 
@@ -56,11 +74,11 @@
   display: flex
   width: 100%
   justify-content: space-around
-  gap: .25rem
+  gap: .5rem
   @media screen and (min-width: variables.$medium)
     display: flex
     flex-direction: column
-    height: 100%
+    height: auto
     max-width: variables.$controlsWidth
 
 
