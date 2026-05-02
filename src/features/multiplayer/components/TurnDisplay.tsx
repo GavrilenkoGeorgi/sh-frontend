@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import * as styles from './TurnDisplay.module.sass'
 import {
   selectActiveGame,
@@ -11,6 +12,7 @@ const TurnDisplay = () => {
   const activeGame = useSelector(selectActiveGame)
   const currentUser = useSelector(selectCurrentUser)
   const opponent = useSelector(selectOpponent)
+  const { t } = useTranslation()
   const myId = currentUser?._id ?? ''
   const isMyTurn = activeGame?.currentTurnPlayerId === myId
 
@@ -18,12 +20,14 @@ const TurnDisplay = () => {
     return null
   }
 
-  const name = isMyTurn ? 'Your' : `${opponent.username}'s`
+  const name = isMyTurn
+    ? t('ui.multiplayer.yourTurn')
+    : t('ui.multiplayer.opponentTurn', { name: opponent.username })
 
   return (
     <p className={clsx(styles.turnNumber, { [styles.userTurn]: isMyTurn })}>
       {name}
-      <br /> turn {activeGame.turnNumber}
+      <br /> {t('ui.multiplayer.turn')} {activeGame.turnNumber}
     </p>
   )
 }

@@ -1,87 +1,76 @@
 import React, { type FC } from 'react'
+import { useTranslation, Trans } from 'react-i18next'
 import * as styles from './SharedStyles.module.sass'
 
 const Privacy: FC = () => {
+  const { t } = useTranslation()
+
+  const personalInfoItems = t('pages.privacy.infoWeCollect.personalInfoItems', {
+    returnObjects: true
+  }) as string[]
+  const howWeUseItems = t('pages.privacy.howWeUse.items', {
+    returnObjects: true
+  }) as string[]
+
   return (
     <section className={styles.contentPage}>
-      <h1>Privacy Policy for Sharlushka Dice Game</h1>
-      <p className={styles.dateStamp}>Last updated: 13.12.2023</p>
+      <h1>{t('pages.privacy.title')}</h1>
+      <p className={styles.dateStamp}>{t('pages.privacy.lastUpdated')}</p>
       <article>
         <p>
-          Thank you for choosing to use Sharlushka Dice Game (&apos;us&apos;,
-          &apos;we&apos;, or &apos;our&apos;). We are committed to protecting
-          your personal information and your right to privacy. If you have any
-          questions or concerns about our policy or practices with regards to
-          your personal information, please contact us at{' '}
-          <a href="mailto:gavrilenko.georgi@gmail.com">
-            gavrilenko.georgi@gmail.com
-          </a>
-          . By using the Sharlushka Dice Game, you agree to the terms of this
-          privacy policy. Please take the time to read through the following
-          information.
+          <Trans i18nKey="pages.privacy.intro">
+            {
+              "Thank you for choosing to use Sharlushka Dice Game ('us', 'we', or 'our'). We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy or practices with regards to your personal information, please contact us at "
+            }
+            <a href="mailto:gavrilenko.georgi@gmail.com">
+              gavrilenko.georgi@gmail.com
+            </a>
+            {
+              '. By using the Sharlushka Dice Game, you agree to the terms of this privacy policy. Please take the time to read through the following information.'
+            }
+          </Trans>
         </p>
-        <h2>Information We Collect</h2>
+        <h2>{t('pages.privacy.infoWeCollect.heading')}</h2>
         <p>
-          1. Personal Information <br />
-          To provide you with access to certain features of the game and to
-          enable you to save your results, we may collect the following personal
-          information:
+          {t('pages.privacy.infoWeCollect.personalInfoHeading')} <br />
+          {t('pages.privacy.infoWeCollect.personalInfoText')}
         </p>
         <ul>
-          <li>Name</li>
-          <li>Email address</li>
+          {personalInfoItems.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
         </ul>
         <p>
-          2. Automatically Collected Information <br />
-          In addition to the personal information listed above, we may also
-          collect certain information automatically when you use our
-          application. This may include your device&apos;s IP address, operating
-          system, browser type, and other technical information.
+          {t('pages.privacy.infoWeCollect.autoCollectedHeading')} <br />
+          {t('pages.privacy.infoWeCollect.autoCollectedText')}
         </p>
-        <h2>How We Use Your Information</h2>
-        <p>We use the information we collect for the following purposes:</p>
+        <h2>{t('pages.privacy.howWeUse.heading')}</h2>
+        <p>{t('pages.privacy.howWeUse.intro')}</p>
         <ul>
-          <li>To create and manage user accounts.</li>
-          <li>To provide and maintain our services.</li>
-          <li>To improve and personalize user experience.</li>
-          <li>
-            To communicate with users about their accounts and provide customer
-            support.
-          </li>
-          <li>
-            To monitor the usage of our services and detect, prevent, and
-            address technical issues.
-          </li>
+          {howWeUseItems.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
         </ul>
-        <h2>Sharing Your Information</h2>
-        <p>
-          We do not sell or share your personal information with third parties
-          except as described in this privacy policy.
-        </p>
+        <h2>{t('pages.privacy.sharing.heading')}</h2>
+        <p>{t('pages.privacy.sharing.text')}</p>
 
-        <h2>Security</h2>
-        <p>
-          We take reasonable measures to protect your personal information from
-          unauthorized access or disclosure. However, no method of transmission
-          over the internet or electronic storage is completely secure, so we
-          cannot guarantee absolute security.
-        </p>
+        <h2>{t('pages.privacy.security.heading')}</h2>
+        <p>{t('pages.privacy.security.text')}</p>
 
-        <h2>Changes to This Privacy Policy</h2>
-        <p>
-          We may update our privacy policy from time to time. Any changes will
-          be posted on this page with an updated date. It is your responsibility
-          to check this page periodically for changes.
-        </p>
+        <h2>{t('pages.privacy.changes.heading')}</h2>
+        <p>{t('pages.privacy.changes.text')}</p>
 
-        <h2>Contact Us</h2>
+        <h2>{t('pages.privacy.contact.heading')}</h2>
         <p>
-          If you have any questions about this privacy policy, please contact us
-          at{' '}
-          <a href="mailto:gavrilenko.georgi@gmail.com">
-            gavrilenko.georgi@gmail.com
-          </a>
-          .
+          <Trans i18nKey="pages.privacy.contact.text">
+            {
+              'If you have any questions about this privacy policy, please contact us at '
+            }
+            <a href="mailto:gavrilenko.georgi@gmail.com">
+              gavrilenko.georgi@gmail.com
+            </a>
+            {'.'}
+          </Trans>
         </p>
       </article>
     </section>
