@@ -13,7 +13,7 @@ Simple dice game inspired by Yahtzee. This repository contains the frontend app.
 - framer-motion (route and UI animations)
 - Sass modules + global Sass
 - Webpack 5 (custom config)
-- PWA stack: WebpackPwaManifest + Workbox GenerateSW
+- PWA stack: static web app manifest + Workbox GenerateSW
 - Netlify (SPA hosting with redirect fallback)
 
 ## What This App Does
@@ -59,7 +59,7 @@ Main application code lives in `src`.
 
 ### PWA Setup
 
-- Manifest is generated via `webpack-pwa-manifest`.
+- Manifest is copied from `src/public/manifest.json`.
 - Service worker is generated with Workbox in production builds.
 - Service worker registration happens in `src/utils/serviceWorker.ts` and is disabled in development.
 
