@@ -3,7 +3,6 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const WorkboxPlugin = require('workbox-webpack-plugin')
-const WebpackPwaManifest = require('webpack-pwa-manifest')
 const Dotenv = require('dotenv-webpack')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
@@ -62,43 +61,17 @@ module.exports = (_env, argv) => {
     new CopyPlugin({
       patterns: [
         { from: './src/public/robots.txt', to: 'robots.txt' },
-        { from: './src/public/img', to: 'img' },
-        { from: './src/public/.well-known', to: '.well-known' }
-      ]
-    }),
-
-    new WebpackPwaManifest({
-      name: 'Sh dice game',
-      short_name: 'Sharlushka',
-      description: 'Dice game with stats.',
-      publicPath: '/',
-      filename: 'manifest.json',
-
-      start_url: '/',
-      scope: '/',
-      display: 'standalone',
-      id: '/?homescreen=1',
-
-      theme_color: '#7B1FA2',
-      background_color: '#7B1FA2',
-
-      categories: ['games'],
-      lang: 'en',
-      dir: 'ltr',
-      prefer_related_applications: false,
-
-      fingerprints: true,
-      crossorigin: 'use-credentials',
-
-      icons: [
+        { from: './src/public/manifest.json', to: 'manifest.json' },
         {
-          src: path.resolve('src/assets/icons/android-chrome-192x192.png'),
-          size: '192x192'
+          from: './src/assets/icons/android-chrome-192x192.png',
+          to: 'android-chrome-192x192.png'
         },
         {
-          src: path.resolve('src/assets/icons/android-chrome-512x512.png'),
-          size: '512x512'
-        }
+          from: './src/assets/icons/android-chrome-512x512.png',
+          to: 'android-chrome-512x512.png'
+        },
+        { from: './src/public/img', to: 'img' },
+        { from: './src/public/.well-known', to: '.well-known' }
       ]
     }),
 

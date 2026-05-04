@@ -122,10 +122,11 @@ export interface iError extends Error {
 }
 
 // Drag and drop controls
-export enum DiceStatus {
-  ROLL = 'roll',
-  SELECTED = 'selected'
-}
+export const DiceStatus = {
+  ROLL: 'roll',
+  SELECTED: 'selected'
+} as const
+export type DiceStatus = (typeof DiceStatus)[keyof typeof DiceStatus]
 
 export type Status = DiceStatus // Keep for backward compatibility during transition
 
@@ -138,33 +139,38 @@ export interface Dice {
 export type BoardSections = Record<string, Dice[]>
 
 // enums
-export enum SchoolCombinations {
-  ONES = 'ones',
-  TWOS = 'twos',
-  THREES = 'threes',
-  FOURS = 'fours',
-  FIVES = 'fives',
-  SIXES = 'sixes'
-}
+export const SchoolCombinations = {
+  ONES: 'ones',
+  TWOS: 'twos',
+  THREES: 'threes',
+  FOURS: 'fours',
+  FIVES: 'fives',
+  SIXES: 'sixes'
+} as const
+export type SchoolCombinations =
+  (typeof SchoolCombinations)[keyof typeof SchoolCombinations]
 
-export enum GameCombinations {
+export const GameCombinations = {
   // combination names?
-  PAIR = 'pair',
-  TWOPAIRS = 'twoPairs',
-  TRIPLE = 'triple',
-  FULL = 'full',
-  QUADS = 'quads',
-  POKER = 'poker',
-  SMALL = 'small',
-  LARGE = 'large',
-  CHANCE = 'chance'
-}
+  PAIR: 'pair',
+  TWOPAIRS: 'twoPairs',
+  TRIPLE: 'triple',
+  FULL: 'full',
+  QUADS: 'quads',
+  POKER: 'poker',
+  SMALL: 'small',
+  LARGE: 'large',
+  CHANCE: 'chance'
+} as const
+export type GameCombinations =
+  (typeof GameCombinations)[keyof typeof GameCombinations]
 
-export enum ToastTypes {
-  ERROR = 'error',
-  SUCCESS = 'success',
-  WARNING = 'warning'
-}
+export const ToastTypes = {
+  ERROR: 'error',
+  SUCCESS: 'success',
+  WARNING: 'warning'
+} as const
+export type ToastTypes = (typeof ToastTypes)[keyof typeof ToastTypes]
 
 // action payload types
 export type SaveScorePayload = SchoolCombinations | GameCombinations

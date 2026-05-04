@@ -1,9 +1,11 @@
 import { useEffect, useState, useRef } from 'react'
 
-export enum SCROLL_DIRECTION {
-  UP = 'up',
-  DOWN = 'down'
-}
+export const SCROLL_DIRECTION = {
+  UP: 'up',
+  DOWN: 'down'
+} as const
+export type SCROLL_DIRECTION =
+  (typeof SCROLL_DIRECTION)[keyof typeof SCROLL_DIRECTION]
 
 export function useScrollDirection() {
   const [scrollDirection, setScrollDirection] = useState('')
