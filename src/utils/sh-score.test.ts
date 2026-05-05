@@ -1,4 +1,5 @@
 import ShScore from './sh-score'
+import { GameCombinations } from '../types'
 
 describe('ShScore Class', () => {
   let shScore: ShScore
@@ -103,6 +104,241 @@ describe('ShScore Class', () => {
         null,
         null
       ])
+    })
+  })
+
+  describe('sort', () => {
+    it('should return values in ascending order', () => {
+      expect(shScore.sort([5, 3, 1, 4, 2])).toEqual([1, 2, 3, 4, 5])
+    })
+
+    it('should not mutate the original array', () => {
+      const original = [5, 3, 1]
+      shScore.sort(original)
+      expect(original).toEqual([5, 3, 1])
+    })
+  })
+
+  describe('getScore', () => {
+    it('should detect a pair', () => {
+      const result = shScore.getScore([6, 6, 1, 2, 3])
+      expect(result).toMatchObject({ pair: 12, twoPairs: 0, triple: 0 })
+    })
+
+    it('should detect two pairs and pick the highest as the pair score', () => {
+      const result = shScore.getScore([3, 3, 5, 5, 1])
+      expect(result).toMatchObject({ pair: 10, twoPairs: 16, triple: 0 })
+    })
+
+    it('should detect a triple', () => {
+      const result = shScore.getScore([4, 4, 4, 1, 2])
+      expect(result).toMatchObject({ triple: 12, full: 0, quads: 0 })
+    })
+
+    it('should detect a full house', () => {
+      const result = shScore.getScore([2, 2, 3, 3, 3])
+      expect(result).toMatchObject({ triple: 9, full: 13, quads: 0 })
+    })
+
+    it('should detect quads', () => {
+      const result = shScore.getScore([5, 5, 5, 5, 1])
+      expect(result).toMatchObject({ quads: 20, poker: 0 })
+    })
+
+    it('should detect poker and score it correctly', () => {
+      // poker score = face * 5 + 80
+      const result = shScore.getScore([5, 5, 5, 5, 5])
+      expect(result).toMatchObject({ poker: 105, quads: 20 })
+    })
+
+    it('should detect small straight (1-5)', () => {
+      const result = shScore.getScore([1, 2, 3, 4, 5])
+      expect(result).toMatchObject({ small: 15, large: 0 })
+    })
+
+    it('should detect large straight (2-6)', () => {
+      const result = shScore.getScore([2, 3, 4, 5, 6])
+      expect(result).toMatchObject({ large: 20, small: 0 })
+    })
+
+    it('should always calculate chance as sum of all dice', () => {
+      const result = shScore.getScore([1, 2, 3, 4, 5])
+      expect(result.chance).toBe(15)
+    })
+
+    it('should return zeroed combinations for a non-scoring hand', () => {
+      // no pair, no straight, no special combo
+      const result = shScore.getScore([1, 2, 3, 4, 6])
+      expect(result).toMatchObject({
+        pair: 0,
+        twoPairs: 0,
+        triple: 0,
+        full: 0,
+        quads: 0,
+        poker: 0,
+        small: 0,
+        large: 0
+      })
+    })
+  })
+
+  describe('getScoringDice', () => {
+    it('should return matching dice for a school combination', () => {
+      expect(shScore.getScoringDice([1, 1, 3, 5], 'ones')).toEqual([1, 1])
+      expect(shScore.getScoringDice([6, 6, 6, 1, 2], 'sixes')).toEqual([
+        6, 6, 6
+      ])
+    })
+
+    it('should return the highest pair for pair combination', () => {
+      expect(
+        shScore.getScoringDice([6, 6, 3, 3, 1], GameCombinations.PAIR)
+      ).toEqual([6, 6])
+    })
+
+    it('should return empty for pair when no pair exists', () => {
+      expect(
+        shScore.getScoringDice([1, 2, 3, 4, 5], GameCombinations.PAIR)
+      ).toEqual([])
+    })
+
+    it('should return two highest pairs for twoPairs combination', () => {
+      expect(
+        shScore.getScoringDice([6, 6, 3, 3, 1], GameCombinations.TWOPAIRS)
+      ).toEqual([6, 6, 3, 3])
+    })
+
+    it('should return empty for twoPairs when only one pair exists', () => {
+      expect(
+        shScore.getScoringDice([6, 6, 1, 2, 3], GameCombinations.TWOPAIRS)
+      ).toEqual([])
+    })
+
+    it('should return the three-of-a-kind dice for triple', () => {
+      expect(
+        shScore.getScoringDice([4, 4, 4, 1, 2], GameCombinations.TRIPLE)
+      ).toEqual([4, 4, 4])
+    })
+
+    it('should return triple + pair dice for full house', () => {
+      expect(
+        shScore.getScoringDice([3, 3, 5, 5, 5], GameCombinations.FULL)
+      ).toEqual([5, 5, 5, 3, 3])
+    })
+
+    it('should return empty for full when only a triple exists', () => {
+      expect(
+        shScore.getScoringDice([4, 4, 4, 1, 2], GameCombinations.FULL)
+      ).toEqual([])
+    })
+
+    it('should return the four-of-a-kind dice for quads', () => {
+      expect(
+        shScore.getScoringDice([2, 2, 2, 2, 5], GameCombinations.QUADS)
+      ).toEqual([2, 2, 2, 2])
+    })
+
+    it('should return all five dice for poker', () => {
+      expect(
+        shScore.getScoringDice([4, 4, 4, 4, 4], GameCombinations.POKER)
+      ).toEqual([4, 4, 4, 4, 4])
+    })
+
+    it('should return empty for poker when dice are not all the same', () => {
+      expect(
+        shScore.getScoringDice([4, 4, 4, 4, 5], GameCombinations.POKER)
+      ).toEqual([])
+    })
+
+    it('should return all dice for small straight', () => {
+      expect(
+        shScore.getScoringDice([1, 2, 3, 4, 5], GameCombinations.SMALL)
+      ).toEqual([1, 2, 3, 4, 5])
+    })
+
+    it('should return all dice for large straight', () => {
+      expect(
+        shScore.getScoringDice([2, 3, 4, 5, 6], GameCombinations.LARGE)
+      ).toEqual([2, 3, 4, 5, 6])
+    })
+
+    it('should return all valid dice for chance', () => {
+      expect(
+        shScore.getScoringDice([1, 3, 5, 2, 6], GameCombinations.CHANCE)
+      ).toEqual([1, 3, 5, 2, 6])
+    })
+
+    it('should return empty for an unknown combination', () => {
+      expect(shScore.getScoringDice([1, 2, 3, 4, 5], 'unknown')).toEqual([])
+    })
+
+    // these tests model the real save flow: the user may have selected more dice
+    // than the combination needs, and only the contributing dice should be returned
+    describe('ignores non-contributing selected dice', () => {
+      it('pair: only returns the two matching dice, not the extras', () => {
+        // user selected 5 dice but only two form the pair
+        expect(
+          shScore.getScoringDice([6, 6, 1, 2, 3], GameCombinations.PAIR)
+        ).toEqual([6, 6])
+      })
+
+      it('triple: only returns the three matching dice, not the extras', () => {
+        // user selected 5 dice but only three form the triple
+        expect(
+          shScore.getScoringDice([4, 4, 4, 6, 6], GameCombinations.TRIPLE)
+        ).toEqual([4, 4, 4])
+      })
+
+      it('quads: only returns the four matching dice, not the fifth', () => {
+        expect(
+          shScore.getScoringDice([5, 5, 5, 5, 3], GameCombinations.QUADS)
+        ).toEqual([5, 5, 5, 5])
+      })
+
+      it('school (sixes): only returns the sixes from a mixed selection', () => {
+        // user selected a mix; only the sixes count for this school category
+        expect(shScore.getScoringDice([6, 6, 3, 3, 1], 'sixes')).toEqual([6, 6])
+      })
+
+      it('school (threes): only returns the threes from a mixed selection', () => {
+        expect(shScore.getScoringDice([3, 3, 3, 6, 5], 'threes')).toEqual([
+          3, 3, 3
+        ])
+      })
+
+      it('twoPairs: only returns the four pair dice, drops the fifth', () => {
+        // three 6s → highest pair is [6, 6], plus a pair of 3s; the third 6 is dropped
+        expect(
+          shScore.getScoringDice([6, 6, 6, 3, 3], GameCombinations.TWOPAIRS)
+        ).toEqual([6, 6, 3, 3])
+      })
+    })
+  })
+
+  describe('combinationsStats', () => {
+    it('should count how many times each combination scored positively', () => {
+      const results = {
+        pair: [10, 0, 6],
+        triple: [0, 12],
+        chance: [20, 15, 0]
+      }
+      const stats = shScore.combinationsStats(results)
+      expect(stats.pair).toBe(2)
+      expect(stats.triple).toBe(1)
+      expect(stats.chance).toBe(2)
+    })
+
+    it('should return zero counts when no combination scored', () => {
+      const results = { pair: [0, 0], triple: [0] }
+      const stats = shScore.combinationsStats(results)
+      expect(stats.pair).toBe(0)
+      expect(stats.triple).toBe(0)
+    })
+
+    it('should reset stats between calls', () => {
+      shScore.combinationsStats({ pair: [10, 10, 10] })
+      const stats = shScore.combinationsStats({ pair: [5] })
+      expect(stats.pair).toBe(1)
     })
   })
 })
