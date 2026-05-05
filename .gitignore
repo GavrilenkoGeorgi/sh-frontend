@@ -2,4 +2,6 @@ node_modules
 dist
 .env
 .vscode
-.github
+
+.github/*
+!.github/workflows/
