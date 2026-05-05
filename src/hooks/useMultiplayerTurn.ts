@@ -48,6 +48,8 @@ export interface MultiplayerTurnState {
 
 const emptyDice = (): number[] => Array(DICE_COUNT).fill(0)
 
+const shScore = new ShScore()
+
 export const useMultiplayerTurn = (
   playerState: MultiplayerPlayerState | null,
   isMyTurn: boolean,
@@ -85,7 +87,7 @@ export const useMultiplayerTurn = (
 
     if (isInSchoolPhase) {
       // school phase: only school scores
-      const schoolScores = ShScore.getSchoolScore(selectedValues)
+      const schoolScores = shScore.getSchoolScore(selectedValues)
       schoolCategories.forEach((category, index) => {
         if (!usedCategories.has(category) && schoolScores[index] !== null) {
           scores[category] = schoolScores[index] as number
@@ -93,8 +95,8 @@ export const useMultiplayerTurn = (
       })
     } else {
       // game phase: only game combination scores
-      const sorted = ShScore.sort(selectedValues)
-      const combinationScores: iCombination = ShScore.getScore(sorted)
+      const sorted = shScore.sort(selectedValues)
+      const combinationScores: iCombination = shScore.getScore(sorted)
       gameCategories.forEach((category) => {
         if (!usedCategories.has(category)) {
           scores[category] = combinationScores[category as keyof iCombination]
@@ -116,7 +118,7 @@ export const useMultiplayerTurn = (
   // mirrors single-player gameOver: checks the full roll, not just selected dice
   const canScoreFromAllDice = useMemo(() => {
     if (!isInSchoolPhase || rollCount === 0) return false
-    const schoolScores = ShScore.getSchoolScore(dice)
+    const schoolScores = shScore.getSchoolScore(dice)
     return schoolCategories.some(
       (category, index) =>
         !usedCategories.has(category) && schoolScores[index] !== null

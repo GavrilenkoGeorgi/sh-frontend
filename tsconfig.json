@@ -11,7 +11,8 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "target": "esnext",
-    "erasableSyntaxOnly": true
+    "erasableSyntaxOnly": true,
+    "types": ["jest"]
   },
   "include": ["src", "globals.d.ts"],
   "exclude": ["node_modules", "dist"]

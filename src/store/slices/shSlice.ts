@@ -106,6 +106,8 @@ const clearTempResults = (results: iCombination) => {
   for (const k in results) results[k as keyof typeof results] = 0
 }
 
+const shScore = new ShScore()
+
 const shSlice = createSlice({
   name: 'sh',
   initialState,
@@ -121,7 +123,7 @@ const shSlice = createSlice({
       const { game } = state
       if (game.turn <= SCHOOL_TURNS) {
         clearTempSchoolScores(game.school)
-        const result = ShScore.getSchoolScore(action.payload)
+        const result = shScore.getSchoolScore(action.payload)
         // use stable schoolCombNames order
         result.forEach((value, index) => {
           const combName = schoolCombNames[index]
@@ -130,7 +132,7 @@ const shSlice = createSlice({
           }
         })
       } else if (game.turn <= MAX_TURNS - 1) {
-        const result = ShScore.getScore(ShScore.sort(action.payload))
+        const result = shScore.getScore(shScore.sort(action.payload))
         clearTempResults(game.results)
 
         if (action.payload.length > 0) {
@@ -161,7 +163,7 @@ const shSlice = createSlice({
 
           // update fav dice for school saves
           const selectedValues = game.selection.map((i) => game.roll[i])
-          const scoringDice = ShScore.getScoringDice(selectedValues, payload)
+          const scoringDice = shScore.getScoringDice(selectedValues, payload)
           for (const face of scoringDice) {
             game.favDiceValues[face - 1]++
           }
@@ -183,7 +185,7 @@ const shSlice = createSlice({
 
         // update fav dice using only dice that contribute to the saved combination
         const selectedValues = game.selection.map((i) => game.roll[i])
-        const scoringDice = ShScore.getScoringDice(selectedValues, payload)
+        const scoringDice = shScore.getScoringDice(selectedValues, payload)
         for (const face of scoringDice) {
           game.favDiceValues[face - 1]++
         }
@@ -203,7 +205,7 @@ const shSlice = createSlice({
 
       // compute stats at end of game
       if (game.turn === MAX_TURNS) {
-        game.stats = { ...ShScore.combinationsStats(game.combinations) }
+        game.stats = { ...shScore.combinationsStats(game.combinations) }
       }
     },
 
@@ -211,7 +213,7 @@ const shSlice = createSlice({
       const { game } = state
       if (game.rollCount === MAX_ROLLS && game.turn <= SCHOOL_TURNS) {
         // game.roll has all 5 dice values in the index-based model
-        const scores = ShScore.getSchoolScore([...game.roll])
+        const scores = shScore.getSchoolScore([...game.roll])
         let canSave = false
         schoolCombNames.forEach((key, index) => {
           if (!game.school[key].final && game.school[key].score === null) {
@@ -273,7 +275,7 @@ const shSlice = createSlice({
       const diceToReroll = game.roll.filter(
         (_, i) => !game.selection.includes(i)
       )
-      const newValues = ShScore.rollDice(diceToReroll, game.selection)
+      const newValues = shScore.rollDice(diceToReroll, game.selection)
       let newIdx = 0
       for (let i = 0; i < DICE_COUNT; i++) {
         if (!game.selection.includes(i)) {

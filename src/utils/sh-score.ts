@@ -1,6 +1,6 @@
 import { GameCombinations, type iCombination } from '../types'
 
-class ShScore {
+export default class ShScore {
   school: number[][]
   combination: iCombination
   stats: iCombination
@@ -331,5 +331,3 @@ class ShScore {
     }
   }
 }
-
-export default new ShScore()
