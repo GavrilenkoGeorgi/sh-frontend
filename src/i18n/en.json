@@ -177,6 +177,7 @@
       "noGames": "No games played yet",
       "highestScoreLabel": "Highest score:",
       "averageLabel": "Average:",
+      "averageDescription": "average",
       "averageWhichIs": "which is",
       "averageFromMax": "from max",
       "gamesSoFar": "{{count}} games so far",

@@ -89,7 +89,7 @@ const Chart: FC<ChartProps> = ({ data, syncId, referenceValue }) => {
             y={referenceValue}
             stroke={chartColors.primaryMuted}
             strokeDasharray="6 4"
-            strokeWidth={0.5}
+            strokeWidth={1}
           />
         )}
         <Area

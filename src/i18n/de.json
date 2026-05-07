@@ -177,6 +177,7 @@
       "noGames": "Noch keine Spiele gespielt",
       "highestScoreLabel": "Höchste Punktzahl:",
       "averageLabel": "Durchschnitt:",
+      "averageDescription": "durchschnitt",
       "averageWhichIs": "was",
       "averageFromMax": "vom Maximum",
       "gamesSoFar": "{{count}} Spiele bisher",

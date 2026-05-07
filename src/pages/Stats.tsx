@@ -9,6 +9,7 @@ import VertBarChart from '../components/charts/VertBarChart'
 import * as styles from './Stats.module.sass'
 import * as sharedStyles from './SharedStyles.module.sass'
 import Fallback from '../components/layout/Fallback'
+import { DashedLineLegend } from '../components/charts/DashedLineLegend'
 
 const StatsPage: FC = () => {
   const { data, isLoading } = useGetStatsQuery()
@@ -64,6 +65,10 @@ const StatsPage: FC = () => {
               syncId="shStats"
               referenceValue={schoolAverage}
             />
+            <div className={styles.legend}>
+              <DashedLineLegend />
+              <span>{t('pages.stats.averageDescription')}</span>
+            </div>
           </div>
         </aside>
 
@@ -75,6 +80,10 @@ const StatsPage: FC = () => {
               syncId="shStats"
               referenceValue={data.average}
             />
+            <div className={styles.legend}>
+              <DashedLineLegend />
+              <span>{t('pages.stats.averageDescription')}</span>
+            </div>
           </div>
         </aside>
 
