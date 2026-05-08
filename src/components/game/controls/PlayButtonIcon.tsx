@@ -1,17 +1,25 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface ButtonIconProps {
-  rollCount?: number
+  rollCount: number
+  isLocked?: boolean
 }
 
-export const PlayButtonIcon: FC<ButtonIconProps> = ({ rollCount = 0 }) => {
+const trianglePath = 'M10 8 L10 8 L18 12 L10 16 Z'
+const squarePath = 'M8 8 L16 8 L16 16 L8 16 Z'
+
+export const PlayButtonIcon: FC<ButtonIconProps> = ({
+  rollCount = 0,
+  isLocked = false
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="48"
       height="48"
       viewBox="0 0 24 24"
-      fill="none"
+      fill="currentColor"
       stroke="currentColor"
       strokeWidth="1"
       strokeLinecap="round"
@@ -19,9 +27,60 @@ export const PlayButtonIcon: FC<ButtonIconProps> = ({ rollCount = 0 }) => {
       aria-hidden="true"
       focusable="false"
     >
-      {rollCount === 0 && <line x1="6" y1="8" x2="6" y2="16" />}
-      {rollCount <= 1 && <line x1="8" y1="8" x2="8" y2="16" />}
-      <polygon points="10 8 18 12 10 16" />
+      <AnimatePresence>
+        {rollCount <= 1 && !isLocked && (
+          <motion.line
+            key="line-mid"
+            x1="7"
+            y1="8"
+            x2="7"
+            y2="16"
+            strokeWidth="1.5"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 2 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+          />
+        )}
+        {rollCount === 0 && !isLocked && (
+          <motion.line
+            key="line-left"
+            x1="4"
+            y1="8"
+            x2="4"
+            y2="16"
+            strokeWidth="1.5"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 2 }}
+            transition={{ delay: 0.12, duration: 0.2, ease: 'easeOut' }}
+          />
+        )}
+      </AnimatePresence>
+      <motion.path
+        d={trianglePath}
+        animate={isLocked ? 'locked' : rollCount === 0 ? 'idle' : 'still'}
+        variants={{
+          idle: {
+            d: trianglePath,
+            scale: [1, 1.08, 1],
+            transition: {
+              scale: { repeat: Infinity, duration: 2, ease: 'easeInOut' },
+              d: { duration: 0.3, ease: 'easeInOut' }
+            }
+          },
+          still: {
+            d: trianglePath,
+            scale: 1,
+            transition: { duration: 0.3, ease: 'easeInOut' }
+          },
+          locked: {
+            d: squarePath,
+            scale: 1,
+            transition: { duration: 0.3, ease: 'easeInOut' }
+          }
+        }}
+      />
     </svg>
   )
 }

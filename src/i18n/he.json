@@ -177,6 +177,7 @@
       "noGames": "עדיין לא שוחקו משחקים",
       "highestScoreLabel": "הניקוד הגבוה ביותר:",
       "averageLabel": "ממוצע:",
+      "averageDescription": "ממוצע",
       "averageWhichIs": "שהוא",
       "averageFromMax": "מהמקסימום",
       "gamesSoFar": "{{count}} משחקים עד כה",
