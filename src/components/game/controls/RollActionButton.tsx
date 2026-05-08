@@ -1,4 +1,4 @@
-import { type FC, type ReactNode, useRef } from 'react'
+import { type FC, useRef } from 'react'
 
 import { PlayButtonIcon } from './PlayButtonIcon'
 
@@ -10,9 +10,8 @@ interface RollActionButtonProps {
   isLocked: boolean
   onRoll: () => void
   onLockedPress?: () => void
-  lockedIcon?: ReactNode
   cooldownMs?: number
-  className?: string
+  className: string
 }
 
 const RollActionButton: FC<RollActionButtonProps> = ({
@@ -20,7 +19,6 @@ const RollActionButton: FC<RollActionButtonProps> = ({
   isLocked,
   onRoll,
   onLockedPress,
-  lockedIcon,
   cooldownMs = 500,
   className
 }) => {
@@ -46,9 +44,11 @@ const RollActionButton: FC<RollActionButtonProps> = ({
     onRoll()
   }
 
+  const noRollsLeft = isLocked || rollCount >= MAX_ROLLS
+
   return (
     <button type="button" onClick={handleClick} className={className}>
-      {isLocked && lockedIcon ? lockedIcon : <PlayButtonIcon rollCount={rollCount} />}
+      <PlayButtonIcon rollCount={rollCount} isLocked={noRollsLeft} />
     </button>
   )
 }
