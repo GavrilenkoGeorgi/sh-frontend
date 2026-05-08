@@ -20,7 +20,7 @@ export const UserLink: FC = () => {
         <Link
           to={user != null ? toPath(ROUTES.PROFILE) : toPath(ROUTES.LOGIN)}
           viewTransition
-          className={styles.userName}
+          className={styles.userIcon}
           aria-label={user?.name ?? 'Guest'}
         >
           <UserIcon />

@@ -40,7 +40,13 @@ module.exports = (_env, argv) => {
       systemvars: true
     }),
 
-    !prod && new BundleAnalyzerPlugin(),
+    prod &&
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        openAnalyzer: true,
+        reportFilename: 'bundle-report.html',
+        logLevel: 'silent'
+      }),
 
     prod &&
       new MiniCssExtractPlugin({

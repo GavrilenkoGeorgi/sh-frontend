@@ -177,6 +177,7 @@
       "noGames": "Ще немає зіграних ігор",
       "highestScoreLabel": "Найвищий результат:",
       "averageLabel": "Середнє:",
+      "averageDescription": "середнє",
       "averageWhichIs": "що становить",
       "averageFromMax": "від максимуму",
       "gamesSoFar": "{{count}} ігор зіграно",

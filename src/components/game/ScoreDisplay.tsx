@@ -11,7 +11,7 @@ export const ScoreDisplay: FC = () => {
     <div className={styles.score} data-tour="score-display">
       <div className={styles.label}>
         <div className={styles.dropCap}>S</div>
-        <div>
+        <div className={styles.vertText}>
           <span>co</span>
           <span>re</span>
         </div>
@@ -20,7 +20,7 @@ export const ScoreDisplay: FC = () => {
         end={game.score}
         duration={5}
         preserveValue={true}
-        className={styles.dropCap}
+        className={styles.scoreValue}
       />
     </div>
   )
