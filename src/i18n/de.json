@@ -175,6 +175,14 @@
     "stats": {
       "title": "Statistik",
       "noGames": "Noch keine Spiele gespielt",
+      "filters": {
+        "modeLastN": "Letzte N Spiele",
+        "modeDateRange": "Datumsbereich",
+        "presetCustom": "Benutzerdefiniert",
+        "numberOfGames": "Anzahl der Spiele",
+        "dateRange": "Datumsbereich",
+        "minScore": "Mindestpunktzahl"
+      },
       "highestScoreLabel": "Höchste Punktzahl:",
       "averageLabel": "Durchschnitt:",
       "averageDescription": "durchschnitt",

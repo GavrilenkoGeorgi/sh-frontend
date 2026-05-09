@@ -53,6 +53,14 @@ export interface ToggleBtnProps {
   onClick: () => void
 }
 
+export interface StatsFilterParams {
+  mode: 'lastN' | 'dateRange'
+  lastN?: number
+  dateFrom?: string
+  dateTo?: string
+  minScore?: number
+}
+
 export interface Stats {
   average: number
   games: number

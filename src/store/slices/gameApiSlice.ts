@@ -1,6 +1,7 @@
 import { GAME_API_ROUTES } from '../../constants/routes'
 import { SaveResultsData } from '../../pages/Game'
-import { Stats } from '../../types'
+import { Stats, StatsFilterParams } from '../../types'
+import { buildStatsQueryString } from '../../utils'
 import { gameSlice } from './apiSlice'
 
 // TODO: check if this is strictly necessary, we can update backend to return JSON and remove this
@@ -38,9 +39,9 @@ export const gameApiSlice = gameSlice.injectEndpoints({
       }),
       invalidatesTags: ['Game']
     }),
-    getStats: builder.query<Stats, void>({
-      query: () => ({
-        url: GAME_API_ROUTES.GET_STATS,
+    getStats: builder.query<Stats, StatsFilterParams>({
+      query: (filters) => ({
+        url: `${GAME_API_ROUTES.GET_STATS}?${buildStatsQueryString(filters)}`,
         method: 'GET',
         credentials: 'include'
       }),

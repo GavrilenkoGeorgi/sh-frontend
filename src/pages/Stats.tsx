@@ -1,8 +1,15 @@
 import { type FC } from 'react'
 import CountUp from 'react-countup'
+import { useSearchParams } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { useGetStatsQuery } from '../store/slices/gameApiSlice'
-import { formatDateChartAxisData, formatLabelChartAxisData } from '../utils'
+import {
+  formatDateChartAxisData,
+  formatLabelChartAxisData,
+  parseStatsSearchParams,
+  buildStatsQueryString
+} from '../utils'
+import type { StatsFilterParams } from '../types'
 import AreaChart from '../components/charts/AreaChart'
 import BarChart from '../components/charts/BarChart'
 import VertBarChart from '../components/charts/VertBarChart'
@@ -10,15 +17,32 @@ import * as styles from './Stats.module.sass'
 import * as sharedStyles from './SharedStyles.module.sass'
 import Fallback from '../components/layout/Fallback'
 import { DashedLineLegend } from '../components/charts/DashedLineLegend'
+import StatsFilters from '../components/stats/StatsFilters'
 
 const StatsPage: FC = () => {
-  const { data, isLoading } = useGetStatsQuery()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const filters = parseStatsSearchParams(searchParams)
+  const { data, isLoading } = useGetStatsQuery(filters)
   const { t } = useTranslation()
+
+  const handleFiltersChange = (newFilters: StatsFilterParams) => {
+    setSearchParams(new URLSearchParams(buildStatsQueryString(newFilters)))
+  }
 
   if (!data || isLoading) return <Fallback />
 
-  if (data.games === 0)
-    return <h2 className={styles.noGames}>{t('pages.stats.noGames')}</h2>
+  if (data.games === 0) {
+    // TODO: check if we need filters when we have no games at all?
+    return (
+      <section className={sharedStyles.contentPage}>
+        <div className={styles.stats}>
+          <h1>{t('pages.stats.title')}</h1>
+          <StatsFilters filters={filters} onChange={handleFiltersChange} />
+          <h2 className={styles.noGames}>{t('pages.stats.noGames')}</h2>
+        </div>
+      </section>
+    )
+  }
 
   // TODO: calculate on backend and send as part of the response
   const schoolAverage =
@@ -56,6 +80,8 @@ const StatsPage: FC = () => {
         </h3>
 
         <h4>{t('pages.stats.gamesSoFar', { count: data.games })}</h4>
+
+        <StatsFilters filters={filters} onChange={handleFiltersChange} />
 
         <aside>
           <h4>{t('pages.stats.schoolScores')}</h4>

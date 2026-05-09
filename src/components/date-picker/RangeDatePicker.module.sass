@@ -1,0 +1,148 @@
+.trigger
+  display: flex
+  align-items: center
+  gap: .4rem
+  padding: .3rem .6rem
+  border: 1px solid var(--color-primary)
+  background: transparent
+  color: var(--color-primary)
+  cursor: pointer
+  font-size: .875rem
+  font-family: inherit
+  min-height: 31.59px // TODO: select height! fix this in a better way
+  transition: background-color var(--duration-default), color var(--duration-default)
+  &[data-hovered]
+    background-color: var(--color-primary-light)
+  &[data-pressed]
+    background-color: var(--color-primary-light)
+
+.popover
+  background-color: var(--color-surface-elevated)
+  border: 1px solid var(--color-primary)
+  box-shadow: 0 4px 12px var(--color-shadow)
+  padding: .75rem
+  z-index: 10
+
+.dialog
+  outline: none
+
+.calendar
+  min-width: 16rem
+
+.calendarHeader
+  display: flex
+  align-items: center
+  justify-content: space-between
+  margin-bottom: .5rem
+
+.calendarHeading
+  font-size: .875rem
+  font-weight: 600
+  color: var(--color-primary)
+  background: transparent
+  border: none
+  cursor: pointer
+  padding: .15rem .4rem
+  font-family: inherit
+  &:hover
+    background-color: var(--color-primary-light)
+
+.calendarNavBtn
+  background: transparent
+  border: none
+  color: var(--color-primary)
+  cursor: pointer
+  padding: .2rem .4rem
+  font-size: 1.1rem
+  line-height: 1
+  font-family: inherit
+  &[data-hovered]
+    color: var(--color-accent)
+
+.calendarHeaderCell
+  font-size: .75rem
+  color: var(--color-text-dim)
+  text-align: center
+  padding: .2rem
+
+.calendarGrid
+  border-collapse: collapse
+  width: 100%
+
+.calendarCell
+  text-align: center
+  padding: 0
+  cursor: pointer
+  font-size: .8rem
+  color: var(--color-text-dim)
+  min-width: 2rem
+  height: 2rem
+  line-height: 2rem
+  &.today
+    font-weight: bold
+    color: var(--color-primary)
+  &.selected
+    background-color: var(--color-primary-light)
+    color: var(--color-text-dim)
+    border-radius: 0
+  &.selectionStart
+    background-color: var(--color-primary)
+    color: var(--color-surface)
+  &.selectionEnd
+    background-color: var(--color-primary)
+    color: var(--color-surface)
+  // &.selectionStart.selectionEnd
+  &.outsideMonth
+    opacity: .35
+  &.hovered:not(.selected)
+    background-color: var(--color-primary-light)
+
+// month/year picker
+
+.monthPicker
+  min-width: 16rem
+
+.monthPickerHeader
+  display: flex
+  align-items: center
+  justify-content: space-between
+  margin-bottom: .75rem
+
+.pickerYear
+  font-size: .875rem
+  font-weight: 600
+  color: var(--color-primary)
+
+.navBtn
+  background: transparent
+  border: none
+  color: var(--color-primary)
+  cursor: pointer
+  padding: .2rem .4rem
+  font-size: 1.1rem
+  line-height: 1
+  font-family: inherit
+  &:hover
+    color: var(--color-accent)
+
+.monthGrid
+  display: grid
+  grid-template-columns: repeat(4, 1fr)
+  gap: .35rem
+
+.monthBtn
+  padding: .4rem .2rem
+  background: transparent
+  border: 1px solid transparent
+  color: var(--color-text-dim)
+  cursor: pointer
+  font-size: .8rem
+  font-family: inherit
+  // border-radius: .25rem
+  text-align: center
+  &:hover
+    border-color: var(--color-primary)
+    color: var(--color-primary)
+  &.selectedMonth
+    background-color: var(--color-primary)
+    color: var(--color-surface)

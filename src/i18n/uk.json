@@ -175,6 +175,14 @@
     "stats": {
       "title": "Статистика",
       "noGames": "Ще немає зіграних ігор",
+      "filters": {
+        "modeLastN": "Останні N ігор",
+        "modeDateRange": "Діапазон дат",
+        "presetCustom": "Інше",
+        "numberOfGames": "Кількість ігор",
+        "dateRange": "Діапазон дат",
+        "minScore": "Мін. очки"
+      },
       "highestScoreLabel": "Найвищий результат:",
       "averageLabel": "Середнє:",
       "averageDescription": "середнє",
