@@ -175,6 +175,14 @@
     "stats": {
       "title": "Stats",
       "noGames": "No games played yet",
+      "filters": {
+        "modeLastN": "Last N games",
+        "modeDateRange": "Date range",
+        "presetCustom": "Custom",
+        "numberOfGames": "Number of games",
+        "dateRange": "Date range",
+        "minScore": "Min score"
+      },
       "highestScoreLabel": "Highest score:",
       "averageLabel": "Average:",
       "averageDescription": "average",

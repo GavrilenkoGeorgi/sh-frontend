@@ -175,6 +175,14 @@
     "stats": {
       "title": "סטטיסטיקה",
       "noGames": "עדיין לא שוחקו משחקים",
+      "filters": {
+        "modeLastN": "N משחקים אחרונים",
+        "modeDateRange": "טווח תאריכים",
+        "presetCustom": "מותאם אישית",
+        "numberOfGames": "מספר משחקים",
+        "dateRange": "טווח תאריכים",
+        "minScore": "ניקוד מינימלי"
+      },
       "highestScoreLabel": "הניקוד הגבוה ביותר:",
       "averageLabel": "ממוצע:",
       "averageDescription": "ממוצע",
