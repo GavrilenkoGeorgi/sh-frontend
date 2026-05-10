@@ -32,7 +32,6 @@ const StatsPage: FC = () => {
   if (!data || isLoading) return <Fallback />
 
   if (data.games === 0) {
-    // TODO: check if we need filters when we have no games at all?
     return (
       <section className={sharedStyles.contentPage}>
         <div className={styles.stats}>
@@ -43,11 +42,6 @@ const StatsPage: FC = () => {
       </section>
     )
   }
-
-  // TODO: calculate on backend and send as part of the response
-  const schoolAverage =
-    data.schoolScores.reduce((sum, item) => sum + item.value, 0) /
-    (data.schoolScores.length || 1)
 
   return (
     <section className={sharedStyles.contentPage}>
@@ -89,7 +83,7 @@ const StatsPage: FC = () => {
             <AreaChart
               data={formatDateChartAxisData(data.schoolScores)}
               syncId="shStats"
-              referenceValue={schoolAverage}
+              referenceValue={data.schoolAverage}
             />
             <div className={styles.legend}>
               <DashedLineLegend />
