@@ -62,9 +62,6 @@ const Profile: FC<Props> = ({ data }) => {
           type: ToastTypes.SUCCESS
         })
       )
-      // TODO: decide what to do next
-      // need to update the user data in store
-      // to refill the form with new values and other places this data is used
     } catch (err: unknown) {
       dispatch(
         setNotification({

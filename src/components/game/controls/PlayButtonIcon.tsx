@@ -13,6 +13,9 @@ export const PlayButtonIcon: FC<ButtonIconProps> = ({
   rollCount = 0,
   isLocked = false
 }) => {
+  const shouldPulse = !isLocked && rollCount === 0
+  const iconPath = isLocked ? squarePath : trianglePath
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -58,27 +61,17 @@ export const PlayButtonIcon: FC<ButtonIconProps> = ({
         )}
       </AnimatePresence>
       <motion.path
-        d={trianglePath}
-        animate={isLocked ? 'locked' : rollCount === 0 ? 'idle' : 'still'}
-        variants={{
-          idle: {
-            d: trianglePath,
-            scale: [1, 1.08, 1],
-            transition: {
-              scale: { repeat: Infinity, duration: 2, ease: 'easeInOut' },
-              d: { duration: 0.3, ease: 'easeInOut' }
-            }
-          },
-          still: {
-            d: trianglePath,
-            scale: 1,
-            transition: { duration: 0.3, ease: 'easeInOut' }
-          },
-          locked: {
-            d: squarePath,
-            scale: 1,
-            transition: { duration: 0.3, ease: 'easeInOut' }
-          }
+        d={iconPath}
+        initial={false}
+        animate={{
+          d: iconPath,
+          scale: shouldPulse ? [1, 1.08, 1] : 1
+        }}
+        transition={{
+          d: { duration: 0.3, ease: 'easeInOut' },
+          scale: shouldPulse
+            ? { repeat: Infinity, duration: 2, ease: 'easeInOut' }
+            : { duration: 0.3, ease: 'easeInOut' }
         }}
       />
     </svg>

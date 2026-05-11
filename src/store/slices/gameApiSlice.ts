@@ -3,6 +3,7 @@ import { SaveResultsData } from '../../pages/Game'
 import { Stats, StatsFilterParams } from '../../types'
 import { buildStatsQueryString } from '../../utils'
 import { gameSlice } from './apiSlice'
+import { GAME_TAGS } from './tags'
 
 // TODO: check if this is strictly necessary, we can update backend to return JSON and remove this
 const parseMutationResponse = async (response: Response): Promise<unknown> => {
@@ -29,7 +30,7 @@ export const gameApiSlice = gameSlice.injectEndpoints({
         body: data,
         responseHandler: parseMutationResponse
       }),
-      invalidatesTags: ['Game']
+      invalidatesTags: [GAME_TAGS.Game]
     }),
     clearStats: builder.mutation<void, void>({
       query: () => ({
@@ -37,7 +38,7 @@ export const gameApiSlice = gameSlice.injectEndpoints({
         method: 'DELETE',
         credentials: 'include'
       }),
-      invalidatesTags: ['Game']
+      invalidatesTags: [GAME_TAGS.Game]
     }),
     getStats: builder.query<Stats, StatsFilterParams>({
       query: (filters) => ({
@@ -45,7 +46,7 @@ export const gameApiSlice = gameSlice.injectEndpoints({
         method: 'GET',
         credentials: 'include'
       }),
-      providesTags: ['Game']
+      providesTags: [GAME_TAGS.Game]
     })
   })
 })

@@ -117,26 +117,24 @@ export const useDragHandlers = ({
       )
 
       if (activeIndex !== overIndex) {
-        setBoardSections((boardSection) => {
-          const reordered = arrayMove(
-            boardSection[overContainer],
-            activeIndex,
-            overIndex
+        const reordered = arrayMove(
+          boardSections[overContainer],
+          activeIndex,
+          overIndex
+        )
+
+        // keep Redux updates outside React state updaters to avoid render-phase warnings
+        if (overContainer === DiceStatus.SELECTED) {
+          const orderedIndices = reordered.map((dice) =>
+            diceArray.findIndex((d) => d.id === dice.id)
           )
+          onDiceReorder(orderedIndices)
+        }
 
-          // persist selected order in Redux after reorder
-          if (overContainer === DiceStatus.SELECTED) {
-            const orderedIndices = reordered.map((dice) =>
-              diceArray.findIndex((d) => d.id === dice.id)
-            )
-            onDiceReorder(orderedIndices)
-          }
-
-          return {
-            ...boardSection,
-            [overContainer]: reordered
-          }
-        })
+        setBoardSections((boardSection) => ({
+          ...boardSection,
+          [overContainer]: reordered
+        }))
       }
 
       const activeDice = getDiceById(diceState, active.id)
@@ -168,7 +166,14 @@ export const useDragHandlers = ({
 
       setActiveDiceId(null)
     },
-    [boardSections, diceState, setDiceState, onDiceSelect, onDiceDeselect]
+    [
+      boardSections,
+      diceState,
+      setDiceState,
+      onDiceSelect,
+      onDiceDeselect,
+      onDiceReorder
+    ]
   )
 
   // get the currently dragged item for animation

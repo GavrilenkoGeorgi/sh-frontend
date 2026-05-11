@@ -4,6 +4,7 @@ import type {
   OutgoingInvite
 } from '../../features/multiplayer/types'
 import { apiSlice } from './apiSlice'
+import { USER_TAGS } from './tags'
 
 interface IncomingInvitesResponse {
   invites: IncomingInvite[]
@@ -21,7 +22,7 @@ export const inviteApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
         credentials: 'include'
       }),
-      providesTags: ['IncomingInvites']
+      providesTags: [USER_TAGS.IncomingInvites]
     }),
     getOutgoingInvites: builder.query<OutgoingInvitesResponse, void>({
       query: () => ({
@@ -29,7 +30,7 @@ export const inviteApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
         credentials: 'include'
       }),
-      providesTags: ['OutgoingInvites']
+      providesTags: [USER_TAGS.OutgoingInvites]
     })
   })
 })
