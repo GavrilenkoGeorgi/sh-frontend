@@ -17,17 +17,18 @@ import * as styles from './Charts.module.sass'
 import { tickStyles } from './BarChart'
 import { chartColors } from './chartColors'
 
-function customTooltipRenderer({
+const customTooltipRenderer = ({
   active,
-  payload,
-  label
-}: TooltipContentProps): ReactNode {
+  payload
+}: TooltipContentProps): ReactNode => {
   if (!active || !payload?.length) return null
+
+  const { payload: tooltip, value } = payload[0]
 
   return (
     <div className={styles.customTooltip}>
-      <p className={styles.tooltipLabel}>{label}</p>
-      <p className={styles.tooltipValue}>{payload[0].value}</p>
+      <p className={styles.tooltipLabel}>{tooltip.id}</p>
+      <p className={styles.tooltipValue}>{value}</p>
     </div>
   )
 }
@@ -75,7 +76,7 @@ const Chart: FC<ChartProps> = ({ data, syncId, referenceValue }) => {
           </filter>
         </defs>
         <CartesianGrid strokeDasharray="4 6" strokeWidth={0.5} />
-        <XAxis dataKey="id" hide />
+        <XAxis hide />
         <YAxis
           tickCount={4}
           tickSize={0}

@@ -63,6 +63,7 @@ export interface StatsFilterParams {
 
 export interface Stats {
   average: number
+  schoolAverage: number
   games: number
   max: number
   percentFromMax: number

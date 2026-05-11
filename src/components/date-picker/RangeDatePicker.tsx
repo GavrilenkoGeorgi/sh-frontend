@@ -27,8 +27,13 @@ const RangeDatePicker: FC<Props> = ({ label, value, onChange }) => {
   const defaultFocusDate = value.start ?? today(getLocalTimeZone())
   const [isOpen, setIsOpen] = useState(false)
   const [focusedDate, setFocusedDate] = useState<CalendarDate>(defaultFocusDate)
-  const [showMonthPicker, setShowMonthPicker] = useState(false)
+  const [pickerView, setPickerView] = useState<
+    'calendar' | 'monthPicker' | 'yearPicker'
+  >('calendar')
   const [pickerYear, setPickerYear] = useState(defaultFocusDate.year)
+  const [yearRangeStart, setYearRangeStart] = useState(
+    defaultFocusDate.year - 5
+  )
 
   const rangeValue =
     value.start && value.end ? { start: value.start, end: value.end } : null
@@ -45,12 +50,17 @@ const RangeDatePicker: FC<Props> = ({ label, value, onChange }) => {
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open)
-    if (!open) setShowMonthPicker(false)
+    if (!open) setPickerView('calendar')
   }
 
   const handleMonthSelect = (month: number) => {
     setFocusedDate(focusedDate.set({ year: pickerYear, month }))
-    setShowMonthPicker(false)
+    setPickerView('calendar')
+  }
+
+  const handleYearSelect = (year: number) => {
+    setPickerYear(year)
+    setPickerView('monthPicker')
   }
 
   return (
@@ -61,26 +71,69 @@ const RangeDatePicker: FC<Props> = ({ label, value, onChange }) => {
       </Button>
       <Popover className={styles.popover}>
         <Dialog className={styles.dialog} aria-label={label}>
-          {showMonthPicker ? (
+          {pickerView === 'yearPicker' ? (
             <div className={styles.monthPicker}>
               <div className={styles.monthPickerHeader}>
-                <button
+                <Button
+                  className={styles.navBtn}
+                  onClick={() => setYearRangeStart((s) => s - 12)}
+                >
+                  ‹
+                </Button>
+                <span className={styles.pickerYear}>
+                  {yearRangeStart}–{yearRangeStart + 11}
+                </span>
+                <Button
+                  className={styles.navBtn}
+                  onClick={() => setYearRangeStart((s) => s + 12)}
+                >
+                  ›
+                </Button>
+              </div>
+              <div className={styles.monthGrid}>
+                {Array.from({ length: 12 }, (_, i) => yearRangeStart + i).map(
+                  (year) => (
+                    <Button
+                      key={year}
+                      className={clsx(styles.monthBtn, {
+                        [styles.selectedMonth]: year === pickerYear
+                      })}
+                      onClick={() => handleYearSelect(year)}
+                    >
+                      {year}
+                    </Button>
+                  )
+                )}
+              </div>
+            </div>
+          ) : pickerView === 'monthPicker' ? (
+            <div className={styles.monthPicker}>
+              <div className={styles.monthPickerHeader}>
+                <Button
                   className={styles.navBtn}
                   onClick={() => setPickerYear((y) => y - 1)}
                 >
                   ‹
-                </button>
-                <span className={styles.pickerYear}>{pickerYear}</span>
-                <button
+                </Button>
+                <Button
+                  className={styles.pickerYearBtn}
+                  onClick={() => {
+                    setYearRangeStart(pickerYear - 5)
+                    setPickerView('yearPicker')
+                  }}
+                >
+                  {pickerYear}
+                </Button>
+                <Button
                   className={styles.navBtn}
                   onClick={() => setPickerYear((y) => y + 1)}
                 >
                   ›
-                </button>
+                </Button>
               </div>
               <div className={styles.monthGrid}>
                 {MONTHS.map((name, index) => (
-                  <button
+                  <Button
                     key={name}
                     className={clsx(styles.monthBtn, {
                       [styles.selectedMonth]:
@@ -90,7 +143,7 @@ const RangeDatePicker: FC<Props> = ({ label, value, onChange }) => {
                     onClick={() => handleMonthSelect(index + 1)}
                   >
                     {name}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -117,7 +170,8 @@ const RangeDatePicker: FC<Props> = ({ label, value, onChange }) => {
                   className={styles.calendarHeading}
                   onClick={() => {
                     setPickerYear(focusedDate.year)
-                    setShowMonthPicker(true)
+                    setYearRangeStart(focusedDate.year - 5)
+                    setPickerView('monthPicker')
                   }}
                 >
                   {monthLabel}
