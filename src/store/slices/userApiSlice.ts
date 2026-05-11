@@ -57,7 +57,20 @@ export const userApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
         body: data
       }),
-      invalidatesTags: [USER_TAGS.User]
+      invalidatesTags: [USER_TAGS.User],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(
+            userApiSlice.endpoints.refreshToken.initiate(undefined, {
+              forceRefetch: true,
+              subscribe: false
+            })
+          )
+        } catch {
+          // do nothing on failure; error handling stays in the form component
+        }
+      }
     }),
     refreshToken: builder.query<RefreshTokenResponse, void>({
       query: () => ({
