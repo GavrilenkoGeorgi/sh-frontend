@@ -1,20 +1,31 @@
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { setAuthInitialized } from '../../store/slices/authSlice'
+import { useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  selectAuthInitialized,
+  setAuthInitialized
+} from '../../store/slices/authSlice'
 import { useRefreshTokenQuery } from '../../store/slices/userApiSlice'
 import { hasAuthSessionHint } from '../../utils/authSessionHint'
 
-// triggers the bootstrap refresh query once on mount;
-// onQueryStarted in the endpoint handles setting auth state
 export const useAuthBootstrap = () => {
   const dispatch = useDispatch()
-  const [shouldRefresh] = useState(() => hasAuthSessionHint())
+  const authInitialized = useSelector(selectAuthInitialized)
 
-  useRefreshTokenQuery(undefined, { skip: !shouldRefresh })
+  // We only care if the hint exists on the initial load.
+  // We use useRef so this value never changes between re-renders.
+  const shouldRefresh = useRef(hasAuthSessionHint()).current
+
+  useRefreshTokenQuery(undefined, {
+    // only run refresh during startup and stop once auth gets initialized
+    skip: !shouldRefresh || authInitialized
+  })
 
   useEffect(() => {
-    if (!shouldRefresh) {
+    // If there's no hint, we immediately mark auth as initialized
+    if (!shouldRefresh && !authInitialized) {
       dispatch(setAuthInitialized())
     }
-  }, [dispatch, shouldRefresh])
+    // If shouldRefresh IS true, we rely on the API slice's
+    // onQueryStarted (try AND catch blocks) to dispatch setAuthInitialized.
+  }, [authInitialized, dispatch, shouldRefresh])
 }

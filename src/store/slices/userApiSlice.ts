@@ -11,6 +11,11 @@ import {
   clearAuthSessionHint,
   setAuthSessionHint
 } from '../../utils/authSessionHint'
+import { USER_TAGS } from './tags'
+
+type RefreshTokenResponse = {
+  user: Pick<User, '_id' | 'name' | 'email'>
+}
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -27,14 +32,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         credentials: 'include',
         body: data
-      })
+      }),
+      invalidatesTags: [USER_TAGS.User]
     }),
     logout: builder.mutation<void, void>({
       query: () => ({
         url: API_ROUTES.LOGOUT,
         credentials: 'include',
         method: 'POST'
-      })
+      }),
+      invalidatesTags: [USER_TAGS.User]
     }),
     signup: builder.mutation<void, RegisterFormSchemaType>({
       query: (data) => ({
@@ -49,23 +56,36 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         credentials: 'include',
         body: data
-      })
+      }),
+      invalidatesTags: [USER_TAGS.User],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(
+            userApiSlice.endpoints.refreshToken.initiate(undefined, {
+              forceRefetch: true,
+              subscribe: false
+            })
+          )
+        } catch {
+          // do nothing on failure; error handling stays in the form component
+        }
+      }
     }),
-    refreshToken: builder.query<unknown, void>({
+    refreshToken: builder.query<RefreshTokenResponse, void>({
       query: () => ({
         url: API_ROUTES.REFRESH_TOKEN,
         method: 'POST',
         credentials: 'include'
       }),
+      providesTags: [USER_TAGS.User],
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
-          const response = data as {
-            user?: { _id: string; name: string; email: string }
-          }
-          if (response?.user) {
+
+          if (data?.user) {
             setAuthSessionHint()
-            dispatch(setCredentials({ user: response.user }))
+            dispatch(setCredentials({ user: data.user }))
           } else {
             clearAuthSessionHint()
           }
@@ -73,6 +93,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
           clearAuthSessionHint()
           // silent failure — user stays unauthenticated
         } finally {
+          // startup auth check finished whether refresh succeeded or failed, so the app is not stuck waiting.
           dispatch(setAuthInitialized())
         }
       }
@@ -91,8 +112,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data
       })
     })
-  }),
-  overrideExisting: false
+  })
 })
 
 export const {
