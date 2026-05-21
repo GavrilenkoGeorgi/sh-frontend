@@ -69,7 +69,8 @@
       "multiplayer": "Multiplayer",
       "login": "Login",
       "register": "Register",
-      "settings": "Settings"
+      "settings": "Settings",
+      "restorePassword": "Restore password"
     },
     "settings": {
       "themeLabel": "Theme",

@@ -69,7 +69,8 @@
       "multiplayer": "Мультиплеер",
       "login": "Логін",
       "register": "Реєстрація",
-      "settings": "Налаштування"
+      "settings": "Налаштування",
+      "restorePassword": "Відновити пароль"
     },
     "settings": {
       "themeLabel": "Тема",
