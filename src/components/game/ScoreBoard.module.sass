@@ -5,21 +5,27 @@
   flex-direction: column
   justify-content: space-between
   flex-grow: 1
-  font-size: 1.4rem
-  gap: .5rem
+  font-size: 1rem
+  gap: .25rem
   margin: 0 0 1.25rem
-  @media (min-width: variables.$small) and (min-height: variables.$smallHeight)
+  // various mobile devices with all kinds of screen height/width ratios
+  @media (max-width: variables.$small) and (min-height: variables.$smallHeight)
+    font-size: 1.5rem
+  @media (min-width: variables.$small) and (max-height: variables.$mediumHeight)
+    font-size: 1.7rem
+  @media (min-width: variables.$small) and (max-height: variables.$xxlargeHeight)
     font-size: 2rem
-    gap: .25rem
-  @media (max-width: variables.$small) and (min-height: variables.$xlargeHeight)
-    font-size: 2rem
+  @media (max-width: variables.$small) and (min-height: variables.$largeHeight)
+    font-size: 1.9rem
   @media (max-width: variables.$intermediate) and (max-height: variables.$largeHeight)
-    font-size: 1.6rem
+    font-size: 1.5rem
   @media (min-width: variables.$tablet) and (min-height: variables.$tabletHeight)
     font-size: 2.5rem
   @media (min-width: variables.$tablet) and (min-height: variables.$tabletLargeHeight)
     font-size: 3rem
-  @media (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
+  @media (min-width: variables.$tablet) and (min-height: variables.$tabletXLHeight)
+    font-size: 3.5rem
+  @media (min-width: variables.$tablet) and (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
     font-size: 1.5rem
   @media (min-width: variables.$large) // desktop
     font-size: 1.3rem
@@ -27,14 +33,10 @@
 
 .name
   text-transform: capitalize
-  margin: 0
   &:hover
     cursor: pointer
     color: var(--color-accent)
-  @media (min-width: variables.$small)
-    margin: .3rem 0
-  @media (min-width: variables.$medium)
-    margin: 0
+
 .score
   display: grid
   grid-template-columns: 2fr repeat(3, 1fr)

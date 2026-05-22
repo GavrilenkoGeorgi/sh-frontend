@@ -21,9 +21,11 @@
     min-height: 8rem
   @media (min-width: variables.$tablet) and (min-height: variables.$tabletLargeHeight)
     min-height: 9rem
+  @media (min-width: variables.$tablet) and (min-height: variables.$tabletXLHeight)
+    min-height: 10rem
   @media (max-width: variables.$tablet) and (max-height: variables.$largeHeight)
     min-height: 5.5rem
-  @media (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
+  @media (min-width: variables.$tablet) and (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
     min-height: 4.25rem
   @media screen and (min-width: variables.$large) // desktop
     min-height: auto
@@ -42,15 +44,17 @@
         max-width: 4rem
       @media screen and (min-width: variables.$medium)
         max-width: 2.5rem
-        margin-left: .5rem
       @media (max-width: variables.$intermediate) and (max-height: variables.$largeHeight)
         max-width: 3rem
       @media (min-width: variables.$tablet) and (min-height: variables.$tabletHeight)
         max-width: 4.5rem
       @media (min-width: variables.$tablet) and (min-height: variables.$tabletLargeHeight)
         max-width: 5.5rem
+      @media (min-width: variables.$tablet) and (min-height: variables.$tabletXLHeight)
+        max-width: 6.5rem
       @media (min-width: variables.$large) // desktop
         max-width: 2.25rem
+        margin-left: .5rem
 .qualiScore
   font-size: 1.8rem
   margin: 0
@@ -67,7 +71,7 @@
   @media (min-width: variables.$tablet) and (min-height: variables.$tabletHeight)
     font-size: 2.5rem
     margin-bottom: .75rem
-  @media (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
+  @media (min-width: variables.$tablet) and (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
     font-size: 1.2rem
 
 .visible

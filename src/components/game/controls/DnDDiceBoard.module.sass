@@ -78,10 +78,10 @@
       max-height: variables.$diceMaxHeight
     @media screen and (max-width: variables.$intermediate) and (max-height: variables.$largeHeight)
       max-height: variables.$diceMaxHeight
-    @media (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
-      max-height: 2rem
     @media (max-width: variables.$large) and (max-height: variables.$xlargeHeight) // Nest Hub Max
       max-height: 3rem
+    @media (min-width: variables.$tablet) and (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
+      max-height: 2rem
 
 .rollButton
   border: none
@@ -101,7 +101,7 @@
     min-height: 5rem
   @media screen and (min-width: variables.$tablet) and (min-height: variables.$tabletLargeHeight)
     min-height: 7rem
-  @media (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
+  @media (min-width: variables.$tablet) and (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
     min-height: 2.5rem
   @media screen and (min-width: variables.$large)
     margin-top: 0
