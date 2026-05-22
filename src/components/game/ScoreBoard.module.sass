@@ -7,14 +7,22 @@
   flex-grow: 1
   font-size: 1.4rem
   gap: .5rem
-  margin: 0 0 1.5rem
-  @media (min-height: variables.$smallHeight)
+  margin: 0 0 1.25rem
+  @media (min-width: variables.$small) and (min-height: variables.$smallHeight)
+    font-size: 2rem
+    gap: .25rem
+  @media (max-width: variables.$small) and (min-height: variables.$xlargeHeight)
+    font-size: 2rem
+  @media (max-width: variables.$intermediate) and (max-height: variables.$largeHeight)
     font-size: 1.6rem
-  @media (min-height: variables.$largeHeight)
-    font-size: 1.9rem
-  @media screen and (min-width: variables.$medium)
+  @media (min-width: variables.$tablet) and (min-height: variables.$tabletHeight)
+    font-size: 2.5rem
+  @media (min-width: variables.$tablet) and (min-height: variables.$tabletLargeHeight)
+    font-size: 3rem
+  @media (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
+    font-size: 1.5rem
+  @media (min-width: variables.$large) // desktop
     font-size: 1.3rem
-    gap: 0
     margin: 0
 
 .name
@@ -23,9 +31,9 @@
   &:hover
     cursor: pointer
     color: var(--color-accent)
-  @media screen and (min-width: variables.$small)
+  @media (min-width: variables.$small)
     margin: .3rem 0
-  @media screen and (min-width: variables.$medium)
+  @media (min-width: variables.$medium)
     margin: 0
 .score
   display: grid
