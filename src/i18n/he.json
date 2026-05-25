@@ -69,7 +69,8 @@
       "multiplayer": "מרובה משתתפים",
       "login": "התחברות",
       "register": "הרשמה",
-      "settings": "הגדרות"
+      "settings": "הגדרות",
+      "restorePassword": "שחזור סיסמה"
     },
     "settings": {
       "themeLabel": "ערכת נושא",

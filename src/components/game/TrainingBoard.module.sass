@@ -4,7 +4,7 @@
   display: grid
   grid-template-columns: repeat(6, 1fr)
   gap: .75rem
-  @media screen and (min-width: variables.$medium)
+  @media screen and (min-width: variables.$large)
     grid-template-columns: 1fr
     padding: 0
     min-width: 6rem
@@ -14,23 +14,47 @@
   text-align: center
   display: flex
   justify-content: center
-  @media screen and (min-width: variables.$medium)
+  @media screen and (min-width: variables.$intermediate)
+    min-height: 7rem
+    margin-bottom: .5rem
+  @media (min-width: variables.$tablet) and (min-height: variables.$tabletHeight)
+    min-height: 8rem
+  @media (min-width: variables.$tablet) and (min-height: variables.$tabletLargeHeight)
+    min-height: 9rem
+  @media (min-width: variables.$tablet) and (min-height: variables.$tabletXLHeight)
+    min-height: 10rem
+  @media (max-width: variables.$tablet) and (max-height: variables.$largeHeight)
+    min-height: 5.5rem
+  @media (min-width: variables.$tablet) and (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
+    min-height: 4.25rem
+  @media screen and (min-width: variables.$large) // desktop
     min-height: auto
     justify-content: flex-start
-  div // for the result text
+  div // for the result text  
     display: flex
     flex-direction: column
-    @media screen and (min-width: variables.$medium)
+    @media screen and (min-width: variables.$large)
       flex-direction: row
       align-items: center
     svg
       width: 100%
       max-width: 5rem
       cursor: pointer
+      @media screen and (min-width: variables.$intermediate)
+        max-width: 4rem
       @media screen and (min-width: variables.$medium)
         max-width: 2.5rem
+      @media (max-width: variables.$intermediate) and (max-height: variables.$largeHeight)
+        max-width: 3rem
+      @media (min-width: variables.$tablet) and (min-height: variables.$tabletHeight)
+        max-width: 4.5rem
+      @media (min-width: variables.$tablet) and (min-height: variables.$tabletLargeHeight)
+        max-width: 5.5rem
+      @media (min-width: variables.$tablet) and (min-height: variables.$tabletXLHeight)
+        max-width: 6.5rem
+      @media (min-width: variables.$large) // desktop
+        max-width: 2.25rem
         margin-left: .5rem
-
 .qualiScore
   font-size: 1.8rem
   margin: 0
@@ -41,9 +65,14 @@
   opacity: 0
   transform: translateY(-4px) // TODO: doesn't work for desktop, as the width is changing there
   margin-bottom: .25rem
-  @media screen and (min-width: variables.$medium)
+  @media screen and (min-width: variables.$large)
     margin-bottom: 0
     text-align: right
+  @media (min-width: variables.$tablet) and (min-height: variables.$tabletHeight)
+    font-size: 2.5rem
+    margin-bottom: .75rem
+  @media (min-width: variables.$tablet) and (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
+    font-size: 1.2rem
 
 .visible
   max-height: 2.5rem // slightly above text height

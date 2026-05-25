@@ -42,7 +42,7 @@ export const PlayButtonIcon: FC<ButtonIconProps> = ({
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 2 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
+            transition={{ duration: 0.4, ease: 'easeIn' }}
           />
         )}
         {rollCount === 0 && !isLocked && (
@@ -56,7 +56,7 @@ export const PlayButtonIcon: FC<ButtonIconProps> = ({
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 2 }}
-            transition={{ delay: 0.12, duration: 0.2, ease: 'easeOut' }}
+            transition={{ delay: 0.2, duration: 0.4, ease: 'easeIn' }}
           />
         )}
       </AnimatePresence>
@@ -68,10 +68,10 @@ export const PlayButtonIcon: FC<ButtonIconProps> = ({
           scale: shouldPulse ? [1, 1.08, 1] : 1
         }}
         transition={{
-          d: { duration: 0.3, ease: 'easeInOut' },
+          d: { duration: 0.5, ease: 'easeInOut' },
           scale: shouldPulse
             ? { repeat: Infinity, duration: 2, ease: 'easeInOut' }
-            : { duration: 0.3, ease: 'easeInOut' }
+            : { duration: 0.5, ease: 'easeInOut' }
         }}
       />
     </svg>
