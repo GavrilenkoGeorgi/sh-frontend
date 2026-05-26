@@ -69,7 +69,8 @@
       "multiplayer": "Mehrspieler",
       "login": "Anmelden",
       "register": "Registrieren",
-      "settings": "Einstellungen"
+      "settings": "Einstellungen",
+      "restorePassword": "Passwort wiederherstellen"
     },
     "settings": {
       "themeLabel": "Design",
