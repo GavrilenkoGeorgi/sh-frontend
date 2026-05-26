@@ -23,7 +23,7 @@ interface SelectOption {
   label: string
 }
 
-const selectClassNames = {
+export const selectClassNames = {
   control: () => styles.selectControl,
   menu: () => styles.selectMenu,
   menuList: () => styles.selectMenuList,

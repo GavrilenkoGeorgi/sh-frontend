@@ -3,7 +3,7 @@ import ShScore from '../../utils/sh-score'
 import {
   SchoolCombinations,
   GameCombinations,
-  type iCombination,
+  type Combination,
   type SaveScorePayload,
   isSchoolCombination,
   isGameCombination
@@ -32,7 +32,7 @@ export interface GameState {
   lock: boolean
   school: SchoolState
   combinations: CombinationsState
-  results: iCombination
+  results: Combination
   // selection now stores dice indices (0..DICE_COUNT-1)
   selection: number[]
   // visual order of selected dice (same members as selection, but user-reorderable)
@@ -61,7 +61,7 @@ const createCombinationsState = (): CombinationsState => {
   return combinations
 }
 
-const createResultsState = (): iCombination => ({
+const createResultsState = (): Combination => ({
   pair: 0,
   twoPairs: 0,
   triple: 0,
@@ -102,7 +102,7 @@ const clearTempSchoolScores = (school: SchoolState) => {
   }
 }
 
-const clearTempResults = (results: iCombination) => {
+const clearTempResults = (results: Combination) => {
   for (const k in results) results[k as keyof typeof results] = 0
 }
 

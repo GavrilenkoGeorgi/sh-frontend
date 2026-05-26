@@ -184,6 +184,10 @@
         "dateRange": "Діапазон дат",
         "minScore": "Мін. очки"
       },
+      "controls": {
+        "chartTypeBar": "Гістограмма",
+        "chartTypeRadar": "Радар"
+      },
       "highestScoreLabel": "Найвищий результат:",
       "averageLabel": "Середнє:",
       "averageDescription": "середнє",
@@ -192,10 +196,8 @@
       "gamesSoFar": "{{count}} ігор зіграно",
       "schoolScores": "Шкільні очки",
       "scores": "Результати",
-      "favouriteDiceValuesLine1": "Улюблені",
-      "favouriteDiceValuesLine2": "значення кубиків",
-      "favouriteCombinationsLine1": "Улюблені",
-      "favouriteCombinationsLine2": "комбінації"
+      "favouriteDiceValues": "Улюблені значення кубиків",
+      "favouriteCombinations": "Улюблені комбінації"
     }
   }
 }

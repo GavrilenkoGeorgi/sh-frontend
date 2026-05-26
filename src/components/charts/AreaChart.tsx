@@ -17,7 +17,7 @@ import * as styles from './Charts.module.sass'
 import { tickStyles } from './BarChart'
 import { chartColors } from './chartColors'
 
-const customTooltipRenderer = ({
+export const customTooltipRenderer = ({
   active,
   payload
 }: TooltipContentProps): ReactNode => {

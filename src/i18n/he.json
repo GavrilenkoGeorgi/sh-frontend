@@ -184,6 +184,10 @@
         "dateRange": "טווח תאריכים",
         "minScore": "ניקוד מינימלי"
       },
+      "controls": {
+        "chartTypeBar": "תרשים עמודות",
+        "chartTypeRadar": "תרשים רדאר"
+      },
       "highestScoreLabel": "הניקוד הגבוה ביותר:",
       "averageLabel": "ממוצע:",
       "averageDescription": "ממוצע",
@@ -192,10 +196,8 @@
       "gamesSoFar": "{{count}} משחקים עד כה",
       "schoolScores": "ניקוד בית ספר",
       "scores": "ניקודים",
-      "favouriteDiceValuesLine1": "ערכי קובייות",
-      "favouriteDiceValuesLine2": "מועדפים",
-      "favouriteCombinationsLine1": "צירופים",
-      "favouriteCombinationsLine2": "מועדפים"
+      "favouriteDiceValues": "ערכי קוביות מועדפים",
+      "favouriteCombinations": "צירופים מועדפים"
     }
   }
 }

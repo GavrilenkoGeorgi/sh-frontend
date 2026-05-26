@@ -1,4 +1,4 @@
-import { type FC } from 'react'
+import { useState, type FC } from 'react'
 import CountUp from 'react-countup'
 import { useSearchParams } from 'react-router'
 import { useTranslation } from 'react-i18next'
@@ -15,15 +15,40 @@ import BarChart from '../components/charts/BarChart'
 import VertBarChart from '../components/charts/VertBarChart'
 import * as styles from './Stats.module.sass'
 import * as sharedStyles from './SharedStyles.module.sass'
+import * as statsFiltersStyles from '../components/stats/StatsFilters.module.sass'
+import { selectClassNames } from '../components/stats/StatsFilters'
 import Fallback from '../components/layout/Fallback'
 import { DashedLineLegend } from '../components/charts/DashedLineLegend'
 import StatsFilters from '../components/stats/StatsFilters'
+import { StatsRadarChart } from '../components/charts/StatsRadarChart'
+import Select from 'react-select'
+
+const DiceValuesChartType = {
+  bar: 'bar',
+  radar: 'radar'
+} as const
+
+type DiceValuesChartType =
+  (typeof DiceValuesChartType)[keyof typeof DiceValuesChartType]
 
 const StatsPage: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const filters = parseStatsSearchParams(searchParams)
   const { data, isLoading } = useGetStatsQuery(filters)
   const { t } = useTranslation()
+  const [diceValuesChartType, setDiceValuesChartType] =
+    useState<DiceValuesChartType>(DiceValuesChartType.radar)
+
+  const diceValuesChartOptions = [
+    {
+      value: DiceValuesChartType.radar,
+      label: t('pages.stats.controls.chartTypeRadar')
+    },
+    {
+      value: DiceValuesChartType.bar,
+      label: t('pages.stats.controls.chartTypeBar')
+    }
+  ]
 
   const handleFiltersChange = (newFilters: StatsFilterParams) => {
     setSearchParams(new URLSearchParams(buildStatsQueryString(newFilters)))
@@ -108,20 +133,43 @@ const StatsPage: FC = () => {
         </aside>
 
         <aside>
-          <h4>
-            {t('pages.stats.favouriteDiceValuesLine1')}
-            <br /> {t('pages.stats.favouriteDiceValuesLine2')}
-          </h4>
-          <div className={styles.hChart}>
-            <BarChart data={formatLabelChartAxisData(data.favDiceValues)} />
+          <h4>{t('pages.stats.favouriteDiceValues')}</h4>
+          <div className={styles.chartTypeSelect}>
+            <Select
+              isSearchable={false}
+              options={diceValuesChartOptions}
+              value={
+                diceValuesChartOptions.find(
+                  (option) => option.value === diceValuesChartType
+                ) ?? null
+              }
+              onChange={(option) =>
+                option && setDiceValuesChartType(option.value)
+              }
+              classNames={selectClassNames}
+              className={statsFiltersStyles.presetSelect}
+              unstyled
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  minHeight: 'unset'
+                })
+              }}
+            />
           </div>
+          {diceValuesChartType === DiceValuesChartType.radar ? (
+            <div className={styles.radarChartContainer}>
+              <StatsRadarChart data={data.favDiceValues} />
+            </div>
+          ) : (
+            <div className={styles.hChart} style={{ marginTop: '3rem' }}>
+              <BarChart data={formatLabelChartAxisData(data.favDiceValues)} />
+            </div>
+          )}
         </aside>
 
         <aside>
-          <h4>
-            {t('pages.stats.favouriteCombinationsLine1')}
-            <br /> {t('pages.stats.favouriteCombinationsLine2')}
-          </h4>
+          <h4>{t('pages.stats.favouriteCombinations')}</h4>
           <div className={styles.sChart}>
             <VertBarChart data={formatLabelChartAxisData(data.favComb)} />
           </div>

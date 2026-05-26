@@ -18,18 +18,13 @@ export interface AuthProviderProps {
   children: ReactNode
 }
 
-export interface IAuth {
-  token: string | null
-  setToken: (token: string) => void
-}
-
-export interface navLink {
+export interface NavLink {
   label: string
   url: string
   disabled?: boolean
 }
 
-export interface iCombination {
+export interface Combination {
   pair: number
   twoPairs: number
   triple: number
@@ -41,7 +36,7 @@ export interface iCombination {
   chance: number
 }
 
-export interface iHelpDice {
+export interface HelpDice {
   name: string
   dice: number[]
   value: string
@@ -89,23 +84,8 @@ export interface CanSaveProps {
   score: number | null
 }
 
-export interface iProgressBar {
+export interface ProgressBar {
   count: number
-}
-
-export interface iDraggableDice {
-  kind: number
-  parent?: string
-}
-
-export interface iBoardProps {
-  id: string
-  children?: ReactNode
-}
-
-export interface iDropItem {
-  kind: number
-  parent: string
 }
 
 export interface Notification {
@@ -115,7 +95,7 @@ export interface Notification {
   autoClose: boolean
 }
 
-export interface iErrorMessage {
+export interface ErrorMessage {
   data: {
     message: string
     stack: string
@@ -125,7 +105,7 @@ export interface iErrorMessage {
   status: string
 }
 
-export interface iError extends Error {
+export interface CustomError extends Error {
   status: string
   error: string
 }
@@ -156,6 +136,7 @@ export const SchoolCombinations = {
   FIVES: 'fives',
   SIXES: 'sixes'
 } as const
+
 export type SchoolCombinations =
   (typeof SchoolCombinations)[keyof typeof SchoolCombinations]
 
@@ -171,6 +152,7 @@ export const GameCombinations = {
   LARGE: 'large',
   CHANCE: 'chance'
 } as const
+
 export type GameCombinations =
   (typeof GameCombinations)[keyof typeof GameCombinations]
 
@@ -179,6 +161,7 @@ export const ToastTypes = {
   SUCCESS: 'success',
   WARNING: 'warning'
 } as const
+
 export type ToastTypes = (typeof ToastTypes)[keyof typeof ToastTypes]
 
 // action payload types

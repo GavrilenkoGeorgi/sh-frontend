@@ -184,6 +184,10 @@
         "dateRange": "Datumsbereich",
         "minScore": "Mindestpunktzahl"
       },
+      "controls": {
+        "chartTypeBar": "Balkendiagramm",
+        "chartTypeRadar": "Radardiagramm"
+      },
       "highestScoreLabel": "Höchste Punktzahl:",
       "averageLabel": "Durchschnitt:",
       "averageDescription": "durchschnitt",
@@ -192,10 +196,8 @@
       "gamesSoFar": "{{count}} Spiele bisher",
       "schoolScores": "Schulwertungen",
       "scores": "Ergebnisse",
-      "favouriteDiceValuesLine1": "Bevorzugte",
-      "favouriteDiceValuesLine2": "Würfelwerte",
-      "favouriteCombinationsLine1": "Bevorzugte",
-      "favouriteCombinationsLine2": "Kombinationen"
+      "favouriteDiceValues": "Bevorzugte Würfelwerte",
+      "favouriteCombinations": "Bevorzugte Kombinationen"
     }
   }
 }

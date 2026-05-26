@@ -1,7 +1,7 @@
 import { type FC, useState, useEffect, useMemo } from 'react'
 import { NavLink, useLocation, useMatch } from 'react-router' //dom?
 import { useSelector } from 'react-redux'
-import type { navLink } from '../../types'
+import type { NavLink as NavLinkType } from '../../types'
 import {
   useScrollDirection,
   useComponentVisible,
@@ -54,7 +54,7 @@ const NavBar: FC = () => {
     if (open) closeMenu()
   }, [scrollDirection])
 
-  const navigation: navLink[] = useMemo(
+  const navigation: NavLinkType[] = useMemo(
     () => [
       { label: t('ui.navLinks.play'), url: ROUTES.PLAY },
       {

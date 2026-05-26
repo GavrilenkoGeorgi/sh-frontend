@@ -184,6 +184,10 @@
         "dateRange": "Date range",
         "minScore": "Min score"
       },
+      "controls": {
+        "chartTypeBar": "Bar chart",
+        "chartTypeRadar": "Radar chart"
+      },
       "highestScoreLabel": "Highest score:",
       "averageLabel": "Average:",
       "averageDescription": "average",
@@ -192,10 +196,8 @@
       "gamesSoFar": "{{count}} games so far",
       "schoolScores": "School scores",
       "scores": "Scores",
-      "favouriteDiceValuesLine1": "Favourite",
-      "favouriteDiceValuesLine2": "dice values",
-      "favouriteCombinationsLine1": "Favourite",
-      "favouriteCombinationsLine2": "combinations"
+      "favouriteDiceValues": "Favourite dice values",
+      "favouriteCombinations": "Favourite combinations"
     }
   }
 }

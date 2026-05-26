@@ -12,6 +12,7 @@
   "author": "JSM",
   "license": "UNLICENSED",
   "devDependencies": {
+    "@recharts/devtools": "^0.0.14",
     "@svgr/webpack": "^8.1.0",
     "@types/jest": "^30.0.0",
     "@types/react": "^19.1.6",

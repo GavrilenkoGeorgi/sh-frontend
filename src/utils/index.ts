@@ -1,7 +1,7 @@
 import { format } from 'date-fns'
 import type {
-  iError,
-  iErrorMessage,
+  CustomError,
+  ErrorMessage,
   ChartAxisData,
   StatsFilterParams
 } from '../types'
@@ -9,12 +9,12 @@ import { CalendarDate } from '@internationalized/date'
 
 export const getErrMsg = (err: unknown): string => {
   let message
-  const { data } = err as iErrorMessage
+  const { data } = err as ErrorMessage
 
   if (data !== undefined) {
     message = data.message ?? data.name
   } else {
-    const { error } = err as iError
+    const { error } = err as CustomError
     // server is down, default errors
     message = error
   }

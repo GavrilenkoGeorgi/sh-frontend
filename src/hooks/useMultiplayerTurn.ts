@@ -10,7 +10,7 @@ import type {
   SchoolCategory,
   GameCategory
 } from '../features/multiplayer/types'
-import type { iCombination } from '../types'
+import type { Combination } from '../types'
 
 const DICE_COUNT = 5
 const MAX_ROLLS = 3
@@ -96,10 +96,10 @@ export const useMultiplayerTurn = (
     } else {
       // game phase: only game combination scores
       const sorted = shScore.sort(selectedValues)
-      const combinationScores: iCombination = shScore.getScore(sorted)
+      const combinationScores: Combination = shScore.getScore(sorted)
       gameCategories.forEach((category) => {
         if (!usedCategories.has(category)) {
-          scores[category] = combinationScores[category as keyof iCombination]
+          scores[category] = combinationScores[category as keyof Combination]
         }
       })
     }
