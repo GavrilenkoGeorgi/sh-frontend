@@ -3,30 +3,33 @@ import type {
   CustomError,
   ErrorMessage,
   ChartAxisData,
+  ScoreChartData,
   StatsFilterParams
 } from '../types'
 import { CalendarDate } from '@internationalized/date'
 
 export const getErrMsg = (err: unknown): string => {
-  let message
   const { data } = err as ErrorMessage
 
   if (data !== undefined) {
-    message = data.message ?? data.name
-  } else {
-    const { error } = err as CustomError
-    // server is down, default errors
-    message = error
+    if (Array.isArray(data)) {
+      return (data as Array<{ message: string }>)
+        .map((e) => e.message)
+        .join(', ')
+    }
+    return data.message ?? data.name ?? ''
   }
 
-  return message
+  const { error } = err as CustomError
+  // server is down, default errors
+  return error
 }
 
 export const formatDateChartAxisData = (
-  data: ChartAxisData[]
+  data: ScoreChartData[]
 ): ChartAxisData[] =>
   data.map((item) => ({
-    id: format(new Date(item.id), 'HH:mm MMM do'),
+    id: format(new Date(item.timestamp), 'HH:mm MMM do'),
     value: item.value
   }))
 

@@ -9,19 +9,9 @@ import {
 import { FC } from 'react'
 import { ChartAxisData } from '../../types'
 import { chartColors } from './chartColors'
-import { customTooltipRenderer } from './AreaChart'
-
-const data = [
-  {
-    subject: 'Math',
-    A: 120,
-    B: 110,
-    fullMark: 150
-  }
-]
+import { RadarCustomTooltipRenderer } from './CustomTooltips'
 
 export const StatsRadarChart: FC<{ data: ChartAxisData[] }> = ({ data }) => {
-  console.log(data)
   return (
     <RadarChart
       style={{
@@ -59,7 +49,7 @@ export const StatsRadarChart: FC<{ data: ChartAxisData[] }> = ({ data }) => {
         fill={chartColors.primaryMuted}
         fillOpacity={0.6}
       />
-      <Tooltip content={customTooltipRenderer} />
+      <Tooltip content={RadarCustomTooltipRenderer} />
     </RadarChart>
   )
 }

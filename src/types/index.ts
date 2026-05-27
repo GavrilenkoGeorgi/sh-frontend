@@ -56,16 +56,26 @@ export interface StatsFilterParams {
   minScore?: number
 }
 
-export interface Stats {
-  average: number
-  schoolAverage: number
+export interface StatsSummary {
   games: number
   max: number
+  average: number
+  schoolAverage: number | null
   percentFromMax: number
-  scores: ChartAxisData[]
-  schoolScores: ChartAxisData[]
+}
+
+export interface ScoreChartData {
+  timestamp: string
+  value: number
+}
+
+export interface Stats {
+  summary: StatsSummary
+  scores: ScoreChartData[]
+  schoolScores: ScoreChartData[]
   favDiceValues: ChartAxisData[]
   favComb: ChartAxisData[]
+  filter?: StatsFilterParams
 }
 
 export interface ChartAxisData {
@@ -76,7 +86,7 @@ export interface ChartAxisData {
 export interface ChartProps {
   data: ChartAxisData[]
   syncId?: string
-  referenceValue?: number
+  referenceValue?: number | null
 }
 
 export interface CanSaveProps {

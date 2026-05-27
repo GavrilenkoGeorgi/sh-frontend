@@ -10,41 +10,13 @@ import {
 } from 'react-aria-components'
 import { getLocalTimeZone, parseDate, today } from '@internationalized/date'
 import { useTranslation } from 'react-i18next'
-import Select, { type SingleValue } from 'react-select'
 import type { StatsFilterParams } from '../../types'
+import AppSelect, { type SelectOption } from '../select/CustomSelect'
 import RangeDatePicker from '../date-picker/RangeDatePicker'
 import * as styles from './StatsFilters.module.sass'
 
 const LAST_N_PRESETS = [10, 25, 50, 100] as const
 type LastNPreset = (typeof LAST_N_PRESETS)[number]
-
-interface SelectOption {
-  value: string
-  label: string
-}
-
-export const selectClassNames = {
-  control: () => styles.selectControl,
-  menu: () => styles.selectMenu,
-  menuList: () => styles.selectMenuList,
-  option: ({
-    isFocused,
-    isSelected
-  }: {
-    isFocused: boolean
-    isSelected: boolean
-  }) =>
-    [
-      styles.selectOption,
-      isFocused && styles.selectOptionFocused,
-      isSelected && styles.selectOptionSelected
-    ]
-      .filter(Boolean)
-      .join(' '),
-  singleValue: () => styles.selectSingleValue,
-  dropdownIndicator: () => styles.selectDropdownIndicator,
-  indicatorSeparator: () => styles.selectIndicatorSeparator
-}
 
 interface Props {
   filters: StatsFilterParams
@@ -77,11 +49,14 @@ const StatsFilters: FC<Props> = ({ filters, onChange }) => {
   }
 
   const presetOptions: SelectOption[] = [
-    ...LAST_N_PRESETS.map((n) => ({ value: String(n), label: String(n) })),
+    ...LAST_N_PRESETS.map((n) => ({
+      value: String(n),
+      label: `${String(n)} ${t('pages.stats.filters.games')}`
+    })),
     { value: 'custom', label: t('pages.stats.filters.presetCustom') }
   ]
 
-  const handlePresetChange = (option: SingleValue<SelectOption>) => {
+  const handlePresetChange = (option: SelectOption | null) => {
     if (!option) return
     if (option.value === 'custom') {
       setShowCustomLastN(true)
@@ -152,20 +127,11 @@ const StatsFilters: FC<Props> = ({ filters, onChange }) => {
 
       {filters.mode === 'lastN' && (
         <div className={styles.lastNControls}>
-          <Select
-            isSearchable={false}
+          <AppSelect
             options={presetOptions}
             value={selectedPreset}
             onChange={handlePresetChange}
-            classNames={selectClassNames}
             className={styles.presetSelect}
-            unstyled
-            styles={{
-              control: (base) => ({
-                ...base,
-                minHeight: 'unset'
-              })
-            }}
           />
 
           {showCustomLastN && (

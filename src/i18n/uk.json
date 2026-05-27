@@ -177,7 +177,8 @@
       "title": "Статистика",
       "noGames": "Ще немає зіграних ігор",
       "filters": {
-        "modeLastN": "Останні N ігор",
+        "modeLastN": "Останні",
+        "games": "ігор",
         "modeDateRange": "Діапазон дат",
         "presetCustom": "Інше",
         "numberOfGames": "Кількість ігор",

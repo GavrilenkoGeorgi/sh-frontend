@@ -8,7 +8,7 @@ import { useSaveResultsMutation } from '../store/slices/gameApiSlice'
 import { setScore, reset, GameState, MAX_TURNS } from '../store/slices/shSlice'
 import { setNotification } from '../store/slices/notificationSlice'
 import { selectCurrentUser } from '../store/slices/authSlice'
-import { getErrMsg, toPath } from '../utils'
+import { toPath } from '../utils'
 import { ToastTypes } from '../types'
 
 // components and styles
@@ -58,13 +58,8 @@ const GamePage: FC = () => {
         })
       )
       navigate(toPath(ROUTES.STATS), { viewTransition: true })
-    } catch (err: unknown) {
-      dispatch(
-        setNotification({
-          msg: getErrMsg(err),
-          type: ToastTypes.ERROR
-        })
-      )
+    } catch {
+      // error toast is handled centrally in baseQueryWithReauth
     }
   }
 

@@ -6,7 +6,7 @@ import { useDeleteAccMutation } from '../../store/slices/userApiSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { logout } from '../../store/slices/authSlice'
 import { apiSlice, gameSlice } from '../../store/slices/apiSlice'
-import { getErrMsg, toPath } from '../../utils'
+import { toPath } from '../../utils'
 import { ToastTypes } from '../../types'
 
 import Modal from '../layout/Modal'
@@ -38,13 +38,8 @@ const DeleteAccount: FC = () => {
         })
       )
       navigate(toPath(ROUTES.HOME), { viewTransition: true })
-    } catch (err: unknown) {
-      dispatch(
-        setNotification({
-          msg: getErrMsg(err),
-          type: ToastTypes.ERROR
-        })
-      )
+    } catch {
+      // error toast is handled centrally in baseQueryWithReauth
     } finally {
       setLoading(false)
     }

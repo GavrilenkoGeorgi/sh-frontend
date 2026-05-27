@@ -177,7 +177,8 @@
       "title": "סטטיסטיקה",
       "noGames": "עדיין לא שוחקו משחקים",
       "filters": {
-        "modeLastN": "N משחקים אחרונים",
+        "modeLastN": "אחרונים",
+        "games": "משחקים",
         "modeDateRange": "טווח תאריכים",
         "presetCustom": "מותאם אישית",
         "numberOfGames": "מספר משחקים",

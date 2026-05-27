@@ -12,7 +12,7 @@ import {
   type RegisterFormSchemaType
 } from '../../schemas/RegisterFormSchema'
 import { ToastTypes } from '../../types'
-import { getErrMsg, toPath } from '../../utils'
+import { toPath } from '../../utils'
 import { useFormFocus } from '../../hooks'
 
 import LoadingIndicator from '../layout/LoadingIndicator'
@@ -57,13 +57,8 @@ const Register: FC = () => {
         })
       )
       navigate(toPath(ROUTES.LOGIN), { replace: true, viewTransition: true })
-    } catch (err: unknown) {
-      dispatch(
-        setNotification({
-          msg: getErrMsg(err),
-          type: ToastTypes.ERROR
-        })
-      )
+    } catch {
+      // error toast is handled centrally in baseQueryWithReauth
     }
   }
 

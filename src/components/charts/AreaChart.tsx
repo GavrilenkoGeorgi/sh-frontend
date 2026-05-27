@@ -7,8 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   ReferenceLine,
-  ResponsiveContainer,
-  type TooltipContentProps
+  ResponsiveContainer
 } from 'recharts'
 
 import { type ChartProps } from '../../types'
@@ -16,22 +15,7 @@ import { type ChartProps } from '../../types'
 import * as styles from './Charts.module.sass'
 import { tickStyles } from './BarChart'
 import { chartColors } from './chartColors'
-
-export const customTooltipRenderer = ({
-  active,
-  payload
-}: TooltipContentProps): ReactNode => {
-  if (!active || !payload?.length) return null
-
-  const { payload: tooltip, value } = payload[0]
-
-  return (
-    <div className={styles.customTooltip}>
-      <p className={styles.tooltipLabel}>{tooltip.id}</p>
-      <p className={styles.tooltipValue}>{value}</p>
-    </div>
-  )
-}
+import { AreaCustomTooltipRenderer } from './CustomTooltips'
 
 const Chart: FC<ChartProps> = ({ data, syncId, referenceValue }) => {
   const margin = {
@@ -84,8 +68,8 @@ const Chart: FC<ChartProps> = ({ data, syncId, referenceValue }) => {
           axisLine={false}
           style={tickStyles}
         />
-        <Tooltip content={customTooltipRenderer} />
-        {referenceValue !== undefined && (
+        <Tooltip content={AreaCustomTooltipRenderer} />
+        {referenceValue != null && (
           <ReferenceLine
             y={referenceValue}
             stroke={chartColors.primaryMuted}

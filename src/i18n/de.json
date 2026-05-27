@@ -177,7 +177,8 @@
       "title": "Statistik",
       "noGames": "Noch keine Spiele gespielt",
       "filters": {
-        "modeLastN": "Letzte N Spiele",
+        "modeLastN": "Letzte",
+        "games": "spiele",
         "modeDateRange": "Datumsbereich",
         "presetCustom": "Benutzerdefiniert",
         "numberOfGames": "Anzahl der Spiele",

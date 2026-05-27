@@ -16,6 +16,7 @@ import {
   clearAuthSessionHint,
   setAuthSessionHint
 } from '../../utils/authSessionHint'
+import { getErrMsg } from '../../utils'
 import { logout as clearAuthState, setCredentials } from './authSlice'
 import { setNotification } from './notificationSlice'
 import { GAME_TAGS, USER_TAGS } from './tags'
@@ -116,6 +117,13 @@ export const baseQueryWithReauth: BaseQueryFn<
           })
         )
       }
+    }
+  }
+
+  if (result.error && result.error.status !== 401) {
+    const errMsg = getErrMsg(result.error)
+    if (errMsg) {
+      api.dispatch(setNotification({ msg: errMsg, type: ToastTypes.ERROR }))
     }
   }
 
