@@ -177,12 +177,17 @@
       "title": "סטטיסטיקה",
       "noGames": "עדיין לא שוחקו משחקים",
       "filters": {
-        "modeLastN": "N משחקים אחרונים",
+        "modeLastN": "אחרונים",
+        "games": "משחקים",
         "modeDateRange": "טווח תאריכים",
         "presetCustom": "מותאם אישית",
         "numberOfGames": "מספר משחקים",
         "dateRange": "טווח תאריכים",
         "minScore": "ניקוד מינימלי"
+      },
+      "controls": {
+        "chartTypeBar": "תרשים עמודות",
+        "chartTypeRadar": "תרשים רדאר"
       },
       "highestScoreLabel": "הניקוד הגבוה ביותר:",
       "averageLabel": "ממוצע:",
@@ -192,10 +197,8 @@
       "gamesSoFar": "{{count}} משחקים עד כה",
       "schoolScores": "ניקוד בית ספר",
       "scores": "ניקודים",
-      "favouriteDiceValuesLine1": "ערכי קובייות",
-      "favouriteDiceValuesLine2": "מועדפים",
-      "favouriteCombinationsLine1": "צירופים",
-      "favouriteCombinationsLine2": "מועדפים"
+      "favouriteDiceValues": "ערכי קוביות מועדפים",
+      "favouriteCombinations": "צירופים מועדפים"
     }
   }
 }

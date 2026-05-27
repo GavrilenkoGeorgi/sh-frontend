@@ -11,7 +11,7 @@ import {
   type PwdUpdateFormSchemaType
 } from '../../schemas/PwdUpdateSchema'
 import { ToastTypes } from '../../types'
-import { getErrMsg, toPath } from '../../utils'
+import { toPath } from '../../utils'
 import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
@@ -64,13 +64,8 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
         })
       )
       navigate(toPath(ROUTES.LOGIN), { viewTransition: true })
-    } catch (err: unknown) {
-      dispatch(
-        setNotification({
-          msg: getErrMsg(err),
-          type: ToastTypes.ERROR
-        })
-      )
+    } catch {
+      // error toast is handled centrally in baseQueryWithReauth
     }
   }
 

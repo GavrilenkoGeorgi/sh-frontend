@@ -18,18 +18,13 @@ export interface AuthProviderProps {
   children: ReactNode
 }
 
-export interface IAuth {
-  token: string | null
-  setToken: (token: string) => void
-}
-
-export interface navLink {
+export interface NavLink {
   label: string
   url: string
   disabled?: boolean
 }
 
-export interface iCombination {
+export interface Combination {
   pair: number
   twoPairs: number
   triple: number
@@ -41,7 +36,7 @@ export interface iCombination {
   chance: number
 }
 
-export interface iHelpDice {
+export interface HelpDice {
   name: string
   dice: number[]
   value: string
@@ -61,16 +56,26 @@ export interface StatsFilterParams {
   minScore?: number
 }
 
-export interface Stats {
-  average: number
-  schoolAverage: number
+export interface StatsSummary {
   games: number
   max: number
+  average: number
+  schoolAverage: number | null
   percentFromMax: number
-  scores: ChartAxisData[]
-  schoolScores: ChartAxisData[]
+}
+
+export interface ScoreChartData {
+  timestamp: string
+  value: number
+}
+
+export interface Stats {
+  summary: StatsSummary
+  scores: ScoreChartData[]
+  schoolScores: ScoreChartData[]
   favDiceValues: ChartAxisData[]
   favComb: ChartAxisData[]
+  filter?: StatsFilterParams
 }
 
 export interface ChartAxisData {
@@ -81,7 +86,7 @@ export interface ChartAxisData {
 export interface ChartProps {
   data: ChartAxisData[]
   syncId?: string
-  referenceValue?: number
+  referenceValue?: number | null
 }
 
 export interface CanSaveProps {
@@ -89,23 +94,8 @@ export interface CanSaveProps {
   score: number | null
 }
 
-export interface iProgressBar {
+export interface ProgressBar {
   count: number
-}
-
-export interface iDraggableDice {
-  kind: number
-  parent?: string
-}
-
-export interface iBoardProps {
-  id: string
-  children?: ReactNode
-}
-
-export interface iDropItem {
-  kind: number
-  parent: string
 }
 
 export interface Notification {
@@ -115,7 +105,7 @@ export interface Notification {
   autoClose: boolean
 }
 
-export interface iErrorMessage {
+export interface ErrorMessage {
   data: {
     message: string
     stack: string
@@ -125,7 +115,7 @@ export interface iErrorMessage {
   status: string
 }
 
-export interface iError extends Error {
+export interface CustomError extends Error {
   status: string
   error: string
 }
@@ -156,6 +146,7 @@ export const SchoolCombinations = {
   FIVES: 'fives',
   SIXES: 'sixes'
 } as const
+
 export type SchoolCombinations =
   (typeof SchoolCombinations)[keyof typeof SchoolCombinations]
 
@@ -171,6 +162,7 @@ export const GameCombinations = {
   LARGE: 'large',
   CHANCE: 'chance'
 } as const
+
 export type GameCombinations =
   (typeof GameCombinations)[keyof typeof GameCombinations]
 
@@ -179,6 +171,7 @@ export const ToastTypes = {
   SUCCESS: 'success',
   WARNING: 'warning'
 } as const
+
 export type ToastTypes = (typeof ToastTypes)[keyof typeof ToastTypes]
 
 // action payload types

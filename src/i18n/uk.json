@@ -177,12 +177,17 @@
       "title": "Статистика",
       "noGames": "Ще немає зіграних ігор",
       "filters": {
-        "modeLastN": "Останні N ігор",
+        "modeLastN": "Останні",
+        "games": "ігор",
         "modeDateRange": "Діапазон дат",
         "presetCustom": "Інше",
         "numberOfGames": "Кількість ігор",
         "dateRange": "Діапазон дат",
         "minScore": "Мін. очки"
+      },
+      "controls": {
+        "chartTypeBar": "Гістограмма",
+        "chartTypeRadar": "Радар"
       },
       "highestScoreLabel": "Найвищий результат:",
       "averageLabel": "Середнє:",
@@ -192,10 +197,8 @@
       "gamesSoFar": "{{count}} ігор зіграно",
       "schoolScores": "Шкільні очки",
       "scores": "Результати",
-      "favouriteDiceValuesLine1": "Улюблені",
-      "favouriteDiceValuesLine2": "значення кубиків",
-      "favouriteCombinationsLine1": "Улюблені",
-      "favouriteCombinationsLine2": "комбінації"
+      "favouriteDiceValues": "Улюблені значення кубиків",
+      "favouriteCombinations": "Улюблені комбінації"
     }
   }
 }

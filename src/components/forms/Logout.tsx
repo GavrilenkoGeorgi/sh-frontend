@@ -6,7 +6,7 @@ import { logout, selectCurrentUser } from '../../store/slices/authSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { apiSlice, gameSlice } from '../../store/slices/apiSlice'
 import LoadingIndicator from '../layout/LoadingIndicator'
-import { getErrMsg, toPath } from '../../utils'
+import { toPath } from '../../utils'
 import { ToastTypes } from '../../types'
 import * as styles from './Form.module.sass'
 import { useLogoutMutation } from '../../store/slices/userApiSlice'
@@ -42,13 +42,8 @@ const Logout: FC = () => {
 
       // Navigate after state is clean
       navigate(toPath(ROUTES.HOME), { viewTransition: true })
-    } catch (err: unknown) {
-      dispatch(
-        setNotification({
-          msg: getErrMsg(err),
-          type: ToastTypes.ERROR
-        })
-      )
+    } catch {
+      // error toast is handled centrally in baseQueryWithReauth
     }
   }
 

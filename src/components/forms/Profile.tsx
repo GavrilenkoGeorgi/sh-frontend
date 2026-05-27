@@ -10,7 +10,7 @@ import {
 } from '../../schemas/ProfileFormSchema'
 import { ToastTypes } from '../../types'
 import type { User, Nullable } from '../../types'
-import { getErrMsg } from '../../utils'
+
 import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
@@ -62,13 +62,8 @@ const Profile: FC<Props> = ({ data }) => {
           type: ToastTypes.SUCCESS
         })
       )
-    } catch (err: unknown) {
-      dispatch(
-        setNotification({
-          msg: getErrMsg(err),
-          type: ToastTypes.ERROR
-        })
-      )
+    } catch {
+      // error toast is handled centrally in baseQueryWithReauth
     }
   }
 

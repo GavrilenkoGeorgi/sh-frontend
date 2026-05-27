@@ -1,40 +1,12 @@
 import { type FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import Select, { type SingleValue } from 'react-select'
 import { useColorScheme, type ThemeMode } from '../hooks/useColorScheme'
 import { supportedLanguages } from '../i18n'
+import AppSelect, { type SelectOption } from '../components/select/CustomSelect'
 
 import * as styles from './Settings.module.sass'
 
-interface SelectOption {
-  value: string
-  label: string
-}
-
 const themeModes: ThemeMode[] = ['system', 'dark', 'light']
-
-const selectClassNames = {
-  control: () => styles.selectControl,
-  menu: () => styles.selectMenu,
-  menuList: () => styles.selectMenuList,
-  option: ({
-    isFocused,
-    isSelected
-  }: {
-    isFocused: boolean
-    isSelected: boolean
-  }) =>
-    [
-      styles.selectOption,
-      isFocused && styles.selectOptionFocused,
-      isSelected && styles.selectOptionSelected
-    ]
-      .filter(Boolean)
-      .join(' '),
-  singleValue: () => styles.selectSingleValue,
-  dropdownIndicator: () => styles.selectDropdownIndicator,
-  indicatorSeparator: () => styles.selectIndicatorSeparator
-}
 
 const Settings: FC = () => {
   const { t, i18n } = useTranslation()
@@ -52,11 +24,11 @@ const Settings: FC = () => {
     })
   )
 
-  const handleThemeChange = (option: SingleValue<SelectOption>) => {
+  const handleThemeChange = (option: SelectOption | null) => {
     if (option) setThemeMode(option.value as ThemeMode)
   }
 
-  const handleLanguageChange = (option: SingleValue<SelectOption>) => {
+  const handleLanguageChange = (option: SelectOption | null) => {
     if (option) i18n.changeLanguage(option.value)
   }
 
@@ -75,14 +47,11 @@ const Settings: FC = () => {
             {t('ui.settings.themeLabel')}
           </label>
           <p className={styles.hint}>{t('ui.settings.themeHint')}</p>
-          <Select
+          <AppSelect
             inputId="theme-select"
-            unstyled
-            isSearchable={false}
             options={themeOptions}
-            value={currentTheme}
+            value={currentTheme ?? null}
             onChange={handleThemeChange}
-            classNames={selectClassNames}
           />
         </div>
 
@@ -91,14 +60,11 @@ const Settings: FC = () => {
             {t('ui.settings.languageLabel')}
           </label>
           <p className={styles.hint}>{t('ui.settings.languageHint')}</p>
-          <Select
+          <AppSelect
             inputId="language-select"
-            unstyled
-            isSearchable={false}
             options={languageOptions}
-            value={currentLanguage}
+            value={currentLanguage ?? null}
             onChange={handleLanguageChange}
-            classNames={selectClassNames}
           />
         </div>
       </div>

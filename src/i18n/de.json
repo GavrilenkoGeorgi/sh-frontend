@@ -177,12 +177,17 @@
       "title": "Statistik",
       "noGames": "Noch keine Spiele gespielt",
       "filters": {
-        "modeLastN": "Letzte N Spiele",
+        "modeLastN": "Letzte",
+        "games": "spiele",
         "modeDateRange": "Datumsbereich",
         "presetCustom": "Benutzerdefiniert",
         "numberOfGames": "Anzahl der Spiele",
         "dateRange": "Datumsbereich",
         "minScore": "Mindestpunktzahl"
+      },
+      "controls": {
+        "chartTypeBar": "Balkendiagramm",
+        "chartTypeRadar": "Radardiagramm"
       },
       "highestScoreLabel": "Höchste Punktzahl:",
       "averageLabel": "Durchschnitt:",
@@ -192,10 +197,8 @@
       "gamesSoFar": "{{count}} Spiele bisher",
       "schoolScores": "Schulwertungen",
       "scores": "Ergebnisse",
-      "favouriteDiceValuesLine1": "Bevorzugte",
-      "favouriteDiceValuesLine2": "Würfelwerte",
-      "favouriteCombinationsLine1": "Bevorzugte",
-      "favouriteCombinationsLine2": "Kombinationen"
+      "favouriteDiceValues": "Bevorzugte Würfelwerte",
+      "favouriteCombinations": "Bevorzugte Kombinationen"
     }
   }
 }
