@@ -7,7 +7,7 @@ import {
   RecoveryEmailSchema,
   type RecoveryEmailSchemaType
 } from '../../schemas/RecoveryEmailSchema'
-import { useSendRecoveryEmailMutation } from '../../store/slices/userApiSlice'
+import { useSendRecoveryEmailMutation } from '../../store/api/userApi'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { ToastTypes } from '../../types'
 import { useFormFocus } from '../../hooks'

@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { apiSlice, gameSlice } from './slices/apiSlice'
+import { userApi, gameApi } from './api/baseApi'
 import authReducer from './slices/authSlice'
 import shReducer from './slices/shSlice'
 import notificationReducer from './slices/notificationSlice'
@@ -9,8 +9,8 @@ import multiplayerReducer from './slices/multiplayerSlice'
 
 const store = configureStore({
   reducer: {
-    [apiSlice.reducerPath]: apiSlice.reducer,
-    [gameSlice.reducerPath]: gameSlice.reducer,
+    [userApi.reducerPath]: userApi.reducer,
+    [gameApi.reducerPath]: gameApi.reducer,
     sh: shReducer,
     auth: authReducer,
     notification: notificationReducer,
@@ -19,7 +19,7 @@ const store = configureStore({
     multiplayer: multiplayerReducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware, gameSlice.middleware),
+    getDefaultMiddleware().concat(userApi.middleware, gameApi.middleware),
   devTools: true
 })
 

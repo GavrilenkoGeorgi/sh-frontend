@@ -2,7 +2,7 @@ import { useState, type FC } from 'react'
 import CountUp from 'react-countup'
 import { useSearchParams } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import { useGetStatsQuery } from '../store/slices/gameApiSlice'
+import { useGetStatsQuery } from '../store/api/gameApi'
 import {
   formatDateChartAxisData,
   formatLabelChartAxisData,

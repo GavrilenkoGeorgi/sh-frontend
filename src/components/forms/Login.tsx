@@ -12,7 +12,7 @@ import {
   selectIsAuthenticated,
   setCredentials
 } from '../../store/slices/authSlice'
-import { useLoginMutation } from '../../store/slices/userApiSlice'
+import { useLoginMutation } from '../../store/api/userApi'
 import { toPath } from '../../utils'
 import { useFormFocus } from '../../hooks'
 

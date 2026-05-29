@@ -16,7 +16,7 @@ import { useFormFocus } from '../../hooks'
 import cx from 'classnames'
 import * as styles from './Form.module.sass'
 import LoadingIndicator from '../layout/LoadingIndicator'
-import { useUpdateProfileMutation } from '../../store/slices/userApiSlice'
+import { useUpdateProfileMutation } from '../../store/api/userApi'
 import Logout from './Logout'
 import { useTranslation } from 'react-i18next'
 
