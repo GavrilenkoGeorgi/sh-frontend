@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../store/slices/authSlice'
 import DeleteAccountForm from '../components/forms/DeleteAccount'

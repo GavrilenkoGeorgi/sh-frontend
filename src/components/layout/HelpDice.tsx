@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 import { type HelpDice } from '../../types'
 
 import { Dice } from '../game/Dice'

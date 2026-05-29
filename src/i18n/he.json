@@ -26,7 +26,11 @@
       "invite": "הזמן",
       "accept": "קבל",
       "decline": "דחה",
-      "endGame": "סיים משחק"
+      "endGame": "סיים משחק",
+      "save": "שמור",
+      "ok": "אישור",
+      "cancel": "ביטול",
+      "dismiss": "סגור"
     },
     "navLinks": {
       "play": "שחק",
@@ -70,7 +74,12 @@
       "login": "התחברות",
       "register": "הרשמה",
       "settings": "הגדרות",
-      "restorePassword": "שחזור סיסמה"
+      "restorePassword": "שחזור סיסמה",
+      "congratulations": "מזל טוב!",
+      "scoreMsg": "הניקוד שלך הוא ",
+      "gameOver": "המשחק נגמר",
+      "gameOverMsg": "בהצלחה בפעם הבאה!",
+      "newVersion": "גרסה חדשה זמינה."
     },
     "settings": {
       "themeLabel": "ערכת נושא",
@@ -137,6 +146,8 @@
       "title": "מדיניות הפרטיות של Sharlushka Dice Game",
       "lastUpdated": "עודכן לאחרונה: 13.12.2023",
       "intro": "תודה שבחרת להשתמש ב-Sharlushka Dice Game. אנו מחויבים להגן על המידע האישי שלך ועל זכותך לפרטיות. אם יש לך שאלות או חששות לגבי המדיניות שלנו, צור איתנו קשר בכתובת <1>gavrilenko.georgi@gmail.com</1>. על ידי שימוש ב-Sharlushka Dice Game, אתה מסכים לתנאי מדיניות פרטיות זו. אנא קח זמן לקרוא את המידע הבא.",
+      "linkIntro": "ישמש בהתאם ל",
+      "linkText": "מדיניות הפרטיות שלנו",
       "infoWeCollect": {
         "heading": "מידע שאנו אוספים",
         "personalInfoHeading": "1. מידע אישי",

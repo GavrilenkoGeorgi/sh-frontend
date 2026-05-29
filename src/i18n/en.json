@@ -1,7 +1,7 @@
 {
   "tour": {
     "game": {
-      "step1": "This is your score display, can go to negative sometimes, but don't worry about it.",
+      "step1": "This is your score display, it can go to negative sometimes, but don't worry about it.",
       "step2": "This is your game controls, drag dice to select them, and click/touch the selected score you want to save.",
       "step3": "Score board will show combinations you have scored so far, click to save.",
       "step4": "To save zero when there is no scoring combination, click/touch the combination name."
@@ -26,7 +26,11 @@
       "invite": "Invite",
       "accept": "Accept",
       "decline": "Decline",
-      "endGame": "End game"
+      "endGame": "End game",
+      "save": "Save",
+      "ok": "OK",
+      "cancel": "Cancel",
+      "dismiss": "Dismiss"
     },
     "navLinks": {
       "play": "Play",
@@ -70,7 +74,12 @@
       "login": "Login",
       "register": "Register",
       "settings": "Settings",
-      "restorePassword": "Restore password"
+      "restorePassword": "Restore password",
+      "congratulations": "Congratulations!",
+      "scoreMsg": "Your score is ",
+      "gameOver": "Game over",
+      "gameOverMsg": "Better luck next time!",
+      "newVersion": "A new version is available."
     },
     "settings": {
       "themeLabel": "Theme",
@@ -87,7 +96,8 @@
         "de": "Deutsch",
         "uk": "Українська",
         "he": "עברית"
-      }
+      },
+      "guest": "Guest"
     },
     "multiplayer": {
       "noPlayersOnline": "No other players online",
@@ -117,7 +127,7 @@
   "pages": {
     "main": {
       "greeting": "Hi, Anonymous!",
-      "intro": "You <1>can play unregistered</1>, but you will not be able to save the results or checkout other player's stats, consider <3>registering</3>."
+      "intro": "You <1>can play unregistered</1>, but you will not be able to save results or checkout other player's stats, consider <3>registering</3>."
     },
     "login": {
       "forgotPassword": "Forgot password?"
@@ -137,6 +147,8 @@
       "title": "Privacy Policy for Sharlushka Dice Game",
       "lastUpdated": "Last updated: 13.12.2023",
       "intro": "Thank you for choosing to use Sharlushka Dice Game ('us', 'we', or 'our'). We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy or practices with regards to your personal information, please contact us at <1>gavrilenko.georgi@gmail.com</1>. By using the Sharlushka Dice Game, you agree to the terms of this privacy policy. Please take the time to read through the following information.",
+      "linkIntro": "Will be used in accourdance with our",
+      "linkText": "Privacy Policy",
       "infoWeCollect": {
         "heading": "Information We Collect",
         "personalInfoHeading": "1. Personal Information",

@@ -1,4 +1,4 @@
-import React, { type FC, useEffect } from 'react'
+import { type FC, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 
@@ -35,6 +35,10 @@ const GamePage: FC = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
+  const saveBtnLabel = user
+    ? t('ui.buttonLabels.save')
+    : t('ui.buttonLabels.ok')
+
   const handleComplete = async (): Promise<void> => {
     try {
       if (!user) {
@@ -42,12 +46,12 @@ const GamePage: FC = () => {
         return
       }
 
-      const data = {
+      const data: SaveResultsData = {
         score: game.score,
         schoolScore: game.schoolScore,
         stats: game.stats,
         favDiceValues: game.favDiceValues
-      } as SaveResultsData
+      }
 
       await saveResults(data).unwrap()
       dispatch(reset())
@@ -87,21 +91,21 @@ const GamePage: FC = () => {
         <GameTour />
         {game.over && (
           <Modal
-            heading="Game over"
-            text="Better luck next time!"
-            btnLabel="ok"
+            heading={t('ui.headings.gameOver')}
+            text={t('ui.headings.gameOverMsg')}
+            btnLabel={t('ui.buttonLabels.ok')}
             onClick={() => dispatch(reset())}
           />
         )}
         {game.turn === MAX_TURNS && (
           <Modal
-            heading="Congratulations!"
+            heading={t('ui.headings.congratulations')}
             score={game.score}
-            text="Your score is "
+            text={t('ui.headings.scoreMsg')}
             userName={user?.name}
-            btnLabel={user ? 'save' : 'ok'}
+            btnLabel={saveBtnLabel}
             isBusy={Boolean(user) && isLoading}
-            onClick={() => handleComplete()}
+            onClick={handleComplete}
           />
         )}
       </section>

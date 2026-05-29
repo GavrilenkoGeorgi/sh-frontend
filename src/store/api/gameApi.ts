@@ -5,21 +5,6 @@ import { buildStatsQueryString } from '../../utils'
 import { gameApi } from './baseApi'
 import { GAME_TAGS } from './tags'
 
-// TODO: check if this is strictly necessary, we can update backend to return JSON and remove this
-const parseMutationResponse = async (response: Response): Promise<unknown> => {
-  const responseText = await response.text()
-
-  if (!responseText) {
-    return null
-  }
-
-  try {
-    return JSON.parse(responseText)
-  } catch {
-    return responseText
-  }
-}
-
 export const {
   useSaveResultsMutation,
   useClearStatsMutation,
@@ -31,8 +16,7 @@ export const {
         url: GAME_API_ROUTES.SAVE_RESULTS,
         method: 'POST',
         credentials: 'include',
-        body: data,
-        responseHandler: parseMutationResponse
+        body: data
       }),
       invalidatesTags: [GAME_TAGS.Game]
     }),

@@ -185,8 +185,8 @@ const Register: FC = () => {
               onClick={confirmPasswordVisibility.toggleVisibility}
               aria-label={
                 confirmPasswordVisibility.isVisible
-                  ? 'Hide password'
-                  : 'Show password'
+                  ? t('ui.inputLabels.hidePassword')
+                  : t('ui.inputLabels.showPassword')
               }
               aria-pressed={confirmPasswordVisibility.isVisible}
             >
@@ -214,9 +214,9 @@ const Register: FC = () => {
       </fieldset>
 
       <p className={styles.privacy}>
-        Will be used in accourdance with our{' '}
+        {t('pages.privacy.linkIntro')}{' '}
         <Link to={toPath(ROUTES.PRIVACY)} viewTransition>
-          Privacy Policy
+          {t('pages.privacy.linkText')}
         </Link>
         .
       </p>

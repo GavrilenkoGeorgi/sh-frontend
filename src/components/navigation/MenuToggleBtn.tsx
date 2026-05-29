@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 
 import type { ToggleBtnProps } from '../../types'
 import * as styles from './MenuToggleBtn.module.sass'

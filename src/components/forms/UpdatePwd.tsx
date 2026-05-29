@@ -106,7 +106,7 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
               <input
                 className={styles.formInput}
                 type={passwordVisibility.inputType}
-                aria-label="Password"
+                aria-label={t('ui.inputLabels.password')}
                 {...registerWithFocus('password')}
                 autoComplete="new-password"
               />
@@ -116,8 +116,8 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
                 onClick={passwordVisibility.toggleVisibility}
                 aria-label={
                   passwordVisibility.isVisible
-                    ? 'Hide password'
-                    : 'Show password'
+                    ? t('ui.inputLabels.hidePassword')
+                    : t('ui.inputLabels.showPassword')
                 }
                 aria-pressed={passwordVisibility.isVisible}
               >

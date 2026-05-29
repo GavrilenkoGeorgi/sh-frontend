@@ -1,4 +1,4 @@
-import React, { type FC, useState, useEffect, useRef, useCallback } from 'react'
+import { type FC, useState, useEffect, useRef, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
 import { setNotification } from '../../store/slices/notificationSlice'
