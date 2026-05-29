@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 
-import { useUpdatePasswordMutation } from '../../store/slices/userApiSlice'
+import { useUpdatePasswordMutation } from '../../store/api/userApi'
 import { setNotification } from '../../store/slices/notificationSlice'
 import {
   PwdUpdateFormSchema,

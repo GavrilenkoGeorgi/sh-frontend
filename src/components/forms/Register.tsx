@@ -5,7 +5,7 @@ import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useNavigate, Link } from 'react-router'
 import cx from 'classnames'
 
-import { useSignupMutation } from '../../store/slices/userApiSlice'
+import { useSignupMutation } from '../../store/api/userApi'
 import { setNotification } from '../../store/slices/notificationSlice'
 import {
   RegisterFormSchema,

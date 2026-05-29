@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 
 // state
 import type { RootState } from '../store'
-import { useSaveResultsMutation } from '../store/slices/gameApiSlice'
+import { useSaveResultsMutation } from '../store/api/gameApi'
 import { setScore, reset, GameState, MAX_TURNS } from '../store/slices/shSlice'
 import { setNotification } from '../store/slices/notificationSlice'
 import { selectCurrentUser } from '../store/slices/authSlice'

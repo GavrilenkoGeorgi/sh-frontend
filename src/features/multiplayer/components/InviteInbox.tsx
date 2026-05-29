@@ -1,6 +1,6 @@
 import { FC, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { useGetIncomingInvitesQuery } from '../../../store/slices/inviteApiSlice'
+import { useGetIncomingInvitesQuery } from '../../../store/api/inviteApi'
 import { setSelectedInviteId } from '../../../store/slices/multiplayerSlice'
 import {
   emitInviteAccept,

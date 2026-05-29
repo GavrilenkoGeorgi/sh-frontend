@@ -5,8 +5,8 @@ import { PwdUpdateFormSchemaType } from '../../schemas/PwdUpdateSchema'
 import { RecoveryEmailSchemaType } from '../../schemas/RecoveryEmailSchema'
 import { RegisterFormSchemaType } from '../../schemas/RegisterFormSchema'
 import { User } from '../../types'
-import { apiSlice } from './apiSlice'
-import { setCredentials, setAuthInitialized } from './authSlice'
+import { userApi } from './baseApi'
+import { setCredentials, setAuthInitialized } from '../slices/authSlice'
 import {
   clearAuthSessionHint,
   setAuthSessionHint
@@ -17,7 +17,7 @@ type RefreshTokenResponse = {
   user: Pick<User, '_id' | 'name' | 'email'>
 }
 
-export const userApiSlice = apiSlice.injectEndpoints({
+const extendedUserApi = userApi.injectEndpoints({
   endpoints: (builder) => ({
     deleteAcc: builder.mutation<void, void>({
       query: () => ({
@@ -62,7 +62,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         try {
           await queryFulfilled
           dispatch(
-            userApiSlice.endpoints.refreshToken.initiate(undefined, {
+            extendedUserApi.endpoints.refreshToken.initiate(undefined, {
               forceRefetch: true,
               subscribe: false
             })
@@ -124,4 +124,4 @@ export const {
   useSignupMutation,
   useUpdateProfileMutation,
   useRefreshTokenQuery
-} = userApiSlice
+} = extendedUserApi

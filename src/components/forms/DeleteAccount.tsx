@@ -2,10 +2,10 @@ import { type FC, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 
-import { useDeleteAccMutation } from '../../store/slices/userApiSlice'
+import { useDeleteAccMutation } from '../../store/api/userApi'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { logout } from '../../store/slices/authSlice'
-import { apiSlice, gameSlice } from '../../store/slices/apiSlice'
+import { userApi, gameApi } from '../../store/api/baseApi'
 import { toPath } from '../../utils'
 import { ToastTypes } from '../../types'
 
@@ -29,8 +29,8 @@ const DeleteAccount: FC = () => {
       await deleteAcc().unwrap()
       clearAuthSessionHint()
       dispatch(logout())
-      dispatch(apiSlice.util.resetApiState())
-      dispatch(gameSlice.util.resetApiState())
+      dispatch(userApi.util.resetApiState())
+      dispatch(gameApi.util.resetApiState())
       dispatch(
         setNotification({
           msg: t('ui.toastMessages.accountDeleted'),

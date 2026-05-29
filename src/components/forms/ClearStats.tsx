@@ -1,7 +1,7 @@
 import React, { type FC, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { useClearStatsMutation } from '../../store/slices/gameApiSlice'
+import { useClearStatsMutation } from '../../store/api/gameApi'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { ToastTypes } from '../../types'
 

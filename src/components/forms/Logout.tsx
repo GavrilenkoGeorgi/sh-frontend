@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router'
 
 import { logout, selectCurrentUser } from '../../store/slices/authSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
-import { apiSlice, gameSlice } from '../../store/slices/apiSlice'
+import { userApi, gameApi } from '../../store/api/baseApi'
 import LoadingIndicator from '../layout/LoadingIndicator'
 import { toPath } from '../../utils'
 import { ToastTypes } from '../../types'
 import * as styles from './Form.module.sass'
-import { useLogoutMutation } from '../../store/slices/userApiSlice'
+import { useLogoutMutation } from '../../store/api/userApi'
 import { ROUTES } from '../../constants/routes'
 import { clearAuthSessionHint } from '../../utils/authSessionHint'
 import { useTranslation } from 'react-i18next'
@@ -29,8 +29,8 @@ const Logout: FC = () => {
 
       // Clear client state
       dispatch(logout())
-      dispatch(apiSlice.util.resetApiState())
-      dispatch(gameSlice.util.resetApiState())
+      dispatch(userApi.util.resetApiState())
+      dispatch(gameApi.util.resetApiState())
 
       // Notify user
       dispatch(

@@ -12,7 +12,6 @@ import {
 
 import { type ChartProps } from '../../types'
 
-import * as styles from './Charts.module.sass'
 import { tickStyles } from './BarChart'
 import { chartColors } from './chartColors'
 import { AreaCustomTooltipRenderer } from './CustomTooltips'

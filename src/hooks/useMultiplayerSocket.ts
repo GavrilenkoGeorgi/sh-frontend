@@ -27,8 +27,9 @@ import {
   selectAuthInitialized,
   selectIsAuthenticated
 } from '../store/slices/authSlice'
-import { apiSlice } from '../store/slices/apiSlice'
 import type { AppDispatch } from '../store'
+import { userApi } from '../store/api/baseApi'
+import { USER_TAGS } from '../store/api/tags'
 
 export const useMultiplayerSocket = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -42,7 +43,10 @@ export const useMultiplayerSocket = () => {
 
     const invalidateInvites = () => {
       dispatch(
-        apiSlice.util.invalidateTags(['IncomingInvites', 'OutgoingInvites'])
+        userApi.util.invalidateTags([
+          USER_TAGS.IncomingInvites,
+          USER_TAGS.OutgoingInvites
+        ])
       )
     }
 
@@ -66,7 +70,7 @@ export const useMultiplayerSocket = () => {
     }
 
     const handleInviteReceived = (_payload: InviteReceivedPayload) => {
-      dispatch(apiSlice.util.invalidateTags(['IncomingInvites']))
+      dispatch(userApi.util.invalidateTags([USER_TAGS.IncomingInvites]))
     }
 
     const handleInviteStatus = (_payload: InviteStatusPayload) => {
