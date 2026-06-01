@@ -10,13 +10,13 @@ import {
 } from '../../schemas/ProfileFormSchema'
 import { ToastTypes } from '../../types'
 import type { User, Nullable } from '../../types'
-import { getErrMsg } from '../../utils'
+
 import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
 import * as styles from './Form.module.sass'
 import LoadingIndicator from '../layout/LoadingIndicator'
-import { useUpdateProfileMutation } from '../../store/slices/userApiSlice'
+import { useUpdateProfileMutation } from '../../store/api/userApi'
 import Logout from './Logout'
 import { useTranslation } from 'react-i18next'
 
@@ -62,13 +62,8 @@ const Profile: FC<Props> = ({ data }) => {
           type: ToastTypes.SUCCESS
         })
       )
-    } catch (err: unknown) {
-      dispatch(
-        setNotification({
-          msg: getErrMsg(err),
-          type: ToastTypes.ERROR
-        })
-      )
+    } catch {
+      // error toast is handled centrally in baseQueryWithReauth
     }
   }
 

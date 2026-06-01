@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 import * as styles from './LoadingIndicator.module.sass'
 import cx from 'classnames'
 

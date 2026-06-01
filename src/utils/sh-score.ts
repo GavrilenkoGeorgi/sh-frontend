@@ -1,9 +1,9 @@
-import { GameCombinations, type iCombination } from '../types'
+import { GameCombinations, type Combination } from '../types'
 
 export default class ShScore {
   school: number[][]
-  combination: iCombination
-  stats: iCombination
+  combination: Combination
+  stats: Combination
 
   constructor() {
     this.school = [[], [], [], [], [], []]
@@ -46,7 +46,7 @@ export default class ShScore {
   }
 
   // Return current state of the score object
-  getScore = (values: number[]): iCombination => {
+  getScore = (values: number[]): Combination => {
     this.reset()
     this.calcScore(values)
     return this.combination
@@ -187,7 +187,7 @@ export default class ShScore {
   }
 
   // Get combinations stats at the end of the game
-  combinationsStats = (results: Record<string, number[]>): iCombination => {
+  combinationsStats = (results: Record<string, number[]>): Combination => {
     // Reset stats to get fresh statistics at the end of each game
     for (const key in this.stats) {
       this.stats[key as keyof typeof this.combination] = 0

@@ -26,7 +26,11 @@
       "invite": "Einladen",
       "accept": "Akzeptieren",
       "decline": "Ablehnen",
-      "endGame": "Spiel beenden"
+      "endGame": "Spiel beenden",
+      "save": "Speichern",
+      "ok": "OK",
+      "cancel": "Abbrechen",
+      "dismiss": "Schließen"
     },
     "navLinks": {
       "play": "Spielen",
@@ -70,7 +74,12 @@
       "login": "Anmelden",
       "register": "Registrieren",
       "settings": "Einstellungen",
-      "restorePassword": "Passwort wiederherstellen"
+      "restorePassword": "Passwort wiederherstellen",
+      "congratulations": "Glückwunsch!",
+      "scoreMsg": "Deine Punktzahl ist ",
+      "gameOver": "Spiel vorbei",
+      "gameOverMsg": "Viel Glück beim nächsten Mal!",
+      "newVersion": "Eine neue Version ist verfügbar."
     },
     "settings": {
       "themeLabel": "Design",
@@ -137,6 +146,8 @@
       "title": "Datenschutzrichtlinie für Sharlushka Dice Game",
       "lastUpdated": "Zuletzt aktualisiert: 13.12.2023",
       "intro": "Danke, dass du Sharlushka Dice Game ('wir', 'uns' oder 'unser') verwendest. Wir sind verpflichtet, deine persönlichen Daten und dein Recht auf Privatsphäre zu schützen. Wenn du Fragen oder Bedenken zu unserer Richtlinie hast, kontaktiere uns bitte unter <1>gavrilenko.georgi@gmail.com</1>. Durch die Nutzung von Sharlushka Dice Game stimmst du den Bedingungen dieser Datenschutzrichtlinie zu. Bitte nimm dir die Zeit, die folgenden Informationen durchzulesen.",
+      "linkIntro": "Wird in Übereinstimmung mit unserer",
+      "linkText": "Datenschutzrichtlinie verwendet",
       "infoWeCollect": {
         "heading": "Informationen, die wir sammeln",
         "personalInfoHeading": "1. Persönliche Informationen",
@@ -177,12 +188,17 @@
       "title": "Statistik",
       "noGames": "Noch keine Spiele gespielt",
       "filters": {
-        "modeLastN": "Letzte N Spiele",
+        "modeLastN": "Letzte",
+        "games": "spiele",
         "modeDateRange": "Datumsbereich",
         "presetCustom": "Benutzerdefiniert",
         "numberOfGames": "Anzahl der Spiele",
         "dateRange": "Datumsbereich",
         "minScore": "Mindestpunktzahl"
+      },
+      "controls": {
+        "chartTypeBar": "Balkendiagramm",
+        "chartTypeRadar": "Radardiagramm"
       },
       "highestScoreLabel": "Höchste Punktzahl:",
       "averageLabel": "Durchschnitt:",
@@ -192,10 +208,8 @@
       "gamesSoFar": "{{count}} Spiele bisher",
       "schoolScores": "Schulwertungen",
       "scores": "Ergebnisse",
-      "favouriteDiceValuesLine1": "Bevorzugte",
-      "favouriteDiceValuesLine2": "Würfelwerte",
-      "favouriteCombinationsLine1": "Bevorzugte",
-      "favouriteCombinationsLine2": "Kombinationen"
+      "favouriteDiceValues": "Bevorzugte Würfelwerte",
+      "favouriteCombinations": "Bevorzugte Kombinationen"
     }
   }
 }

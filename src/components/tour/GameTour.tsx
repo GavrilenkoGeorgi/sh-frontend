@@ -77,10 +77,26 @@ const GameTour: FC = () => {
       onEvent={handleEvent}
       styles={{
         tooltip: {
-          width: '300px'
+          width: '300px',
+          borderRadius: 'unset',
+          fontSize: '.875rem',
+          color: 'var(--color-text-heading)'
         },
         tooltipContent: {
           textAlign: 'left'
+        },
+        buttonSkip: {
+          color: 'var(--color-primary-muted)',
+          fontSize: '1rem',
+          padding: '0'
+        },
+        buttonBack: {
+          color: 'var(--color-primary)'
+        },
+        buttonPrimary: {
+          backgroundColor: 'var(--color-primary)',
+          borderRadius: 'none',
+          border: 'none'
         }
       }}
     />

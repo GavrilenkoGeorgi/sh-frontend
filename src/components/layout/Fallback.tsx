@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 import LoadingIndicator from './LoadingIndicator'
 
 import * as styles from './Fallback.module.sass'

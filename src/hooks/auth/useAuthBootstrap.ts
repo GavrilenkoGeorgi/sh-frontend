@@ -4,7 +4,7 @@ import {
   selectAuthInitialized,
   setAuthInitialized
 } from '../../store/slices/authSlice'
-import { useRefreshTokenQuery } from '../../store/slices/userApiSlice'
+import { useRefreshTokenQuery } from '../../store/api/userApi'
 import { hasAuthSessionHint } from '../../utils/authSessionHint'
 
 export const useAuthBootstrap = () => {

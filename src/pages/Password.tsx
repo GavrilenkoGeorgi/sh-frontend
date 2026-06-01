@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 import { useSearchParams } from 'react-router'
 import UpdatePwdForm from '../components/forms/UpdatePwd'
 import ForgotPwdForm from '../components/forms/ForgotPwd'

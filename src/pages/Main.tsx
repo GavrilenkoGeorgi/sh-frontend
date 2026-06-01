@@ -34,7 +34,7 @@ const Main: FC = () => {
               can play unregistered
             </Link>
             {
-              ", but you will not be able to save the results or checkout other player's stats, consider "
+              ", but you will not be able to save results or checkout other player's stats, consider "
             }
             <Link to={toPath(ROUTES.REGISTER)} viewTransition>
               registering
@@ -49,7 +49,7 @@ const Main: FC = () => {
           className={link}
           to={toPath(ROUTES.FORGOT_PASSWORD)}
           viewTransition
-          aria-label="Forgot password"
+          aria-label={t('pages.login.forgotPassword')}
         >
           {t('pages.login.forgotPassword')}
         </Link>

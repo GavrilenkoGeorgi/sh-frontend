@@ -5,29 +5,12 @@
   flex-direction: column
   justify-content: space-between
   flex-grow: 1
-  font-size: 1rem
+  font-size: clamp(1rem, 4dvh, 3.5rem) // scales with viewport height: ~1.5rem on small phones, ~2.5rem on iPad Mini, ~3.5rem on iPad Pro
   gap: .25rem
-  margin: 0 0 1.25rem
-  // various mobile devices with all kinds of screen height/width ratios
-  @media (max-width: variables.$small) and (min-height: variables.$smallHeight)
-    font-size: 1.5rem
-  @media (min-width: variables.$small) and (max-height: variables.$mediumHeight)
-    font-size: 1.7rem
-  @media (min-width: variables.$small) and (max-height: variables.$xxlargeHeight)
-    font-size: 2rem
-  @media (max-width: variables.$small) and (min-height: variables.$largeHeight)
-    font-size: 1.9rem
-  @media (max-width: variables.$intermediate) and (max-height: variables.$largeHeight)
-    font-size: 1.5rem
-  @media (min-width: variables.$tablet) and (min-height: variables.$tabletHeight)
-    font-size: 2.5rem
-  @media (min-width: variables.$tablet) and (min-height: variables.$tabletLargeHeight)
-    font-size: 3rem
-  @media (min-width: variables.$tablet) and (min-height: variables.$tabletXLHeight)
-    font-size: 3.5rem
-  @media (min-width: variables.$tablet) and (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
-    font-size: 1.5rem
-  @media (min-width: variables.$large) // desktop
+  margin: .75rem 0
+  @media screen and (max-width: variables.$small)
+    margin: 0
+  @media screen and (min-width: variables.$large) // desktop: compact fixed size
     font-size: 1.3rem
     margin: 0
 

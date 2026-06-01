@@ -2,11 +2,11 @@ import { type FC, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 
-import { useDeleteAccMutation } from '../../store/slices/userApiSlice'
+import { useDeleteAccMutation } from '../../store/api/userApi'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { logout } from '../../store/slices/authSlice'
-import { apiSlice, gameSlice } from '../../store/slices/apiSlice'
-import { getErrMsg, toPath } from '../../utils'
+import { userApi, gameApi } from '../../store/api/baseApi'
+import { toPath } from '../../utils'
 import { ToastTypes } from '../../types'
 
 import Modal from '../layout/Modal'
@@ -29,8 +29,8 @@ const DeleteAccount: FC = () => {
       await deleteAcc().unwrap()
       clearAuthSessionHint()
       dispatch(logout())
-      dispatch(apiSlice.util.resetApiState())
-      dispatch(gameSlice.util.resetApiState())
+      dispatch(userApi.util.resetApiState())
+      dispatch(gameApi.util.resetApiState())
       dispatch(
         setNotification({
           msg: t('ui.toastMessages.accountDeleted'),
@@ -38,13 +38,8 @@ const DeleteAccount: FC = () => {
         })
       )
       navigate(toPath(ROUTES.HOME), { viewTransition: true })
-    } catch (err: unknown) {
-      dispatch(
-        setNotification({
-          msg: getErrMsg(err),
-          type: ToastTypes.ERROR
-        })
-      )
+    } catch {
+      // error toast is handled centrally in baseQueryWithReauth
     } finally {
       setLoading(false)
     }

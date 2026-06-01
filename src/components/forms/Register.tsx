@@ -5,14 +5,14 @@ import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useNavigate, Link } from 'react-router'
 import cx from 'classnames'
 
-import { useSignupMutation } from '../../store/slices/userApiSlice'
+import { useSignupMutation } from '../../store/api/userApi'
 import { setNotification } from '../../store/slices/notificationSlice'
 import {
   RegisterFormSchema,
   type RegisterFormSchemaType
 } from '../../schemas/RegisterFormSchema'
 import { ToastTypes } from '../../types'
-import { getErrMsg, toPath } from '../../utils'
+import { toPath } from '../../utils'
 import { useFormFocus } from '../../hooks'
 
 import LoadingIndicator from '../layout/LoadingIndicator'
@@ -57,13 +57,8 @@ const Register: FC = () => {
         })
       )
       navigate(toPath(ROUTES.LOGIN), { replace: true, viewTransition: true })
-    } catch (err: unknown) {
-      dispatch(
-        setNotification({
-          msg: getErrMsg(err),
-          type: ToastTypes.ERROR
-        })
-      )
+    } catch {
+      // error toast is handled centrally in baseQueryWithReauth
     }
   }
 
@@ -190,8 +185,8 @@ const Register: FC = () => {
               onClick={confirmPasswordVisibility.toggleVisibility}
               aria-label={
                 confirmPasswordVisibility.isVisible
-                  ? 'Hide password'
-                  : 'Show password'
+                  ? t('ui.inputLabels.hidePassword')
+                  : t('ui.inputLabels.showPassword')
               }
               aria-pressed={confirmPasswordVisibility.isVisible}
             >
@@ -219,9 +214,9 @@ const Register: FC = () => {
       </fieldset>
 
       <p className={styles.privacy}>
-        Will be used in accourdance with our{' '}
+        {t('pages.privacy.linkIntro')}{' '}
         <Link to={toPath(ROUTES.PRIVACY)} viewTransition>
-          Privacy Policy
+          {t('pages.privacy.linkText')}
         </Link>
         .
       </p>

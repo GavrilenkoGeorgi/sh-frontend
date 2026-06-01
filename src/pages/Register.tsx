@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 
 import RegisterForm from '../components/forms/Register'
 import * as styles from './Register.module.sass'

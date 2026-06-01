@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 import { useTranslation, Trans } from 'react-i18next'
 import * as styles from './SharedStyles.module.sass'
 

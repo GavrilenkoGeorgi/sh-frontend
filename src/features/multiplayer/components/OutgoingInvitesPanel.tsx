@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { useGetOutgoingInvitesQuery } from '../../../store/slices/inviteApiSlice'
+import { useGetOutgoingInvitesQuery } from '../../../store/api/inviteApi'
 import type { OutgoingInvite } from '../types'
 import * as styles from './InviteInbox.module.sass'
 import { useTranslation } from 'react-i18next'

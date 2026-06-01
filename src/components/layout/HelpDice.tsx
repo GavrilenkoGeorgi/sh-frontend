@@ -1,11 +1,11 @@
-import React, { type FC } from 'react'
-import { type iHelpDice } from '../../types'
+import { type FC } from 'react'
+import { type HelpDice } from '../../types'
 
 import { Dice } from '../game/Dice'
 import * as styles from './HelpDice.module.sass'
 
 interface iProps {
-  data: iHelpDice[]
+  data: HelpDice[]
 }
 
 const HelpDice: FC<iProps> = ({ data }) => {

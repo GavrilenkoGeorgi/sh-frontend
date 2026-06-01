@@ -4,6 +4,7 @@ import type { Nullable } from '../../types'
 
 import LoadingIndicator from './LoadingIndicator'
 import * as styles from './Modal.module.sass'
+import { useTranslation } from 'react-i18next'
 
 interface ModalProps {
   heading: string
@@ -25,6 +26,7 @@ const Modal: FC<ModalProps> = ({
   score,
   close = null
 }) => {
+  const { t } = useTranslation()
   return (
     <div className={styles.modal}>
       <div className={styles.blur}></div>
@@ -61,7 +63,7 @@ const Modal: FC<ModalProps> = ({
                   close()
                 }}
               >
-                cancel
+                {t('ui.buttonLabels.cancel')}
               </button>
             )}
           </div>

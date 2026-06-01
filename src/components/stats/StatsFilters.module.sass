@@ -10,10 +10,15 @@
 .modeToggle
   display: flex
   gap: .5rem
+  width: 100%
+
+.modeToggle > *
+  flex: 1 1 0
+  min-width: 0
 
 .toggleBtn
-  padding: .3rem .75rem
-  border: 1px solid var(--color-primary)
+  padding: 0
+  border: 1px solid var(--color-primary-light)
   background: transparent
   color: var(--color-primary)
   cursor: pointer
@@ -38,12 +43,16 @@
     pointer-events: none
 
 .presetSelect
-  min-width: 8rem
+  min-width: 40%
+  div // some micro adjustmetns
+    padding: .111em .15rem
 
 .numberField
   display: flex
-  div
-    align-self: stretch
+  &:hover
+    background-color: var(--color-primary-light)
+  input
+    width: 100%
 
 .fieldLabel
   font-size: .75rem
@@ -52,7 +61,7 @@
 .fieldInput
   width: 6rem
   padding: .3rem .5rem
-  border: 1px solid var(--color-primary)
+  border: 1px solid var(--color-primary-light)
   background: transparent
   color: var(--color-text-dim)
   font-size: variables.$statsFilterFontSize
@@ -62,52 +71,5 @@
   &:focus
     outline: none
     border-color: var(--color-accent)
-
-// select styles for preset dropdown
-.selectControl
-  padding: .3rem .5rem
-  font-size: variables.$statsFilterFontSize
-  font-family: inherit
-  line-height: variables.$inputLineHeight
-  background-color: var(--color-surface)
-  border: 1px solid var(--color-primary)
-  cursor: pointer
-  transition: border-color var(--duration-default)
-  &:focus-within
-    outline: none
-    border-color: var(--color-accent)
-
-.selectMenu
-  margin-top: .25rem
-  background-color: var(--color-surface)
-  border: 1px solid var(--color-primary)
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15)
-  z-index: 10
-
-.selectMenuList
-  padding: .25rem 0
-
-// :not(._) adds a second class to specificity (0,2,0) to beat emotion's (0,1,0)
-.selectOption:not(._)
-  padding: .3rem .5rem
-  font-size: variables.$statsFilterFontSize
-  color: var(--color-text-dim)
-  cursor: pointer
-
-.selectOptionFocused:not(._)
-  background-color: var(--color-primary-light)
-
-.selectOptionSelected:not(._)
-  color: var(--color-primary)
-  font-weight: 600
-
-.selectSingleValue
-  color: var(--color-text-dim)
-
-.selectDropdownIndicator
-  color: var(--color-primary)
-  padding-left: .35rem
-  cursor: pointer
-
-.selectIndicatorSeparator
-  display: none
+  &:focus::placeholder
+    color: transparent

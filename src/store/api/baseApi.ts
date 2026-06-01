@@ -16,32 +16,10 @@ import {
   clearAuthSessionHint,
   setAuthSessionHint
 } from '../../utils/authSessionHint'
-import { logout as clearAuthState, setCredentials } from './authSlice'
-import { setNotification } from './notificationSlice'
+import { getErrMsg } from '../../utils'
+import { logout as clearAuthState, setCredentials } from '../slices/authSlice'
+import { setNotification } from '../slices/notificationSlice'
 import { GAME_TAGS, USER_TAGS } from './tags'
-
-interface RefreshResponse {
-  user: User
-}
-
-const isRefreshResponse = (data: unknown): data is RefreshResponse => {
-  if (typeof data !== 'object' || data === null || !('user' in data)) {
-    return false
-  }
-
-  const { user } = data as { user: unknown }
-
-  return (
-    typeof user === 'object' &&
-    user !== null &&
-    '_id' in user &&
-    'name' in user &&
-    'email' in user &&
-    typeof (user as { _id?: unknown })._id === 'string' &&
-    typeof (user as { name?: unknown }).name === 'string' &&
-    typeof (user as { email?: unknown }).email === 'string'
-  )
-}
 
 type BaseQueryResult = QueryReturnValue<
   unknown,
@@ -98,15 +76,17 @@ export const baseQueryWithReauth: BaseQueryFn<
       refreshPromise = null
     }
 
-    if (isRefreshResponse(refreshResult.data)) {
+    if (!refreshResult.error) {
       setAuthSessionHint()
-      api.dispatch(setCredentials({ user: refreshResult.data.user }))
+      api.dispatch(
+        setCredentials({ user: (refreshResult.data as { user: User }).user })
+      )
       result = await baseQuery(args, api, extraOptions)
     } else {
       clearAuthSessionHint()
       api.dispatch(clearAuthState())
-      api.dispatch(apiSlice.util.resetApiState())
-      api.dispatch(gameSlice.util.resetApiState())
+      api.dispatch(userApi.util.resetApiState())
+      api.dispatch(gameApi.util.resetApiState())
 
       if (startedRefresh) {
         api.dispatch(
@@ -119,17 +99,24 @@ export const baseQueryWithReauth: BaseQueryFn<
     }
   }
 
+  if (result.error && result.error.status !== 401) {
+    const errMsg = getErrMsg(result.error)
+    if (errMsg) {
+      api.dispatch(setNotification({ msg: errMsg, type: ToastTypes.ERROR }))
+    }
+  }
+
   return result
 }
 
-export const apiSlice = createApi({
+export const userApi = createApi({
   reducerPath: 'user',
   baseQuery: baseQueryWithReauth,
   tagTypes: Object.values(USER_TAGS),
   endpoints: () => ({})
 })
 
-export const gameSlice = createApi({
+export const gameApi = createApi({
   reducerPath: 'game',
   baseQuery: baseQueryWithReauth,
   tagTypes: Object.values(GAME_TAGS),

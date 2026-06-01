@@ -7,10 +7,9 @@ import {
   RecoveryEmailSchema,
   type RecoveryEmailSchemaType
 } from '../../schemas/RecoveryEmailSchema'
-import { useSendRecoveryEmailMutation } from '../../store/slices/userApiSlice'
+import { useSendRecoveryEmailMutation } from '../../store/api/userApi'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { ToastTypes } from '../../types'
-import { getErrMsg } from '../../utils'
 import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
@@ -48,13 +47,8 @@ const ForgotPwd: FC = () => {
           type: ToastTypes.SUCCESS
         })
       )
-    } catch (err: unknown) {
-      dispatch(
-        setNotification({
-          msg: getErrMsg(err),
-          type: ToastTypes.ERROR
-        })
-      )
+    } catch {
+      // error toast is handled centrally in baseQueryWithReauth
     }
   }
 

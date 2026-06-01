@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 import { Link } from 'react-router'
 
 import LoginForm from '../components/forms/Login'
@@ -18,7 +18,7 @@ const Login: FC = () => {
           className={styles.link}
           to={toPath(ROUTES.FORGOT_PASSWORD)}
           viewTransition
-          aria-label="Forgot password"
+          aria-label={t('pages.login.forgotPassword')}
         >
           {t('pages.login.forgotPassword')}
         </Link>

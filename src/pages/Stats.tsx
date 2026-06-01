@@ -1,8 +1,8 @@
-import { type FC } from 'react'
+import { useState, type FC } from 'react'
 import CountUp from 'react-countup'
 import { useSearchParams } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import { useGetStatsQuery } from '../store/slices/gameApiSlice'
+import { useGetStatsQuery } from '../store/api/gameApi'
 import {
   formatDateChartAxisData,
   formatLabelChartAxisData,
@@ -18,12 +18,38 @@ import * as sharedStyles from './SharedStyles.module.sass'
 import Fallback from '../components/layout/Fallback'
 import { DashedLineLegend } from '../components/charts/DashedLineLegend'
 import StatsFilters from '../components/stats/StatsFilters'
+import { StatsRadarChart } from '../components/charts/StatsRadarChart'
+import AppSelect from '../components/select/CustomSelect'
+
+const ChartType = {
+  bar: 'bar',
+  radar: 'radar'
+} as const
+
+type ChartType = (typeof ChartType)[keyof typeof ChartType]
 
 const StatsPage: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const filters = parseStatsSearchParams(searchParams)
   const { data, isLoading } = useGetStatsQuery(filters)
   const { t } = useTranslation()
+  const [diceValuesChartType, setDiceValuesChartType] = useState<ChartType>(
+    ChartType.radar
+  )
+  const [combinationChartType, setCombinationChartType] = useState<ChartType>(
+    ChartType.bar
+  )
+
+  const chartOptions = [
+    {
+      value: ChartType.radar,
+      label: t('pages.stats.controls.chartTypeRadar')
+    },
+    {
+      value: ChartType.bar,
+      label: t('pages.stats.controls.chartTypeBar')
+    }
+  ]
 
   const handleFiltersChange = (newFilters: StatsFilterParams) => {
     setSearchParams(new URLSearchParams(buildStatsQueryString(newFilters)))
@@ -31,7 +57,7 @@ const StatsPage: FC = () => {
 
   if (!data || isLoading) return <Fallback />
 
-  if (data.games === 0) {
+  if (data.summary.games === 0) {
     return (
       <section className={sharedStyles.contentPage}>
         <div className={styles.stats}>
@@ -51,20 +77,30 @@ const StatsPage: FC = () => {
         <h2>
           {t('pages.stats.highestScoreLabel')}{' '}
           <span className={styles.threeNums}>
-            <CountUp start={0} end={data.max} delay={0.75} duration={3} />
+            <CountUp
+              start={0}
+              end={data.summary.max}
+              delay={0.75}
+              duration={3}
+            />
           </span>
         </h2>
 
         <h3>
           {t('pages.stats.averageLabel')}&nbsp;
           <span className={styles.threeNums}>
-            <CountUp start={0} end={data.average} delay={1.25} duration={3} />
+            <CountUp
+              start={0}
+              end={data.summary.average}
+              delay={1.25}
+              duration={3}
+            />
           </span>{' '}
           {t('pages.stats.averageWhichIs')}&nbsp;
           <span className={styles.threeNums}>
             <CountUp
               start={0}
-              end={data.percentFromMax}
+              end={data.summary.percentFromMax}
               delay={1.75}
               duration={4}
               suffix="%"
@@ -73,7 +109,7 @@ const StatsPage: FC = () => {
           {t('pages.stats.averageFromMax')}
         </h3>
 
-        <h4>{t('pages.stats.gamesSoFar', { count: data.games })}</h4>
+        <h4>{t('pages.stats.gamesSoFar', { count: data.summary.games })}</h4>
 
         <StatsFilters filters={filters} onChange={handleFiltersChange} />
 
@@ -83,7 +119,7 @@ const StatsPage: FC = () => {
             <AreaChart
               data={formatDateChartAxisData(data.schoolScores)}
               syncId="shStats"
-              referenceValue={data.schoolAverage}
+              referenceValue={data.summary.schoolAverage}
             />
             <div className={styles.legend}>
               <DashedLineLegend />
@@ -98,7 +134,7 @@ const StatsPage: FC = () => {
             <AreaChart
               data={formatDateChartAxisData(data.scores)}
               syncId="shStats"
-              referenceValue={data.average}
+              referenceValue={data.summary.average}
             />
             <div className={styles.legend}>
               <DashedLineLegend />
@@ -108,23 +144,55 @@ const StatsPage: FC = () => {
         </aside>
 
         <aside>
-          <h4>
-            {t('pages.stats.favouriteDiceValuesLine1')}
-            <br /> {t('pages.stats.favouriteDiceValuesLine2')}
-          </h4>
-          <div className={styles.hChart}>
-            <BarChart data={formatLabelChartAxisData(data.favDiceValues)} />
+          <h4>{t('pages.stats.favouriteDiceValues')}</h4>
+          <div className={styles.chartTypeSelect}>
+            <AppSelect
+              options={chartOptions}
+              value={
+                chartOptions.find((o) => o.value === diceValuesChartType) ??
+                null
+              }
+              onChange={(option) =>
+                option && setDiceValuesChartType(option.value as ChartType)
+              }
+              className={styles.presetSelect}
+            />
           </div>
+          {diceValuesChartType === ChartType.radar ? (
+            <div className={styles.radarChartContainer}>
+              <StatsRadarChart data={data.favDiceValues} />
+            </div>
+          ) : (
+            <div className={styles.hChart} style={{ marginTop: '3rem' }}>
+              <BarChart data={formatLabelChartAxisData(data.favDiceValues)} />
+            </div>
+          )}
         </aside>
 
         <aside>
-          <h4>
-            {t('pages.stats.favouriteCombinationsLine1')}
-            <br /> {t('pages.stats.favouriteCombinationsLine2')}
-          </h4>
-          <div className={styles.sChart}>
-            <VertBarChart data={formatLabelChartAxisData(data.favComb)} />
+          <h4>{t('pages.stats.favouriteCombinations')}</h4>
+          <div className={styles.chartTypeSelect}>
+            <AppSelect
+              options={chartOptions}
+              value={
+                chartOptions.find((o) => o.value === combinationChartType) ??
+                null
+              }
+              onChange={(option) =>
+                option && setCombinationChartType(option.value as ChartType)
+              }
+              className={styles.presetSelect}
+            />
           </div>
+          {combinationChartType === ChartType.radar ? (
+            <div className={styles.radarChartContainer}>
+              <StatsRadarChart data={data.favComb} />
+            </div>
+          ) : (
+            <div className={styles.sChart}>
+              <VertBarChart data={formatLabelChartAxisData(data.favComb)} />
+            </div>
+          )}
         </aside>
       </div>
     </section>

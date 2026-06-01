@@ -7,36 +7,36 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router'
 import { ROUTES } from '../../constants/routes'
 import { toPath } from '../../utils'
+import { useTranslation } from 'react-i18next'
 
 export const UserLink: FC = () => {
   const user = useSelector(selectCurrentUser)
   const { busy } = useSelector(
     (state: { notification: { busy: boolean } }) => state.notification
   )
+  const { t } = useTranslation()
 
   return (
-    <>
-      <div className={styles.user}>
+    <div className={styles.user}>
+      <Link
+        to={user != null ? toPath(ROUTES.PROFILE) : toPath(ROUTES.LOGIN)}
+        viewTransition
+        className={styles.userIcon}
+        aria-label={user?.name ?? t('ui.settings.guest')}
+      >
+        <UserIcon />
+      </Link>
+      {user && (
         <Link
-          to={user != null ? toPath(ROUTES.PROFILE) : toPath(ROUTES.LOGIN)}
+          to={toPath(ROUTES.STATS)}
           viewTransition
-          className={styles.userIcon}
-          aria-label={user?.name ?? 'Guest'}
+          className={styles.userName}
+          aria-label={user.name}
         >
-          <UserIcon />
+          {user.name}
         </Link>
-        {user && (
-          <Link
-            to={toPath(ROUTES.STATS)}
-            viewTransition
-            className={styles.userName}
-            aria-label={user.name}
-          >
-            {user.name}
-          </Link>
-        )}
-        {busy && <LoadingIndicator dark />}
-      </div>
-    </>
+      )}
+      {busy && <LoadingIndicator dark />}
+    </div>
   )
 }

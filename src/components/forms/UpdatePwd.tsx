@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 
-import { useUpdatePasswordMutation } from '../../store/slices/userApiSlice'
+import { useUpdatePasswordMutation } from '../../store/api/userApi'
 import { setNotification } from '../../store/slices/notificationSlice'
 import {
   PwdUpdateFormSchema,
   type PwdUpdateFormSchemaType
 } from '../../schemas/PwdUpdateSchema'
 import { ToastTypes } from '../../types'
-import { getErrMsg, toPath } from '../../utils'
+import { toPath } from '../../utils'
 import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
@@ -64,13 +64,8 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
         })
       )
       navigate(toPath(ROUTES.LOGIN), { viewTransition: true })
-    } catch (err: unknown) {
-      dispatch(
-        setNotification({
-          msg: getErrMsg(err),
-          type: ToastTypes.ERROR
-        })
-      )
+    } catch {
+      // error toast is handled centrally in baseQueryWithReauth
     }
   }
 
@@ -111,7 +106,7 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
               <input
                 className={styles.formInput}
                 type={passwordVisibility.inputType}
-                aria-label="Password"
+                aria-label={t('ui.inputLabels.password')}
                 {...registerWithFocus('password')}
                 autoComplete="new-password"
               />
@@ -121,8 +116,8 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
                 onClick={passwordVisibility.toggleVisibility}
                 aria-label={
                   passwordVisibility.isVisible
-                    ? 'Hide password'
-                    : 'Show password'
+                    ? t('ui.inputLabels.hidePassword')
+                    : t('ui.inputLabels.showPassword')
                 }
                 aria-pressed={passwordVisibility.isVisible}
               >

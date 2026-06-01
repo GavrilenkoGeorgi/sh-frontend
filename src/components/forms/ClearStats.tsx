@@ -1,9 +1,8 @@
 import React, { type FC, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { useClearStatsMutation } from '../../store/slices/gameApiSlice'
+import { useClearStatsMutation } from '../../store/api/gameApi'
 import { setNotification } from '../../store/slices/notificationSlice'
-import { getErrMsg } from '../../utils'
 import { ToastTypes } from '../../types'
 
 import Modal from '../layout/Modal'
@@ -26,13 +25,8 @@ const ClearStats: FC = () => {
         })
       )
       setOpenModal(false)
-    } catch (err: unknown) {
-      dispatch(
-        setNotification({
-          msg: getErrMsg(err),
-          type: ToastTypes.ERROR
-        })
-      )
+    } catch {
+      // error toast is handled centrally in baseQueryWithReauth
     }
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "sh-frontend",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Sharlushka v2",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,7 @@
   "author": "JSM",
   "license": "UNLICENSED",
   "devDependencies": {
+    "@recharts/devtools": "^0.0.14",
     "@svgr/webpack": "^8.1.0",
     "@types/jest": "^30.0.0",
     "@types/react": "^19.1.6",
@@ -65,7 +66,6 @@
     "react-select": "^5.10.2",
     "recharts": "^3.8.0",
     "socket.io-client": "^4.8.3",
-    "use-confetti-svg": "^1.0.2",
     "zod": "^4.3.6"
   },
   "overrides": {
