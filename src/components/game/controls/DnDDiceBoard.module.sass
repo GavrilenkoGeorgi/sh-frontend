@@ -3,7 +3,7 @@
 .controls
   @media screen and (min-width: variables.$large)
     display: flex
-    gap: .6rem
+    gap: .5rem
 
 // multiplayer overrides: keep mobile layout on desktop
 .controls[data-multiplayer]
@@ -90,13 +90,15 @@
   color: var(--color-primary-light)
   text-transform: uppercase
   width: 100%
-  min-height: variables.$rollButtonHeight 
+  min-height: variables.$rollButtonHeight
   transition-property: background-color, color, border
   transition-duration: var(--duration-default)
   cursor: pointer
   display: flex
   align-items: center
   justify-content: center
+  @media screen and (max-width: variables.$small)
+    min-height: unset // do we really need this?
   @media screen and (min-width: variables.$tablet) and (min-height: variables.$tabletHeight)
     min-height: 5rem
   @media screen and (min-width: variables.$tablet) and (min-height: variables.$tabletLargeHeight)
