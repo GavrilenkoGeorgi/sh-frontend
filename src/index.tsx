@@ -9,6 +9,7 @@ import { setUpdateAvailable } from './store/slices/swUpdateSlice'
 import './i18n'
 
 import './styles/index.css'
+import 'theme-toggles/css/expand.min.css'
 
 const container = document.getElementById('app-root')!
 

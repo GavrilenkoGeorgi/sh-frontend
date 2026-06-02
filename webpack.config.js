@@ -181,6 +181,14 @@ module.exports = (_env, argv) => {
         {
           test: /\.svg$/,
           use: ['@svgr/webpack']
+        },
+
+        {
+          test: /\.(ttf|woff2)$/,
+          type: 'asset/resource',
+          generator: {
+            filename: 'fonts/[name][ext]'
+          }
         }
       ]
     },
