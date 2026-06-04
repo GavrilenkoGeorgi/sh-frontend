@@ -68,6 +68,7 @@ module.exports = (_env, argv) => {
       patterns: [
         { from: './src/public/robots.txt', to: 'robots.txt' },
         { from: './src/public/manifest.json', to: 'manifest.json' },
+        { from: './src/public/favicon.svg', to: 'favicon.svg' },
         {
           from: './src/assets/icons/android-chrome-192x192.png',
           to: 'android-chrome-192x192.png'
@@ -181,6 +182,14 @@ module.exports = (_env, argv) => {
         {
           test: /\.svg$/,
           use: ['@svgr/webpack']
+        },
+
+        {
+          test: /\.(ttf|woff2)$/,
+          type: 'asset/resource',
+          generator: {
+            filename: 'fonts/[name][ext]'
+          }
         }
       ]
     },
