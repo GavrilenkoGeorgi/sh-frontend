@@ -4,7 +4,7 @@ import reactPlugin from 'eslint-plugin-react'
 import globals from 'globals'
 
 export default tseslint.config(
-  { ignores: ['dist', 'node_modules'] },
+  { ignores: ['dist', 'node_modules', 'webpack.config.js', 'jest.config.js'] },
 
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -36,7 +36,16 @@ export default tseslint.config(
       ...reactPlugin.configs.recommended.rules,
       'padded-blocks': 'off',
       'multiline-ternary': 'off',
-      delimiter: 'semi'
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_'
+        }
+      ]
     }
   }
 )

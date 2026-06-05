@@ -61,7 +61,8 @@
       "accountDeleted": "Dein Konto wurde erfolgreich gelöscht. Wir hoffen, dich bald wiederzusehen!",
       "saveWarning": "Bitte wähle eine Kombination aus, um deine Spielergebnisse zu speichern.",
       "profileUpdated": "Profil erfolgreich aktualisiert!",
-      "schoolCheck": "Du hast Würfel, die eine Schul-Kombination erzielen können."
+      "schoolCheck": "Du hast Würfel, die eine Schul-Kombination erzielen können.",
+      "schoolFailed": "Keine Schul-Kombination konnte erzielt werden. Spiel vorbei!"
     },
     "theme": {
       "system": "Design: System",
@@ -205,7 +206,7 @@
       "averageDescription": "durchschnitt",
       "averageWhichIs": "was",
       "averageFromMax": "vom Maximum",
-      "gamesSoFar": "{{count}} Spiele bisher",
+      "statsForGames": "Zeigt Statistiken für {{count}} Spiele",
       "schoolScores": "Schulwertungen",
       "scores": "Ergebnisse",
       "favouriteDiceValues": "Bevorzugte Würfelwerte",

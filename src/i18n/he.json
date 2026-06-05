@@ -61,7 +61,8 @@
       "accountDeleted": "החשבון שלך נמחק בהצלחה. נשמח לראות אותך שוב!",
       "saveWarning": "נא לבחור צירוף כדי לשמור את תוצאות המשחק שלך.",
       "profileUpdated": "הפרופיל עודכן בהצלחה!",
-      "schoolCheck": "יש לך קוביות שיכולות להשיג צירוף בית ספר."
+      "schoolCheck": "יש לך קוביות שיכולות להשיג צירוף בית ספר.",
+      "schoolFailed": "לא ניתן היה להשיג אף צירוף בית ספר. המשחק נגמר!"
     },
     "theme": {
       "system": "ערכת נושא: מערכת",
@@ -205,7 +206,7 @@
       "averageDescription": "ממוצע",
       "averageWhichIs": "שהוא",
       "averageFromMax": "מהמקסימום",
-      "gamesSoFar": "{{count}} משחקים עד כה",
+      "statsForGames": "מציגים סטטיסטיקה עבור {{count}} משחקים",
       "schoolScores": "ניקוד בית ספר",
       "scores": "ניקודים",
       "favouriteDiceValues": "ערכי קוביות מועדפים",

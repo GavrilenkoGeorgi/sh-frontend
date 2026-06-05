@@ -1,9 +1,9 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
 
 import { type RootState } from '../../store'
-import { saveScore, gameOver } from '../../store/slices/shSlice'
+import { saveScore } from '../../store/slices/shSlice'
 import {
   SaveScorePayload,
   type CanSaveProps,
@@ -26,10 +26,6 @@ const TrainingBoard: FC = () => {
     return !final && score != null
   }
 
-  const checkGameOver = (): void => {
-    dispatch(gameOver())
-  }
-
   return (
     <div className={styles.training}>
       {Object.values(SchoolCombinations).map((key, index) => {
@@ -43,11 +39,7 @@ const TrainingBoard: FC = () => {
             className={cx(styles.qualiResult, {
               [styles.savable]: hasScore && !game.school[key].final
             })}
-            onClick={
-              canSave(game.school[key])
-                ? () => save(key)
-                : () => checkGameOver()
-            }
+            onClick={canSave(game.school[key]) ? () => save(key) : undefined}
           >
             <div>
               <p

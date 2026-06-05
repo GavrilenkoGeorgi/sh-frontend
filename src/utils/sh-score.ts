@@ -33,16 +33,12 @@ export default class ShScore {
 
   // Roll dice
   rollDice = (diceToRoll: number[], diceSelected: number[]): number[] => {
-    let roll: number[] = []
+    const count =
+      diceToRoll.length === 0 && diceSelected.length !== 5
+        ? 5
+        : diceToRoll.length
 
-    if (diceToRoll.length === 0 && diceSelected.length !== 5) {
-      roll = Array.apply(null, Array(5)).map(() => this.getRandomInt())
-    } else {
-      roll = Array.apply(null, Array(diceToRoll.length)).map(() =>
-        this.getRandomInt()
-      )
-    }
-    return roll
+    return Array.from({ length: count }, () => this.getRandomInt())
   }
 
   // Return current state of the score object

@@ -109,7 +109,7 @@ const StatsPage: FC = () => {
           {t('pages.stats.averageFromMax')}
         </h3>
 
-        <h4>{t('pages.stats.gamesSoFar', { count: data.summary.games })}</h4>
+        <h4>{t('pages.stats.statsForGames', { count: data.summary.games })}</h4>
 
         <StatsFilters filters={filters} onChange={handleFiltersChange} />
 
