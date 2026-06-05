@@ -61,7 +61,8 @@
       "accountDeleted": "Your account has been deleted successfully. We hope to see you again!",
       "saveWarning": "Please select a combination to save your game results.",
       "profileUpdated": "Profile updated successfully!",
-      "schoolCheck": "You have dice that can score a school combination."
+      "schoolCheck": "You have dice that can score a school combination.",
+      "schoolFailed": "No school combinations could be scored. Game over!"
     },
     "theme": {
       "system": "Theme: system",
@@ -206,7 +207,7 @@
       "averageDescription": "average",
       "averageWhichIs": "which is",
       "averageFromMax": "from max",
-      "gamesSoFar": "{{count}} games so far",
+      "statsForGames": "Showing stats for {{count}} games",
       "schoolScores": "School scores",
       "scores": "Scores",
       "favouriteDiceValues": "Favourite dice values",

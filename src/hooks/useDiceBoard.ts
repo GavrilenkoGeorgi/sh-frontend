@@ -31,10 +31,7 @@ export const useDiceBoard = () => {
   )
 
   const restoreDiceStateFromRedux = useCallback(() => {
-    // only restore if there's actual data to restore
-    if (!(game.selectionOrder.length > 0 || game.roll.some((val) => val > 0))) {
-      return
-    }
+    const isInitialRoll = game.rollCount === 0 && game.selection.length === 0
 
     // create selected dice using selectionOrder for stable visual ordering
     const restoredSelectedDice = game.selectionOrder.map((dieIndex) => ({
@@ -45,7 +42,10 @@ export const useDiceBoard = () => {
 
     const restoredRollDice = game.roll
       .map((faceValue, dieIndex) => {
-        if (!game.selection.includes(dieIndex) && faceValue > 0) {
+        if (
+          !game.selection.includes(dieIndex) &&
+          (faceValue > 0 || isInitialRoll)
+        ) {
           return {
             id: diceArray[dieIndex].id,
             status: DiceStatus.ROLL,
@@ -63,7 +63,7 @@ export const useDiceBoard = () => {
       roll: restoredRollDice
     })
     setDiceState(restoredDiceArray)
-  }, [game.selectionOrder, game.roll])
+  }, [game.selection, game.selectionOrder, game.roll, game.rollCount])
 
   const handleDiceSelection = useCallback(
     (diceIndex: number) => {
@@ -111,6 +111,7 @@ export const useDiceBoard = () => {
     )
     const isNewRoll =
       game.rollCount > 0 && game.rollCount > prevRollCountRef.current
+    const isInitialRoll = game.rollCount === 0 && game.selection.length === 0
 
     prevRollCountRef.current = game.rollCount
 
@@ -125,11 +126,12 @@ export const useDiceBoard = () => {
         status: DiceStatus.ROLL,
         value: faceValue
       }))
-      .filter((dice) => dice.value > 0)
+      .filter((dice) => dice.value > 0 || isInitialRoll)
 
     const hasRollChanges = updatedRollDice.some(
       (item, index) => !rollDice[index] || item.value !== rollDice[index].value
     )
+    const hasRollCountChanges = rollDice.length !== updatedRollDice.length
 
     // build selected dice from selectionOrder for stable visual ordering
     const updatedSelectedDice = game.selectionOrder.map((dieIndex) => ({
@@ -141,6 +143,7 @@ export const useDiceBoard = () => {
     if (
       isNewRoll ||
       hasRollChanges ||
+      hasRollCountChanges ||
       holdDice.length !== updatedSelectedDice.length
     ) {
       const newDiceState = [...updatedSelectedDice, ...updatedRollDice]
@@ -151,7 +154,9 @@ export const useDiceBoard = () => {
         ...prevBoardSections,
         // preserve visual order by matching on stable dice ids
         selected:
-          prevBoardSections.selected?.length > 0
+          isInitialRoll
+            ? []
+            : prevBoardSections.selected?.length > 0
             ? prevBoardSections.selected
                 .map(
                   (dice) =>
@@ -163,7 +168,9 @@ export const useDiceBoard = () => {
             : updatedSelectedDice,
         // preserve roll visual order by matching on stable dice ids
         roll:
-          prevBoardSections.roll?.length > 0
+          isInitialRoll
+            ? updatedRollDice
+            : prevBoardSections.roll?.length > 0
             ? [
                 ...(prevBoardSections.roll
                   .map((dice) =>
@@ -202,12 +209,12 @@ export const useDiceBoard = () => {
     }
   }, [])
 
-  // reset board when game is saved or over
+  // reset board when game is saved
   useEffect(() => {
-    if (game.saved || game.over) {
+    if (game.saved) {
       resetBoard()
     }
-  }, [game.saved, game.over, resetBoard])
+  }, [game.saved, resetBoard])
 
   // restore dice state on mount if needed
   useEffect(() => {

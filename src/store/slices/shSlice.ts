@@ -41,8 +41,9 @@ export interface GameState {
   roll: number[]
   saved: boolean
   over: boolean
+  schoolFailedNotified: boolean
   favDiceValues: number[] // length 6 (faces 1..6)
-  stats: Record<string, any>
+  stats: Record<string, unknown>
 }
 
 const createSchoolState = (): SchoolState => {
@@ -76,7 +77,7 @@ const createResultsState = (): Combination => ({
 const zeroRoll = () => Array(DICE_COUNT).fill(0)
 const zeroFavDiceValues = () => Array(6).fill(0)
 
-const initialState: { game: GameState } = {
+const createInitialState = (): { game: GameState } => ({
   game: {
     score: 0,
     schoolScore: 0,
@@ -91,10 +92,13 @@ const initialState: { game: GameState } = {
     roll: zeroRoll(),
     saved: false,
     over: false,
+    schoolFailedNotified: false,
     favDiceValues: zeroFavDiceValues(),
     stats: {}
   }
-}
+})
+
+const initialState: { game: GameState } = createInitialState()
 
 const clearTempSchoolScores = (school: SchoolState) => {
   for (const name of schoolCombNames) {
@@ -108,14 +112,50 @@ const clearTempResults = (results: Combination) => {
 
 const shScore = new ShScore()
 
+// recalculates score preview from the current selection — called after any selection change
+const applySetScore = (game: GameState): void => {
+  const selectedValues = game.selection.map((i) => game.roll[i])
+  if (game.turn <= SCHOOL_TURNS) {
+    clearTempSchoolScores(game.school)
+    const result = shScore.getSchoolScore(selectedValues)
+    result.forEach((value, index) => {
+      const combName = schoolCombNames[index]
+      if (value !== null && !game.school[combName].final) {
+        game.school[combName].score = value
+      }
+    })
+  } else if (game.turn <= MAX_TURNS - 1) {
+    const result = shScore.getScore(shScore.sort(selectedValues))
+    clearTempResults(game.results)
+    if (selectedValues.length > 0) {
+      for (const name of gameCombNames) {
+        if (game.combinations[name].length < MAX_SAVES_PER_COMBINATION) {
+          game.results[name as keyof typeof game.results] =
+            result[name as keyof typeof game.results]
+        }
+      }
+    }
+  }
+}
+
+// checks if the school phase has failed (no saveable category from the current roll)
+const checkSchoolFailed = (game: GameState): void => {
+  if (game.rollCount === MAX_ROLLS && game.turn <= SCHOOL_TURNS) {
+    const scores = shScore.getSchoolScore([...game.roll])
+    let canSave = false
+    schoolCombNames.forEach((key, index) => {
+      if (!game.school[key].final && scores[index] != null) canSave = true
+    })
+    if (!canSave) game.over = true
+  }
+}
+
 const shSlice = createSlice({
   name: 'sh',
   initialState,
   reducers: {
     reset: (state) => {
-      state.game = {
-        ...initialState.game
-      }
+      state.game = createInitialState().game
     },
 
     // payload: current dice (e.g. roll + selection combined?) — keep original contract
@@ -209,19 +249,8 @@ const shSlice = createSlice({
       }
     },
 
-    gameOver: (state) => {
-      const { game } = state
-      if (game.rollCount === MAX_ROLLS && game.turn <= SCHOOL_TURNS) {
-        // game.roll has all 5 dice values in the index-based model
-        const scores = shScore.getSchoolScore([...game.roll])
-        let canSave = false
-        schoolCombNames.forEach((key, index) => {
-          if (!game.school[key].final && game.school[key].score === null) {
-            if (scores[index] != null) canSave = true
-          }
-        })
-        if (!canSave) game.over = true
-      }
+    markSchoolFailedNotified: (state) => {
+      state.game.schoolFailedNotified = true
     },
 
     // select/deselect by index (0..DICE_COUNT-1)
@@ -232,6 +261,7 @@ const shSlice = createSlice({
       if (!game.selection.includes(idx)) {
         game.selection.push(idx)
         game.selectionOrder.push(idx)
+        applySetScore(game)
       }
     },
 
@@ -253,6 +283,8 @@ const shSlice = createSlice({
       if (game.selection.length === 0) {
         clearTempSchoolScores(game.school)
         clearTempResults(game.results)
+      } else {
+        applySetScore(game)
       }
     },
 
@@ -283,20 +315,23 @@ const shSlice = createSlice({
         }
       }
       game.rollCount++
-      if (game.rollCount >= MAX_ROLLS) game.lock = true
+      if (game.rollCount >= MAX_ROLLS) {
+        game.lock = true
+        checkSchoolFailed(game)
+      }
     }
   }
 })
 
 export const {
   reset,
-  gameOver,
   setScore,
   saveScore,
   rollDice,
   selectDice,
   deselectDice,
-  reorderSelectedDice
+  reorderSelectedDice,
+  markSchoolFailedNotified
 } = shSlice.actions
 
 export default shSlice.reducer

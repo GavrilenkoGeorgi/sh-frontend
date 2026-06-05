@@ -2,6 +2,7 @@ node_modules
 dist
 .env
 .vscode
+AGENTS.md
 
 .github/*
 !.github/workflows/

@@ -115,7 +115,6 @@ export const useMultiplayerTurn = (
   ])
 
   // check whether any remaining school category can be scored from ALL rolled dice
-  // mirrors single-player gameOver: checks the full roll, not just selected dice
   const canScoreFromAllDice = useMemo(() => {
     if (!isInSchoolPhase || rollCount === 0) return false
     const schoolScores = shScore.getSchoolScore(dice)

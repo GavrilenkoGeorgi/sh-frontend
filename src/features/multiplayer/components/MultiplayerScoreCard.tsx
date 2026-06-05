@@ -1,4 +1,4 @@
-import { FC, use } from 'react'
+import { FC } from 'react'
 import type { MultiplayerPlayerState, ScoreCategory } from '../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
 import LoadingIndicator from '../../../components/layout/LoadingIndicator'

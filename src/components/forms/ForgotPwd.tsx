@@ -56,7 +56,6 @@ const ForgotPwd: FC = () => {
     <form
       noValidate
       autoComplete="off"
-      // eslint-disable-next-line
       onSubmit={handleSubmit(onSubmit)}
       id="forgotPwd"
       className={styles.form}

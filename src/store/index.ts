@@ -6,6 +6,8 @@ import notificationReducer from './slices/notificationSlice'
 import swUpdateReducer from './slices/swUpdateSlice'
 import tourReducer from './slices/tourSlice'
 import multiplayerReducer from './slices/multiplayerSlice'
+import { listenerMiddleware } from './listeners/listenerMiddleware'
+import './listeners/gameListeners'
 
 const store = configureStore({
   reducer: {
@@ -19,7 +21,11 @@ const store = configureStore({
     multiplayer: multiplayerReducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(userApi.middleware, gameApi.middleware),
+    getDefaultMiddleware().concat(
+      listenerMiddleware.middleware,
+      userApi.middleware,
+      gameApi.middleware
+    ),
   devTools: true
 })
 
