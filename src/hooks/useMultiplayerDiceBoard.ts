@@ -24,9 +24,7 @@ export const useMultiplayerDiceBoard = (
   )
   const [hasNewRoll, setHasNewRoll] = useState(false)
   const prevRollCountRef = useRef(rollCount)
-  const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
-    null
-  )
+  const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     const selectedDice: Dice[] = selectedIndices.map((idx) => ({

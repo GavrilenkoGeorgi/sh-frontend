@@ -1,13 +1,14 @@
 {
   "name": "sh-frontend",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Sharlushka v2",
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack serve --port 3000",
     "build": "cross-env NODE_ENV=production webpack",
     "test": "npx jest --runInBand",
-    "type-check": "tsc --noEmit --skipLibCheck"
+    "type-check": "tsc --noEmit --skipLibCheck",
+    "prepare": "husky"
   },
   "author": "JSM",
   "license": "UNLICENSED",
@@ -27,7 +28,9 @@
     "eslint-plugin-react": "^7.37.5",
     "globals": "^17.6.0",
     "html-webpack-plugin": "^5.6.7",
+    "husky": "^9.1.7",
     "jest": "^30.4.2",
+    "lint-staged": "^17.0.7",
     "mini-css-extract-plugin": "^2.10.2",
     "sass": "^1.100.0",
     "sass-loader": "^17.0.0",
@@ -74,5 +77,14 @@
     "serialize-javascript": "^7.0.5",
     "uuid": "^14.0.0",
     "phin": "^3.7.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npx eslint --fix",
+      "npx prettier --write"
+    ],
+    "*.{json,md,scss,css}": [
+      "npx prettier --write"
+    ]
   }
 }
