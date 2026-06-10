@@ -20,6 +20,9 @@ import { DashedLineLegend } from '../components/charts/DashedLineLegend'
 import StatsFilters from '../components/stats/StatsFilters'
 import { StatsRadarChart } from '../components/charts/StatsRadarChart'
 import AppSelect from '../components/select/CustomSelect'
+import HelpCircle from '../assets/svg/icon-help-circle.svg'
+import { Tooltip, TooltipTrigger } from '../components/layout/Tooltip'
+import { Button } from 'react-aria-components'
 
 const ChartType = {
   bar: 'bar',
@@ -114,7 +117,15 @@ const StatsPage: FC = () => {
         <StatsFilters filters={filters} onChange={handleFiltersChange} />
 
         <aside>
-          <h4>{t('pages.stats.schoolScores')}</h4>
+          <h4>
+            {t('pages.stats.trainingScores')}
+            <TooltipTrigger>
+              <Button type="button" className={styles.helpButton}>
+                <HelpCircle className={sharedStyles.tooltipIcon} />
+              </Button>
+              <Tooltip>{t('tooltips.trainingScores')}</Tooltip>
+            </TooltipTrigger>
+          </h4>
           <div className={styles.hChart}>
             <AreaChart
               data={formatDateChartAxisData(data.schoolScores)}
@@ -144,7 +155,15 @@ const StatsPage: FC = () => {
         </aside>
 
         <aside>
-          <h4>{t('pages.stats.favouriteDiceValues')}</h4>
+          <h4>
+            {t('pages.stats.favouriteDiceValues')}
+            <TooltipTrigger>
+              <Button type="button" className={styles.helpButton}>
+                <HelpCircle className={sharedStyles.tooltipIcon} />
+              </Button>
+              <Tooltip>{t('tooltips.favDiceValues')}</Tooltip>
+            </TooltipTrigger>
+          </h4>
           <div className={styles.chartTypeSelect}>
             <AppSelect
               options={chartOptions}
@@ -170,7 +189,15 @@ const StatsPage: FC = () => {
         </aside>
 
         <aside>
-          <h4>{t('pages.stats.favouriteCombinations')}</h4>
+          <h4>
+            {t('pages.stats.favouriteCombinations')}
+            <TooltipTrigger>
+              <Button type="button" className={styles.helpButton}>
+                <HelpCircle className={sharedStyles.tooltipIcon} />
+              </Button>
+              <Tooltip>{t('tooltips.favCombinations')}</Tooltip>
+            </TooltipTrigger>
+          </h4>
           <div className={styles.chartTypeSelect}>
             <AppSelect
               options={chartOptions}

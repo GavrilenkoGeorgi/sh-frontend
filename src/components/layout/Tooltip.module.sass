@@ -1,0 +1,55 @@
+.reactAriaTooltip
+  box-shadow: 0 8px 20px var(--color-primary-light)
+  background: var(--color-surface)
+  forced-color-adjust: none
+  outline: none
+  padding: .35rem .5rem
+  max-width: 150px
+  border: 1px solid var(--color-primary-light)
+  /* fixes FF gap */
+  transform: translate3d(0, 0, 0)
+  transition: transform 200ms, opacity 200ms
+  font-size: .85rem
+  color: var(--color-text-dim)
+
+  &[data-entering],
+  &[data-exiting]
+    transform: var(--origin, translateY(0)) // Animation offset depends on tooltip placement
+    opacity: 0
+
+  &[data-placement='top']
+    margin-bottom: 10px
+    --origin: translateY(4px)
+
+  &[data-placement='bottom']
+    margin-top: 10px
+    --origin: translateY(-4px)
+    & .reactAriaOverlayArrow svg
+      transform: rotate(180deg)
+
+  &[data-placement='right']
+    margin-left: 10px
+    --origin: translateX(-4px)
+    & .reactAriaOverlayArrow svg
+      transform: rotate(90deg)
+
+  &[data-placement='left']
+    margin-right: 10px
+    --origin: translateX(4px)
+    & .reactAriaOverlayArrow svg
+      transform: rotate(-90deg)
+
+  .reactAriaOverlayArrow svg
+    display: block
+
+  .reactAriaOverlayArrow
+    position: relative
+    width: 8px
+    height: 8px
+
+  .reactAriaOverlayArrow path
+    fill: var(--color-surface)
+    stroke: var(--color-primary-light)
+    stroke-width: 1
+    stroke-linejoin: round
+    paint-order: stroke fill
