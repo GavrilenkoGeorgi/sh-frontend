@@ -14,7 +14,9 @@
   background-color: var(--color-primary)
   color: var(--color-surface)
   font-size: .9rem
-  transform: translateY(100%)
+  box-sizing: border-box
+  clip-path: inset(100% 0 0)
+  opacity: 0
   animation: slideUp .4s ease forwards
 
 .message
@@ -43,4 +45,5 @@
 
 @keyframes slideUp
   to
-    transform: translateY(0)
+    clip-path: inset(0)
+    opacity: 1
