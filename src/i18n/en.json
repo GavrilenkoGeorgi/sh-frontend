@@ -208,10 +208,15 @@
       "averageWhichIs": "which is",
       "averageFromMax": "from max",
       "statsForGames": "Showing stats for {{count}} games",
-      "schoolScores": "School scores",
+      "trainingScores": "Training scores",
       "scores": "Scores",
       "favouriteDiceValues": "Favourite dice values",
       "favouriteCombinations": "Favourite combinations"
     }
+  },
+  "tooltips": {
+    "trainingScores": "Your training scores from the first part of the game.",
+    "favDiceValues": "Dice values you rolled most often in your games. Tooltips on charts show percentage of games where the value was rolled at least once.",
+    "favCombinations": "Dice combinations you rolled most often in your games. Tooltips on charts show percentage of games where the combination was rolled at least once."
   }
 }

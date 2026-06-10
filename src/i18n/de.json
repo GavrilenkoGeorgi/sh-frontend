@@ -207,10 +207,15 @@
       "averageWhichIs": "was",
       "averageFromMax": "vom Maximum",
       "statsForGames": "Zeigt Statistiken für {{count}} Spiele",
-      "schoolScores": "Schulwertungen",
+      "trainingScores": "Trainingsergebnisse",
       "scores": "Ergebnisse",
       "favouriteDiceValues": "Bevorzugte Würfelwerte",
       "favouriteCombinations": "Bevorzugte Kombinationen"
     }
+  },
+  "tooltips": {
+    "trainingScores": "Deine Trainingsergebnisse aus dem ersten Teil des Spiels.",
+    "favDiceValues": "Würfelwerte, die du am häufigsten in deinen Spielen geworfen hast. Tooltips auf den Diagrammen zeigen den Prozentsatz der Spiele, in denen der Wert mindestens einmal geworfen wurde.",
+    "favCombinations": "Würfelkombinationen, die du am häufigsten in deinen Spielen geworfen hast. Tooltips auf den Diagrammen zeigen den Prozentsatz der Spiele, in denen die Kombination mindestens einmal geworfen wurde."
   }
 }

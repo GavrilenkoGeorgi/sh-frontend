@@ -32,7 +32,7 @@ const Modal: FC<ModalProps> = ({
       <div className={styles.blur}></div>
       <motion.div
         key="modal"
-        initial={{ y: -40, opacity: 0 }}
+        initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{
           duration: 4,
