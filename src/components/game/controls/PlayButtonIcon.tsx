@@ -83,11 +83,9 @@ export const PlayButtonIcon: FC<ButtonIconProps> = ({
         )}
       </AnimatePresence>
       <motion.path
-        d={iconPath}
         style={transformStyle}
-        animate={{
-          d: iconPath
-        }}
+        initial={{ d: iconPath }}
+        animate={{ d: iconPath }}
         transition={{
           d: { duration: defaultDuration + 0.2, ease: 'easeInOut' }
         }}

@@ -61,9 +61,9 @@
   --duration-nav-open: 1s;
 }
 
-/* system dark */
+/* system dark — skipped when a manual light override is active */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-color-scheme='light']) {
     --color-primary: #ce93d8;
     --color-primary-light: #4a1a5c;
     --color-accent: #ffb347;
@@ -79,10 +79,11 @@
     --color-toast-bg: #ce93d8;
     --color-toast-error: #3d0a0a;
     --color-toast-success: #3d1a4a;
+    --color-blur-surface: rgba(0, 0, 0, 0.2);
   }
 }
 
-/* manual overrides via data attribute — higher specificity wins */
+/* manual dark override — needed when OS is light but dark is forced */
 :root[data-color-scheme='dark'] {
   color-scheme: dark;
   --color-primary: #ce93d8;
@@ -100,25 +101,12 @@
   --color-toast-bg: #ce93d8;
   --color-toast-error: #3d0a0a;
   --color-toast-success: #3d1a4a;
+  --color-blur-surface: rgba(0, 0, 0, 0.2);
 }
 
+/* manual light override — color values fall through to base :root, only color-scheme is needed */
 :root[data-color-scheme='light'] {
   color-scheme: light;
-  --color-primary: #ab47bc;
-  --color-primary-light: #f3e5f5;
-  --color-accent: #ff9900;
-  --color-accent-transparent: #ffd9a175;
-  --color-text-heading: #333333;
-  --color-text-body: #7c7c7c;
-  --color-text-dim: #4e4e4e;
-  --color-surface: #ffffff;
-  --color-surface-elevated: #ffffff;
-  --color-overlay: rgb(255 255 255 / 0.3);
-  --color-shadow: rgba(0, 0, 0, 0.23);
-  --color-error: #ff0101;
-  --color-toast-bg: #ab47bc;
-  --color-toast-error: #ffebeb;
-  --color-toast-success: #f3e5f5;
 }
 
 @media (prefers-reduced-motion: reduce) {
