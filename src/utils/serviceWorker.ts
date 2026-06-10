@@ -9,68 +9,17 @@ const isLocalhost =
   window.location.hostname === '127.0.0.1' ||
   window.location.hostname === '[::1]'
 
-const UPDATE_RELOAD_FLAG = 'sh-sw-update-reload'
-
 let waitingRegistration: ServiceWorkerRegistration | null = null
 
-function setManualScrollRestoration(): void {
-  if ('scrollRestoration' in window.history) {
-    window.history.scrollRestoration = 'manual'
-  }
-}
-
-function forceScrollToTop(): void {
-  window.scrollTo(0, 0)
-  document.documentElement.scrollTop = 0
-  document.body.scrollTop = 0
-}
-
-function prepareForUpdateReload(): void {
-  try {
-    window.sessionStorage.setItem(UPDATE_RELOAD_FLAG, '1')
-  } catch {
-    // sessionStorage may be unavailable in private/restricted contexts.
-  }
-
-  setManualScrollRestoration()
-  forceScrollToTop()
-}
-
-function resetScrollAfterUpdateReload(): void {
-  let shouldReset = false
-
-  try {
-    shouldReset = window.sessionStorage.getItem(UPDATE_RELOAD_FLAG) === '1'
-    if (shouldReset) {
-      window.sessionStorage.removeItem(UPDATE_RELOAD_FLAG)
-    }
-  } catch {
-    shouldReset = false
-  }
-
-  if (!shouldReset) return
-
-  setManualScrollRestoration()
-  forceScrollToTop()
-  window.requestAnimationFrame(forceScrollToTop)
-  window.setTimeout(forceScrollToTop, 0)
-  window.setTimeout(forceScrollToTop, 250)
-}
-
 // sends SKIP_WAITING to the waiting SW so it activates
-export function applyServiceWorkerUpdate(): boolean {
+export function applyServiceWorkerUpdate(): void {
   const waiting = waitingRegistration?.waiting
-  if (!waiting) return false
-
-  prepareForUpdateReload()
+  if (!waiting) return
   waiting.postMessage({ type: 'SKIP_WAITING' })
-  return true
 }
 
 // TODO: cleanup debug logs
 export function registerSW(config?: SWConfig): void {
-  resetScrollAfterUpdateReload()
-
   if (!('serviceWorker' in navigator) || isLocalhost) return
 
   // reload once when a new SW takes control
@@ -78,7 +27,6 @@ export function registerSW(config?: SWConfig): void {
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     if (reloading) return
     reloading = true
-    prepareForUpdateReload()
     window.location.reload()
   })
 

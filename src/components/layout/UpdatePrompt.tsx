@@ -18,11 +18,7 @@ const UpdatePrompt: FC = () => {
 
   const handleUpdate = () => {
     setIsUpdating(true)
-    if (applyServiceWorkerUpdate()) {
-      dispatch(setUpdateAvailable(false))
-    } else {
-      setIsUpdating(false)
-    }
+    applyServiceWorkerUpdate()
   }
 
   const handleDismiss = () => {
