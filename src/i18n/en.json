@@ -147,7 +147,7 @@
     "privacy": {
       "title": "Privacy Policy for Sharlushka Dice Game",
       "lastUpdated": "Last updated: 13.12.2023",
-      "intro": "Thank you for choosing to use Sharlushka Dice Game ('us', 'we', or 'our'). We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy or practices with regards to your personal information, please contact us at <1>gavrilenko.georgi@gmail.com</1>. By using the Sharlushka Dice Game, you agree to the terms of this privacy policy. Please take the time to read through the following information.",
+      "intro": "Thank you for choosing to use Sharlushka Dice Game ('us', 'we', or 'our'). We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy or practices with regards to your personal information, please contact us at <1>sharlushka.game@gmail.com</1>. By using the Sharlushka Dice Game, you agree to the terms of this privacy policy. Please take the time to read through the following information.",
       "linkIntro": "Will be used in accourdance with our",
       "linkText": "Privacy Policy",
       "infoWeCollect": {
@@ -183,7 +183,7 @@
       },
       "contact": {
         "heading": "Contact Us",
-        "text": "If you have any questions about this privacy policy, please contact us at <1>gavrilenko.georgi@gmail.com</1>."
+        "text": "If you have any questions about this privacy policy, please contact us at <1>sharlushka.game@gmail.com</1>."
       }
     },
     "stats": {
@@ -212,11 +212,42 @@
       "scores": "Scores",
       "favouriteDiceValues": "Favourite dice values",
       "favouriteCombinations": "Favourite combinations"
+    },
+    "deleteAccount": {
+      "heading": "Delete Account",
+      "subHeading": "Account Deletion Process",
+      "intro": "To delete your account and associated data from Sharlushka Dice Game, follow these steps:",
+      "intitateDeletion": "<0>1. Initiate Deletion:</0> Log in to your account, navigate to the profile page and click the 'Delete Account' link.",
+      "confirmation": "<0>2. Confirmation:</0> Confirm your decision to delete the account. Please note that this action is irreversible.",
+      "dataRemoval": {
+        "title": "<0>3. Data Removal:</0>",
+        "accountInfo": "<0>Account Information:</0> Your account details, including name and email, will be permanently deleted.",
+        "gameResults": "<0>Game Results:</0> All associated game results will be removed from our system.",
+        "accessTokens": "<0>Access Tokens:</0> Any access tokens related to your account will be invalidated.",
+        "completion": "<0>Completion:</0> Once the deletion process is complete, you will receive a confirmation notification."
+      },
+      "contact": "For any questions or assistance regarding account deletion, contact us at <1>sharlushka.game@gmail.com</1>.",
+      "modal": {
+        "title": "Account Deletion",
+        "message": "Are you sure you want to delete your account? This action cannot be undone.",
+        "mainButton": "Delete Account",
+        "confirmButton": "Delete",
+        "cancelButton": "Cancel"
+      }
+    },
+    "clearStats": {
+      "heading": "Clear Stats",
+      "info": "To delete all your saved game results and clear stats login into your account and navigate to this page. For any questions or assistance regarding deleting the results, contact us at <1>sharlushka.game@gmail.com</1>.",
+      "warning": "Please note that this action is irreversible.",
+      "modal": {
+        "heading": "Are you sure?",
+        "text": "You are about to delete all your game results and clear stats!"
+      }
     }
   },
   "tooltips": {
-    "trainingScores": "Your training scores from the first part of the game.",
-    "favDiceValues": "Dice values you rolled most often in your games. Tooltips on charts show percentage of games where the value was rolled at least once.",
-    "favCombinations": "Dice combinations you rolled most often in your games. Tooltips on charts show percentage of games where the combination was rolled at least once."
+    "trainingScores": "Your 'training' scores from the first part of the game.",
+    "favDiceValues": "Dice values you choose most often in your games.",
+    "favCombinations": "Dice combinations you saved most often in your games. Tooltips on charts show percentage of games where the combination was saved at least once."
   }
 }

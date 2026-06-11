@@ -1,7 +1,7 @@
 @use '../../styles/variables'
 
 .banner
-  position: fixed
+  position: absolute
   bottom: 0
   left: 0
   right: 0
@@ -15,9 +15,10 @@
   color: var(--color-surface)
   font-size: .9rem
   box-sizing: border-box
-  clip-path: inset(100% 0 0)
-  opacity: 0
-  animation: slideUp .4s ease forwards
+  opacity: 1
+  // clip-path: inset(100% 0 0)
+  // opacity: 0
+  // animation: slideUp .4s ease forwards
 
 .message
   flex: 1

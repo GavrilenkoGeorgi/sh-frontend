@@ -14,18 +14,17 @@ import * as styles from './Form.module.sass'
 import { ROUTES } from '../../constants/routes'
 import { clearAuthSessionHint } from '../../utils/authSessionHint'
 import { useTranslation } from 'react-i18next'
+import { Button } from 'react-aria-components'
 
 const DeleteAccount: FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [deleteAcc] = useDeleteAccMutation()
-  const [loading, setLoading] = useState(false)
+  const [deleteAcc, { isLoading }] = useDeleteAccMutation()
   const [openModal, setOpenModal] = useState(false)
   const { t } = useTranslation()
 
   const deleteHandler = async (): Promise<void> => {
     try {
-      setLoading(true)
       await deleteAcc().unwrap()
       clearAuthSessionHint()
       dispatch(logout())
@@ -40,8 +39,6 @@ const DeleteAccount: FC = () => {
       navigate(toPath(ROUTES.HOME), { viewTransition: true })
     } catch {
       // error toast is handled centrally in baseQueryWithReauth
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -50,30 +47,24 @@ const DeleteAccount: FC = () => {
       <form className={styles.form}>
         <fieldset>
           <div className={styles.buttons}>
-            <button
+            <Button
               type="button"
               className={styles.deleteBtn}
-              onClick={() => {
-                setOpenModal(true)
-              }}
+              onClick={() => setOpenModal(true)}
             >
-              Delete account
-            </button>
+              {t('pages.deleteAccount.modal.mainButton')}
+            </Button>
           </div>
         </fieldset>
       </form>
       {openModal && (
-        <Modal
-          heading="Are you sure?"
-          text="You are about to delete your account and all game results!"
-          btnLabel={t('ui.buttonLabels.delete')}
-          isBusy={loading}
-          onClick={() => {
-            void deleteHandler()
-          }}
-          close={() => {
-            setOpenModal(false)
-          }}
+        <Modal /* TODO: separate component for deletion, we can pass children to it */
+          heading={t('pages.deleteAccount.modal.title')}
+          text={t('pages.deleteAccount.modal.message')}
+          btnLabel={t('pages.deleteAccount.modal.confirmButton')}
+          isBusy={isLoading}
+          onClick={deleteHandler}
+          close={() => setOpenModal(false)}
         />
       )}
     </>

@@ -22,8 +22,8 @@ const Privacy: FC = () => {
             {
               "Thank you for choosing to use Sharlushka Dice Game ('us', 'we', or 'our'). We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy or practices with regards to your personal information, please contact us at "
             }
-            <a href="mailto:gavrilenko.georgi@gmail.com">
-              gavrilenko.georgi@gmail.com
+            <a href="mailto:sharlushka.game@gmail.com">
+              sharlushka.game@gmail.com
             </a>
             {
               '. By using the Sharlushka Dice Game, you agree to the terms of this privacy policy. Please take the time to read through the following information.'
@@ -66,8 +66,8 @@ const Privacy: FC = () => {
             {
               'If you have any questions about this privacy policy, please contact us at '
             }
-            <a href="mailto:gavrilenko.georgi@gmail.com">
-              gavrilenko.georgi@gmail.com
+            <a href="mailto:sharlushka.game@gmail.com">
+              sharlushka.game@gmail.com
             </a>
             {'.'}
           </Trans>

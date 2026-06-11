@@ -1,10 +1,11 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 import { motion } from 'framer-motion'
 import type { Nullable } from '../../types'
 
 import LoadingIndicator from './LoadingIndicator'
 import * as styles from './Modal.module.sass'
 import { useTranslation } from 'react-i18next'
+import { Button } from 'react-aria-components'
 
 interface ModalProps {
   heading: string
@@ -47,16 +48,16 @@ const Modal: FC<ModalProps> = ({
             {text} {score}
           </p>
           <div className={styles.buttons}>
-            <button
+            <Button
               onClick={onClick}
-              disabled={isBusy}
+              isDisabled={isBusy}
               type="button"
               className={styles.button}
             >
               {isBusy ? <LoadingIndicator /> : `${btnLabel}`}
-            </button>
+            </Button>
             {close !== null && (
-              <button
+              <Button
                 type="button"
                 className={styles.cancelBtn}
                 onClick={() => {
@@ -64,7 +65,7 @@ const Modal: FC<ModalProps> = ({
                 }}
               >
                 {t('ui.buttonLabels.cancel')}
-              </button>
+              </Button>
             )}
           </div>
         </div>
