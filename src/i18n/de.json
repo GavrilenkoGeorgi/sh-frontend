@@ -97,7 +97,8 @@
         "de": "Deutsch",
         "uk": "Українська",
         "he": "עברית"
-      }
+      },
+      "guest": "Gast"
     },
     "multiplayer": {
       "noPlayersOnline": "Keine anderen Spieler online",
@@ -146,7 +147,7 @@
     "privacy": {
       "title": "Datenschutzrichtlinie für Sharlushka Dice Game",
       "lastUpdated": "Zuletzt aktualisiert: 13.12.2023",
-      "intro": "Danke, dass du Sharlushka Dice Game ('wir', 'uns' oder 'unser') verwendest. Wir sind verpflichtet, deine persönlichen Daten und dein Recht auf Privatsphäre zu schützen. Wenn du Fragen oder Bedenken zu unserer Richtlinie hast, kontaktiere uns bitte unter <1>gavrilenko.georgi@gmail.com</1>. Durch die Nutzung von Sharlushka Dice Game stimmst du den Bedingungen dieser Datenschutzrichtlinie zu. Bitte nimm dir die Zeit, die folgenden Informationen durchzulesen.",
+      "intro": "Danke, dass du Sharlushka Dice Game ('wir', 'uns' oder 'unser') verwendest. Wir sind verpflichtet, deine persönlichen Daten und dein Recht auf Privatsphäre zu schützen. Wenn du Fragen oder Bedenken zu unserer Richtlinie hast, kontaktiere uns bitte unter <1>sharlushka.game@gmail.com</1>. Durch die Nutzung von Sharlushka Dice Game stimmst du den Bedingungen dieser Datenschutzrichtlinie zu. Bitte nimm dir die Zeit, die folgenden Informationen durchzulesen.",
       "linkIntro": "Wird in Übereinstimmung mit unserer",
       "linkText": "Datenschutzrichtlinie verwendet",
       "infoWeCollect": {
@@ -182,7 +183,7 @@
       },
       "contact": {
         "heading": "Kontakt",
-        "text": "Wenn du Fragen zu dieser Datenschutzrichtlinie hast, kontaktiere uns bitte unter <1>gavrilenko.georgi@gmail.com</1>."
+        "text": "Wenn du Fragen zu dieser Datenschutzrichtlinie hast, kontaktiere uns bitte unter <1>sharlushka.game@gmail.com</1>."
       }
     },
     "stats": {
@@ -211,11 +212,42 @@
       "scores": "Ergebnisse",
       "favouriteDiceValues": "Bevorzugte Würfelwerte",
       "favouriteCombinations": "Bevorzugte Kombinationen"
+    },
+    "deleteAccount": {
+      "heading": "Konto löschen",
+      "subHeading": "Prozess zur Kontolöschung",
+      "intro": "Um Ihr Konto und die zugehörigen Daten beim Würfelspiel Sharlushka zu löschen, befolgen Sie diese Schritte:",
+      "intitateDeletion": "<0>1. Löschung einleiten:</0> Melden Sie sich in Ihrem Konto an, navigieren Sie zur Profilseite und klicken Sie auf den Link „Konto löschen“.",
+      "confirmation": "<0>2. Bestätigung:</0> Bestätigen Sie Ihre Entscheidung, das Konto zu löschen. Bitte beachten Sie, dass diese Aktion unwiderruflich ist.",
+      "dataRemoval": {
+        "title": "<0>3. Datenentfernung:</0>",
+        "accountInfo": "<0>Konto-Informationen:</0> Ihre Kontodetails, einschließlich Name und E-Mail, werden dauerhaft gelöscht.",
+        "gameResults": "<0>Spielergebnisse:</0> Alle Ihre gespeicherten Spielergebnisse und Statistiken werden gelöscht.",
+        "accessTokens": "<0>Zugriffstoken:</0> Alle Zugriffstoken im Zusammenhang mit Ihrem Konto werden ungültig.",
+        "completion": "<0>Abschluss:</0> Sobald der Löschvorgang abgeschlossen ist, erhalten Sie eine Bestätigungsbenachrichtigung."
+      },
+      "contact": "Bei Fragen oder wenn Sie Hilfe bezüglich der Kontolöschung benötigen, kontaktieren Sie uns bitte unter <1>sharlushka.game@gmail.com</1>.",
+      "modal": {
+        "title": "Kontolöschung",
+        "message": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+        "mainButton": "Konto löschen",
+        "confirmButton": "Löschen",
+        "cancelButton": "Abbrechen"
+      }
+    },
+    "clearStats": {
+      "heading": "Statistik löschen",
+      "info": "Um alle Ihre gespeicherten Spielergebnisse zu löschen und die Statistik zurückzusetzen, melden Sie sich in Ihrem Konto an und navigieren Sie zu dieser Seite. Bei Fragen oder wenn Sie Hilfe bezüglich der Löschung der Ergebnisse benötigen, kontaktieren Sie uns bitte unter <1>sharlushka.game@gmail.com</1>.",
+      "warning": "Bitte beachten Sie, dass diese Maßnahme unumkehrbar ist.",
+      "modal": {
+        "heading": "Bist du sicher?",
+        "text": "Sie sind im Begriff, alle Ihre Spielergebnisse und Statistiken zu löschen!"
+      }
     }
   },
   "tooltips": {
-    "trainingScores": "Deine Trainingsergebnisse aus dem ersten Teil des Spiels.",
-    "favDiceValues": "Würfelwerte, die du am häufigsten in deinen Spielen geworfen hast. Tooltips auf den Diagrammen zeigen den Prozentsatz der Spiele, in denen der Wert mindestens einmal geworfen wurde.",
-    "favCombinations": "Würfelkombinationen, die du am häufigsten in deinen Spielen geworfen hast. Tooltips auf den Diagrammen zeigen den Prozentsatz der Spiele, in denen die Kombination mindestens einmal geworfen wurde."
+    "trainingScores": "Deine 'Trainingsergebnisse' aus dem ersten Teil des Spiels.",
+    "favDiceValues": "Würfelwerte, die du am häufigsten in deinen Spielen gewählt hast.",
+    "favCombinations": "Würfelkombinationen, die du in deinen Spielen am häufigsten gerettet hast. Tooltips in den Diagrammen zeigen den Prozentsatz der Spiele an, in denen die Kombination mindestens einmal gerettet wurde."
   }
 }
