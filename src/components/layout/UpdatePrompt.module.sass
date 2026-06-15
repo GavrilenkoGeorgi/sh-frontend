@@ -1,7 +1,7 @@
 @use '../../styles/variables'
 
 .banner
-  position: fixed
+  position: absolute
   bottom: 0
   left: 0
   right: 0
@@ -14,8 +14,11 @@
   background-color: var(--color-primary)
   color: var(--color-surface)
   font-size: .9rem
-  transform: translateY(100%)
-  animation: slideUp .4s ease forwards
+  box-sizing: border-box
+  opacity: 1
+  // clip-path: inset(100% 0 0)
+  // opacity: 0
+  // animation: slideUp .4s ease forwards
 
 .message
   flex: 1
@@ -43,4 +46,5 @@
 
 @keyframes slideUp
   to
-    transform: translateY(0)
+    clip-path: inset(0)
+    opacity: 1

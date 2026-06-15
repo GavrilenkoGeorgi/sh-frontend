@@ -2,11 +2,7 @@ import { type FC, useState, useEffect, useMemo } from 'react'
 import { NavLink, useLocation, useMatch } from 'react-router' //dom?
 import { useSelector } from 'react-redux'
 import type { NavLink as NavLinkType } from '../../types'
-import {
-  useScrollDirection,
-  useComponentVisible,
-  SCROLL_DIRECTION
-} from '../../hooks'
+import { useComponentVisible } from '../../hooks'
 import cx from 'classnames'
 
 import Logo from '../layout/Logo'
@@ -26,7 +22,6 @@ const NavBar: FC = () => {
   const location = useLocation()
   const playRoute = useMatch(ROUTES.PLAY)
   const multiplayerRoute = useMatch(ROUTES.MULTIPLAYER)
-  const scrollDirection = useScrollDirection()
   const isAuthenticated = useSelector(selectIsAuthenticated)
   const { t } = useTranslation()
 
@@ -49,10 +44,6 @@ const NavBar: FC = () => {
   useEffect(() => {
     if (open && !isComponentVisible) closeMenu()
   }, [isComponentVisible, open])
-
-  useEffect(() => {
-    if (open) closeMenu()
-  }, [scrollDirection])
 
   const navigation: NavLinkType[] = useMemo(
     () => [
@@ -106,13 +97,7 @@ const NavBar: FC = () => {
 
   return (
     <>
-      <nav
-        className={cx(styles.nav, {
-          [styles.hiddenNav]: scrollDirection === SCROLL_DIRECTION.DOWN,
-          [styles.visibleNav]: scrollDirection !== SCROLL_DIRECTION.DOWN
-        })}
-        ref={ref}
-      >
+      <nav className={styles.nav} ref={ref}>
         <div className={styles.navigationContainer}>
           <Logo />
           {playRoute && <ScoreDisplay />}

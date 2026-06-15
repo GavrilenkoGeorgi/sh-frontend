@@ -9,12 +9,24 @@ interface ButtonIconProps {
 const trianglePath = 'M10 8 L10 8 L18 12 L10 16 Z'
 const squarePath = 'M8 8 L16 8 L16 16 L8 16 Z'
 
+const transformStyle = {
+  transformBox: 'fill-box' as const,
+  transformOrigin: 'center' as const
+}
+
+const defaultDuration = 0.4
+
 export const PlayButtonIcon: FC<ButtonIconProps> = ({
   rollCount = 0,
   isLocked = false
 }) => {
   const shouldPulse = !isLocked && rollCount === 0
   const iconPath = isLocked ? squarePath : trianglePath
+
+  const pulseScale = shouldPulse ? [1, 1.08, 1] : 1
+  const pulseTransition = shouldPulse
+    ? { repeat: Infinity, duration: 2, ease: 'easeInOut' as const }
+    : { duration: defaultDuration, ease: 'easeIn' as const }
 
   return (
     <svg
@@ -34,15 +46,20 @@ export const PlayButtonIcon: FC<ButtonIconProps> = ({
         {rollCount <= 1 && !isLocked && (
           <motion.line
             key="line-mid"
-            x1="7"
+            x1="7.1"
             y1="8"
-            x2="7"
+            x2="7.1"
             y2="16"
             strokeWidth="1.5"
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 2 }}
-            transition={{ duration: 0.4, ease: 'easeIn' }}
+            style={transformStyle}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0, scale: pulseScale }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{
+              opacity: { duration: defaultDuration, ease: 'easeIn' },
+              y: { duration: defaultDuration, ease: 'easeIn' },
+              scale: pulseTransition
+            }}
           />
         )}
         {rollCount === 0 && !isLocked && (
@@ -53,25 +70,24 @@ export const PlayButtonIcon: FC<ButtonIconProps> = ({
             x2="4"
             y2="16"
             strokeWidth="1.5"
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 2 }}
-            transition={{ delay: 0.2, duration: 0.4, ease: 'easeIn' }}
+            style={transformStyle}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0, scale: pulseScale }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{
+              opacity: { duration: defaultDuration, ease: 'easeIn' },
+              y: { duration: defaultDuration, ease: 'easeIn' },
+              scale: pulseTransition
+            }}
           />
         )}
       </AnimatePresence>
       <motion.path
-        d={iconPath}
-        initial={false}
-        animate={{
-          d: iconPath,
-          scale: shouldPulse ? [1, 1.08, 1] : 1
-        }}
+        style={transformStyle}
+        initial={{ d: iconPath }}
+        animate={{ d: iconPath }}
         transition={{
-          d: { duration: 0.5, ease: 'easeInOut' },
-          scale: shouldPulse
-            ? { repeat: Infinity, duration: 2, ease: 'easeInOut' }
-            : { duration: 0.5, ease: 'easeInOut' }
+          d: { duration: defaultDuration + 0.2, ease: 'easeInOut' }
         }}
       />
     </svg>

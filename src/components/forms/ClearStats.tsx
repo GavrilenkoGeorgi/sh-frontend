@@ -8,6 +8,7 @@ import { ToastTypes } from '../../types'
 import Modal from '../layout/Modal'
 import * as styles from './Form.module.sass'
 import { useTranslation } from 'react-i18next'
+import { Button } from 'react-aria-components'
 
 const ClearStats: FC = () => {
   const dispatch = useDispatch()
@@ -34,27 +35,23 @@ const ClearStats: FC = () => {
     <>
       <form className={styles.form}>
         <fieldset className={styles.buttons}>
-          <button
+          <Button
             type="button"
             className={styles.deleteBtn}
-            onClick={() => {
-              setOpenModal(true)
-            }}
+            onClick={() => setOpenModal(true)}
           >
             {t('ui.buttonLabels.clearStats')}
-          </button>
+          </Button>
         </fieldset>
       </form>
       {openModal && (
         <Modal
-          heading="Are you sure?"
-          text="You are about to delete all your game results and clear stats!"
+          heading={t('pages.clearStats.modal.heading')}
+          text={t('pages.clearStats.modal.text')}
           btnLabel={t('ui.buttonLabels.delete')}
           isBusy={isLoading}
-          onClick={() => deleteHandler()}
-          close={() => {
-            setOpenModal(false)
-          }}
+          onClick={deleteHandler}
+          close={() => setOpenModal(false)}
         />
       )}
     </>
