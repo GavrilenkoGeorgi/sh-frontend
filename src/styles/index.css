@@ -160,6 +160,13 @@ button {
   letter-spacing: 0.05rem;
 }
 
+a {
+  color: var(--color-primary);
+}
+
+p {
+  text-indent: 1ch;
+}
 /* ── view transitions ── */
 
 /*

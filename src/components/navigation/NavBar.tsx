@@ -2,7 +2,12 @@ import { type FC, useState, useEffect, useMemo } from 'react'
 import { NavLink, useLocation, useMatch } from 'react-router' //dom?
 import { useSelector } from 'react-redux'
 import type { NavLink as NavLinkType } from '../../types'
-import { useComponentVisible } from '../../hooks'
+import {
+  useComponentVisible,
+  useScrollDirection,
+  SCROLL_DIRECTION,
+  useMediaQuery
+} from '../../hooks'
 import cx from 'classnames'
 
 import Logo from '../layout/Logo'
@@ -28,6 +33,8 @@ const NavBar: FC = () => {
   const { ref, isComponentVisible } = useComponentVisible(false)
   const [open, setOpen] = useState(false)
   const { isDark, mode, toggleColorScheme } = useColorScheme()
+  const scrollDirection = useScrollDirection()
+  const isDesktop = useMediaQuery('(min-width: 1024px)')
 
   const toggleMenu = (): void => {
     setOpen((prev) => !prev)
@@ -97,7 +104,12 @@ const NavBar: FC = () => {
 
   return (
     <>
-      <nav className={styles.nav} ref={ref}>
+      <nav
+        className={cx(styles.nav, {
+          [styles.navHidden]: scrollDirection === SCROLL_DIRECTION.DOWN && !open
+        })}
+        ref={ref}
+      >
         <div className={styles.navigationContainer}>
           <Logo />
           {playRoute && <ScoreDisplay />}
@@ -116,6 +128,7 @@ const NavBar: FC = () => {
             className={cx(styles.linksContainer, {
               [styles.open]: open
             })}
+            inert={!open && !isDesktop}
           >
             {isAuthenticated && <UserLink />}
             {navLinks}

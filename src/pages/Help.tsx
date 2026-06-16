@@ -14,13 +14,15 @@ const Help: FC = () => {
     <section className={styles.contentPage}>
       <h1>{t('pages.help.title')}</h1>
       <article>
-        <Trans i18nKey="pages.help.intro">
-          {
-            'Each turn consists of a maximum of three rolls — the first roll to be made with all five dice. If the player elects to roll a second and third time, he may pick up and use any number of dice, providing a score is taken on the last roll. It is the skillful use of these two optional rolls of the dice that can turn an unlucky first or second roll into a high scoring turn. Take a '
-          }
-          <RunTourButton label={t('pages.help.tourButtonLabel')} />
-          {' to see how the game works in practice.'}
-        </Trans>
+        <p>
+          <Trans i18nKey="pages.help.intro">
+            {
+              'Each turn consists of a maximum of three rolls — the first roll to be made with all five dice. If the player elects to roll a second and third time, he may pick up and use any number of dice, providing a score is taken on the last roll. It is the skillful use of these two optional rolls of the dice that can turn an unlucky first or second roll into a high scoring turn. Take a '
+            }
+            <RunTourButton label={t('pages.help.tourButtonLabel')} />
+            {' to see how the game works in practice.'}
+          </Trans>
+        </p>
       </article>
       <h2>{t('pages.help.exampleScoresHeading')}</h2>
       <aside>
