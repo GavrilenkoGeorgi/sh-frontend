@@ -5,6 +5,7 @@ import { useTranslation, Trans } from 'react-i18next'
 
 import LoginForm from '../components/forms/Login'
 import * as styles from './Main.module.sass'
+import * as sharedStyles from './SharedStyles.module.sass'
 import { link } from './Login.module.sass'
 import Logo from '../assets/svg/sharlushka-logo.svg'
 import { ROUTES } from '../constants/routes'
@@ -21,7 +22,7 @@ const Main: FC = () => {
   }, [isAuthenticated])
 
   return (
-    <section className={styles.container}>
+    <section className={sharedStyles.container}>
       <div className={styles.logo}>
         <Logo />
       </div>

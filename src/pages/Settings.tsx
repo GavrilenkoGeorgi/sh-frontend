@@ -5,6 +5,7 @@ import { supportedLanguages } from '../i18n'
 import AppSelect, { type SelectOption } from '../components/select/CustomSelect'
 
 import * as styles from './Settings.module.sass'
+import * as sharedStyles from './SharedStyles.module.sass'
 
 const themeModes: ThemeMode[] = ['system', 'dark', 'light']
 
@@ -38,10 +39,10 @@ const Settings: FC = () => {
   )
 
   return (
-    <section className={styles.container}>
+    <section className={sharedStyles.container}>
       <h1>{t('ui.headings.settings')}</h1>
 
-      <div className={styles.card}>
+      <div className={styles.content}>
         <div className={styles.setting}>
           <label className={styles.label} htmlFor="theme-select">
             {t('ui.settings.themeLabel')}

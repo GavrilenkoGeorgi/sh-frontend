@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 
 import LoginForm from '../components/forms/Login'
 import * as styles from './Login.module.sass'
+import * as sharedStyles from './SharedStyles.module.sass'
 import { ROUTES } from '../constants/routes'
 import { toPath } from '../utils'
 import { useTranslation } from 'react-i18next'
@@ -10,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 const Login: FC = () => {
   const { t } = useTranslation()
   return (
-    <section className={styles.container}>
+    <section className={sharedStyles.container}>
       <h1>{t('ui.headings.login')}</h1>
       <LoginForm />
       <aside>

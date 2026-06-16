@@ -7,6 +7,7 @@ import ProfileForm from '../components/forms/Profile'
 import { ROUTES } from '../constants/routes'
 
 import * as styles from './Profile.module.sass'
+import * as sharedStyles from './SharedStyles.module.sass'
 import { toPath } from '../utils'
 import { useTranslation, Trans } from 'react-i18next'
 
@@ -15,7 +16,7 @@ const Profile: FC = () => {
   const { t } = useTranslation()
 
   return (
-    <section className={styles.container}>
+    <section className={sharedStyles.container}>
       <h1>{t('ui.headings.updateProfile')}</h1>
       <ProfileForm data={user} />
       <aside className={styles.text}>

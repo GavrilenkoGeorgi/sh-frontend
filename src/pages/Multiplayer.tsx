@@ -58,7 +58,7 @@ const Multiplayer: FC = () => {
 
   return (
     <section className={sharedStyles.contentPage}>
-      <h1 style={{ margin: 0 }}>{t('ui.headings.multiplayer')}</h1>
+      <h1>{t('ui.headings.multiplayer')}</h1>
       <p className={styles.userCounter}>{otherUsers.length} online</p>
       <InviteInbox />
       <OutgoingInvitesPanel />
@@ -68,7 +68,7 @@ const Multiplayer: FC = () => {
         </p>
       ) : (
         <>
-          <h2 className={inviteStyles.heading} style={{ marginTop: '.75rem' }}>
+          <h2 className={inviteStyles.heading}>
             {t('ui.multiplayer.selectPlayerToInvite')}
           </h2>
           <ul className={styles.userList}>

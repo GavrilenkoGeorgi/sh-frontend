@@ -73,15 +73,13 @@ const GamePage: FC = () => {
   return (
     <>
       <section className={styles.game}>
-        <div className={styles.content}>
-          {/* Training */}
-          <TrainingBoard />
-          {/* Game */}
-          <ScoreBoard />
-          {/* Game controls */}
-          <DnDDiceBoard />
-          {/* Modals */}
-        </div>
+        {/* Training */}
+        <TrainingBoard />
+        {/* Game */}
+        <ScoreBoard />
+        {/* Game controls */}
+        <DnDDiceBoard />
+        {/* Modals */}
         <GameTour />
         {game.over &&
           game.schoolFailedNotified &&

@@ -1,9 +1,11 @@
 @use '../../../styles/variables'
 
 .controls
+  padding-bottom: .5rem
   @media screen and (min-width: variables.$large)
     display: flex
     gap: .5rem
+    padding-bottom: 0
 
 // multiplayer overrides: keep mobile layout on desktop
 .controls[data-multiplayer]

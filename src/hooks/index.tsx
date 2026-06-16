@@ -4,6 +4,7 @@ export const SCROLL_DIRECTION = {
   UP: 'up',
   DOWN: 'down'
 } as const
+
 export type SCROLL_DIRECTION =
   (typeof SCROLL_DIRECTION)[keyof typeof SCROLL_DIRECTION]
 
@@ -57,6 +58,24 @@ export function useComponentVisible(initialIsVisible: boolean) {
   }, [])
 
   return { ref, isComponentVisible, setIsComponentVisible }
+}
+
+export function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(() => window.matchMedia(query).matches)
+
+  useEffect(() => {
+    const mediaQueryList = window.matchMedia(query)
+    setMatches(mediaQueryList.matches)
+
+    const handleChange = (event: MediaQueryListEvent) =>
+      setMatches(event.matches)
+    mediaQueryList.addEventListener('change', handleChange)
+    return () => {
+      mediaQueryList.removeEventListener('change', handleChange)
+    }
+  }, [query])
+
+  return matches
 }
 
 // export new dice board hooks
