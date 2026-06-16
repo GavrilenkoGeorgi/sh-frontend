@@ -25,6 +25,7 @@
 
 :root {
   color-scheme: light dark;
+  --navbar-height: 6dvh;
 
   /* brand */
   --color-primary: #ab47bc;
@@ -137,10 +138,13 @@ body {
   transition:
     background-color var(--duration-default),
     color var(--duration-default);
+  margin: 0;
 }
 
 main {
   height: 100dvh;
+  display: flex;
+  align-items: flex-end;
 }
 
 h1,

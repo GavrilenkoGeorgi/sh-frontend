@@ -1,20 +1,14 @@
 @use 'sass:math'
 @use '../../styles/variables'
 
-$mobileWidth: 250px
-$desktopWidth: 400px
-$toast-position: 32px
-$toast-hidden-position: -300px
-
 .toast
   visibility: hidden
   position: fixed
   z-index: 2
   left: 50%
   transform: translate(-50%)
-  max-width: $mobileWidth
-  min-width: $mobileWidth
-  max-width: $desktopWidth
+  min-width: variables.$mobileWidth
+  max-width: variables.$desktopWidth
   // Styles
   color: var(--color-primary)
   text-align: left
@@ -28,11 +22,11 @@ $toast-hidden-position: -300px
   &.show
     // Show the toast
     visibility: visible
-    top: $toast-position
+    top: variables.$toast-position
     -webkit-animation: fadein 0.5s
     animation: fadein 0.5s
   &.hide
-    top: $toast-hidden-position
+    top: variables.$toast-hidden-position
     -webkit-animation: fadeout 0.5s
     animation: fadeout 0.5s
   &.error
@@ -59,7 +53,7 @@ $toast-hidden-position: -300px
     opacity: 0
 
   to
-    top: $toast-position
+    top: variables.$toast-position
     opacity: 1
 
 @keyframes fadein
@@ -68,12 +62,12 @@ $toast-hidden-position: -300px
     opacity: 0
 
   to
-    top: $toast-position
+    top: variables.$toast-position
     opacity: 1
 
 @-webkit-keyframes fadeout
   from
-    top: $toast-position
+    top: variables.$toast-position
     opacity: 1
 
   to
@@ -82,9 +76,9 @@ $toast-hidden-position: -300px
 
 @keyframes fadeout
   from
-    top: $toast-position
+    top: variables.$toast-position
     opacity: 1
 
   to
-    top: $toast-hidden-position
+    top: variables.$toast-hidden-position
     opacity: 0
