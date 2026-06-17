@@ -1,4 +1,4 @@
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useDispatch } from 'react-redux'
@@ -14,8 +14,8 @@ import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
 import * as styles from './Form.module.sass'
-import LoadingIndicator from '../layout/LoadingIndicator'
 import { useTranslation } from 'react-i18next'
+import { Button } from '../layout/Button/BaseButton'
 
 const ForgotPwd: FC = () => {
   const [sendRecoveryEmail] = useSendRecoveryEmailMutation()
@@ -86,13 +86,9 @@ const ForgotPwd: FC = () => {
           )}
         </div>
 
-        <button type="submit" disabled={isSubmitting} className={styles.button}>
-          {isSubmitting ? (
-            <LoadingIndicator dark />
-          ) : (
-            t('ui.buttonLabels.sendEmail')
-          )}
-        </button>
+        <Button type="submit" isLoading={isSubmitting}>
+          {t('ui.buttonLabels.sendEmail')}
+        </Button>
       </fieldset>
     </form>
   )

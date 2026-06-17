@@ -1,13 +1,15 @@
 @use '../styles/variables'
 
 .container
-  max-width: 50rem
+  width: 100%
+  border: 1px solid var(--color-primary-light)
   margin: 0 auto
   height: 100%
   min-height: calc(100dvh - var(--navbar-height))
   display: flex
   flex-direction: column
   justify-content: center
+  align-items: center
   h1, h2
     color: var(--color-text-heading)
     text-align: center
@@ -51,6 +53,7 @@ strong
   max-width: variables.$desktopTextPagewidth
   padding: var(--navbar-height) 1rem 2rem
   margin: auto
+  margin-top: 2rem
 
   @media screen and (min-width: variables.$medium)
     padding: calc(var(--navbar-height) + 3rem) 1rem 5rem

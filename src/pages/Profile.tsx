@@ -19,21 +19,26 @@ const Profile: FC = () => {
     <section className={sharedStyles.container}>
       <h1>{t('ui.headings.updateProfile')}</h1>
       <ProfileForm data={user} />
-      <aside className={styles.text}>
-        <Trans i18nKey="pages.profile.accountManagement">
-          {'Looking for a way to '}
-          <Link to={toPath(ROUTES.DELETE_ACCOUNT)} viewTransition>
-            delete your account
-          </Link>
-          {' or '}
-          <Link to={toPath(ROUTES.CLEAR_STATS)} viewTransition>
-            clear stats
-          </Link>
-          ?
-        </Trans>
-        <br />
-      </aside>
     </section>
+  )
+}
+
+export const ProfileLinks = () => {
+  return (
+    <aside className={styles.text}>
+      <Trans i18nKey="pages.profile.accountManagement">
+        {'Looking for a way to '}
+        <Link to={toPath(ROUTES.DELETE_ACCOUNT)} viewTransition>
+          delete your account
+        </Link>
+        {' or '}
+        <Link to={toPath(ROUTES.CLEAR_STATS)} viewTransition>
+          clear stats
+        </Link>
+        ?
+      </Trans>
+      <br />
+    </aside>
   )
 }
 

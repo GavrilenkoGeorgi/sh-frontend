@@ -15,10 +15,11 @@ import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
 import * as styles from './Form.module.sass'
-import LoadingIndicator from '../layout/LoadingIndicator'
 import { useUpdateProfileMutation } from '../../store/api/userApi'
 import Logout from './Logout'
 import { useTranslation } from 'react-i18next'
+import { Button } from '../layout/Button/BaseButton'
+import { ProfileLinks } from '../../pages/Profile'
 
 interface Props {
   data: Nullable<User>
@@ -122,17 +123,13 @@ const Profile: FC<Props> = ({ data }) => {
             <p className={styles.errorMsg}>{errors.email.message}</p>
           )}
         </div>
-
-        <button type="submit" className={styles.button} disabled={isSubmitting}>
-          {isSubmitting ? (
-            <LoadingIndicator dark />
-          ) : (
-            t('ui.buttonLabels.update')
-          )}
-        </button>
       </fieldset>
-      <div style={{ marginTop: '1rem', textAlign: 'center' }}>or</div>
+      <Button type="submit" isLoading={isSubmitting}>
+        {t('ui.buttonLabels.update')}
+      </Button>
+      <p style={{ textAlign: 'center' }}>or</p>
       <Logout />
+      <ProfileLinks />
     </form>
   )
 }
