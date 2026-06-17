@@ -28,6 +28,7 @@ import { useTranslation } from 'react-i18next'
 import { Button } from '../layout/Button/BaseButton'
 
 const Login: FC = () => {
+  /* TODO: check route and show register on Main */
   const navigate = useNavigate()
   const [login] = useLoginMutation()
   const isAuthenticated = useSelector(selectIsAuthenticated)

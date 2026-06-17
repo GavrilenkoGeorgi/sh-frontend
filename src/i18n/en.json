@@ -30,7 +30,9 @@
       "save": "Save",
       "ok": "OK",
       "cancel": "Cancel",
-      "dismiss": "Dismiss"
+      "dismiss": "Dismiss",
+      "restart": "Restart",
+      "view": "View"
     },
     "navLinks": {
       "play": "Play",

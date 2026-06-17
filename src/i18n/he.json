@@ -30,7 +30,9 @@
       "save": "שמור",
       "ok": "אישור",
       "cancel": "ביטול",
-      "dismiss": "סגור"
+      "dismiss": "סגור",
+      "restart": "התחל מחדש",
+      "view": "צפה"
     },
     "navLinks": {
       "play": "שחק",
