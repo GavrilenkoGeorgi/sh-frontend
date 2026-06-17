@@ -16,11 +16,12 @@ import TrainingBoard from '../components/game/TrainingBoard'
 import ScoreBoard from '../components/game/ScoreBoard'
 import ProgressBar from '../components/layout/ProgressBar'
 import DnDDiceBoard from '../components/game/controls/DnDDiceBoard'
-import Modal from '../components/layout/Modal'
 import GameTour from '../components/tour/GameTour'
 import * as styles from './Game.module.sass'
 import { ROUTES } from '../constants/routes'
 import { useTranslation } from 'react-i18next'
+import { BaseModal } from '../components/layout/Modal/BaseModal'
+import { Button } from '../components/layout/Button/BaseButton'
 
 export type SaveResultsData = Pick<
   GameState,
@@ -37,10 +38,6 @@ const GamePage: FC = () => {
   const [saveResults, { isLoading }] = useSaveResultsMutation()
   const navigate = useNavigate()
   const { t } = useTranslation()
-
-  const saveBtnLabel = user
-    ? t('ui.buttonLabels.save')
-    : t('ui.buttonLabels.ok')
 
   const handleComplete = async (): Promise<void> => {
     try {
@@ -70,6 +67,9 @@ const GamePage: FC = () => {
     }
   }
 
+  const trainingFailed =
+    game.over && game.schoolFailedNotified && notificationMessage === null
+
   return (
     <>
       <section className={styles.game}>
@@ -81,27 +81,37 @@ const GamePage: FC = () => {
         <DnDDiceBoard />
         {/* Modals */}
         <GameTour />
-        {game.over &&
-          game.schoolFailedNotified &&
-          notificationMessage === null && (
-            <Modal
-              heading={t('ui.headings.gameOver')}
-              text={t('ui.headings.gameOverMsg')}
-              btnLabel={t('ui.buttonLabels.ok')}
-              onClick={() => dispatch(reset())}
-            />
+
+        <BaseModal
+          isOpen={trainingFailed}
+          title={t('ui.headings.gameOver')}
+          footerActions={() => (
+            <Button onPress={() => dispatch(reset())}>
+              {t('ui.buttonLabels.restart')}
+            </Button>
           )}
-        {game.turn === MAX_TURNS && (
-          <Modal
-            heading={t('ui.headings.congratulations')}
-            score={game.score}
-            text={t('ui.headings.scoreMsg')}
-            userName={user?.name}
-            btnLabel={saveBtnLabel}
-            isBusy={Boolean(user) && isLoading}
-            onClick={handleComplete}
-          />
-        )}
+        >
+          <span className={styles.text}>{t('ui.headings.gameOverMsg')}</span>
+        </BaseModal>
+
+        <BaseModal
+          isOpen={game.turn === MAX_TURNS}
+          title={t('ui.headings.congratulations')}
+          footerActions={() => (
+            <>
+              <Button onPress={handleComplete} isLoading={isLoading}>
+                {t('ui.navLinks.stats')}
+              </Button>
+              <Button onPress={() => dispatch(reset())} variant="secondary">
+                {t('ui.buttonLabels.restart')}
+              </Button>
+            </>
+          )}
+        >
+          <span className={styles.text}>
+            {t('ui.headings.scoreMsg')} {game.score}
+          </span>
+        </BaseModal>
       </section>
       <ProgressBar count={game.rollCount} />
     </>

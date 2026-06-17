@@ -1,4 +1,5 @@
 @use '../../styles/variables'
+@use '../../styles/mixins'
 
 .form
   display: flex
@@ -20,6 +21,7 @@ fieldset
 
 .inputContainer
   position: relative
+  width: 100%
 
 .formInput
   position: relative
@@ -124,8 +126,10 @@ input, textarea, select
   display: flex
   justify-content: space-between
   gap: .5rem
+  flex: 1
+  width: 100%
 
-.button, .deleteBtn
+.buttonOld
   font-size: 1rem
   min-width: 8rem
   padding: .5rem 1.5rem
@@ -160,3 +164,10 @@ input, textarea, select
   margin-top: 1rem
   a
     color: var(--color-primary)
+
+.link
+  font-size: .8rem
+  color: var(--color-primary)
+  margin-left: auto
+  margin-top: 1rem
+  @include mixins.link

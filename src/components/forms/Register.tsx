@@ -15,13 +15,13 @@ import { ToastTypes } from '../../types'
 import { toPath } from '../../utils'
 import { useFormFocus } from '../../hooks'
 
-import LoadingIndicator from '../layout/LoadingIndicator'
 import * as styles from './Form.module.sass'
 import { usePasswordVisibility } from '../../hooks/usePasswordVisibility'
 import { ROUTES } from '../../constants/routes'
 import IconEye from '../../assets/svg/icon-eye.svg'
 import IconEyeOff from '../../assets/svg/icon-eye-off.svg'
 import { useTranslation } from 'react-i18next'
+import { Button } from '../layout/Button/BaseButton'
 
 const Register: FC = () => {
   const dispatch = useDispatch()
@@ -204,13 +204,9 @@ const Register: FC = () => {
       </fieldset>
 
       <fieldset>
-        <button type="submit" className={styles.button}>
-          {isSubmitting ? (
-            <LoadingIndicator dark />
-          ) : (
-            t('ui.buttonLabels.register')
-          )}
-        </button>
+        <Button type="submit" isLoading={isSubmitting}>
+          {t('ui.buttonLabels.register')}
+        </Button>
       </fieldset>
 
       <p className={styles.privacy}>

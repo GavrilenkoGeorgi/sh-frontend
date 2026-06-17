@@ -6,7 +6,6 @@ import { useTranslation, Trans } from 'react-i18next'
 import LoginForm from '../components/forms/Login'
 import * as styles from './Main.module.sass'
 import * as sharedStyles from './SharedStyles.module.sass'
-import { link } from './Login.module.sass'
 import Logo from '../assets/svg/sharlushka-logo.svg'
 import { ROUTES } from '../constants/routes'
 import { selectIsAuthenticated } from '../store/slices/authSlice'
@@ -45,16 +44,6 @@ const Main: FC = () => {
         </p>
       </div>
       <LoginForm />
-      <aside>
-        <Link
-          className={link}
-          to={toPath(ROUTES.FORGOT_PASSWORD)}
-          viewTransition
-          aria-label={t('pages.login.forgotPassword')}
-        >
-          {t('pages.login.forgotPassword')}
-        </Link>
-      </aside>
     </section>
   )
 }

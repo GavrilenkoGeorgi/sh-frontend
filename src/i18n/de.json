@@ -30,7 +30,9 @@
       "save": "Speichern",
       "ok": "OK",
       "cancel": "Abbrechen",
-      "dismiss": "Schließen"
+      "dismiss": "Schließen",
+      "restart": "Neustarten",
+      "view": "Ansehen"
     },
     "navLinks": {
       "play": "Spielen",
