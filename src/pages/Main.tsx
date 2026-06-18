@@ -31,10 +31,10 @@ const Main: FC = () => {
           <Trans i18nKey="pages.main.intro">
             {'You '}
             <Link to={toPath(ROUTES.PLAY)} viewTransition>
-              can play unregistered
+              can play without registering
             </Link>
             {
-              ", but you will not be able to save results or checkout other player's stats, consider "
+              ', but you will not be able to save results or view other players’ stats. Please consider '
             }
             <Link to={toPath(ROUTES.REGISTER)} viewTransition>
               registering

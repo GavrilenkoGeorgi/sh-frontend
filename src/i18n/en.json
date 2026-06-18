@@ -130,7 +130,7 @@
   "pages": {
     "main": {
       "greeting": "Hi, Anonymous!",
-      "intro": "You <1>can play unregistered</1>, but you will not be able to save results or checkout other player's stats, consider <3>registering</3>."
+      "intro": "You <1>can play without registering</1>, but you will not be able to save results or view other players’ stats. Please consider <3>registering</3>."
     },
     "login": {
       "forgotPassword": "Forgot password?"
