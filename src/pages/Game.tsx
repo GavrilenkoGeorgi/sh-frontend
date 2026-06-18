@@ -7,7 +7,6 @@ import type { RootState } from '../store'
 import { useSaveResultsMutation } from '../store/api/gameApi'
 import { reset, GameState, MAX_TURNS } from '../store/slices/shSlice'
 import { setNotification } from '../store/slices/notificationSlice'
-import { selectCurrentUser } from '../store/slices/authSlice'
 import { toPath } from '../utils'
 import { ToastTypes } from '../types'
 
@@ -34,14 +33,15 @@ const GamePage: FC = () => {
   const notificationMessage = useSelector(
     (state: RootState) => state.notification.message
   )
-  const user = useSelector(selectCurrentUser)
   const [saveResults, { isLoading }] = useSaveResultsMutation()
   const navigate = useNavigate()
   const { t } = useTranslation()
 
-  const handleComplete = async (): Promise<void> => {
+  const handleComplete = async ({
+    save = true
+  }: { save?: boolean } = {}): Promise<void> => {
     try {
-      if (!user) {
+      if (!save) {
         dispatch(reset())
         return
       }
@@ -86,7 +86,7 @@ const GamePage: FC = () => {
           isOpen={trainingFailed}
           title={t('ui.headings.gameOver')}
           footerActions={() => (
-            <Button onPress={() => dispatch(reset())}>
+            <Button onPress={() => handleComplete({ save: false })}>
               {t('ui.buttonLabels.restart')}
             </Button>
           )}
@@ -95,14 +95,17 @@ const GamePage: FC = () => {
         </BaseModal>
 
         <BaseModal
-          isOpen={game.turn === MAX_TURNS}
+          isOpen={game.turn === MAX_TURNS && !trainingFailed}
           title={t('ui.headings.congratulations')}
           footerActions={() => (
             <>
-              <Button onPress={handleComplete} isLoading={isLoading}>
+              <Button onPress={() => handleComplete()} isLoading={isLoading}>
                 {t('ui.navLinks.stats')}
               </Button>
-              <Button onPress={() => dispatch(reset())} variant="secondary">
+              <Button
+                onPress={() => handleComplete({ save: false })}
+                variant="secondary"
+              >
                 {t('ui.buttonLabels.restart')}
               </Button>
             </>

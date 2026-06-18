@@ -63,6 +63,23 @@ const Login: FC = () => {
     }
   }
 
+  let authButton: React.ReactNode
+
+  if (isAuthenticated) {
+    authButton = <Logout />
+  } else {
+    authButton = (
+      <Button
+        variant="secondary"
+        onPress={() => {
+          navigate(toPath(ROUTES.REGISTER), { viewTransition: true })
+        }}
+      >
+        {t('ui.buttonLabels.register')}
+      </Button>
+    )
+  }
+
   return (
     <form
       noValidate
@@ -135,10 +152,14 @@ const Login: FC = () => {
         </div>
       </fieldset>
       <div className={styles.buttons}>
-        <Button type="submit" isLoading={isSubmitting || isAuthenticated}>
+        <Button
+          type="submit"
+          isLoading={isSubmitting}
+          isDisabled={isAuthenticated}
+        >
           {t('ui.buttonLabels.login')}
         </Button>
-        <Logout />
+        {authButton}
       </div>
       <Link
         className={styles.link}
