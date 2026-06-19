@@ -44,23 +44,39 @@
 
   &[data-hovered]:not([data-disabled])
     background-color: transparent
-
+    background-color: var(--color-primary-light)
 
   &[data-pressed]:not([data-disabled])
     background-color: transparent
+
 
 .danger
   background-color: transparent
   color: var(--color-error)
   border: 1px solid var(--color-error)
 
+.invisible
+  background-color: transparent
+  color: var(--color-primary)
+  border-color: transparent
+
   &[data-hovered]:not([data-disabled])
-    background-color: var(--color-toast-error)
+    background-color: transparent
+    color: var(--color-accent)
+
+  &[data-pressed]:not([data-disabled])
+    background-color: transparent
+    // color: var(--color-accent-transparent)
+  &[data-hovered]:not([data-disabled])
+    // background-color: var(--color-toast-error)
 
   &[data-pressed]:not([data-disabled])
     background-color: transparent
 
 /* --- Sizes --- */
+.tiny
+  width: auto
+
 .sm
   padding: 0.375rem 0.75rem
   font-size: 0.875rem

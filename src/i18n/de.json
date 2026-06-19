@@ -250,6 +250,7 @@
   "tooltips": {
     "trainingScores": "Deine 'Trainingsergebnisse' aus dem ersten Teil des Spiels.",
     "favDiceValues": "Würfelwerte, die du am häufigsten in deinen Spielen gewählt hast.",
-    "favCombinations": "Würfelkombinationen, die du in deinen Spielen am häufigsten gerettet hast. Tooltips in den Diagrammen zeigen den Prozentsatz der Spiele an, in denen die Kombination mindestens einmal gerettet wurde."
+    "favCombinations": "Würfelkombinationen, die du in deinen Spielen am häufigsten gerettet hast. Tooltips in den Diagrammen zeigen den Prozentsatz der Spiele an, in denen die Kombination mindestens einmal gerettet wurde.",
+    "newVersion": "Eine neue Version ist verfügbar. Klicke, um die Seite zu aktualisieren."
   }
 }

@@ -34,7 +34,7 @@ const NavBar: FC = () => {
   const [open, setOpen] = useState(false)
   const { isDark, mode, toggleColorScheme } = useColorScheme()
   const scrollDirection = useScrollDirection()
-  const isDesktop = useMediaQuery('(min-width: 1024px)')
+  const isDesktop = useMediaQuery('(min-width: 1024px)') // TODO: should be a gobal constant, we have the same in css variables
 
   const toggleMenu = (): void => {
     setOpen((prev) => !prev)

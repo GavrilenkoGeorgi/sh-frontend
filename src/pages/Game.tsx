@@ -21,6 +21,7 @@ import { ROUTES } from '../constants/routes'
 import { useTranslation } from 'react-i18next'
 import { BaseModal } from '../components/layout/Modal/BaseModal'
 import { Button } from '../components/layout/Button/BaseButton'
+import { selectIsAuthenticated } from '../store/slices/authSlice'
 
 export type SaveResultsData = Pick<
   GameState,
@@ -30,6 +31,7 @@ export type SaveResultsData = Pick<
 const GamePage: FC = () => {
   const dispatch = useDispatch()
   const { game } = useSelector((state: RootState) => state.sh)
+  const isAuthenticated = useSelector(selectIsAuthenticated)
   const notificationMessage = useSelector(
     (state: RootState) => state.notification.message
   )
@@ -37,15 +39,16 @@ const GamePage: FC = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
-  const handleComplete = async ({
-    save = true
-  }: { save?: boolean } = {}): Promise<void> => {
-    try {
-      if (!save) {
-        dispatch(reset())
-        return
-      }
+  const handleComplete = async (
+    action: 'restart' | 'stats',
+    { bypassSave }: { bypassSave?: boolean } = {}
+  ): Promise<void> => {
+    if (bypassSave || !isAuthenticated) {
+      dispatch(reset())
+      return
+    }
 
+    try {
       const data: SaveResultsData = {
         score: game.score,
         schoolScore: game.schoolScore,
@@ -53,15 +56,19 @@ const GamePage: FC = () => {
         favDiceValues: game.favDiceValues
       }
 
+      // authenticated user
       await saveResults(data).unwrap()
       dispatch(reset())
-      dispatch(
-        setNotification({
-          msg: t('ui.toastMessages.savedResults'),
-          type: ToastTypes.SUCCESS
-        })
-      )
-      navigate(toPath(ROUTES.STATS), { viewTransition: true })
+
+      if (action === 'stats') {
+        dispatch(
+          setNotification({
+            msg: t('ui.toastMessages.savedResults'),
+            type: ToastTypes.SUCCESS
+          })
+        )
+        navigate(toPath(ROUTES.STATS), { viewTransition: true })
+      }
     } catch {
       // error toast is handled centrally in baseQueryWithReauth
     }
@@ -82,11 +89,14 @@ const GamePage: FC = () => {
         {/* Modals */}
         <GameTour />
 
+        {/* Training Failed Modal */}
         <BaseModal
           isOpen={trainingFailed}
           title={t('ui.headings.gameOver')}
           footerActions={() => (
-            <Button onPress={() => handleComplete({ save: false })}>
+            <Button
+              onPress={() => handleComplete('restart', { bypassSave: true })}
+            >
               {t('ui.buttonLabels.restart')}
             </Button>
           )}
@@ -94,22 +104,35 @@ const GamePage: FC = () => {
           <span className={styles.text}>{t('ui.headings.gameOverMsg')}</span>
         </BaseModal>
 
+        {/* Game Completed Modal */}
         <BaseModal
           isOpen={game.turn === MAX_TURNS && !trainingFailed}
           title={t('ui.headings.congratulations')}
-          footerActions={() => (
-            <>
-              <Button onPress={() => handleComplete()} isLoading={isLoading}>
-                {t('ui.navLinks.stats')}
-              </Button>
+          footerActions={() =>
+            isAuthenticated ? (
+              <>
+                <Button
+                  onPress={() => handleComplete('stats')}
+                  isLoading={isLoading}
+                >
+                  {t('ui.navLinks.stats')}
+                </Button>
+                <Button
+                  onPress={() => handleComplete('restart')}
+                  variant="secondary"
+                  isLoading={isLoading}
+                >
+                  {t('ui.buttonLabels.restart')}
+                </Button>
+              </>
+            ) : (
               <Button
-                onPress={() => handleComplete({ save: false })}
-                variant="secondary"
+                onPress={() => handleComplete('restart', { bypassSave: true })}
               >
                 {t('ui.buttonLabels.restart')}
               </Button>
-            </>
-          )}
+            )
+          }
         >
           <span className={styles.text}>
             {t('ui.headings.scoreMsg')} {game.score}
