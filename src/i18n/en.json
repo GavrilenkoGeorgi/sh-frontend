@@ -32,7 +32,8 @@
       "cancel": "Cancel",
       "dismiss": "Dismiss",
       "restart": "Restart",
-      "view": "View"
+      "view": "View",
+      "saving": "Saving..."
     },
     "navLinks": {
       "play": "Play",

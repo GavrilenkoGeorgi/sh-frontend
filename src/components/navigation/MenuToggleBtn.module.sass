@@ -1,24 +1,18 @@
 @use '../../styles/variables'
 
-.button
-  padding: 0
-  border: none
-  background-color: transparent
-  cursor: pointer
+.toggleButton
   @media screen and (min-width: variables.$medium)
     display: none
     visibility: hidden
 
 .toggleIcon
-  display: inline-block
-  vertical-align: middle
+  margin-top: .3rem
   height: 2px
   width: 22px
   transform: translateY(-100%)
   background-color: var(--color-text-body)
   &:before,
   &:after
-    display: inline-block
     position: absolute
     right: 0px
     content: ""

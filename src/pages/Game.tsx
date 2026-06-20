@@ -58,15 +58,16 @@ const GamePage: FC = () => {
 
       // authenticated user
       await saveResults(data).unwrap()
+
+      dispatch(
+        setNotification({
+          msg: t('ui.toastMessages.savedResults'),
+          type: ToastTypes.SUCCESS
+        })
+      )
       dispatch(reset())
 
       if (action === 'stats') {
-        dispatch(
-          setNotification({
-            msg: t('ui.toastMessages.savedResults'),
-            type: ToastTypes.SUCCESS
-          })
-        )
         navigate(toPath(ROUTES.STATS), { viewTransition: true })
       }
     } catch {
@@ -112,17 +113,19 @@ const GamePage: FC = () => {
             isAuthenticated ? (
               <>
                 <Button
+                  onPress={() => handleComplete('restart')}
+                  variant="secondary"
+                  isDisabled={isLoading}
+                >
+                  {t('ui.buttonLabels.restart')}
+                </Button>
+                <Button
                   onPress={() => handleComplete('stats')}
                   isLoading={isLoading}
                 >
-                  {t('ui.navLinks.stats')}
-                </Button>
-                <Button
-                  onPress={() => handleComplete('restart')}
-                  variant="secondary"
-                  isLoading={isLoading}
-                >
-                  {t('ui.buttonLabels.restart')}
+                  {isLoading
+                    ? t('ui.buttonLabels.saving')
+                    : t('ui.navLinks.stats')}
                 </Button>
               </>
             ) : (

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import CountUp from 'react-countup'
 import * as styles from './ScoreDisplay.module.sass'
 import { useSelector } from 'react-redux'
