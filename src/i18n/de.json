@@ -197,6 +197,7 @@
         "games": "spiele",
         "modeDateRange": "Datumsbereich",
         "presetCustom": "Benutzerdefiniert",
+        "presetAll": "Alle",
         "numberOfGames": "Anzahl der Spiele",
         "dateRange": "Datumsbereich",
         "minScore": "Mindestpunktzahl"

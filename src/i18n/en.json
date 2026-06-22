@@ -197,6 +197,7 @@
         "games": "games",
         "modeDateRange": "Date range",
         "presetCustom": "Custom",
+        "presetAll": "All",
         "numberOfGames": "Number of games",
         "dateRange": "Date range",
         "minScore": "Min score"

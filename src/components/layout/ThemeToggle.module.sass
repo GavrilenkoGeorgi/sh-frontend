@@ -3,6 +3,14 @@
     display: flex
     align-content: center
     color: var(--color-primary-muted)
+    opacity: 0
+    animation: fadeIn var(--duration-default) ease-out forwards
     transition: color var(--duration-default) ease-in, transform var(--duration-default) ease-in
     &:hover
       transform: scale(1.1)
+
+@keyframes fadeIn
+  from
+    opacity: 0
+  to
+    opacity: 1

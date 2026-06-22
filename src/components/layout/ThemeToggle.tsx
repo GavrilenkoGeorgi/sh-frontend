@@ -23,6 +23,7 @@ export const ThemeToggle = ({
         onClick={onClick}
         variant="invisible"
         size="tiny"
+        key={mode} // force re-render to restart animation
       >
         {mode === 'system' ? (
           <svg
