@@ -5,7 +5,7 @@ import { useTranslation, Trans } from 'react-i18next'
 
 import LoginForm from '../components/forms/Login'
 import * as styles from './Main.module.sass'
-import { link } from './Login.module.sass'
+import * as sharedStyles from './SharedStyles.module.sass'
 import Logo from '../assets/svg/sharlushka-logo.svg'
 import { ROUTES } from '../constants/routes'
 import { selectIsAuthenticated } from '../store/slices/authSlice'
@@ -21,7 +21,7 @@ const Main: FC = () => {
   }, [isAuthenticated])
 
   return (
-    <section className={styles.container}>
+    <section className={sharedStyles.container}>
       <div className={styles.logo}>
         <Logo />
       </div>
@@ -31,10 +31,10 @@ const Main: FC = () => {
           <Trans i18nKey="pages.main.intro">
             {'You '}
             <Link to={toPath(ROUTES.PLAY)} viewTransition>
-              can play unregistered
+              can play without registering
             </Link>
             {
-              ", but you will not be able to save results or checkout other player's stats, consider "
+              ', but you will not be able to save results or view other players’ stats. Please consider '
             }
             <Link to={toPath(ROUTES.REGISTER)} viewTransition>
               registering
@@ -44,16 +44,6 @@ const Main: FC = () => {
         </p>
       </div>
       <LoginForm />
-      <aside>
-        <Link
-          className={link}
-          to={toPath(ROUTES.FORGOT_PASSWORD)}
-          viewTransition
-          aria-label={t('pages.login.forgotPassword')}
-        >
-          {t('pages.login.forgotPassword')}
-        </Link>
-      </aside>
     </section>
   )
 }

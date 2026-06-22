@@ -49,7 +49,7 @@ export interface ToggleBtnProps {
 }
 
 export interface StatsFilterParams {
-  mode: 'lastN' | 'dateRange'
+  mode: 'lastN' | 'dateRange' | 'all'
   lastN?: number
   dateFrom?: string
   dateTo?: string

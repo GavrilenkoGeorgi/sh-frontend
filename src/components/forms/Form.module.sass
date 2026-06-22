@@ -1,11 +1,12 @@
 @use '../../styles/variables'
+@use '../../styles/mixins'
 
 .form
   display: flex
   flex-direction: column
   width: 100%
   max-width: variables.$formWidth
-  margin: 0 auto
+  margin: 1rem auto 0
 
 fieldset
   border: none
@@ -13,6 +14,7 @@ fieldset
   margin: 0
   display: flex
   flex-direction: column
+  margin-bottom: 1.25rem
   legend
     text-align: center
     font-weight: 600
@@ -20,10 +22,11 @@ fieldset
 
 .inputContainer
   position: relative
+  width: 100%
 
 .formInput
   position: relative
-  margin: 1.2rem 0 1.75rem
+  margin: 1.2rem 0 1.5rem
   &:after
     height: 2px
     background-color: var(--color-primary-light)
@@ -53,7 +56,7 @@ fieldset
   background: transparent
   color: var(--color-error)
   font-size: .7rem
-  bottom: .6rem
+  bottom: .2rem
 
 .formLabel
   z-index:-1
@@ -124,8 +127,10 @@ input, textarea, select
   display: flex
   justify-content: space-between
   gap: .5rem
+  flex: 1
+  width: 100%
 
-.button, .deleteBtn
+.buttonOld
   font-size: 1rem
   min-width: 8rem
   padding: .5rem 1.5rem
@@ -160,3 +165,10 @@ input, textarea, select
   margin-top: 1rem
   a
     color: var(--color-primary)
+
+.link
+  font-size: .8rem
+  color: var(--color-primary)
+  margin-left: auto
+  margin-top: 1rem
+  @include mixins.link

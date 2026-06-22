@@ -10,6 +10,7 @@ interface LoadingIndicatorProps {
 const LoadingIndicator: FC<LoadingIndicatorProps> = ({ dark, large }) => {
   return (
     <span
+      aria-hidden="true"
       className={cx(styles.loader, {
         [styles.dark]: dark,
         [styles.large]: large

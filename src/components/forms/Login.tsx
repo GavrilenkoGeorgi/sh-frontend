@@ -1,7 +1,7 @@
 import { type FC } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
@@ -19,15 +19,16 @@ import { useFormFocus } from '../../hooks'
 import cx from 'classnames'
 import * as styles from './Form.module.sass'
 import Logout from './Logout'
-import LoadingIndicator from '../layout/LoadingIndicator'
 import { ROUTES } from '../../constants/routes'
 import IconEye from '../../assets/svg/icon-eye.svg'
 import IconEyeOff from '../../assets/svg/icon-eye-off.svg'
 import { usePasswordVisibility } from '../../hooks/usePasswordVisibility'
 import { setAuthSessionHint } from '../../utils/authSessionHint'
 import { useTranslation } from 'react-i18next'
+import { Button } from '../layout/Button/BaseButton'
 
 const Login: FC = () => {
+  /* TODO: check route and show register on Main */
   const navigate = useNavigate()
   const [login] = useLoginMutation()
   const isAuthenticated = useSelector(selectIsAuthenticated)
@@ -60,6 +61,23 @@ const Login: FC = () => {
     } catch {
       // error toast is handled centrally in baseQueryWithReauth
     }
+  }
+
+  let authButton: React.ReactNode
+
+  if (isAuthenticated) {
+    authButton = <Logout />
+  } else {
+    authButton = (
+      <Button
+        variant="secondary"
+        onPress={() => {
+          navigate(toPath(ROUTES.REGISTER), { viewTransition: true })
+        }}
+      >
+        {t('ui.buttonLabels.register')}
+      </Button>
+    )
   }
 
   return (
@@ -132,21 +150,25 @@ const Login: FC = () => {
             <p className={styles.errorMsg}>{errors.password.message}</p>
           )}
         </div>
-        <div className={styles.buttons}>
-          <button
-            type="submit"
-            disabled={isSubmitting || isAuthenticated}
-            className={styles.button}
-          >
-            {isSubmitting ? (
-              <LoadingIndicator dark />
-            ) : (
-              t('ui.buttonLabels.login')
-            )}
-          </button>
-          <Logout />
-        </div>
       </fieldset>
+      <div className={styles.buttons}>
+        <Button
+          type="submit"
+          isLoading={isSubmitting}
+          isDisabled={isAuthenticated}
+        >
+          {t('ui.buttonLabels.login')}
+        </Button>
+        {authButton}
+      </div>
+      <Link
+        className={styles.link}
+        to={toPath(ROUTES.FORGOT_PASSWORD)}
+        viewTransition
+        aria-label={t('pages.login.forgotPassword')}
+      >
+        {t('pages.login.forgotPassword')}
+      </Link>
     </form>
   )
 }

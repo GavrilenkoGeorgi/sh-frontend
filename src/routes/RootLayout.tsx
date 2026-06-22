@@ -8,6 +8,7 @@ import Fallback from '../components/layout/Fallback'
 import { selectAuthInitialized } from '../store/slices/authSlice'
 import { useAuthBootstrap } from '../hooks/auth/useAuthBootstrap'
 import { useMultiplayerSocket } from '../hooks/useMultiplayerSocket'
+import { ColorSchemeProvider } from '../hooks/useColorScheme'
 
 const RootLayout = (): JSX.Element => {
   useAuthBootstrap()
@@ -15,12 +16,12 @@ const RootLayout = (): JSX.Element => {
   const authInitialized = useSelector(selectAuthInitialized)
 
   return (
-    <>
+    <ColorSchemeProvider>
       <NavBar />
       {authInitialized ? <App /> : <Fallback />}
       <Toast />
       <UpdatePrompt />
-    </>
+    </ColorSchemeProvider>
   )
 }
 

@@ -1,4 +1,14 @@
-import { useState, useLayoutEffect, useEffect, useCallback } from 'react'
+import {
+  useState,
+  useLayoutEffect,
+  useEffect,
+  useCallback,
+  createContext,
+  useContext,
+  createElement,
+  type ReactElement,
+  type ReactNode
+} from 'react'
 
 export type ThemeMode = 'system' | 'dark' | 'light'
 
@@ -32,7 +42,20 @@ function resolveIsDark(mode: ThemeMode): boolean {
   return mediaQuery.matches
 }
 
-export function useColorScheme() {
+interface ColorSchemeContextValue {
+  isDark: boolean
+  mode: ThemeMode
+  toggleColorScheme: () => void
+  setThemeMode: (next: ThemeMode) => void
+}
+
+const ColorSchemeContext = createContext<ColorSchemeContextValue | null>(null)
+
+export function ColorSchemeProvider({
+  children
+}: {
+  children: ReactNode
+}): ReactElement {
   const [mode, setMode] = useState<ThemeMode>(getStoredMode)
   const [isDark, setIsDark] = useState(() => resolveIsDark(getStoredMode()))
 
@@ -68,5 +91,16 @@ export function useColorScheme() {
     setMode(next)
   }, [])
 
-  return { isDark, mode, toggleColorScheme, setThemeMode }
+  return createElement(
+    ColorSchemeContext.Provider,
+    { value: { isDark, mode, toggleColorScheme, setThemeMode } },
+    children
+  )
+}
+
+export function useColorScheme(): ColorSchemeContextValue {
+  const context = useContext(ColorSchemeContext)
+  if (!context)
+    throw new Error('useColorScheme must be used within ColorSchemeProvider')
+  return context
 }

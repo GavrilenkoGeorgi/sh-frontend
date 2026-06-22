@@ -7,6 +7,7 @@ import type {
   StatsFilterParams
 } from '../types'
 import { CalendarDate } from '@internationalized/date'
+import { DEFAULT_LAST_N } from '../components/stats/StatsFilters'
 
 export const getErrMsg = (err: unknown): string => {
   const { data } = err as ErrorMessage
@@ -45,7 +46,7 @@ export const toPath = (route: string) => `/${route}`
 
 export const DEFAULT_STATS_FILTER: StatsFilterParams = {
   mode: 'lastN',
-  lastN: 50
+  lastN: DEFAULT_LAST_N
 }
 
 export const buildStatsQueryString = (filters: StatsFilterParams): string => {
@@ -60,6 +61,8 @@ export const buildStatsQueryString = (filters: StatsFilterParams): string => {
     if (filters.dateFrom) params.set('dateFrom', filters.dateFrom)
     if (filters.dateTo) params.set('dateTo', filters.dateTo)
   }
+
+  // 'all' mode needs no extra params
 
   if (filters.minScore !== undefined) {
     params.set('minScore', String(filters.minScore))
@@ -78,6 +81,10 @@ export const parseStatsSearchParams = (
       ? Number(minScoreRaw)
       : undefined
 
+  if (mode === 'all') {
+    return { mode: 'all', ...(minScore !== undefined ? { minScore } : {}) }
+  }
+
   if (mode === 'dateRange') {
     const dateFrom = params.get('dateFrom') ?? undefined
     const dateTo = params.get('dateTo') ?? undefined
@@ -93,7 +100,7 @@ export const parseStatsSearchParams = (
   const lastN =
     lastNRaw !== null && !isNaN(Number(lastNRaw)) && Number(lastNRaw) > 0
       ? Number(lastNRaw)
-      : 50
+      : DEFAULT_LAST_N
 
   return {
     mode: 'lastN',

@@ -5,14 +5,13 @@ import { useNavigate } from 'react-router'
 import { logout, selectCurrentUser } from '../../store/slices/authSlice'
 import { setNotification } from '../../store/slices/notificationSlice'
 import { userApi, gameApi } from '../../store/api/baseApi'
-import LoadingIndicator from '../layout/LoadingIndicator'
 import { toPath } from '../../utils'
 import { ToastTypes } from '../../types'
-import * as styles from './Form.module.sass'
 import { useLogoutMutation } from '../../store/api/userApi'
 import { ROUTES } from '../../constants/routes'
 import { clearAuthSessionHint } from '../../utils/authSessionHint'
 import { useTranslation } from 'react-i18next'
+import { Button } from '../layout/Button/BaseButton'
 
 const Logout: FC = () => {
   const navigate = useNavigate()
@@ -48,15 +47,9 @@ const Logout: FC = () => {
   }
 
   return (
-    <button
-      type="button"
-      onClick={logoutHandler}
-      disabled={user == null || isLoading}
-      className={styles.button}
-      aria-busy={isLoading}
-    >
-      {isLoading ? <LoadingIndicator dark /> : t('ui.buttonLabels.logout')}
-    </button>
+    <Button onPress={logoutHandler} isLoading={isLoading} isDisabled={!user}>
+      {t('ui.buttonLabels.logout')}
+    </Button>
   )
 }
 

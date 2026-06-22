@@ -1,7 +1,7 @@
 import { type FC } from 'react'
 
 import RegisterForm from '../components/forms/Register'
-import * as styles from './Register.module.sass'
+import * as styles from './SharedStyles.module.sass'
 import { useTranslation } from 'react-i18next'
 
 const Register: FC = () => {

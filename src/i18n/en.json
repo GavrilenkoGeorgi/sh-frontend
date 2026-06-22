@@ -30,7 +30,10 @@
       "save": "Save",
       "ok": "OK",
       "cancel": "Cancel",
-      "dismiss": "Dismiss"
+      "dismiss": "Dismiss",
+      "restart": "Restart",
+      "view": "View",
+      "saving": "Saving..."
     },
     "navLinks": {
       "play": "Play",
@@ -128,7 +131,7 @@
   "pages": {
     "main": {
       "greeting": "Hi, Anonymous!",
-      "intro": "You <1>can play unregistered</1>, but you will not be able to save results or checkout other player's stats, consider <3>registering</3>."
+      "intro": "You <1>can play without registering</1>, but you will not be able to save results or view other players’ stats. Please consider <3>registering</3>."
     },
     "login": {
       "forgotPassword": "Forgot password?"
@@ -194,6 +197,7 @@
         "games": "games",
         "modeDateRange": "Date range",
         "presetCustom": "Custom",
+        "presetAll": "All",
         "numberOfGames": "Number of games",
         "dateRange": "Date range",
         "minScore": "Min score"
@@ -248,6 +252,7 @@
   "tooltips": {
     "trainingScores": "Your 'training' scores from the first part of the game.",
     "favDiceValues": "Dice values you choose most often in your games.",
-    "favCombinations": "Dice combinations you saved most often in your games. Tooltips on charts show percentage of games where the combination was saved at least once."
+    "favCombinations": "Dice combinations you saved most often in your games. Tooltips on charts show percentage of games where the combination was saved at least once.",
+    "newVersion": "Please update to the latest version or dismiss to update later on restart."
   }
 }

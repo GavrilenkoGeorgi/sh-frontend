@@ -1,10 +1,20 @@
 @use '../styles/variables'
 
 .container
-  max-width: 50rem
+  width: 100%
+  border: 1px solid var(--color-primary-light)
   margin: 0 auto
+  height: 100%
+  min-height: calc(100dvh - var(--navbar-height))
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
   h1, h2
     color: var(--color-text-heading)
+    text-align: center
+  h1
+    margin: 0rem
   h2
     font-size: 1.25rem
     margin: 3rem 0 0
@@ -18,7 +28,7 @@
     li
       padding: .4rem 0
   p
-    line-height: 1.5rem
+    line-height: 1.4rem
 
 .text
   max-width: variables.$formWidth
@@ -36,21 +46,17 @@ strong
   color: var(--color-primary)
   font-weight: 450
 
-.centeredContent
-  height: calc(100dvh - variables.$navbarHeight)
-  display: flex
-  align-items: center
-  justify-content: center
-
 // text-heavy pages that should not be centered by the centeredContent flex container
 .contentPage
   align-self: flex-start
   width: 100%
   max-width: variables.$desktopTextPagewidth
-  padding: calc(variables.$navbarHeight - 1rem) 1rem 2rem
+  padding: var(--navbar-height) 1rem 2rem
+  margin: auto
+  margin-top: 0
 
   @media screen and (min-width: variables.$medium)
-    padding: calc(variables.$navbarHeight + 3rem) 1rem 5rem
+    padding: calc(var(--navbar-height) + 3rem) 1rem 5rem
 
 .tooltipIcon
   color: var(--color-primary)

@@ -1,4 +1,4 @@
-# Sharlushka Frontend [![Netlify Status](https://api.netlify.com/api/v1/badges/0e514105-751d-43ee-9786-6685cd362085/deploy-status)](https://app.netlify.com/sites/sharlushka/deploys)
+# Sharlushka Frontend [![Netlify Status](https://api.netlify.com/api/v1/badges/0e514105-751d-43ee-9786-6685cd362085/deploy-status)](https://app.netlify.com/sites/sharlushka/deploys) [https://sharlushka.netlify.app/](https://sharlushka.netlify.app/)
 
 Simple dice game inspired by Yahtzee. This repository contains the frontend app.
 

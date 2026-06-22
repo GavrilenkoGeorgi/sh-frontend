@@ -1,7 +1,7 @@
 @use '../../styles/variables'
 
 .banner
-  position: absolute
+  position: fixed
   bottom: 0
   left: 0
   right: 0
@@ -11,17 +11,24 @@
   justify-content: space-between
   gap: .75rem
   padding: .6rem 1rem
-  background-color: var(--color-primary)
-  color: var(--color-surface)
+  background: rgba(255, 255, 255, 0.15)
+  backdrop-filter: blur(12px)
+  color: var(--color-text-muted)
   font-size: .9rem
   box-sizing: border-box
-  opacity: 1
-  // clip-path: inset(100% 0 0)
-  // opacity: 0
-  // animation: slideUp .4s ease forwards
+  border-top: 1px solid var(--color-primary-light)
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15)
+  clip-path: inset(100% 0 0)
+  opacity: 0
+  animation: slideUp .4s ease forwards
 
 .message
+  display: flex
   flex: 1
+
+.actions
+  display: flex
+  gap: .5rem
 
 .updateBtn, .dismissBtn
   min-width: 5rem

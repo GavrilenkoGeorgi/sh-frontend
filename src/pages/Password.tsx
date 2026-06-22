@@ -2,7 +2,7 @@ import { type FC } from 'react'
 import { useSearchParams } from 'react-router'
 import UpdatePwdForm from '../components/forms/UpdatePwd'
 import ForgotPwdForm from '../components/forms/ForgotPwd'
-import * as styles from './Register.module.sass'
+import * as styles from './SharedStyles.module.sass'
 import { useTranslation } from 'react-i18next'
 
 const Password: FC = () => {

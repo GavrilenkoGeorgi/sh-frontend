@@ -11,9 +11,9 @@ const ClearStats: FC = () => {
   const { t } = useTranslation()
 
   return (
-    <section className={styles.contentPage}>
+    <section className={styles.container}>
       <h1 className={styles.pageHeading}>{t('pages.clearStats.heading')}</h1>
-      <p>
+      <p className={styles.text}>
         <Trans i18nKey="pages.clearStats.info">
           To delete all your saved game results and clear stats login into your
           account and navigate to this page. For any questions or assistance

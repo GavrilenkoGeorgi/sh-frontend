@@ -15,8 +15,11 @@ import AppSelect, { type SelectOption } from '../select/CustomSelect'
 import RangeDatePicker from '../date-picker/RangeDatePicker'
 import * as styles from './StatsFilters.module.sass'
 
-const LAST_N_PRESETS = [10, 25, 50, 100] as const
 type LastNPreset = (typeof LAST_N_PRESETS)[number]
+
+const DEFAULT_DAYS_TO_SHOW = 30
+const LAST_N_PRESETS = [10, 25, 50] as const
+export const DEFAULT_LAST_N: LastNPreset = [...LAST_N_PRESETS].at(-1) || 50
 
 interface Props {
   filters: StatsFilterParams
@@ -32,11 +35,12 @@ const StatsFilters: FC<Props> = ({ filters, onChange }) => {
 
   const handleModeChange = (selection: Selection) => {
     if (selection === 'all') return
+
     const mode = [...selection][0] as 'lastN' | 'dateRange'
     setShowCustomLastN(false)
     if (mode === 'dateRange') {
       const dateTo = today(getLocalTimeZone())
-      const dateFrom = dateTo.subtract({ days: 30 })
+      const dateFrom = dateTo.subtract({ days: DEFAULT_DAYS_TO_SHOW })
       onChange({
         mode: 'dateRange',
         dateFrom: dateFrom.toString(),
@@ -44,7 +48,11 @@ const StatsFilters: FC<Props> = ({ filters, onChange }) => {
         minScore: filters.minScore
       })
     } else {
-      onChange({ mode: 'lastN', lastN: 50, minScore: filters.minScore })
+      onChange({
+        mode: 'lastN',
+        lastN: DEFAULT_LAST_N,
+        minScore: filters.minScore
+      })
     }
   }
 
@@ -53,16 +61,29 @@ const StatsFilters: FC<Props> = ({ filters, onChange }) => {
       value: String(n),
       label: `${String(n)} ${t('pages.stats.filters.games')}`
     })),
-    { value: 'custom', label: t('pages.stats.filters.presetCustom') }
+    { value: 'custom', label: t('pages.stats.filters.presetCustom') },
+    { value: 'all', label: t('pages.stats.filters.presetAll') }
   ]
 
   const handlePresetChange = (option: SelectOption | null) => {
     if (!option) return
+    if (option.value === 'all') {
+      setShowCustomLastN(false)
+      onChange({ mode: 'all', minScore: filters.minScore })
+      return
+    }
     if (option.value === 'custom') {
       setShowCustomLastN(true)
+      if (filters.mode === 'all') {
+        onChange({
+          mode: 'lastN',
+          lastN: DEFAULT_LAST_N,
+          minScore: filters.minScore
+        })
+      }
     } else {
       setShowCustomLastN(false)
-      onChange({ ...filters, lastN: Number(option.value) })
+      onChange({ ...filters, mode: 'lastN', lastN: Number(option.value) })
     }
   }
 
@@ -76,13 +97,21 @@ const StatsFilters: FC<Props> = ({ filters, onChange }) => {
       ? parseDate(filters.dateTo)
       : null
 
-  const selectedPresetKey =
-    filters.mode === 'dateRange'
-      ? '50'
-      : showCustomLastN ||
-          !LAST_N_PRESETS.includes(filters.lastN as LastNPreset)
-        ? 'custom'
-        : String(filters.lastN)
+  const getSelectedPresetKey = () => {
+    if (filters.mode === 'all') return 'all'
+
+    // Explicitly treat dateRange as a custom setting
+    if (filters.mode === 'dateRange') return 'custom'
+
+    const isInvalidPreset = !LAST_N_PRESETS.includes(
+      filters.lastN as LastNPreset
+    )
+    if (showCustomLastN || isInvalidPreset) return 'custom'
+
+    return String(filters.lastN)
+  }
+
+  const selectedPresetKey = getSelectedPresetKey()
 
   const selectedPreset =
     presetOptions.find((option) => option.value === selectedPresetKey) ?? null
@@ -93,7 +122,7 @@ const StatsFilters: FC<Props> = ({ filters, onChange }) => {
         className={styles.modeToggle}
         selectionMode="single"
         disallowEmptySelection
-        selectedKeys={new Set([filters.mode])}
+        selectedKeys={new Set(filters.mode === 'all' ? [] : [filters.mode])}
         onSelectionChange={handleModeChange}
       >
         <ToggleButton id="lastN" className={styles.toggleBtn}>
@@ -125,7 +154,7 @@ const StatsFilters: FC<Props> = ({ filters, onChange }) => {
         </NumberField>
       </ToggleButtonGroup>
 
-      {filters.mode === 'lastN' && (
+      {(filters.mode === 'lastN' || filters.mode === 'all') && (
         <div className={styles.lastNControls}>
           <AppSelect
             options={presetOptions}
@@ -141,7 +170,7 @@ const StatsFilters: FC<Props> = ({ filters, onChange }) => {
               minValue={1}
               onChange={(value) => {
                 if (!isNaN(value) && value > 0) {
-                  onChange({ ...filters, lastN: value })
+                  onChange({ ...filters, mode: 'lastN', lastN: value })
                 }
               }}
             >

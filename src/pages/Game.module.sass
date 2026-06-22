@@ -6,28 +6,20 @@
   display: flex
   flex-grow: 1
   flex-direction: column
-  justify-content: center
-  position: sticky
-  height: 100%
+  height: calc(100dvh - var(--navbar-height))
   padding: 0 .5rem
   @media screen and (min-width: variables.$large)
     max-width: variables.$landscapeContainerWidth
-    margin: 0 auto
-    max-height: variables.$mockFrameHeight // mock frame height
-
-.content
-  display: flex
-  flex-direction: column
-  justify-content: space-between
-  padding: .5rem 0
-  height: 100%
-  @media screen and (min-width: variables.$large)
+    height: variables.$mockFrameHeight
+    margin: auto
+    dispaly: flex
+    flex-direction: row
     border: 1px solid var(--color-primary-light)
     box-shadow: 11px 12px 36px 1px var(--color-shadow)
-    padding: .75rem
-    border-radius: .5rem
-    flex-direction: row
-    height: 20rem
-  &:last-child
-    position: relative
-    bottom: 0
+    padding: .5rem
+
+.text
+  text-align: center
+  font-size: 1.25rem
+  width: 100%
+  display: block

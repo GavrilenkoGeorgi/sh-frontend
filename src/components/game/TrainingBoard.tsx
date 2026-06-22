@@ -42,14 +42,14 @@ const TrainingBoard: FC = () => {
             onClick={canSave(game.school[key]) ? () => save(key) : undefined}
           >
             <div>
-              <p
+              <span
                 className={cx(styles.qualiScore, {
                   [styles.visible]: hasScore,
                   [styles.hidden]: !hasScore
                 })}
               >
                 {hasScore ? score : '\u00A0'}
-              </p>
+              </span>
               <Dice kind={index + 1} />
             </div>
           </div>

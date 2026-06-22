@@ -16,12 +16,12 @@ import { useFormFocus } from '../../hooks'
 
 import cx from 'classnames'
 import * as styles from './Form.module.sass'
-import LoadingIndicator from '../layout/LoadingIndicator'
 import { ROUTES } from '../../constants/routes'
 import { usePasswordVisibility } from '../../hooks/usePasswordVisibility'
 import IconEye from '../../assets/svg/icon-eye.svg'
 import IconEyeOff from '../../assets/svg/icon-eye-off.svg'
 import { useTranslation } from 'react-i18next'
+import { Button } from '../layout/Button/BaseButton'
 
 interface PwdUpdateProps {
   token?: string
@@ -173,13 +173,9 @@ const UpdatePwd: FC<PwdUpdateProps> = ({ token }) => {
           )}
         </div>
 
-        <button type="submit" className={styles.button}>
-          {isSubmitting ? (
-            <LoadingIndicator dark />
-          ) : (
-            t('ui.buttonLabels.update')
-          )}
-        </button>
+        <Button type="submit" isLoading={isSubmitting}>
+          {t('ui.buttonLabels.update')}
+        </Button>
       </fieldset>
     </form>
   )
