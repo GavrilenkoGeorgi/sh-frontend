@@ -70,7 +70,7 @@ const MultiplayerDnDDiceBoard: FC<MultiplayerDnDDiceBoardProps> = ({
           [styles.lastRoll]: rollCount >= 2
         })}
       />
-      <div className={styles.boardSections}>
+      <div className={styles.boardSections} data-multiplayer>
         <DnDContextWrapper
           onDragStart={handleDragStart}
           onDragOver={handleDragOver}

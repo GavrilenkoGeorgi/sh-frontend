@@ -78,6 +78,16 @@ export interface Stats {
   filter?: StatsFilterParams
 }
 
+export interface MultiplayerStats {
+  metaData: {
+    losses: number
+    ties: number
+    totalGames: number
+    wins: number
+  }
+  results: [] // TODO: define multiplayer stats results structure
+}
+
 export interface ChartAxisData {
   id: string
   value: number

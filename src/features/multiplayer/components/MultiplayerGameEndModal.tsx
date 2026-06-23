@@ -8,6 +8,8 @@ import {
 } from '../../../store/slices/multiplayerSlice'
 import * as styles from './MultiplayerGameBoard.module.sass'
 import { useTranslation } from 'react-i18next'
+import { BaseModal } from '../../../components/layout/Modal/BaseModal'
+import { Button } from '../../../components/layout/Button/BaseButton'
 
 const MultiplayerGameEndModal: FC = () => {
   const dispatch = useDispatch()
@@ -57,24 +59,22 @@ const MultiplayerGameEndModal: FC = () => {
   }
 
   return (
-    <div className={styles.endOverlay}>
-      <div className={styles.endModal}>
-        <h2 className={styles.endHeading}>{heading}</h2>
-        <p className={styles.endMessage}>{message}</p>
-        {myScore !== undefined && opponentScore !== undefined && (
-          <p className={styles.endScores}>
-            {myScore} : {opponentScore}
-          </p>
-        )}
-        <button
-          type="button"
-          className={styles.endButton}
-          onClick={handleBackToLobby}
-        >
+    <BaseModal
+      title={heading}
+      isOpen={true}
+      footerActions={() => (
+        <Button onClick={handleBackToLobby}>
           {t('ui.multiplayer.backToLobby')}
-        </button>
-      </div>
-    </div>
+        </Button>
+      )}
+    >
+      <p className={styles.endMessage}>{message}</p>
+      {myScore !== undefined && opponentScore !== undefined && (
+        <p className={styles.endScores}>
+          {myScore} : {opponentScore}
+        </p>
+      )}
+    </BaseModal>
   )
 }
 

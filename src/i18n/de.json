@@ -125,7 +125,14 @@
       "total": "gesamt",
       "yourTurn": "Dein",
       "opponentTurn": "{{name}}s",
-      "turn": "Zug"
+      "turn": "Zug",
+      "stats": {
+        "heading": "Mehrspieler-Statistik",
+        "totalGames": "Gesamtspiele:",
+        "wins": "Siege:",
+        "losses": "Niederlagen:",
+        "ties": "Unentschieden:"
+      }
     }
   },
   "pages": {

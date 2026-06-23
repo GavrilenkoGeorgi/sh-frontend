@@ -3,6 +3,9 @@ import type { MultiplayerPlayerState, ScoreCategory } from '../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
 import LoadingIndicator from '../../../components/layout/LoadingIndicator'
 import { useTranslation } from 'react-i18next'
+import { MAX_SAVES_PER_COMBINATION } from '../../../hooks/useMultiplayerTurn'
+import cs from 'classnames'
+import { Button } from '../../../components/layout/Button/BaseButton'
 
 const schoolCategories: ScoreCategory[] = [
   'ones',
@@ -33,6 +36,8 @@ interface ScoreCardParticipant {
 interface TurnControls {
   isMyTurn: boolean
   canSubmit: boolean
+  hasRolled?: boolean
+  isInSchoolPhase?: boolean
   schoolFailed?: boolean
   previewScores?: Partial<Record<ScoreCategory, number>>
   selectedCategory?: ScoreCategory | null
@@ -59,6 +64,8 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
   const {
     isMyTurn,
     canSubmit,
+    hasRolled = false,
+    isInSchoolPhase = false,
     schoolFailed = false,
     previewScores = {},
     selectedCategory = null,
@@ -69,32 +76,96 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
   const { t } = useTranslation()
 
   const renderRow = (category: ScoreCategory) => {
+    const isSchoolCategory = schoolCategories.includes(category)
     const playerScore = player.state.scoreCard[category]
     const opponentScore = opponent.state.scoreCard[category]
     const preview = previewScores[category]
     const isSelected = selectedCategory === category
-    const isUsed = player.state.usedCategories.includes(category)
-    // for game categories, 0 means no match — treat same as no preview
-    const isSchoolCategory = schoolCategories.includes(category)
-    const effectivePreview =
-      !isSchoolCategory && preview === 0 ? undefined : preview
-    const canSelect =
-      !isUsed && effectivePreview !== undefined && onCategorySelect
+
+    if (isSchoolCategory) {
+      const schoolScore = playerScore as number | null
+      const opponentSchoolScore = opponentScore as number | null
+      const isUsed = schoolScore !== null
+      const effectivePreview = preview
+      const canSelect =
+        !isUsed && effectivePreview !== undefined && onCategorySelect
+
+      return (
+        <tr
+          key={category}
+          className={isSelected ? styles.selectedRow : undefined}
+          onClick={canSelect ? () => onCategorySelect(category) : undefined}
+        >
+          <td className={styles.categoryCell}>
+            {schoolScore !== null ? (
+              <span className={styles.filledScore}>{schoolScore}</span>
+            ) : effectivePreview !== undefined ? (
+              <span className={styles.previewScore}>{effectivePreview}</span>
+            ) : (
+              <span className={styles.emptyScore}>–</span>
+            )}
+          </td>
+          <td
+            className={cs(styles.categoryName, {
+              [styles.selectableCategory]: canSelect
+            })}
+          >
+            {formatCategoryName(category)}
+          </td>
+          <td className={styles.categoryCell}>
+            {opponentSchoolScore !== null ? (
+              <span className={styles.filledScore}>{opponentSchoolScore}</span>
+            ) : (
+              <span className={styles.emptyScore}>–</span>
+            )}
+          </td>
+        </tr>
+      )
+    }
+
+    // game category: up to MAX_SAVES_PER_COMBINATION saves per slot
+    const savedScores = playerScore as number[]
+    const opponentSavedScores = opponentScore as number[]
+    const isUsed = savedScores.length >= MAX_SAVES_PER_COMBINATION
+    const effectivePreview = preview === 0 ? undefined : preview
+    // chance is always score-based; other game categories allow saving zero
+    const isChance = category === 'chance'
+    const canSelect = isChance
+      ? !isUsed && effectivePreview !== undefined && onCategorySelect
+      : !isUsed && hasRolled && !isInSchoolPhase && onCategorySelect
 
     return (
       <tr
         key={category}
         className={isSelected ? styles.selectedRow : undefined}
-        onClick={canSelect ? () => onCategorySelect(category) : undefined}
+        onClick={
+          canSelect && onCategorySelect
+            ? () => onCategorySelect(category)
+            : undefined
+        }
       >
         <td className={styles.categoryCell}>
-          {playerScore !== null ? (
-            <span className={styles.filledScore}>{playerScore}</span>
-          ) : effectivePreview !== undefined ? (
-            <span className={styles.previewScore}>{effectivePreview}</span>
-          ) : (
-            <span className={styles.emptyScore}>–</span>
-          )}
+          {Array.from({ length: MAX_SAVES_PER_COMBINATION }, (_, i) => {
+            if (i < savedScores.length) {
+              return (
+                <span key={i} className={styles.filledScore}>
+                  {savedScores[i]}
+                </span>
+              )
+            }
+            if (i === savedScores.length && effectivePreview !== undefined) {
+              return (
+                <span key={i} className={styles.previewScore}>
+                  {effectivePreview}
+                </span>
+              )
+            }
+            return (
+              <span key={i} className={styles.emptyScore}>
+                –
+              </span>
+            )
+          })}
         </td>
         <td
           className={`${styles.categoryName} ${canSelect ? styles.selectableCategory : ''}`}
@@ -102,11 +173,20 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
           {formatCategoryName(category)}
         </td>
         <td className={styles.categoryCell}>
-          {opponentScore !== null ? (
-            <span className={styles.filledScore}>{opponentScore}</span>
-          ) : (
-            <span className={styles.emptyScore}>–</span>
-          )}
+          {Array.from({ length: MAX_SAVES_PER_COMBINATION }, (_, i) => {
+            if (i < opponentSavedScores.length) {
+              return (
+                <span key={i} className={styles.filledScore}>
+                  {opponentSavedScores[i]}
+                </span>
+              )
+            }
+            return (
+              <span key={i} className={styles.emptyScore}>
+                –
+              </span>
+            )
+          })}
         </td>
       </tr>
     )
@@ -116,33 +196,45 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
     <table className={styles.scoreTable}>
       <thead>
         <tr>
-          <th className={styles.playerHeader}>{player.name}</th>
-          <th className={styles.categoryHeader}>
+          <th
+            className={cs(styles.playerHeader, {
+              [styles.accent]: isMyTurn
+            })}
+          >
+            {player.name}
+          </th>
+          <th>
             {isMyTurn && !schoolFailed && (
-              <button
-                disabled={!canSubmit}
-                className={styles.submitButton}
+              <Button
+                isDisabled={!canSubmit}
                 onClick={onSubmitTurn}
+                style={{ whiteSpace: 'nowrap' }}
               >
                 {t('ui.multiplayer.submitTurn')}
-              </button>
+              </Button>
             )}
 
             {isMyTurn && schoolFailed && (
-              <button className={styles.submitButton} onClick={onFailSchool}>
+              <Button onClick={onFailSchool}>
                 {t('ui.multiplayer.schoolFailed')}
-              </button>
+              </Button>
             )}
 
             {!isMyTurn && (
               <div>
                 <p className={styles.waitingMessage}>
-                  <span>{opponent.name}</span> <LoadingIndicator />
+                  <LoadingIndicator />
                 </p>
               </div>
             )}
           </th>
-          <th className={styles.playerHeader}>{opponent.name}</th>
+          <th
+            className={cs(styles.playerHeader, {
+              [styles.accent]: !isMyTurn
+            })}
+          >
+            {opponent.name}
+          </th>
         </tr>
       </thead>
       <tbody>

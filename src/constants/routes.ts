@@ -37,7 +37,8 @@ export const INVITE_API_ROUTES = {
 export const GAME_API_ROUTES = {
   SAVE_RESULTS: `${GAME_URL}/save`,
   CLEAR_STATS: `${GAME_URL}/clearstats`,
-  GET_STATS: `${GAME_URL}/stats`
+  GET_STATS: `${GAME_URL}/stats`,
+  GET_MULTIPLAYER_STATS: `${GAME_URL}/multiplayer-stats`
 } as const
 
 export type RoutePathsType = (typeof ROUTES)[keyof typeof ROUTES]

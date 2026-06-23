@@ -18,7 +18,7 @@ import OutgoingInvitesPanel from '../features/multiplayer/components/OutgoingInv
 import MultiplayerGameBoard from '../features/multiplayer/components/MultiplayerGameBoard'
 import MultiplayerGameEndModal from '../features/multiplayer/components/MultiplayerGameEndModal'
 import { useTranslation } from 'react-i18next'
-import { InviteButton } from '../features/multiplayer/components/InviteButton'
+import { Button } from '../components/layout/Button/BaseButton'
 
 const Multiplayer: FC = () => {
   const { t } = useTranslation()
@@ -78,7 +78,15 @@ const Multiplayer: FC = () => {
                   <CircleSvg />
                 </div>
                 {user.username}
-                <InviteButton onClick={() => emitInviteSend(user.userId)} />
+                <div
+                  style={{
+                    marginLeft: 'auto'
+                  }}
+                >
+                  <Button onPress={() => emitInviteSend(user.userId)} size="sm">
+                    {t('ui.buttonLabels.invite')}
+                  </Button>
+                </div>
               </li>
             ))}
           </ul>

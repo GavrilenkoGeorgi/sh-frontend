@@ -164,9 +164,6 @@ a {
   color: var(--color-primary);
 }
 
-p {
-  text-indent: 1ch;
-}
 /* ── view transitions ── */
 
 /*

@@ -125,7 +125,14 @@
       "total": "total",
       "yourTurn": "Your",
       "opponentTurn": "{{name}}'s",
-      "turn": "turn"
+      "turn": "turn",
+      "stats": {
+        "heading": "Multiplayer Stats",
+        "totalGames": "Total games played:",
+        "wins": "Wins:",
+        "losses": "Losses:",
+        "ties": "Ties:"
+      }
     }
   },
   "pages": {

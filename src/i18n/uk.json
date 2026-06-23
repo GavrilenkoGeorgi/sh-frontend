@@ -125,7 +125,14 @@
       "total": "Всього",
       "yourTurn": "Ваш",
       "opponentTurn": "{{name}}'с",
-      "turn": "хід"
+      "turn": "хід",
+      "stats": {
+        "heading": "Статистика мультиплеєра",
+        "totalGames": "Всього зіграно ігор:",
+        "wins": "Перемоги:",
+        "losses": "Поразки:",
+        "ties": "Нічия:"
+      }
     }
   },
   "pages": {

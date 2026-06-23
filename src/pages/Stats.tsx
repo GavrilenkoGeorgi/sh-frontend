@@ -23,6 +23,7 @@ import AppSelect from '../components/select/CustomSelect'
 import HelpCircle from '../assets/svg/icon-help-circle.svg'
 import { Tooltip, TooltipTrigger } from '../components/layout/Tooltip'
 import { Button } from 'react-aria-components'
+import MultiplayerStats from '../components/stats/MultiplayerStats'
 
 const ChartType = {
   bar: 'bar',
@@ -113,6 +114,8 @@ const StatsPage: FC = () => {
         </h3>
 
         <h4>{t('pages.stats.statsForGames', { count: data.summary.games })}</h4>
+
+        <MultiplayerStats />
 
         <StatsFilters filters={filters} onChange={handleFiltersChange} />
 

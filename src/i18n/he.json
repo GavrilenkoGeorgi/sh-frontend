@@ -125,7 +125,14 @@
       "total": "סה\"כ",
       "yourTurn": "תורך",
       "opponentTurn": "תור {{name}}",
-      "turn": ""
+      "turn": "תור",
+      "stats": {
+        "heading": "סטטיסטיקה מרובה משתתפים",
+        "totalGames": "סה\"כ משחקים:",
+        "wins": "ניצחונות:",
+        "losses": "הפסדים:",
+        "ties": "תיקו:"
+      }
     }
   },
   "pages": {
