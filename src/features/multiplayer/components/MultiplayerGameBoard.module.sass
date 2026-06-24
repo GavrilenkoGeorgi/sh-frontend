@@ -33,10 +33,6 @@
   height: 100%
   margin-top: calc(var(--navbar-height) + .25rem)
 
-  thead
-    tr
-      margin-bottom: .25rem
-
   tbody
     display: flex
     flex-direction: column
@@ -50,16 +46,23 @@
     display: flex
     justify-content: space-between
 
+  th
+    min-height: 3.25rem
+    display: flex
+    align-items: center
+    justify-content: center
+
   th, td
-    padding: .3rem .5rem
     flex: 1 1 0
+
+  td
+    padding: .3rem .5rem
   
 .playerHeader
   line-height: .9
   font-weight: 350
   color: var(--color-primary)
   width: 30%
-  align-self: center
   overflow-wrap: break-word
 
 .accent
@@ -81,6 +84,11 @@
   font-variant-numeric: tabular-nums
   display: flex
   justify-content: space-around
+  &:nth-child(3)
+    span
+      color: var(--color-primary-muted)
+      font-weight: 400
+    
 
 .filledScore
   color: var(--color-primary)
@@ -108,20 +116,6 @@
 
 .totalScore:first-of-type
   color: var(--color-accent)
-
-.waitingMessage, .submitButton
-  height: 2.5rem
-  font-size: 1rem
-  font-weight: 500
-
-.waitingMessage
-  text-align: center
-  color: var(--color-accent)
-  margin: 0
-  display: flex
-  align-items: center
-  justify-content: center
-  gap: .5rem
 
 .diceControlsContainer
   width: 100%

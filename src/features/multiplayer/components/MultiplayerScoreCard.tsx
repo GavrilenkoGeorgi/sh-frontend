@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { MAX_SAVES_PER_COMBINATION } from '../../../hooks/useMultiplayerTurn'
 import cs from 'classnames'
 import { Button } from '../../../components/layout/Button/BaseButton'
-import CountUp from 'react-countup'
 import { Dice } from '../../../components/game/Dice'
 
 const schoolCategories: ScoreCategory[] = [
@@ -225,13 +224,7 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
               </Button>
             )}
 
-            {!isMyTurn && (
-              <div>
-                <p className={styles.waitingMessage}>
-                  <LoadingIndicator />
-                </p>
-              </div>
-            )}
+            {!isMyTurn && <LoadingIndicator />}
           </th>
           <th
             className={cs(styles.playerHeader, {
@@ -251,10 +244,7 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
       </tbody>
       <tfoot>
         <tr className={styles.totalRow}>
-          <td className={styles.totalScore}>
-            <CountUp start={0} end={player.state.totalScore} duration={3} />
-            {/* {player.state.totalScore} */}
-          </td>
+          <td className={styles.totalScore}>{player.state.totalScore}</td>
           <td className={styles.categoryName}>{t('ui.multiplayer.total')}</td>
           <td className={styles.totalScore}>{opponent.state.totalScore}</td>
         </tr>
