@@ -22,7 +22,8 @@ import { StatsRadarChart } from '../components/charts/StatsRadarChart'
 import AppSelect from '../components/select/CustomSelect'
 import HelpCircle from '../assets/svg/icon-help-circle.svg'
 import { Tooltip, TooltipTrigger } from '../components/layout/Tooltip'
-import { Button } from 'react-aria-components'
+import MultiplayerStats from '../components/stats/MultiplayerStats'
+import { Button } from '../components/layout/Button/BaseButton'
 
 const ChartType = {
   bar: 'bar',
@@ -75,7 +76,15 @@ const StatsPage: FC = () => {
   return (
     <section className={sharedStyles.contentPage}>
       <div className={styles.stats}>
-        <h1>{t('pages.stats.title')}</h1>
+        <h1>
+          {t('pages.stats.title')}
+          <TooltipTrigger>
+            <Button size="tiny" variant="invisible">
+              <HelpCircle className={sharedStyles.tooltipIcon} />
+            </Button>
+            <Tooltip>{t('tooltips.statsHeading')}</Tooltip>
+          </TooltipTrigger>
+        </h1>
 
         <h2>
           {t('pages.stats.highestScoreLabel')}{' '}
@@ -114,13 +123,15 @@ const StatsPage: FC = () => {
 
         <h4>{t('pages.stats.statsForGames', { count: data.summary.games })}</h4>
 
+        <MultiplayerStats />
+
         <StatsFilters filters={filters} onChange={handleFiltersChange} />
 
         <aside>
           <h4>
             {t('pages.stats.trainingScores')}
             <TooltipTrigger>
-              <Button type="button" className={styles.helpButton}>
+              <Button size="tiny" variant="invisible">
                 <HelpCircle className={sharedStyles.tooltipIcon} />
               </Button>
               <Tooltip>{t('tooltips.trainingScores')}</Tooltip>
@@ -158,7 +169,7 @@ const StatsPage: FC = () => {
           <h4>
             {t('pages.stats.favouriteDiceValues')}
             <TooltipTrigger>
-              <Button type="button" className={styles.helpButton}>
+              <Button size="tiny" variant="invisible">
                 <HelpCircle className={sharedStyles.tooltipIcon} />
               </Button>
               <Tooltip>{t('tooltips.favDiceValues')}</Tooltip>
@@ -192,7 +203,7 @@ const StatsPage: FC = () => {
           <h4>
             {t('pages.stats.favouriteCombinations')}
             <TooltipTrigger>
-              <Button type="button" className={styles.helpButton}>
+              <Button size="tiny" variant="invisible">
                 <HelpCircle className={sharedStyles.tooltipIcon} />
               </Button>
               <Tooltip>{t('tooltips.favCombinations')}</Tooltip>

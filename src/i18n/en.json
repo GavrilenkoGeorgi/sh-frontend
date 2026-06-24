@@ -125,7 +125,15 @@
       "total": "total",
       "yourTurn": "Your",
       "opponentTurn": "{{name}}'s",
-      "turn": "turn"
+      "turn": "turn",
+      "stats": {
+        "heading": "Multiplayer Stats",
+        "totalGames": "Total games played:",
+        "wins": "Wins:",
+        "losses": "Losses:",
+        "ties": "Ties:",
+        "lastGame": "Last multiplayer game"
+      }
     }
   },
   "pages": {
@@ -253,6 +261,7 @@
     "trainingScores": "Your 'training' scores from the first part of the game.",
     "favDiceValues": "Dice values you choose most often in your games.",
     "favCombinations": "Dice combinations you saved most often in your games. Tooltips on charts show percentage of games where the combination was saved at least once.",
-    "newVersion": "Please update to the latest version or dismiss to update later on restart."
+    "newVersion": "Please update to the latest version or dismiss to update later on restart.",
+    "statsHeading": "Stats are calculated based on the single player sessions for now. Extended multiplayer stats will be available soon."
   }
 }

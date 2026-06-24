@@ -17,6 +17,7 @@ import * as styles from './MultiplayerGameBoard.module.sass'
 import { setNotification } from '../../../store/slices/notificationSlice'
 import { ToastTypes } from '../../../types'
 import { useTranslation } from 'react-i18next'
+import { useSchoolPhase } from '../../../hooks/useSchoolPhase'
 
 const PREVIEW_OPPONENT: BasicUser = {
   id: 'debug-opponent',
@@ -33,15 +34,15 @@ const createEmptyPlayerState = (): MultiplayerPlayerState => ({
     fours: null,
     fives: null,
     sixes: null,
-    pair: null,
-    twoPairs: null,
-    triple: null,
-    full: null,
-    quads: null,
-    poker: null,
-    small: null,
-    large: null,
-    chance: null
+    pair: [],
+    twoPairs: [],
+    triple: [],
+    full: [],
+    quads: [],
+    poker: [],
+    small: [],
+    large: [],
+    chance: []
   }
 })
 
@@ -86,6 +87,7 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
   const myId = currentUser?._id ?? previewPlayerId
   const isMyTurn = gameToRender.currentTurnPlayerId === myId
   const myState = gameToRender.players[myId] ?? null
+  const { isInSchoolPhase } = useSchoolPhase(myState)
 
   const {
     dice,
@@ -96,7 +98,7 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
     isLocked,
     canSubmit,
     schoolFailed,
-    hasUnselectedScoringDice,
+    // hasUnselectedScoringDice,
     roll,
     selectDie,
     deselectDie,
@@ -111,7 +113,7 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
 
   const opponentState = gameToRender.players[opponentToRender.id]
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (hasUnselectedScoringDice) {
       dispatch(
         setNotification({
@@ -120,7 +122,7 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
         })
       )
     }
-  }, [hasUnselectedScoringDice, dispatch, t])
+  }, [hasUnselectedScoringDice, dispatch, t]) */
 
   useEffect(() => {
     if (schoolFailed) {
@@ -145,6 +147,8 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
         turnControls={{
           isMyTurn,
           canSubmit,
+          hasRolled: isMyTurn && rollCount > 0,
+          isInSchoolPhase: isMyTurn ? isInSchoolPhase : undefined,
           schoolFailed: isMyTurn ? schoolFailed : undefined,
           previewScores: isMyTurn ? previewScores : undefined,
           selectedCategory,

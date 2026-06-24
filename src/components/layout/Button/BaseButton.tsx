@@ -7,7 +7,7 @@ import * as styles from './BaseButton.module.sass'
 import LoadingIndicator from '../LoadingIndicator'
 
 interface ButtonProps extends RACButtonProps {
-  variant?: 'primary' | 'secondary' | 'danger' | 'invisible'
+  variant?: 'primary' | 'secondary' | 'danger' | 'invisible' | 'warning'
   size?: 'tiny' | 'sm' | 'md'
   isLoading?: boolean
   children?: React.ReactNode

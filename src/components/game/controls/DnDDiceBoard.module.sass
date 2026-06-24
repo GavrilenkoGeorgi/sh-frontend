@@ -41,6 +41,12 @@
     width: variables.$controlsWidth + 1rem
     margin-top: 0
 
+.boardSections[data-multiplayer]
+  width: 100%
+  min-height: variables.$emptyDropZoneWidth
+  @media screen and (min-width: variables.$large)
+    margin-bottom: .5rem
+
 .controls:not([data-multiplayer]) .boardSections > .board:has(.items:empty)
   @media screen and (min-width: variables.$medium)
     flex-grow: 1

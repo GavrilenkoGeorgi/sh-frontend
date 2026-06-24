@@ -1,6 +1,6 @@
 import { GAME_API_ROUTES } from '../../constants/routes'
 import { SaveResultsData } from '../../pages/Game'
-import { Stats, StatsFilterParams } from '../../types'
+import { MultiplayerStats, Stats, StatsFilterParams } from '../../types'
 import { buildStatsQueryString } from '../../utils'
 import { gameApi } from './baseApi'
 import { GAME_TAGS } from './tags'
@@ -8,7 +8,8 @@ import { GAME_TAGS } from './tags'
 export const {
   useSaveResultsMutation,
   useClearStatsMutation,
-  useGetStatsQuery
+  useGetStatsQuery,
+  useGetMultiplayerStatsQuery
 } = gameApi.injectEndpoints({
   endpoints: (builder) => ({
     saveResults: builder.mutation<void, SaveResultsData>({
@@ -31,6 +32,14 @@ export const {
     getStats: builder.query<Stats, StatsFilterParams>({
       query: (filters) => ({
         url: `${GAME_API_ROUTES.GET_STATS}?${buildStatsQueryString(filters)}`,
+        method: 'GET',
+        credentials: 'include'
+      }),
+      providesTags: [GAME_TAGS.Game]
+    }),
+    getMultiplayerStats: builder.query<MultiplayerStats, void>({
+      query: () => ({
+        url: GAME_API_ROUTES.GET_MULTIPLAYER_STATS,
         method: 'GET',
         credentials: 'include'
       }),

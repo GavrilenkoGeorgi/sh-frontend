@@ -72,6 +72,14 @@ const extendedUserApi = userApi.injectEndpoints({
         }
       }
     }),
+    getUserProfileById: builder.query<User, string | number>({
+      query: (id) => ({
+        url: API_ROUTES.USER_PROFILE_BY_ID(id),
+        method: 'GET',
+        credentials: 'include'
+      }),
+      providesTags: [USER_TAGS.User]
+    }),
     refreshToken: builder.query<RefreshTokenResponse, void>({
       query: () => ({
         url: API_ROUTES.REFRESH_TOKEN,
@@ -123,5 +131,6 @@ export const {
   useLogoutMutation,
   useSignupMutation,
   useUpdateProfileMutation,
+  useGetUserProfileByIdQuery,
   useRefreshTokenQuery
 } = extendedUserApi
