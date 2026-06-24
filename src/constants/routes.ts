@@ -24,6 +24,8 @@ export const API_ROUTES = {
   SIGNUP: `${USERS_URL}/register`,
   DELETE_ACC: `${USERS_URL}/delete`,
   UPDATE_PROFILE: `${USERS_URL}/profile`,
+  CURRENT_USER_PROFILE: `${USERS_URL}/profile`,
+  USER_PROFILE_BY_ID: (id: string | number) => `${USERS_URL}/profile/${id}`,
   REFRESH_TOKEN: `${USERS_URL}/refresh`,
   SEND_RECOVERY_EMAIL: `${USERS_URL}/forgotpwd`,
   UPDATE_PASSWORD: `${USERS_URL}/updatepwd`

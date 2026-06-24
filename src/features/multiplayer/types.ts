@@ -67,7 +67,7 @@ export type ScoreCategory = SchoolCategory | GameCategory
 export interface MultiplayerPlayerState {
   totalScore: number
   usedCategories: ScoreCategory[]
-  scoreCard: MultiplayerPlayerScoreCard
+  scoreCard: MultiplayerScoreCard
 }
 
 export interface MultiplayerGameState {
@@ -82,7 +82,7 @@ export interface MultiplayerGameState {
   endedReason?: 'completed' | 'disconnect' | 'school-incomplete'
 }
 
-export interface MultiplayerPlayerScoreCard {
+export interface MultiplayerScoreCard {
   // school: one save per category
   ones: number | null
   twos: number | null
