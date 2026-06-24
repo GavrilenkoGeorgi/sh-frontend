@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, JSX } from 'react'
 import type { MultiplayerPlayerState, ScoreCategory } from '../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
 import LoadingIndicator from '../../../components/layout/LoadingIndicator'
@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next'
 import { MAX_SAVES_PER_COMBINATION } from '../../../hooks/useMultiplayerTurn'
 import cs from 'classnames'
 import { Button } from '../../../components/layout/Button/BaseButton'
+import CountUp from 'react-countup'
+import { Dice } from '../../../components/game/Dice'
 
 const schoolCategories: ScoreCategory[] = [
   'ones',
@@ -52,8 +54,11 @@ interface MultiplayerScoreCardProps {
   turnControls: TurnControls
 }
 
-const formatCategoryName = (category: ScoreCategory): string => {
-  return category.replace(/([A-Z])/g, ' $1').toLowerCase()
+const formatCategoryName = (category: ScoreCategory): JSX.Element => {
+  if (schoolCategories.includes(category)) {
+    return <Dice kind={category} />
+  }
+  return <span>{category.replace(/([A-Z])/g, ' $1').toLowerCase()}</span>
 }
 
 const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
@@ -246,7 +251,10 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
       </tbody>
       <tfoot>
         <tr className={styles.totalRow}>
-          <td className={styles.totalScore}>{player.state.totalScore}</td>
+          <td className={styles.totalScore}>
+            <CountUp start={0} end={player.state.totalScore} duration={3} />
+            {/* {player.state.totalScore} */}
+          </td>
           <td className={styles.categoryName}>{t('ui.multiplayer.total')}</td>
           <td className={styles.totalScore}>{opponent.state.totalScore}</td>
         </tr>
