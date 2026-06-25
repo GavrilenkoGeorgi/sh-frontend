@@ -16,6 +16,7 @@ interface MultiplayerDnDDiceBoardProps {
   selectedIndices: number[]
   rollCount: number
   isLocked: boolean
+  isMyTurn: boolean
   selectDie: (index: number) => void
   deselectDie: (index: number) => void
   roll: () => void
@@ -26,6 +27,7 @@ const MultiplayerDnDDiceBoard: FC<MultiplayerDnDDiceBoardProps> = ({
   selectedIndices,
   rollCount,
   isLocked,
+  isMyTurn,
   selectDie,
   deselectDie,
   roll
@@ -67,7 +69,8 @@ const MultiplayerDnDDiceBoard: FC<MultiplayerDnDDiceBoardProps> = ({
         className={cx(styles.rollButton, {
           [styles.locked]: isLocked,
           [styles.rolled]: rollCount === 1,
-          [styles.lastRoll]: rollCount >= 2
+          [styles.lastRoll]: rollCount >= 2,
+          [styles.dimmed]: !isMyTurn
         })}
       />
       <div className={styles.boardSections} data-multiplayer>

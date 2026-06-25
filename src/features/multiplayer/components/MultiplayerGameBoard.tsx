@@ -163,6 +163,7 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
           selectedIndices={isMyTurn ? selectedIndices : []}
           rollCount={isMyTurn ? rollCount : 0}
           isLocked={!isMyTurn || isLocked}
+          isMyTurn={isMyTurn}
           selectDie={selectDie}
           deselectDie={deselectDie}
           roll={roll}
