@@ -1,33 +1,27 @@
 import { FC, JSX } from 'react'
+import {
+  Button as AriaButton,
+  Disclosure,
+  DisclosureGroup,
+  DisclosurePanel
+} from 'react-aria-components'
 import type { MultiplayerPlayerState, ScoreCategory } from '../types'
+import { SchoolCombinations, GameCombinations } from '../../../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
 import LoadingIndicator from '../../../components/layout/LoadingIndicator'
 import { useTranslation } from 'react-i18next'
+import { type TFunction } from 'i18next'
 import { MAX_SAVES_PER_COMBINATION } from '../../../hooks/useMultiplayerTurn'
 import cs from 'classnames'
 import { Button } from '../../../components/layout/Button/BaseButton'
 import { Dice } from '../../../components/game/Dice'
+import { getCombinationLabel } from '../../../utils/combinationLabels'
+import { Pill } from './Pill'
+import ChevronUpIcon from '../../../assets/svg/icon-chevron-up.svg'
+import ChevronDownIcon from '../../../assets/svg/icon-chevron-down.svg'
 
-const schoolCategories: ScoreCategory[] = [
-  'ones',
-  'twos',
-  'threes',
-  'fours',
-  'fives',
-  'sixes'
-]
-
-const gameCategories: ScoreCategory[] = [
-  'pair',
-  'twoPairs',
-  'triple',
-  'full',
-  'quads',
-  'poker',
-  'small',
-  'large',
-  'chance'
-]
+const schoolCategories: ScoreCategory[] = Object.values(SchoolCombinations)
+const gameCategories: ScoreCategory[] = Object.values(GameCombinations)
 
 interface ScoreCardParticipant {
   state: MultiplayerPlayerState
@@ -53,11 +47,14 @@ interface MultiplayerScoreCardProps {
   turnControls: TurnControls
 }
 
-const formatCategoryName = (category: ScoreCategory): JSX.Element => {
+const formatCategoryName = (
+  category: ScoreCategory,
+  t: TFunction
+): JSX.Element => {
   if (schoolCategories.includes(category)) {
     return <Dice kind={category} />
   }
-  return <span>{category.replace(/([A-Z])/g, ' $1').toLowerCase()}</span>
+  return <span>{getCombinationLabel(category, t)}</span>
 }
 
 const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
@@ -95,12 +92,15 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
         !isUsed && effectivePreview !== undefined && onCategorySelect
 
       return (
-        <tr
+        <div
           key={category}
-          className={isSelected ? styles.selectedRow : undefined}
+          role="row"
+          className={cs(styles.tableRow, {
+            [styles.selectedRow]: isSelected
+          })}
           onClick={canSelect ? () => onCategorySelect(category) : undefined}
         >
-          <td className={styles.categoryCell}>
+          <div role="cell" className={styles.categoryCell}>
             {schoolScore !== null ? (
               <span className={styles.filledScore}>{schoolScore}</span>
             ) : effectivePreview !== undefined ? (
@@ -108,22 +108,23 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
             ) : (
               <span className={styles.emptyScore}>–</span>
             )}
-          </td>
-          <td
+          </div>
+          <div
+            role="cell"
             className={cs(styles.categoryName, {
               [styles.selectableCategory]: canSelect
             })}
           >
-            {formatCategoryName(category)}
-          </td>
-          <td className={styles.categoryCell}>
+            {formatCategoryName(category, t)}
+          </div>
+          <div role="cell" className={styles.categoryCell}>
             {opponentSchoolScore !== null ? (
               <span className={styles.filledScore}>{opponentSchoolScore}</span>
             ) : (
               <span className={styles.emptyScore}>–</span>
             )}
-          </td>
-        </tr>
+          </div>
+        </div>
       )
     }
 
@@ -139,16 +140,19 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
       : !isUsed && hasRolled && !isInSchoolPhase && onCategorySelect
 
     return (
-      <tr
+      <div
         key={category}
-        className={isSelected ? styles.selectedRow : undefined}
+        role="row"
+        className={cs(styles.tableRow, {
+          [styles.selectedRow]: isSelected
+        })}
         onClick={
           canSelect && onCategorySelect
             ? () => onCategorySelect(category)
             : undefined
         }
       >
-        <td className={styles.categoryCell}>
+        <div role="cell" className={styles.categoryCell}>
           {Array.from({ length: MAX_SAVES_PER_COMBINATION }, (_, i) => {
             if (i < savedScores.length) {
               return (
@@ -170,13 +174,14 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
               </span>
             )
           })}
-        </td>
-        <td
+        </div>
+        <div
+          role="cell"
           className={`${styles.categoryName} ${canSelect ? styles.selectableCategory : ''}`}
         >
-          {formatCategoryName(category)}
-        </td>
-        <td className={styles.categoryCell}>
+          {formatCategoryName(category, t)}
+        </div>
+        <div role="cell" className={styles.categoryCell}>
           {Array.from({ length: MAX_SAVES_PER_COMBINATION }, (_, i) => {
             if (i < opponentSavedScores.length) {
               return (
@@ -191,23 +196,24 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
               </span>
             )
           })}
-        </td>
-      </tr>
+        </div>
+      </div>
     )
   }
 
   return (
-    <table className={styles.scoreTable}>
-      <thead>
-        <tr>
-          <th
+    <div className={styles.scoreTable} role="table">
+      <div role="rowgroup">
+        <div role="row" className={styles.tableRow}>
+          <div
+            role="columnheader"
             className={cs(styles.playerHeader, {
               [styles.accent]: isMyTurn
             })}
           >
             {player.name}
-          </th>
-          <th>
+          </div>
+          <div role="columnheader" className={styles.tableHeaderCell}>
             {isMyTurn && !schoolFailed && (
               <Button
                 isDisabled={!canSubmit}
@@ -225,31 +231,95 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
             )}
 
             {!isMyTurn && <LoadingIndicator />}
-          </th>
-          <th
+          </div>
+          <div
+            role="columnheader"
             className={cs(styles.playerHeader, {
               [styles.accent]: !isMyTurn
             })}
           >
             {opponent.name}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {schoolCategories.map(renderRow)}
-        <tr className={styles.sectionDivider}>
-          <td colSpan={3} />
-        </tr>
-        {gameCategories.map(renderRow)}
-      </tbody>
-      <tfoot>
-        <tr className={styles.totalRow}>
-          <td className={styles.totalScore}>{player.state.totalScore}</td>
-          <td className={styles.categoryName}>{t('ui.multiplayer.total')}</td>
-          <td className={styles.totalScore}>{opponent.state.totalScore}</td>
-        </tr>
-      </tfoot>
-    </table>
+          </div>
+        </div>
+      </div>
+
+      <DisclosureGroup
+        allowsMultipleExpanded
+        defaultExpandedKeys={['training']}
+        className={styles.scoreSections}
+      >
+        <Disclosure id="training" className={styles.scoreSection}>
+          {({ isExpanded }) => (
+            <>
+              <h3 className={styles.sectionHeading}>
+                <AriaButton slot="trigger" className={styles.sectionToggle}>
+                  {!isExpanded && (
+                    <>
+                      <Dice kind={'ones'} />
+                      <Dice kind={'twos'} />
+                      <Dice kind={'threes'} />
+                      <Dice kind={'fours'} />
+                      <Dice kind={'fives'} />
+                      <Dice kind={'sixes'} />
+                    </>
+                  )}
+                  <span aria-hidden="true" className={styles.sectionIcon}>
+                    {isExpanded ? <ChevronDownIcon /> : <ChevronUpIcon />}
+                  </span>
+                </AriaButton>
+              </h3>
+              <DisclosurePanel className={styles.sectionPanel}>
+                <div className={styles.panelInner}>
+                  {schoolCategories.map(renderRow)}
+                </div>
+              </DisclosurePanel>
+            </>
+          )}
+        </Disclosure>
+
+        <Disclosure id="game" className={styles.scoreSection}>
+          {({ isExpanded }) => (
+            <>
+              <h3 className={styles.sectionHeading}>
+                <AriaButton slot="trigger" className={styles.sectionToggle}>
+                  {!isExpanded && (
+                    <span className={styles.pillList}>
+                      {gameCategories.map((category) => (
+                        <Pill key={category}>
+                          {getCombinationLabel(category, t)}
+                        </Pill>
+                      ))}
+                    </span>
+                  )}
+                  <span aria-hidden="true" className={styles.sectionIcon}>
+                    {isExpanded ? <ChevronDownIcon /> : <ChevronUpIcon />}
+                  </span>
+                </AriaButton>
+              </h3>
+              <DisclosurePanel className={styles.sectionPanel}>
+                <div className={styles.panelInner}>
+                  {gameCategories.map(renderRow)}
+                </div>
+              </DisclosurePanel>
+            </>
+          )}
+        </Disclosure>
+      </DisclosureGroup>
+
+      <div role="rowgroup">
+        <div role="row" className={cs(styles.tableRow, styles.totalRow)}>
+          <div role="cell" className={styles.totalScore}>
+            {player.state.totalScore}
+          </div>
+          <div role="cell" className={styles.categoryName}>
+            {t('ui.multiplayer.total')}
+          </div>
+          <div role="cell" className={styles.totalScore}>
+            {opponent.state.totalScore}
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

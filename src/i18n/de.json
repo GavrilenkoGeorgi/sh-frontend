@@ -263,5 +263,22 @@
     "favCombinations": "Würfelkombinationen, die du in deinen Spielen am häufigsten gerettet hast. Tooltips in den Diagrammen zeigen den Prozentsatz der Spiele an, in denen die Kombination mindestens einmal gerettet wurde.",
     "newVersion": "Eine neue Version ist verfügbar. Klicke, um die Seite zu aktualisieren.",
     "statsHeading": "Die Statistiken werden derzeit auf der Grundlage der Einzelspielersitzungen berechnet. Erweiterte Mehrspielerstatistiken werden in Kürze verfügbar sein."
+  },
+  "combinations": {
+    "ones": "Einser",
+    "twos": "Zweier",
+    "threes": "Dreier",
+    "fours": "Vierer",
+    "fives": "Fünfer",
+    "sixes": "Sechser",
+    "pair": "Paar",
+    "twoPairs": "Zwei Paare",
+    "triple": "Drilling",
+    "full": "Full House",
+    "quads": "Vierling",
+    "poker": "Poker",
+    "small": "Kleine Straße",
+    "large": "Große Straße",
+    "chance": "Chance"
   }
 }

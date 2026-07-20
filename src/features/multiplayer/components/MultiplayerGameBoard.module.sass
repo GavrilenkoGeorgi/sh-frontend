@@ -29,41 +29,126 @@
 
 .scoreTable
   width: 100%
-  border-collapse: collapse
   height: 100%
   margin-top: calc(var(--navbar-height) + .25rem)
 
-  tbody
-    display: flex
-    flex-direction: column
-    border: 1px solid var(--color-primary-light)
-    border-radius: .25rem
-    height: 100%
-    justify-content: space-between
-    padding-bottom: .5rem
-
-  tr
-    display: flex
-    justify-content: space-between
-
-  th
+  [role='columnheader']
     min-height: 3.25rem
     display: flex
     align-items: center
     justify-content: center
 
-  th, td
+  [role='columnheader'], [role='cell']
     flex: 1 1 0
 
-  td
+  [role='cell']
     padding: .3rem .5rem
+
+.tableRow
+  display: flex
+  justify-content: space-between
+
+.tableHeaderCell
+  display: flex
+  align-items: center
+  justify-content: center
+
+.scoreSections
+  display: flex
+  flex-direction: column
+  border: 1px solid var(--color-primary-light)
+  overflow: hidden
+
+.scoreSection
+  display: grid
+  grid-template-rows: auto 0fr
+  border-bottom: 1px solid var(--color-primary-light)
+  transition: grid-template-rows var(--duration-default) ease
+  &:last-child
+    border-bottom: 0
+  &[data-expanded]
+    grid-template-rows: auto 1fr
+    flex: 1 1 0
+
+.sectionHeading
+  margin: 0
+  font-size: .95rem
+  font-weight: 500
+  svg
+    max-width: 2.3rem
+
+.sectionToggle
+  width: 100%
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: .5rem
+  padding: .35rem .5rem
+  border: 0
+  background-color: var(--color-primary-light)
+  color: var(--color-primary)
+  font: inherit
+  cursor: pointer
+  text-transform: capitalize
+  min-height: 60px
+  transition: color var(--duration-default), background-color var(--duration-default), height var(--duration-default)
+  &[data-hovered]
+    color: var(--color-accent)
+  &[data-focus-visible]
+    outline: 2px solid var(--color-accent)
+    outline-offset: -2px
+
+.sectionIcon
+  color: var(--color-accent)
+  transition: transform var(--duration-default) ease
+  margin-left: auto
+
+.pillList
+  display: flex
+  flex-wrap: wrap
+  gap: .25rem
+  overflow: hidden
+
+.pill
+  padding: .1rem .2rem
+  border-radius: 1rem
+  // background-color: var(--color-surface)
+  color: var(--color-primary)
+  font-size: .75rem
+  white-space: nowrap
+
+.sectionPanel
+  display: flex
+  flex-direction: column-reverse
+  min-height: 0
+  overflow: hidden
+  opacity: 0
+  transition: opacity var(--duration-default) ease var(--duration-default)
+  perspective: 800px
+
+  &[hidden]
+    display: block
+
+.panelInner
+  display: flex
+  flex-direction: column
+  
+  padding: 1rem 0
+
+.scoreSection[data-expanded] .sectionPanel
+  opacity: 1
+
+.scoreSection[data-expanded] .sectionIcon
+  transition: opacity var(--duration-default) ease var(--duration-default)
   
 .playerHeader
   line-height: .9
   font-weight: 350
+  text-align: center
   color: var(--color-primary)
   width: 30%
   overflow-wrap: break-word
+  padding: 0 .5rem
 
 .accent
   color: var(--color-accent)
@@ -100,13 +185,8 @@
   color: var(--color-text-dim)
   opacity: .4
 
-.sectionDivider
-  td
-    padding: 0
-    border-bottom: 1px solid var(--color-primary-light)
-
 .totalRow
-  td
+  [role='cell']
     margin-top: .75rem
     font-weight: 500
 

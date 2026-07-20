@@ -13,6 +13,7 @@ import type {
   MultiplayerGameState,
   MultiplayerPlayerState
 } from '../types'
+import { SchoolCombinations, GameCombinations } from '../../../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
 import { setNotification } from '../../../store/slices/notificationSlice'
 import { ToastTypes } from '../../../types'
@@ -24,26 +25,24 @@ const PREVIEW_OPPONENT: BasicUser = {
   username: 'debug opponent'
 }
 
+const createEmptyScoreCard = () => {
+  const schoolCard = Object.values(SchoolCombinations).reduce(
+    (card, category) => ({ ...card, [category]: null }),
+    {} as Record<SchoolCombinations, number | null>
+  )
+
+  const gameCard = Object.values(GameCombinations).reduce(
+    (card, category) => ({ ...card, [category]: [] }),
+    {} as Record<GameCombinations, number[]>
+  )
+
+  return { ...schoolCard, ...gameCard }
+}
+
 const createEmptyPlayerState = (): MultiplayerPlayerState => ({
   totalScore: 0,
   usedCategories: [],
-  scoreCard: {
-    ones: null,
-    twos: null,
-    threes: null,
-    fours: null,
-    fives: null,
-    sixes: null,
-    pair: [],
-    twoPairs: [],
-    triple: [],
-    full: [],
-    quads: [],
-    poker: [],
-    small: [],
-    large: [],
-    chance: []
-  }
+  scoreCard: createEmptyScoreCard()
 })
 
 interface MultiplayerGameBoardProps {
