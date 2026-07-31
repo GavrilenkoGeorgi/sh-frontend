@@ -263,5 +263,22 @@
     "favCombinations": "Dice combinations you saved most often in your games. Tooltips on charts show percentage of games where the combination was saved at least once.",
     "newVersion": "Please update to the latest version or dismiss to update later on restart.",
     "statsHeading": "Stats are calculated based on the single player sessions for now. Extended multiplayer stats will be available soon."
+  },
+  "combinations": {
+    "ones": "Ones",
+    "twos": "Twos",
+    "threes": "Threes",
+    "fours": "Fours",
+    "fives": "Fives",
+    "sixes": "Sixes",
+    "pair": "Pair",
+    "twoPairs": "Two pairs",
+    "triple": "Three of a kind",
+    "full": "Full",
+    "quads": "Quads",
+    "poker": "Poker",
+    "small": "Small",
+    "large": "Large",
+    "chance": "Chance"
   }
 }

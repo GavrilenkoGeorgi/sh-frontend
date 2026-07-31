@@ -1,3 +1,5 @@
+import { SchoolCombinations, GameCombinations } from '../../types'
+
 export interface OnlineUser {
   userId: string
   username: string
@@ -43,26 +45,8 @@ export type MultiplayerGameStatus = 'active' | 'finished' | 'abandoned'
 
 export type GameEndReason = 'completed' | 'opponent_disconnected'
 
-export type SchoolCategory =
-  | 'ones'
-  | 'twos'
-  | 'threes'
-  | 'fours'
-  | 'fives'
-  | 'sixes'
-
-export type GameCategory =
-  | 'pair'
-  | 'twoPairs'
-  | 'triple'
-  | 'full'
-  | 'quads'
-  | 'poker'
-  | 'small'
-  | 'large'
-  | 'chance'
-
-export type ScoreCategory = SchoolCategory | GameCategory
+// score category keys are defined once in the shared types module
+export type ScoreCategory = SchoolCombinations | GameCombinations
 
 export interface MultiplayerPlayerState {
   totalScore: number
