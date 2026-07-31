@@ -59,6 +59,7 @@
 
   /* durations */
   --duration-default: 0.3s;
+  --duration-slow: 0.75s;
   --duration-nav-open: 1s;
 }
 

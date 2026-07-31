@@ -30,40 +30,40 @@
 .scoreTable
   width: 100%
   height: 100%
-  margin-top: calc(var(--navbar-height) + .25rem)
-
-  [role='columnheader']
-    min-height: 3.25rem
-    display: flex
-    align-items: center
-    justify-content: center
-
-  [role='columnheader'], [role='cell']
-    flex: 1 1 0
+  margin-top: calc(var(--navbar-height) + .5rem)
+  display: flex
+  flex-direction: column
+  gap: 1rem
 
   [role='cell']
-    padding: .3rem .5rem
+    flex: 1 1 0
 
 .tableRow
   display: flex
   justify-content: space-between
+  opacity: 0
+  transform: translateY(-.4rem)
+  will-change: opacity, transform
+  transition: opacity var(--duration-slow) ease, transform var(--duration-slow) ease
 
-.tableHeaderCell
-  display: flex
-  align-items: center
-  justify-content: center
+// stagger each row's entrance so combinations slide/fade in one by one, once the panel has fully expanded
+.scoreSection[data-expanded] .tableRow
+  opacity: 1
+  transform: translateY(0)
+  @for $i from 1 through 9
+    &:nth-child(#{$i})
+      transition-delay: calc(var(--duration-slow) + var(--duration-slow) * #{$i - 1} / 6)
 
 .scoreSections
   display: flex
   flex-direction: column
-  border: 1px solid var(--color-primary-light)
   overflow: hidden
+  gap: .5rem
 
 .scoreSection
   display: grid
   grid-template-rows: auto 0fr
-  border-bottom: 1px solid var(--color-primary-light)
-  transition: grid-template-rows var(--duration-default) ease
+  transition: grid-template-rows var(--duration-slow) ease
   &:last-child
     border-bottom: 0
   &[data-expanded]
@@ -74,8 +74,6 @@
   margin: 0
   font-size: .95rem
   font-weight: 500
-  svg
-    max-width: 2.3rem
 
 .sectionToggle
   width: 100%
@@ -83,15 +81,15 @@
   align-items: center
   justify-content: space-between
   gap: .5rem
-  padding: .35rem .5rem
+  padding: 0
   border: 0
-  background-color: var(--color-primary-light)
+  background-color: transparent
   color: var(--color-primary)
   font: inherit
   cursor: pointer
   text-transform: capitalize
   min-height: 60px
-  transition: color var(--duration-default), background-color var(--duration-default), height var(--duration-default)
+  transition: color var(--duration-slow), background-color var(--duration-slow), height var(--duration-slow)
   &[data-hovered]
     color: var(--color-accent)
   &[data-focus-visible]
@@ -100,8 +98,44 @@
 
 .sectionIcon
   color: var(--color-accent)
-  transition: transform var(--duration-default) ease
+  transition: transform var(--duration-slow) ease
   margin-left: auto
+  display: flex
+  align-items: center
+
+.gameDash
+  display: grid
+  grid-template-columns: repeat(6, minmax(0, 1fr))
+  align-items: center
+  gap: 1rem
+  width: 100%
+  opacity: 1
+  transition: opacity var(--duration-slow) ease
+  color: var(--color-primary)
+
+.scoreSection[data-expanded] .gameDash
+  opacity: 0
+
+.trainingHeaderRow
+  display: flex
+  align-items: center
+  justify-content: space-between
+  margin: .25rem 0
+
+.trainingName
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+  font-size: .75rem
+  min-width: 0
+
+.trainingScoreCell
+  text-align: center
+  font-variant-numeric: tabular-nums
+  display: flex
+  justify-content: center
+  span
+    margin: 0 auto
 
 .pillList
   display: flex
@@ -110,12 +144,23 @@
   overflow: hidden
 
 .pill
-  padding: .1rem .2rem
+  padding: .2rem .4rem
   border-radius: 1rem
-  // background-color: var(--color-surface)
   color: var(--color-primary)
-  font-size: .75rem
   white-space: nowrap
+  opacity: 1
+  will-change: opacity
+  transition: opacity var(--duration-slow) ease
+
+// fade pills out one by one, in sync with the matching row appearing below, once the panel has fully expanded
+.scoreSection[data-expanded] .pill
+  opacity: 0
+  @for $i from 1 through 9
+    &:nth-child(#{$i})
+      transition-delay: calc(var(--duration-slow) + var(--duration-slow) * #{$i - 1} / 6)
+
+.submitRow
+  margin-top: .5rem
 
 .sectionPanel
   display: flex
@@ -123,32 +168,35 @@
   min-height: 0
   overflow: hidden
   opacity: 0
-  transition: opacity var(--duration-default) ease var(--duration-default)
+  transition: opacity var(--duration-slow) ease
   perspective: 800px
 
   &[hidden]
     display: block
+    // react-aria sets hidden="until-found", which forces content-visibility: hidden
+    // and skips rendering entirely — that breaks the transition on the very first
+    // reveal (no "before" frame was ever painted). We already hide/animate this
+    // panel ourselves via opacity + the parent's grid-template-rows, so opt out.
+    content-visibility: visible
 
 .panelInner
   display: flex
   flex-direction: column
-  
-  padding: 1rem 0
+  gap: .5rem
+  padding-top: 1rem
 
 .scoreSection[data-expanded] .sectionPanel
   opacity: 1
 
 .scoreSection[data-expanded] .sectionIcon
-  transition: opacity var(--duration-default) ease var(--duration-default)
-  
+  transform: rotate(180deg)
+
 .playerHeader
-  line-height: .9
+  font-size: 1.25rem
   font-weight: 350
-  text-align: center
+  text-align: left
   color: var(--color-primary)
-  width: 30%
   overflow-wrap: break-word
-  padding: 0 .5rem
 
 .accent
   color: var(--color-accent)
@@ -175,7 +223,6 @@
     span
       color: var(--color-primary-muted)
       font-weight: 400
-    
 
 .filledScore
   color: var(--color-primary)
@@ -185,19 +232,11 @@
   color: var(--color-text-dim)
   opacity: .4
 
-.totalRow
-  [role='cell']
-    margin-top: .75rem
-    font-weight: 500
-
 .totalScore
   text-align: center
   font-size: 1.1rem
   color: var(--color-primary)
   font-variant-numeric: tabular-nums
-
-.totalScore:first-of-type
-  color: var(--color-accent)
 
 .diceControlsContainer
   width: 100%
@@ -259,6 +298,6 @@
   color: var(--color-surface)
   font-size: 1rem
   cursor: pointer
-  transition: background-color var(--duration-default)
+  transition: background-color var(--duration-slow)
   &:hover
     background-color: var(--color-accent)
