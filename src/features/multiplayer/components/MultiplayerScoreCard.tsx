@@ -18,7 +18,8 @@ import { Pill } from './Pill'
 import MultiplayerTrainingScoreCard from './MultiplayerTrainingScoreCard'
 import ChevronUpIcon from '../../../assets/svg/icon-chevron-up.svg'
 
-const gameCategories: ScoreCategory[] = Object.values(GameCombinations)
+// keep the narrow type so scoreCard[category] is number[], no casts needed
+const gameCategories: GameCombinations[] = Object.values(GameCombinations)
 
 interface ScoreCardParticipant {
   state: MultiplayerPlayerState
@@ -63,15 +64,12 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
   } = turnControls
   const { t } = useTranslation()
 
-  const renderRow = (category: ScoreCategory) => {
-    const playerScore = player.state.scoreCard[category]
-    const opponentScore = opponent.state.scoreCard[category]
+  const renderRow = (category: GameCombinations) => {
+    // game category: up to MAX_SAVES_PER_COMBINATION saves per slot
+    const savedScores = player.state.scoreCard[category]
+    const opponentSavedScores = opponent.state.scoreCard[category]
     const preview = previewScores[category]
     const isSelected = selectedCategory === category
-
-    // game category: up to MAX_SAVES_PER_COMBINATION saves per slot
-    const savedScores = playerScore as number[]
-    const opponentSavedScores = opponentScore as number[]
     const isUsed = savedScores.length >= MAX_SAVES_PER_COMBINATION
     const effectivePreview = preview === 0 ? undefined : preview
     // chance is always score-based; other game categories allow saving zero

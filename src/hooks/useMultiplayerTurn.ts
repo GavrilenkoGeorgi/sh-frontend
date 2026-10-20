@@ -13,13 +13,12 @@ import {
   GameCombinations,
   type Combination
 } from '../types'
-import { useSchoolPhase } from './useSchoolPhase'
+import { schoolCategories, useSchoolPhase } from './useSchoolPhase'
 
 const DICE_COUNT = 5
 const MAX_ROLLS = 3
 export const MAX_SAVES_PER_COMBINATION = 3
 
-export const schoolCategories = Object.values(SchoolCombinations)
 const gameCategories = Object.values(GameCombinations)
 
 export interface MultiplayerTurnState {

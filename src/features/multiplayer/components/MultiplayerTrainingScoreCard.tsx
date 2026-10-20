@@ -5,7 +5,8 @@ import { SchoolCombinations } from '../../../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
 import { Dice } from '../../../components/game/Dice'
 
-const schoolCategories: ScoreCategory[] = Object.values(SchoolCombinations)
+// keep the narrow type so scoreCard[category] is number | null, no casts needed
+const schoolCategories: SchoolCombinations[] = Object.values(SchoolCombinations)
 
 interface ScoreCardParticipant {
   state: MultiplayerPlayerState
@@ -53,20 +54,33 @@ interface TrainingDiceProps {
   onCategorySelect?: (category: ScoreCategory) => void
 }
 
+interface ScoreValueProps {
+  score: number | null
+  preview?: number
+}
+
+// saved score, otherwise the preview for the currently selected dice, otherwise a dash
+const ScoreValue: FC<ScoreValueProps> = ({ score, preview }) => {
+  if (score !== null) return <span className={styles.filledScore}>{score}</span>
+  if (preview !== undefined) {
+    return <span className={styles.previewScore}>{preview}</span>
+  }
+  return <span className={styles.emptyScore}>–</span>
+}
+
 // score cells for one participant, aligned with the dice column below/above them
-const renderScoreCells = (participant: ScoreCardParticipant) =>
-  schoolCategories.map((category) => {
-    const score = participant.state.scoreCard[category] as number | null
-    return (
-      <div key={category} className={styles.trainingScoreCell}>
-        {score !== null ? (
-          <span className={styles.filledScore}>{score}</span>
-        ) : (
-          <span className={styles.emptyScore}>–</span>
-        )}
-      </div>
-    )
-  })
+const renderScoreCells = (
+  participant: ScoreCardParticipant,
+  previewScores: Partial<Record<ScoreCategory, number>> = {}
+) =>
+  schoolCategories.map((category) => (
+    <div key={category} className={styles.trainingScoreCell}>
+      <ScoreValue
+        score={participant.state.scoreCard[category]}
+        preview={previewScores[category]}
+      />
+    </div>
+  ))
 
 // player's scores above the dice, opponent's scores below — dice stay clickable to save a school category
 const TrainingDice: FC<TrainingDiceProps> = ({
@@ -77,9 +91,9 @@ const TrainingDice: FC<TrainingDiceProps> = ({
   onCategorySelect
 }) => (
   <div className={styles.gameDash}>
-    {renderScoreCells(player)}
+    {renderScoreCells(player, previewScores)}
     {schoolCategories.map((category) => {
-      const score = player.state.scoreCard[category] as number | null
+      const score = player.state.scoreCard[category]
       const preview = previewScores[category]
       const isUsed = score !== null
       const canSelect = !isUsed && preview !== undefined && !!onCategorySelect
