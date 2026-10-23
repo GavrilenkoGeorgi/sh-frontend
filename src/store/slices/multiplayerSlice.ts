@@ -3,9 +3,11 @@ import type {
   BasicUser,
   GameEndedPayload,
   MultiplayerGameState,
+  MultiplayerPlayerState,
   OnlineUser,
   PresenceOnlineUsersPayload
 } from '../../features/multiplayer/types'
+import { GameCombinations } from '../../types'
 
 interface MultiplayerState {
   socketConnected: boolean
@@ -26,6 +28,25 @@ const initialState: MultiplayerState = {
   opponent: null,
   gameEndResult: null
 }
+
+// the server sends null for game categories without saves, the UI expects empty arrays
+// TODO: (SH-34) the cleaner long-term fix is for the backend to initialise those categories as [].
+const normalizeGameState = (
+  gameState: MultiplayerGameState
+): MultiplayerGameState => ({
+  ...gameState,
+  players: Object.fromEntries(
+    Object.entries(gameState.players).map(
+      ([playerId, player]): [string, MultiplayerPlayerState] => {
+        const scoreCard = { ...player.scoreCard }
+        Object.values(GameCombinations).forEach((category) => {
+          scoreCard[category] = player.scoreCard[category] ?? []
+        })
+        return [playerId, { ...player, scoreCard }]
+      }
+    )
+  )
+})
 
 const multiplayerSlice = createSlice({
   name: 'multiplayer',
@@ -57,11 +78,11 @@ const multiplayerSlice = createSlice({
         opponent: BasicUser
       }>
     ) => {
-      state.activeGame = action.payload.gameState
+      state.activeGame = normalizeGameState(action.payload.gameState)
       state.opponent = action.payload.opponent
     },
     updateGameState: (state, action: PayloadAction<MultiplayerGameState>) => {
-      state.activeGame = action.payload
+      state.activeGame = normalizeGameState(action.payload)
     },
     setGameEnded: (state, action: PayloadAction<GameEndedPayload>) => {
       state.gameEndResult = action.payload

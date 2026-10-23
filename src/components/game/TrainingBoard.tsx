@@ -28,7 +28,7 @@ const TrainingBoard: FC = () => {
 
   return (
     <div className={styles.training}>
-      {Object.values(SchoolCombinations).map((key, index) => {
+      {Object.values(SchoolCombinations).map((key) => {
         const score = game.school[key].score
         const hasScore = score !== null && score !== undefined
 
@@ -50,7 +50,7 @@ const TrainingBoard: FC = () => {
               >
                 {hasScore ? score : '\u00A0'}
               </span>
-              <Dice kind={index + 1} />
+              <Dice kind={key} />
             </div>
           </div>
         )

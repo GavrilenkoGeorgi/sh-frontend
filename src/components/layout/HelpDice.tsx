@@ -4,11 +4,11 @@ import { type HelpDice } from '../../types'
 import { Dice } from '../game/Dice'
 import * as styles from './HelpDice.module.sass'
 
-interface iProps {
-  data: HelpDice[]
+type Props = {
+  data: HelpDice[] // TODO: update this type, needs autocomplete
 }
 
-const HelpDice: FC<iProps> = ({ data }) => {
+const HelpDice: FC<Props> = ({ data }) => {
   return (
     <>
       {data.map((item) => (

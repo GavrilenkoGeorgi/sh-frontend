@@ -13,37 +13,35 @@ import type {
   MultiplayerGameState,
   MultiplayerPlayerState
 } from '../types'
+import { SchoolCombinations, GameCombinations } from '../../../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
 import { setNotification } from '../../../store/slices/notificationSlice'
 import { ToastTypes } from '../../../types'
 import { useTranslation } from 'react-i18next'
-import { useSchoolPhase } from '../../../hooks/useSchoolPhase'
 
 const PREVIEW_OPPONENT: BasicUser = {
   id: 'debug-opponent',
   username: 'debug opponent'
 }
 
+const createEmptyScoreCard = () => {
+  const schoolCard = Object.values(SchoolCombinations).reduce(
+    (card, category) => ({ ...card, [category]: null }),
+    {} as Record<SchoolCombinations, number | null>
+  )
+
+  const gameCard = Object.values(GameCombinations).reduce(
+    (card, category) => ({ ...card, [category]: [] }),
+    {} as Record<GameCombinations, number[]>
+  )
+
+  return { ...schoolCard, ...gameCard }
+}
+
 const createEmptyPlayerState = (): MultiplayerPlayerState => ({
   totalScore: 0,
   usedCategories: [],
-  scoreCard: {
-    ones: null,
-    twos: null,
-    threes: null,
-    fours: null,
-    fives: null,
-    sixes: null,
-    pair: [],
-    twoPairs: [],
-    triple: [],
-    full: [],
-    quads: [],
-    poker: [],
-    small: [],
-    large: [],
-    chance: []
-  }
+  scoreCard: createEmptyScoreCard()
 })
 
 interface MultiplayerGameBoardProps {
@@ -80,14 +78,9 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
   const gameToRender = isPreviewMode ? previewGame : activeGame
   const opponentToRender = isPreviewMode ? PREVIEW_OPPONENT : opponent
 
-  if (!gameToRender || !opponentToRender || (!currentUser && !isPreviewMode)) {
-    return null
-  }
-
   const myId = currentUser?._id ?? previewPlayerId
-  const isMyTurn = gameToRender.currentTurnPlayerId === myId
-  const myState = gameToRender.players[myId] ?? null
-  const { isInSchoolPhase } = useSchoolPhase(myState)
+  const isMyTurn = gameToRender?.currentTurnPlayerId === myId
+  const myState = gameToRender?.players[myId] ?? null
 
   const {
     dice,
@@ -96,6 +89,7 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
     selectedCategory,
     previewScores,
     isLocked,
+    isInSchoolPhase,
     canSubmit,
     schoolFailed,
     // hasUnselectedScoringDice,
@@ -108,10 +102,12 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
   } = useMultiplayerTurn(
     myState,
     isMyTurn,
-    isPreviewMode ? null : gameToRender.gameId
+    isPreviewMode ? null : (gameToRender?.gameId ?? null)
   )
 
-  const opponentState = gameToRender.players[opponentToRender.id]
+  const opponentState = opponentToRender
+    ? gameToRender?.players[opponentToRender.id]
+    : undefined
 
   /* useEffect(() => {
     if (hasUnselectedScoringDice) {
@@ -135,7 +131,14 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
     }
   }, [schoolFailed, dispatch, t])
 
-  if (!myState || !opponentState) {
+  // all hooks are above, so it's safe to bail out here
+  if (
+    !gameToRender ||
+    !opponentToRender ||
+    (!currentUser && !isPreviewMode) ||
+    !myState ||
+    !opponentState
+  ) {
     return null
   }
 

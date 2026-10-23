@@ -1,33 +1,25 @@
-import { FC, JSX } from 'react'
+import { FC } from 'react'
+import {
+  Button as AriaButton,
+  Disclosure,
+  DisclosureGroup,
+  DisclosurePanel
+} from 'react-aria-components'
 import type { MultiplayerPlayerState, ScoreCategory } from '../types'
+import { GameCombinations } from '../../../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
 import LoadingIndicator from '../../../components/layout/LoadingIndicator'
 import { useTranslation } from 'react-i18next'
 import { MAX_SAVES_PER_COMBINATION } from '../../../hooks/useMultiplayerTurn'
 import cs from 'classnames'
 import { Button } from '../../../components/layout/Button/BaseButton'
-import { Dice } from '../../../components/game/Dice'
+import { getCombinationLabel } from '../../../utils/combinationLabels'
+import { Pill } from './Pill'
+import MultiplayerTrainingScoreCard from './MultiplayerTrainingScoreCard'
+import ChevronUpIcon from '../../../assets/svg/icon-chevron-up.svg'
 
-const schoolCategories: ScoreCategory[] = [
-  'ones',
-  'twos',
-  'threes',
-  'fours',
-  'fives',
-  'sixes'
-]
-
-const gameCategories: ScoreCategory[] = [
-  'pair',
-  'twoPairs',
-  'triple',
-  'full',
-  'quads',
-  'poker',
-  'small',
-  'large',
-  'chance'
-]
+// keep the narrow type so scoreCard[category] is number[], no casts needed
+const gameCategories: GameCombinations[] = Object.values(GameCombinations)
 
 interface ScoreCardParticipant {
   state: MultiplayerPlayerState
@@ -53,13 +45,6 @@ interface MultiplayerScoreCardProps {
   turnControls: TurnControls
 }
 
-const formatCategoryName = (category: ScoreCategory): JSX.Element => {
-  if (schoolCategories.includes(category)) {
-    return <Dice kind={category} />
-  }
-  return <span>{category.replace(/([A-Z])/g, ' $1').toLowerCase()}</span>
-}
-
 const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
   player,
   opponent,
@@ -79,76 +64,31 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
   } = turnControls
   const { t } = useTranslation()
 
-  const renderRow = (category: ScoreCategory) => {
-    const isSchoolCategory = schoolCategories.includes(category)
-    const playerScore = player.state.scoreCard[category]
-    const opponentScore = opponent.state.scoreCard[category]
+  const renderRow = (category: GameCombinations) => {
+    // game category: up to MAX_SAVES_PER_COMBINATION saves per slot
+    const savedScores = player.state.scoreCard[category]
+    const opponentSavedScores = opponent.state.scoreCard[category]
     const preview = previewScores[category]
     const isSelected = selectedCategory === category
-
-    if (isSchoolCategory) {
-      const schoolScore = playerScore as number | null
-      const opponentSchoolScore = opponentScore as number | null
-      const isUsed = schoolScore !== null
-      const effectivePreview = preview
-      const canSelect =
-        !isUsed && effectivePreview !== undefined && onCategorySelect
-
-      return (
-        <tr
-          key={category}
-          className={isSelected ? styles.selectedRow : undefined}
-          onClick={canSelect ? () => onCategorySelect(category) : undefined}
-        >
-          <td className={styles.categoryCell}>
-            {schoolScore !== null ? (
-              <span className={styles.filledScore}>{schoolScore}</span>
-            ) : effectivePreview !== undefined ? (
-              <span className={styles.previewScore}>{effectivePreview}</span>
-            ) : (
-              <span className={styles.emptyScore}>–</span>
-            )}
-          </td>
-          <td
-            className={cs(styles.categoryName, {
-              [styles.selectableCategory]: canSelect
-            })}
-          >
-            {formatCategoryName(category)}
-          </td>
-          <td className={styles.categoryCell}>
-            {opponentSchoolScore !== null ? (
-              <span className={styles.filledScore}>{opponentSchoolScore}</span>
-            ) : (
-              <span className={styles.emptyScore}>–</span>
-            )}
-          </td>
-        </tr>
-      )
-    }
-
-    // game category: up to MAX_SAVES_PER_COMBINATION saves per slot
-    const savedScores = playerScore as number[]
-    const opponentSavedScores = opponentScore as number[]
     const isUsed = savedScores.length >= MAX_SAVES_PER_COMBINATION
     const effectivePreview = preview === 0 ? undefined : preview
     // chance is always score-based; other game categories allow saving zero
     const isChance = category === 'chance'
-    const canSelect = isChance
-      ? !isUsed && effectivePreview !== undefined && onCategorySelect
-      : !isUsed && hasRolled && !isInSchoolPhase && onCategorySelect
+    const canSaveCategory = isChance
+      ? effectivePreview !== undefined
+      : hasRolled && !isInSchoolPhase
+    const canSelect = !isUsed && canSaveCategory && !!onCategorySelect
 
     return (
-      <tr
+      <div
         key={category}
-        className={isSelected ? styles.selectedRow : undefined}
-        onClick={
-          canSelect && onCategorySelect
-            ? () => onCategorySelect(category)
-            : undefined
-        }
+        role="row"
+        className={cs(styles.tableRow, {
+          [styles.selectedRow]: isSelected
+        })}
+        onClick={canSelect ? () => onCategorySelect(category) : undefined}
       >
-        <td className={styles.categoryCell}>
+        <div role="cell" className={styles.categoryCell}>
           {Array.from({ length: MAX_SAVES_PER_COMBINATION }, (_, i) => {
             if (i < savedScores.length) {
               return (
@@ -170,13 +110,16 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
               </span>
             )
           })}
-        </td>
-        <td
-          className={`${styles.categoryName} ${canSelect ? styles.selectableCategory : ''}`}
+        </div>
+        <div
+          role="cell"
+          className={cs(styles.categoryName, {
+            [styles.selectableCategory]: canSelect
+          })}
         >
-          {formatCategoryName(category)}
-        </td>
-        <td className={styles.categoryCell}>
+          {getCombinationLabel(category, t)}
+        </div>
+        <div role="cell" className={styles.categoryCell}>
           {Array.from({ length: MAX_SAVES_PER_COMBINATION }, (_, i) => {
             if (i < opponentSavedScores.length) {
               return (
@@ -191,65 +134,65 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
               </span>
             )
           })}
-        </td>
-      </tr>
+        </div>
+      </div>
     )
   }
 
   return (
-    <table className={styles.scoreTable}>
-      <thead>
-        <tr>
-          <th
-            className={cs(styles.playerHeader, {
-              [styles.accent]: isMyTurn
-            })}
-          >
-            {player.name}
-          </th>
-          <th>
-            {isMyTurn && !schoolFailed && (
-              <Button
-                isDisabled={!canSubmit}
-                onClick={onSubmitTurn}
-                style={{ whiteSpace: 'nowrap' }}
-              >
-                {t('ui.multiplayer.submitTurn')}
-              </Button>
-            )}
+    <div className={styles.scoreTable} role="table">
+      <MultiplayerTrainingScoreCard
+        player={player}
+        opponent={opponent}
+        isMyTurn={isMyTurn}
+        previewScores={previewScores}
+        selectedCategory={selectedCategory}
+        onCategorySelect={onCategorySelect}
+      />
 
-            {isMyTurn && schoolFailed && (
-              <Button onClick={onFailSchool}>
-                {t('ui.multiplayer.schoolFailed')}
-              </Button>
-            )}
+      <DisclosureGroup className={styles.scoreSections}>
+        <Disclosure id="game" className={styles.scoreSection}>
+          <h3 className={styles.sectionHeading}>
+            <AriaButton slot="trigger" className={styles.sectionToggle}>
+              <span className={styles.pillList}>
+                {gameCategories.map((category) => (
+                  <Pill key={category}>{getCombinationLabel(category, t)}</Pill>
+                ))}
+              </span>
+              {/* rotated via CSS on [data-expanded], keeping one element so the turn animates */}
+              <span aria-hidden="true" className={styles.sectionIcon}>
+                <ChevronUpIcon />
+              </span>
+            </AriaButton>
+          </h3>
+          <DisclosurePanel className={styles.sectionPanel}>
+            <div className={styles.panelInner}>
+              {gameCategories.map(renderRow)}
+            </div>
+          </DisclosurePanel>
+        </Disclosure>
+      </DisclosureGroup>
 
-            {!isMyTurn && <LoadingIndicator />}
-          </th>
-          <th
-            className={cs(styles.playerHeader, {
-              [styles.accent]: !isMyTurn
-            })}
+      <div role="rowgroup" className={styles.submitRow}>
+        {isMyTurn && !schoolFailed && (
+          <Button
+            isDisabled={!canSubmit}
+            onClick={onSubmitTurn}
+            style={{ whiteSpace: 'nowrap' }}
           >
-            {opponent.name}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {schoolCategories.map(renderRow)}
-        <tr className={styles.sectionDivider}>
-          <td colSpan={3} />
-        </tr>
-        {gameCategories.map(renderRow)}
-      </tbody>
-      <tfoot>
-        <tr className={styles.totalRow}>
-          <td className={styles.totalScore}>{player.state.totalScore}</td>
-          <td className={styles.categoryName}>{t('ui.multiplayer.total')}</td>
-          <td className={styles.totalScore}>{opponent.state.totalScore}</td>
-        </tr>
-      </tfoot>
-    </table>
+            {t('ui.multiplayer.submitTurn')}
+          </Button>
+        )}
+
+        {isMyTurn && schoolFailed && (
+          <Button onClick={onFailSchool}>
+            {t('ui.multiplayer.schoolFailed')}
+          </Button>
+        )}
+
+        {!isMyTurn && <LoadingIndicator />}
+      </div>
+    </div>
   )
 }
 
