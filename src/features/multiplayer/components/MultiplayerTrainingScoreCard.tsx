@@ -33,11 +33,7 @@ const ParticipantScoreRow: FC<ParticipantScoreRowProps> = ({
   isAccent
 }) => (
   <div className={styles.trainingHeaderRow}>
-    <span
-      className={cs(styles.playerHeader, styles.trainingName, {
-        [styles.accent]: isAccent
-      })}
-    >
+    <span className={cs(styles.playerHeader, { [styles.accent]: isAccent })}>
       {participant.name}
     </span>
     <span className={cs(styles.totalScore, { [styles.accent]: isAccent })}>
@@ -125,7 +121,7 @@ const MultiplayerTrainingScoreCard: FC<MultiplayerTrainingScoreCardProps> = ({
   selectedCategory = null,
   onCategorySelect
 }) => (
-  <section className={styles.sectionHeading}>
+  <section>
     <ParticipantScoreRow participant={player} isAccent={isMyTurn} />
     <TrainingDice
       player={player}
