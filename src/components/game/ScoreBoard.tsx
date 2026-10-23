@@ -1,14 +1,17 @@
 import React, { type FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 import { type RootState } from '../../store'
 import { saveScore } from '../../store/slices/shSlice'
 import * as styles from './ScoreBoard.module.sass'
 import { SaveScorePayload } from '../../types'
+import { getCombinationLabel } from '../../utils/combinationLabels'
 
 const ScoreBoard: FC = () => {
   const { game } = useSelector((state: RootState) => state.sh)
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const save = (id: SaveScorePayload): void => {
     if (game.rollCount > 0) {
@@ -30,7 +33,7 @@ const ScoreBoard: FC = () => {
               save(key as SaveScorePayload)
             }}
           >
-            {key}
+            {getCombinationLabel(key as SaveScorePayload, t)}
           </div>
           {game.combinations[key].map((value, index) => (
             <div key={key + index} className={styles.result}>

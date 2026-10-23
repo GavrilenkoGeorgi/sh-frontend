@@ -24,6 +24,8 @@ export const API_ROUTES = {
   SIGNUP: `${USERS_URL}/register`,
   DELETE_ACC: `${USERS_URL}/delete`,
   UPDATE_PROFILE: `${USERS_URL}/profile`,
+  CURRENT_USER_PROFILE: `${USERS_URL}/profile`,
+  USER_PROFILE_BY_ID: (id: string | number) => `${USERS_URL}/profile/${id}`,
   REFRESH_TOKEN: `${USERS_URL}/refresh`,
   SEND_RECOVERY_EMAIL: `${USERS_URL}/forgotpwd`,
   UPDATE_PASSWORD: `${USERS_URL}/updatepwd`
@@ -37,7 +39,8 @@ export const INVITE_API_ROUTES = {
 export const GAME_API_ROUTES = {
   SAVE_RESULTS: `${GAME_URL}/save`,
   CLEAR_STATS: `${GAME_URL}/clearstats`,
-  GET_STATS: `${GAME_URL}/stats`
+  GET_STATS: `${GAME_URL}/stats`,
+  GET_MULTIPLAYER_STATS: `${GAME_URL}/multiplayer-stats`
 } as const
 
 export type RoutePathsType = (typeof ROUTES)[keyof typeof ROUTES]

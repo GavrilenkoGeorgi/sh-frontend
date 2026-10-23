@@ -27,23 +27,3 @@
 .actions
   display: flex
   gap: .5rem
-
-.acceptButton, .declineButton
-  background: transparent
-  border: 1px solid var(--color-primary)
-  padding: .3rem .6rem
-  cursor: pointer
-  transition: color var(--duration-default), border-color var(--duration-default), background-color var(--duration-default)
-
-.acceptButton
-  color: var(--color-primary)
-  border-color: var(--color-toast-success)
-  &:hover
-    color: var(--color-accent)
-    border-color: var(--color-accent)
-
-.declineButton
-  color: var(--color-error)
-  border-color: var(--color-error)
-  &:hover
-    background-color: var(--color-toast-error)

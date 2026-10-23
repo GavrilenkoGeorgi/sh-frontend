@@ -9,6 +9,7 @@ import {
 import type { IncomingInvite } from '../types'
 import * as styles from './InviteInbox.module.sass'
 import { useTranslation } from 'react-i18next'
+import { Button } from '../../../components/layout/Button/BaseButton'
 
 const InviteInbox: FC = () => {
   const { data } = useGetIncomingInvitesQuery()
@@ -52,12 +53,12 @@ const InviteItem: FC<InviteItemProps> = ({ invite }) => {
     <li className={styles.inviteItem}>
       <span className={styles.fromUser}>{invite.fromUser.username}</span>
       <div className={styles.actions}>
-        <button className={styles.acceptButton} onClick={handleAccept}>
+        <Button onClick={handleAccept} size="sm">
           {t('ui.buttonLabels.accept')}
-        </button>
-        <button className={styles.declineButton} onClick={handleDecline}>
+        </Button>
+        <Button onClick={handleDecline} size="sm" variant="warning">
           {t('ui.buttonLabels.decline')}
-        </button>
+        </Button>
       </div>
     </li>
   )

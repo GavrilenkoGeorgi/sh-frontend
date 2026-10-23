@@ -13,6 +13,7 @@ import type {
   MultiplayerGameState,
   MultiplayerPlayerState
 } from '../types'
+import { SchoolCombinations, GameCombinations } from '../../../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
 import { setNotification } from '../../../store/slices/notificationSlice'
 import { ToastTypes } from '../../../types'
@@ -23,26 +24,24 @@ const PREVIEW_OPPONENT: BasicUser = {
   username: 'debug opponent'
 }
 
+const createEmptyScoreCard = () => {
+  const schoolCard = Object.values(SchoolCombinations).reduce(
+    (card, category) => ({ ...card, [category]: null }),
+    {} as Record<SchoolCombinations, number | null>
+  )
+
+  const gameCard = Object.values(GameCombinations).reduce(
+    (card, category) => ({ ...card, [category]: [] }),
+    {} as Record<GameCombinations, number[]>
+  )
+
+  return { ...schoolCard, ...gameCard }
+}
+
 const createEmptyPlayerState = (): MultiplayerPlayerState => ({
   totalScore: 0,
   usedCategories: [],
-  scoreCard: {
-    ones: null,
-    twos: null,
-    threes: null,
-    fours: null,
-    fives: null,
-    sixes: null,
-    pair: null,
-    twoPairs: null,
-    triple: null,
-    full: null,
-    quads: null,
-    poker: null,
-    small: null,
-    large: null,
-    chance: null
-  }
+  scoreCard: createEmptyScoreCard()
 })
 
 interface MultiplayerGameBoardProps {
@@ -79,13 +78,9 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
   const gameToRender = isPreviewMode ? previewGame : activeGame
   const opponentToRender = isPreviewMode ? PREVIEW_OPPONENT : opponent
 
-  if (!gameToRender || !opponentToRender || (!currentUser && !isPreviewMode)) {
-    return null
-  }
-
   const myId = currentUser?._id ?? previewPlayerId
-  const isMyTurn = gameToRender.currentTurnPlayerId === myId
-  const myState = gameToRender.players[myId] ?? null
+  const isMyTurn = gameToRender?.currentTurnPlayerId === myId
+  const myState = gameToRender?.players[myId] ?? null
 
   const {
     dice,
@@ -94,9 +89,10 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
     selectedCategory,
     previewScores,
     isLocked,
+    isInSchoolPhase,
     canSubmit,
     schoolFailed,
-    hasUnselectedScoringDice,
+    // hasUnselectedScoringDice,
     roll,
     selectDie,
     deselectDie,
@@ -106,12 +102,14 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
   } = useMultiplayerTurn(
     myState,
     isMyTurn,
-    isPreviewMode ? null : gameToRender.gameId
+    isPreviewMode ? null : (gameToRender?.gameId ?? null)
   )
 
-  const opponentState = gameToRender.players[opponentToRender.id]
+  const opponentState = opponentToRender
+    ? gameToRender?.players[opponentToRender.id]
+    : undefined
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (hasUnselectedScoringDice) {
       dispatch(
         setNotification({
@@ -120,7 +118,7 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
         })
       )
     }
-  }, [hasUnselectedScoringDice, dispatch, t])
+  }, [hasUnselectedScoringDice, dispatch, t]) */
 
   useEffect(() => {
     if (schoolFailed) {
@@ -133,7 +131,14 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
     }
   }, [schoolFailed, dispatch, t])
 
-  if (!myState || !opponentState) {
+  // all hooks are above, so it's safe to bail out here
+  if (
+    !gameToRender ||
+    !opponentToRender ||
+    (!currentUser && !isPreviewMode) ||
+    !myState ||
+    !opponentState
+  ) {
     return null
   }
 
@@ -145,6 +150,8 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
         turnControls={{
           isMyTurn,
           canSubmit,
+          hasRolled: isMyTurn && rollCount > 0,
+          isInSchoolPhase: isMyTurn ? isInSchoolPhase : undefined,
           schoolFailed: isMyTurn ? schoolFailed : undefined,
           previewScores: isMyTurn ? previewScores : undefined,
           selectedCategory,
@@ -159,6 +166,7 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
           selectedIndices={isMyTurn ? selectedIndices : []}
           rollCount={isMyTurn ? rollCount : 0}
           isLocked={!isMyTurn || isLocked}
+          isMyTurn={isMyTurn}
           selectDie={selectDie}
           deselectDie={deselectDie}
           roll={roll}

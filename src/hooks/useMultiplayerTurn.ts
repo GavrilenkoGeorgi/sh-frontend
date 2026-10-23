@@ -6,36 +6,20 @@ import {
 } from '../features/multiplayer/socket/multiplayerSocket'
 import type {
   ScoreCategory,
-  MultiplayerPlayerState,
-  SchoolCategory,
-  GameCategory
+  MultiplayerPlayerState
 } from '../features/multiplayer/types'
-import type { Combination } from '../types'
+import {
+  SchoolCombinations,
+  GameCombinations,
+  type Combination
+} from '../types'
+import { schoolCategories, useSchoolPhase } from './useSchoolPhase'
 
 const DICE_COUNT = 5
 const MAX_ROLLS = 3
+export const MAX_SAVES_PER_COMBINATION = 3
 
-// TODO: cleanup duplicate types if needed
-const schoolCategories: SchoolCategory[] = [
-  'ones',
-  'twos',
-  'threes',
-  'fours',
-  'fives',
-  'sixes'
-]
-
-const gameCategories: GameCategory[] = [
-  'pair',
-  'twoPairs',
-  'triple',
-  'full',
-  'quads',
-  'poker',
-  'small',
-  'large',
-  'chance'
-]
+const gameCategories = Object.values(GameCombinations)
 
 export interface MultiplayerTurnState {
   dice: number[]
@@ -63,17 +47,14 @@ export const useMultiplayerTurn = (
 
   const isLocked = rollCount >= MAX_ROLLS
 
-  const usedCategories = useMemo(
-    () => new Set(playerState?.usedCategories ?? []),
-    [playerState?.usedCategories]
-  )
+  const { isInSchoolPhase, usedCategories } = useSchoolPhase(playerState)
 
-  const isInSchoolPhase = useMemo(() => {
-    const usedSchoolCount = schoolCategories.filter((c) =>
-      usedCategories.has(c)
-    ).length
-    return usedSchoolCount < 6
-  }, [usedCategories])
+  const isGameCategoryAvailable = useCallback(
+    (category: GameCombinations) =>
+      (playerState?.scoreCard[category]?.length ?? 0) <
+      MAX_SAVES_PER_COMBINATION,
+    [playerState?.scoreCard]
+  )
 
   // compute preview scores based on currently selected dice values
   // during school phase only school categories are shown, afterwards only game categories
@@ -98,7 +79,7 @@ export const useMultiplayerTurn = (
       const sorted = shScore.sort(selectedValues)
       const combinationScores: Combination = shScore.getScore(sorted)
       gameCategories.forEach((category) => {
-        if (!usedCategories.has(category)) {
+        if (isGameCategoryAvailable(category)) {
           scores[category] = combinationScores[category as keyof Combination]
         }
       })
@@ -111,7 +92,8 @@ export const useMultiplayerTurn = (
     rollCount,
     isMyTurn,
     usedCategories,
-    isInSchoolPhase
+    isInSchoolPhase,
+    isGameCategoryAvailable
   ])
 
   // check whether any remaining school category can be scored from ALL rolled dice
@@ -171,10 +153,21 @@ export const useMultiplayerTurn = (
   const selectCategory = useCallback(
     (category: ScoreCategory) => {
       if (!isMyTurn || rollCount === 0) return
-      if (usedCategories.has(category)) return
+      const isSchool = schoolCategories.includes(category as SchoolCombinations)
+      const isCategoryLocked = isSchool
+        ? usedCategories.has(category)
+        : isInSchoolPhase ||
+          !isGameCategoryAvailable(category as GameCombinations)
+      if (isCategoryLocked) return
       setSelectedCategory(category)
     },
-    [isMyTurn, rollCount, usedCategories]
+    [
+      isMyTurn,
+      rollCount,
+      usedCategories,
+      isGameCategoryAvailable,
+      isInSchoolPhase
+    ]
   )
 
   const resetTurn = useCallback(() => {
@@ -189,7 +182,15 @@ export const useMultiplayerTurn = (
   const submitTurn = useCallback(() => {
     if (!gameId || !selectedCategory || rollCount === 0 || !isMyTurn) return
 
-    const score = previewScores[selectedCategory]
+    const rawScore = previewScores[selectedCategory]
+    // in game phase only, allow saving zero when no combination matches
+    const score =
+      rawScore !== undefined
+        ? rawScore
+        : !isInSchoolPhase &&
+            gameCategories.includes(selectedCategory as GameCombinations)
+          ? 0
+          : undefined
     if (score === undefined) return
 
     // dice payload: face values of selected dice (1..5 values, each 1..6)
@@ -210,6 +211,7 @@ export const useMultiplayerTurn = (
     selectedCategory,
     rollCount,
     isMyTurn,
+    isInSchoolPhase,
     previewScores,
     selectedIndices,
     dice,

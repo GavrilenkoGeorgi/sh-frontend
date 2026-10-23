@@ -1,3 +1,5 @@
+import { SchoolCombinations, GameCombinations } from '../../types'
+
 export interface OnlineUser {
   userId: string
   username: string
@@ -43,31 +45,13 @@ export type MultiplayerGameStatus = 'active' | 'finished' | 'abandoned'
 
 export type GameEndReason = 'completed' | 'opponent_disconnected'
 
-export type SchoolCategory =
-  | 'ones'
-  | 'twos'
-  | 'threes'
-  | 'fours'
-  | 'fives'
-  | 'sixes'
-
-export type GameCategory =
-  | 'pair'
-  | 'twoPairs'
-  | 'triple'
-  | 'full'
-  | 'quads'
-  | 'poker'
-  | 'small'
-  | 'large'
-  | 'chance'
-
-export type ScoreCategory = SchoolCategory | GameCategory
+// score category keys are defined once in the shared types module
+export type ScoreCategory = SchoolCombinations | GameCombinations
 
 export interface MultiplayerPlayerState {
   totalScore: number
   usedCategories: ScoreCategory[]
-  scoreCard: Record<ScoreCategory, number | null>
+  scoreCard: MultiplayerScoreCard
 }
 
 export interface MultiplayerGameState {
@@ -80,6 +64,26 @@ export interface MultiplayerGameState {
   players: Record<string, MultiplayerPlayerState>
   winnerId?: string | null
   endedReason?: 'completed' | 'disconnect' | 'school-incomplete'
+}
+
+export interface MultiplayerScoreCard {
+  // school: one save per category
+  ones: number | null
+  twos: number | null
+  threes: number | null
+  fours: number | null
+  fives: number | null
+  sixes: number | null
+  // game: up to 3 saves per category
+  pair: number[]
+  twoPairs: number[]
+  triple: number[]
+  full: number[]
+  quads: number[]
+  poker: number[]
+  small: number[]
+  large: number[]
+  chance: number[]
 }
 
 export interface TurnMoveInput {

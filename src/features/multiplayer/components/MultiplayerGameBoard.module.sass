@@ -1,110 +1,230 @@
 @use '../../../styles/variables'
 
+$spaceSm: .5rem
+$spaceMd: 1rem
+
 .gameBoard
   width: 100%
   max-width: 30rem
-  padding: 0 .5rem
+  padding: 0 $spaceSm
   height: 100%
   display: flex
   flex-direction: column
   align-items: center
-  justify-content: space-evenly
-  gap: .5rem
-
-.turnIndicator
-  text-align: center
-  padding: .5rem 1rem
-  border-radius: .25rem
-  font-weight: 500
-
-.myTurn
-  background-color: var(--color-accent-transparent)
-  color: var(--color-accent)
-  border: 1px solid var(--color-accent)
-
-.waitingTurn
-  background-color: var(--color-primary-light)
-  color: var(--color-text-dim)
-  border: 1px solid var(--color-primary-light)
+  gap: $spaceSm
+  margin: auto
 
 .scoreTable
   width: 100%
-  border-collapse: collapse
-  margin-bottom: .75rem
+  height: 100%
+  margin-top: calc(var(--navbar-height) + #{$spaceSm})
+  display: flex
+  flex-direction: column
+  gap: $spaceMd
+  font-size: variables.$smallFontSize
 
-  th, td
-    padding: .35rem .5rem
+  [role='cell']
+    flex: 1 1 0
+
+.tableRow
+  display: flex
+  justify-content: space-between
+  opacity: 0
+  transform: translateY(-.4rem)
+  will-change: opacity, transform
+  transition: opacity var(--duration-slow) ease, transform var(--duration-slow) ease
+
+// stagger each row's entrance so combinations slide/fade in one by one, once the panel has fully expanded
+.scoreSection[data-expanded] .tableRow
+  opacity: 1
+  transform: translateY(0)
+  @for $i from 1 through 9
+    &:nth-child(#{$i})
+      transition-delay: calc(var(--duration-slow) + var(--duration-slow) * #{$i - 1} / 6)
+
+.scoreSections
+  display: flex
+  flex-direction: column
+  overflow: hidden
+  gap: $spaceSm
+
+.scoreSection
+  display: grid
+  grid-template-rows: auto 0fr
+  transition: grid-template-rows var(--duration-slow) ease
+  &:last-child
+    border-bottom: 0
+  &[data-expanded]
+    grid-template-rows: auto 1fr
+    flex: 1 1 0
+
+.sectionHeading
+  margin: 0
+  font-size: variables.$smallFontSize
+  font-weight: 500
+
+.sectionToggle
+  width: 100%
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: $spaceSm
+  padding: 0
+  border: 0
+  background-color: transparent
+  color: var(--color-primary)
+  font: inherit
+  cursor: pointer
+  text-transform: capitalize
+  min-height: 3.75rem
+  transition: color var(--duration-slow), background-color var(--duration-slow), height var(--duration-slow)
+  &[data-hovered]
+    color: var(--color-accent)
+  &[data-focus-visible]
+    outline: 2px solid var(--color-accent)
+    outline-offset: -2px
+
+.sectionIcon
+  color: var(--color-accent)
+  transition: transform var(--duration-slow) ease
+  margin-left: auto
+  display: flex
+  align-items: center
+
+.gameDash
+  display: grid
+  grid-template-columns: repeat(6, minmax(0, 1fr))
+  align-items: center
+  gap: $spaceMd
+  width: 100%
+  opacity: 1
+  transition: opacity var(--duration-slow) ease
+  color: var(--color-primary)
+
+.scoreSection[data-expanded] .gameDash
+  opacity: 0
+
+.trainingHeaderRow
+  display: flex
+  align-items: center
+  justify-content: space-between
+  margin: $spaceSm 0
+
+.trainingScoreCell
+  text-align: center
+  font-variant-numeric: tabular-nums
+  display: flex
+  justify-content: center
+  span
+    margin: 0 auto
+
+.pillList
+  display: flex
+  flex-wrap: wrap
+  gap: .25rem
+  margin-left: -$spaceSm
+
+.pill
+  padding: .25rem $spaceSm
+  border-radius: 1rem
+  color: var(--color-primary)
+  white-space: nowrap
+  opacity: 1
+  transform: translateY(0) // scale(1)
+  will-change: opacity, transform
+  transition: opacity var(--duration-slow) ease, transform var(--duration-slow) cubic-bezier(.4, 0, 1, 1)
+
+// fade and slide pills down one by one, in sync with the matching row appearing below, once the panel has fully expanded
+.scoreSection[data-expanded] .pill
+  opacity: 0
+  transform: translateY(2rem) // scale(.9)
+  @for $i from 1 through 9
+    &:nth-child(#{$i})
+      transition-delay: calc(var(--duration-slow) + var(--duration-slow) * #{$i - 1} / 6)
+
+.submitRow
+  margin-top: $spaceMd
+  text-align: center
+
+.sectionPanel
+  display: flex
+  flex-direction: column-reverse
+  min-height: 0
+  overflow: hidden
+  opacity: 0
+  transition: opacity var(--duration-slow) ease
+  perspective: 800px
+
+  &[hidden]
+    display: block
+    // react-aria sets hidden="until-found", which forces content-visibility: hidden
+    // and skips rendering entirely — that breaks the transition on the very first
+    // reveal (no "before" frame was ever painted). We already hide/animate this
+    // panel ourselves via opacity + the parent's grid-template-rows, so opt out.
+    content-visibility: visible
+
+.panelInner
+  display: flex
+  flex-direction: column
+  gap: $spaceSm
+  padding-top: $spaceMd
+
+.scoreSection[data-expanded] .sectionPanel
+  opacity: 1
+
+.scoreSection[data-expanded] .sectionIcon
+  transform: rotate(180deg)
 
 .playerHeader
-  font-size: .9rem
+  font-size: variables.$middleFontSize
   font-weight: 500
+  text-align: left
   color: var(--color-primary)
-  width: 30%
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+  min-width: 0
 
-.categoryHeader
-  width: 40%
+.accent
+  color: var(--color-accent)
 
 .categoryName
   text-align: center
   text-transform: capitalize
   color: var(--color-text-body)
-  font-size: .9rem
+  display: flex
+  justify-content: center
+  svg
+    color: var(--color-primary)
+    width: 100%
+    max-height: 1.5rem
 
 .categoryCell
   text-align: center
   font-variant-numeric: tabular-nums
+  display: flex
+  justify-content: center
+  span
+    margin: 0 auto
+  &:nth-child(3)
+    span
+      color: var(--color-primary-muted)
+      font-weight: 400
 
 .filledScore
   color: var(--color-primary)
-  font-weight: 450
+  font-weight: 500
 
 .emptyScore
   color: var(--color-text-dim)
   opacity: .4
 
-.sectionDivider
-  td
-    padding: 0
-    border-bottom: 1px solid var(--color-primary-light)
-
-.totalRow
-  td
-    font-weight: 500
-
 .totalScore
   text-align: center
-  font-size: 1.1rem
+  font-size: variables.$middleFontSize
+  font-weight: 500
   color: var(--color-primary)
   font-variant-numeric: tabular-nums
-
-.waitingMessage, .submitButton
-  height: 2.5rem
-  font-size: 1rem
-  font-weight: 500
-
-.waitingMessage
-  text-align: center
-  color: var(--color-text-dim)
-  margin: 0
-  display: flex
-  align-items: center
-  justify-content: center
-  gap: .5rem
-
-.submitButton
-  display: block
-  width: 100%
-  background-color: var(--color-primary)
-  color: var(--color-surface)
-  border: none
-  border-radius: .25rem
-  cursor: pointer
-  transition: background-color var(--duration-default)
-  &:hover
-    background-color: var(--color-accent)
-  &:disabled
-    background-color: var(--color-primary-light)
-    cursor: default
 
 .diceControlsContainer
   width: 100%
@@ -114,6 +234,8 @@
   color: var(--color-accent)
   font-weight: 400
   opacity: .7
+  display: flex
+  align-items: center
 
 .selectableCategory
   cursor: pointer
@@ -124,49 +246,15 @@
   background-color: var(--color-accent-transparent)
 
 // game end modal
-.endOverlay
-  position: fixed
-  inset: 0
-  z-index: 100
-  display: flex
-  align-items: center
-  justify-content: center
-  padding: 1rem
-  background-color: rgba(0, 0, 0, .55)
-
-.endModal
-  width: 100%
-  max-width: 24rem
-  padding: 1.5rem
-  background-color: var(--color-surface)
-  border-radius: .5rem
-  text-align: center
-
-.endHeading
-  margin: 0 0 .5rem
-  color: var(--color-primary)
-  font-size: 1.35rem
-
 .endMessage
   margin: 0 0 1rem
   color: var(--color-text-body)
+  text-align: center
 
 .endScores
-  margin: 0 0 1.5rem
+  margin: 0
   color: var(--color-primary)
   font-size: 1.5rem
-  font-weight: 600
+  font-weight: 500
   font-variant-numeric: tabular-nums
-
-.endButton
-  display: inline-block
-  padding: .6rem 1.5rem
-  border: none
-  border-radius: .25rem
-  background-color: var(--color-primary)
-  color: var(--color-surface)
-  font-size: 1rem
-  cursor: pointer
-  transition: background-color var(--duration-default)
-  &:hover
-    background-color: var(--color-accent)
+  text-align: center

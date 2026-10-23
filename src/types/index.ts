@@ -1,5 +1,13 @@
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { type ReactNode } from 'react'
+import { MultiplayerScoreCard } from '../features/multiplayer/types'
+
+export interface MongoBaseDocument {
+  _id: string
+  __v: number
+  createdAt: string // Stays as a string because JSON dates arrive as ISO strings
+  updatedAt: string
+}
 
 // Types
 export type Nullable<T> = T | null
@@ -76,6 +84,16 @@ export interface Stats {
   favDiceValues: ChartAxisData[]
   favComb: ChartAxisData[]
   filter?: StatsFilterParams
+}
+
+export interface MultiplayerStats {
+  metaData: {
+    losses: number
+    ties: number
+    totalGames: number
+    wins: number
+  }
+  results: MultiplayerGameResult[]
 }
 
 export interface ChartAxisData {
@@ -186,4 +204,19 @@ export function isSchoolCombination(
 
 export function isGameCombination(value: string): value is GameCombinations {
   return Object.values(GameCombinations).includes(value as GameCombinations)
+}
+
+type Outcome = 'win' | 'loss' | 'tie'
+
+export interface MultiplayerGameResult extends MongoBaseDocument {
+  multiplayerGameId: string
+  playerId: string
+  finalScore: number
+  opponentId: string
+  opponentScore: number
+  outcome: Outcome
+  reason: string
+  scoreCard: MultiplayerScoreCard
+  turnNumber: number
+  usedCategories: keyof MultiplayerScoreCard[]
 }
