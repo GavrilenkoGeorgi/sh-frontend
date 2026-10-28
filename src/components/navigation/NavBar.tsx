@@ -1,5 +1,5 @@
 import { type FC, useState, useEffect, useMemo } from 'react'
-import { NavLink, useLocation, useMatch } from 'react-router' //dom?
+import { NavLink, useLocation, useMatch } from 'react-router'
 import { useSelector } from 'react-redux'
 import type { NavLink as NavLinkType } from '../../types'
 import {
@@ -15,6 +15,7 @@ import { MenuToggleBtn } from './MenuToggleBtn'
 import * as styles from './NavBar.module.sass'
 
 import { ROUTES } from '../../constants/routes'
+import { DESKTOP_BREAKPOINT_PX } from '../../constants/layout'
 import { ScoreDisplay } from '../game/ScoreDisplay'
 import { UserLink } from './UserLink'
 import { selectIsAuthenticated } from '../../store/slices/authSlice'
@@ -34,7 +35,7 @@ const NavBar: FC = () => {
   const [open, setOpen] = useState(false)
   const { isDark, mode, toggleColorScheme } = useColorScheme()
   const scrollDirection = useScrollDirection()
-  const isDesktop = useMediaQuery('(min-width: 1024px)') // TODO: should be a gobal constant, we have the same in css variables
+  const isDesktop = useMediaQuery(`(min-width: ${DESKTOP_BREAKPOINT_PX}px)`)
 
   const toggleMenu = (): void => {
     setOpen((prev) => !prev)

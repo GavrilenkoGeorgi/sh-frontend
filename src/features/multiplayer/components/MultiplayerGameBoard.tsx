@@ -92,7 +92,6 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
     isInSchoolPhase,
     canSubmit,
     schoolFailed,
-    // hasUnselectedScoringDice,
     roll,
     selectDie,
     deselectDie,
@@ -108,17 +107,6 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
   const opponentState = opponentToRender
     ? gameToRender?.players[opponentToRender.id]
     : undefined
-
-  /* useEffect(() => {
-    if (hasUnselectedScoringDice) {
-      dispatch(
-        setNotification({
-          msg: t('ui.toastMessages.schoolCheck'),
-          type: ToastTypes.WARNING
-        })
-      )
-    }
-  }, [hasUnselectedScoringDice, dispatch, t]) */
 
   useEffect(() => {
     if (schoolFailed) {
