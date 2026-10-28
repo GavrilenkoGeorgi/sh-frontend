@@ -14,10 +14,11 @@ import {
   type Combination
 } from '../types'
 import { schoolCategories, useSchoolPhase } from './useSchoolPhase'
+import { MAX_SAVES_PER_COMBINATION } from '../constants/game'
 
 const DICE_COUNT = 5
 const MAX_ROLLS = 3
-export const MAX_SAVES_PER_COMBINATION = 3
+export { MAX_SAVES_PER_COMBINATION }
 
 const gameCategories = Object.values(GameCombinations)
 
@@ -109,10 +110,6 @@ export const useMultiplayerTurn = (
   // true when locked, school phase, and no die in the roll can score any remaining school category
   const schoolFailed =
     isLocked && isInSchoolPhase && rollCount > 0 && !canScoreFromAllDice
-
-  // true when locked, school phase, but the roll does contain scoreable dice — user hasn't selected them yet
-  const hasUnselectedScoringDice =
-    isLocked && isInSchoolPhase && canScoreFromAllDice
 
   const roll = useCallback(() => {
     if (!isMyTurn || rollCount >= MAX_ROLLS) return
@@ -233,7 +230,6 @@ export const useMultiplayerTurn = (
     isLocked,
     isInSchoolPhase,
     schoolFailed,
-    hasUnselectedScoringDice,
     canSubmit,
     roll,
     selectDie,

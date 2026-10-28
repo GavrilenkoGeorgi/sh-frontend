@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react'
+import { DESKTOP_BREAKPOINT_PX } from '../constants/layout'
 
 export function useIsMobile() {
   const [isMobile, setIsMobile] = useState(
-    typeof window !== 'undefined' ? window.innerWidth < 1024 : false // iPad pro width is 1024px
+    typeof window !== 'undefined'
+      ? window.innerWidth < DESKTOP_BREAKPOINT_PX
+      : false
   )
 
   useEffect(() => {
     function handleResize() {
-      setIsMobile(window.innerWidth < 1024)
+      setIsMobile(window.innerWidth < DESKTOP_BREAKPOINT_PX)
     }
 
     window.addEventListener('resize', handleResize)

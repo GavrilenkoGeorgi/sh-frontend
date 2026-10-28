@@ -7,7 +7,7 @@
   flex-grow: 1
   font-size: clamp(1rem, 3dvh, 1.75rem) // scales with viewport height: 1rem on small phones, ~1.3rem on iPhone 16, ~1.6rem on iPad Mini, 1.75rem max
   gap: .25rem
-  margin: .5rem 0 1rem
+  margin: 1rem 0
   @media screen and (max-width: variables.$small)
     margin: 0
   @media screen and (min-width: variables.$large) // desktop: compact fixed size
@@ -21,7 +21,7 @@
 
 .score
   display: grid
-  grid-template-columns: 2fr repeat(3, 1fr)
+  grid-template-columns: 3fr repeat(3, 1fr)
 
 .result,
 .preliminaryResult
