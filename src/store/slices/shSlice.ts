@@ -8,13 +8,13 @@ import {
   isSchoolCombination,
   isGameCombination
 } from '../../types'
+import { MAX_SAVES_PER_COMBINATION } from '../../constants/game'
 
 // constants
 const DICE_COUNT = 5
 const MAX_ROLLS = 3
 const SCHOOL_TURNS = 6
 export const MAX_TURNS = 34
-const MAX_SAVES_PER_COMBINATION = 3
 
 const schoolCombNames = Object.values(SchoolCombinations)
 const gameCombNames = Object.values(GameCombinations)
@@ -158,34 +158,6 @@ const shSlice = createSlice({
       state.game = createInitialState().game
     },
 
-    // payload: current dice (e.g. roll + selection combined?) — keep original contract
-    setScore: (state, action: PayloadAction<number[]>) => {
-      const { game } = state
-      if (game.turn <= SCHOOL_TURNS) {
-        clearTempSchoolScores(game.school)
-        const result = shScore.getSchoolScore(action.payload)
-        // use stable schoolCombNames order
-        result.forEach((value, index) => {
-          const combName = schoolCombNames[index]
-          if (value !== null && !game.school[combName].final) {
-            game.school[combName].score = value
-          }
-        })
-      } else if (game.turn <= MAX_TURNS - 1) {
-        const result = shScore.getScore(shScore.sort(action.payload))
-        clearTempResults(game.results)
-
-        if (action.payload.length > 0) {
-          for (const name of gameCombNames) {
-            if (game.combinations[name].length < MAX_SAVES_PER_COMBINATION) {
-              game.results[name as keyof typeof game.results] =
-                result[name as keyof typeof game.results]
-            }
-          }
-        }
-      }
-    },
-
     saveScore: (state, action: PayloadAction<SaveScorePayload>) => {
       const { game } = state
       const payload = action.payload as SaveScorePayload
@@ -325,7 +297,6 @@ const shSlice = createSlice({
 
 export const {
   reset,
-  setScore,
   saveScore,
   rollDice,
   selectDice,
