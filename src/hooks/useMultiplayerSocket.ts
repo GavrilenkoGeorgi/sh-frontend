@@ -89,6 +89,10 @@ export const useMultiplayerSocket = () => {
     const handleGameStateUpdated = (payload: GameStateUpdatedPayload) => {
       dispatch(updateGameState(payload.gameState))
     }
+    // TODO: handle game error properly
+    /* const handleGameError = (payload: { message: string }) => {
+      console.error('[mp-debug] received game:error', payload)
+    } */
 
     const handleGameEnded = (payload: GameEndedPayload) => {
       dispatch(setGameEnded(payload))
@@ -103,6 +107,7 @@ export const useMultiplayerSocket = () => {
     multiplayerSocket.on('game:started', handleGameStarted)
     multiplayerSocket.on('game:state-updated', handleGameStateUpdated)
     multiplayerSocket.on('game:ended', handleGameEnded)
+    // multiplayerSocket.on('game:error', handleGameError)
 
     if (isAuthenticated) {
       connectMultiplayerSocket()
@@ -121,6 +126,7 @@ export const useMultiplayerSocket = () => {
       multiplayerSocket.off('game:started', handleGameStarted)
       multiplayerSocket.off('game:state-updated', handleGameStateUpdated)
       multiplayerSocket.off('game:ended', handleGameEnded)
+      // multiplayerSocket.off('game:error', handleGameError)
     }
   }, [authInitialized, dispatch, isAuthenticated])
 }

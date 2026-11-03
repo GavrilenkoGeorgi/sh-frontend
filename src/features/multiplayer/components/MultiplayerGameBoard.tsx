@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next'
 
 const PREVIEW_OPPONENT: BasicUser = {
   id: 'debug-opponent',
-  username: 'debug opponent'
+  username: 'John Doe'
 }
 
 const createEmptyScoreCard = () => {

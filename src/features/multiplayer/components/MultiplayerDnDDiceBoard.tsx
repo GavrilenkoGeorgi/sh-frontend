@@ -83,6 +83,7 @@ const MultiplayerDnDDiceBoard: FC<MultiplayerDnDDiceBoardProps> = ({
             <div
               key={boardSectionKey}
               className={styles.board}
+              data-board-section={boardSectionKey}
               style={{
                 color:
                   boardSectionKey === 'selected'

@@ -2,6 +2,9 @@
 
 $spaceSm: .5rem
 $spaceMd: 1rem
+$spaceLg: 1.75rem
+// the last of 9 pills starts after (1 + 8/6) x duration and takes 1 x duration to finish
+$pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
 
 .gameBoard
   width: 100%
@@ -20,7 +23,6 @@ $spaceMd: 1rem
   margin-top: calc(var(--navbar-height) + #{$spaceSm})
   display: flex
   flex-direction: column
-  gap: $spaceMd
   font-size: variables.$smallFontSize
 
   [role='cell']
@@ -33,6 +35,7 @@ $spaceMd: 1rem
   transform: translateY(-.4rem)
   will-change: opacity, transform
   transition: opacity var(--duration-slow) ease, transform var(--duration-slow) ease
+  padding: .5rem 0
 
 // stagger each row's entrance so combinations slide/fade in one by one, once the panel has fully expanded
 .scoreSection[data-expanded] .tableRow
@@ -77,12 +80,17 @@ $spaceMd: 1rem
   cursor: pointer
   text-transform: capitalize
   min-height: 3.75rem
-  transition: color var(--duration-slow), background-color var(--duration-slow), height var(--duration-slow)
+  transition: color var(--duration-slow), background-color var(--duration-slow), min-height var(--duration-slow) ease
   &[data-hovered]
     color: var(--color-accent)
   &[data-focus-visible]
     outline: 2px solid var(--color-accent)
     outline-offset: -2px
+
+// shrink the heading to the chevron once the pills have finished animating away
+.scoreSection[data-expanded] .sectionToggle
+  min-height: 1rem
+  transition: color var(--duration-slow), background-color var(--duration-slow), min-height var(--duration-slow) ease $pillsDoneDelay
 
 .sectionIcon
   color: var(--color-accent)
@@ -95,11 +103,12 @@ $spaceMd: 1rem
   display: grid
   grid-template-columns: repeat(6, minmax(0, 1fr))
   align-items: center
-  gap: $spaceMd
+  gap: $spaceSm
   width: 100%
   opacity: 1
   transition: opacity var(--duration-slow) ease
   color: var(--color-primary)
+  margin-bottom: .75rem
 
 .scoreSection[data-expanded] .gameDash
   opacity: 0
@@ -115,17 +124,26 @@ $spaceMd: 1rem
   font-variant-numeric: tabular-nums
   display: flex
   justify-content: center
+  font-size: variables.$middleFontSize
   span
     margin: 0 auto
 
 .pillList
+  display: grid
+  grid-template-columns: minmax(0, 1fr)
+  grid-template-rows: 1fr
+  margin-left: -$spaceSm
+  transition: grid-template-rows var(--duration-slow) ease
+
+.pillListInner
   display: flex
   flex-wrap: wrap
   gap: .25rem
-  margin-left: -$spaceSm
+  row-gap: 0
+  min-height: 0
 
 .pill
-  padding: .25rem $spaceSm
+  padding: .15rem $spaceSm
   border-radius: 1rem
   color: var(--color-primary)
   white-space: nowrap
@@ -137,10 +155,16 @@ $spaceMd: 1rem
 // fade and slide pills down one by one, in sync with the matching row appearing below, once the panel has fully expanded
 .scoreSection[data-expanded] .pill
   opacity: 0
+  pointer-events: none
   transform: translateY(2rem) // scale(.9)
   @for $i from 1 through 9
     &:nth-child(#{$i})
       transition-delay: calc(var(--duration-slow) + var(--duration-slow) * #{$i - 1} / 6)
+
+// drop the pills out of the layout only after they have faded away, so the slide is not clipped
+.scoreSection[data-expanded] .pillList
+  grid-template-rows: 0fr
+  transition-delay: $pillsDoneDelay
 
 .submitRow
   margin-top: $spaceMd
@@ -166,8 +190,6 @@ $spaceMd: 1rem
 .panelInner
   display: flex
   flex-direction: column
-  gap: $spaceSm
-  padding-top: $spaceMd
 
 .scoreSection[data-expanded] .sectionPanel
   opacity: 1
@@ -191,7 +213,8 @@ $spaceMd: 1rem
 .categoryName
   text-align: center
   text-transform: capitalize
-  color: var(--color-text-body)
+  color: var(--color-primary)
+  font-weight: 500
   display: flex
   justify-content: center
   svg
@@ -211,9 +234,31 @@ $spaceMd: 1rem
       color: var(--color-primary-muted)
       font-weight: 400
 
+// fills from the centre outwards: flex follows the document direction, so this also holds in rtl
+.playerCell
+  flex-direction: row-reverse
+
 .filledScore
   color: var(--color-primary)
   font-weight: 500
+  transition: color var(--duration-slow) ease
+
+// the most recently saved score of each player stays highlighted until the next one arrives
+// the second selector outranks '.categoryCell:nth-child(3) span', which mutes the opponent's values
+.latestScore,
+.categoryCell span.latestScore
+  color: var(--color-accent)
+  font-weight: 500
+
+// no 'to' frame, so the score settles on its own colour
+@keyframes scoreArrive
+  from
+    transform: scale(1.2)
+    color: var(--color-accent)
+
+@media (prefers-reduced-motion: no-preference)
+  .receivedScore
+    animation: scoreArrive var(--duration-slow) ease-out
 
 .emptyScore
   color: var(--color-text-dim)
@@ -222,8 +267,13 @@ $spaceMd: 1rem
 .totalScore
   text-align: center
   font-size: variables.$middleFontSize
-  font-weight: 500
   color: var(--color-primary)
+  font-variant-numeric: tabular-nums
+  padding: 0 .3rem
+  border-radius: .2rem
+  background-color: var(--color-primary-light)
+  color: var(--color-primary)
+  font-weight: 600
   font-variant-numeric: tabular-nums
 
 .diceControlsContainer
