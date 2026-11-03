@@ -1,0 +1,44 @@
+// CSS Custom Properties for easy overrides
+.turnLoader
+  --loader-color: var(--color-accent)
+  --dot-speed: 1.6s
+
+  display: inline-flex
+  align-items: baseline
+  font-family: inherit
+  font-size: 1rem
+  font-weight: 500
+  color: var(--loader-color)
+  user-select: none
+
+.text
+  white-space: nowrap
+
+.dots
+  display: inline-block
+  // 'ch' unit reserves width for 3 period characters to eliminate layout shifts
+  width: 1.5ch
+  text-align: left
+  overflow: hidden
+  margin-left: 1px
+
+  &::after
+    content: ''
+    // steps(1, end) causes discrete step jumps for clean dot-by-dot ticking
+    animation: dotSequence var(--dot-speed) infinite steps(1, end)
+
+@keyframes dotSequence
+  0%
+    content: ''
+  25%
+    content: '.'
+  50%
+    content: '..'
+  75%
+    content: '...'
+
+// Accessibility: Respect users who prefer reduced motion
+@media (prefers-reduced-motion: reduce)
+  .dots::after
+    content: '...'
+    animation: none

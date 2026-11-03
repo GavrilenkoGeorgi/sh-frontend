@@ -4,6 +4,7 @@ import type { MultiplayerPlayerState, ScoreCategory } from '../types'
 import { SchoolCombinations } from '../../../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
 import { Dice } from '../../../components/game/Dice'
+import { TurnLoader } from '../../../components/layout/TurnLoader'
 
 // keep the narrow type so scoreCard[category] is number | null, no casts needed
 const schoolCategories: SchoolCombinations[] = Object.values(SchoolCombinations)
@@ -25,10 +26,12 @@ interface MultiplayerTrainingScoreCardProps {
 interface ParticipantScoreRowProps {
   participant: ScoreCardParticipant
   isAccent: boolean
+  opponent?: ScoreCardParticipant
 }
 
 // name on one side, total score on the other
 const ParticipantScoreRow: FC<ParticipantScoreRowProps> = ({
+  opponent,
   participant,
   isAccent
 }) => (
@@ -36,6 +39,7 @@ const ParticipantScoreRow: FC<ParticipantScoreRowProps> = ({
     <span className={cs(styles.playerHeader, { [styles.accent]: isAccent })}>
       {participant.name}
     </span>
+    {!isAccent && opponent && <TurnLoader playerName={opponent.name} />}
     <span className={cs(styles.totalScore, { [styles.accent]: isAccent })}>
       {participant.state.totalScore}
     </span>
@@ -53,30 +57,65 @@ interface TrainingDiceProps {
 interface ScoreValueProps {
   score: number | null
   preview?: number
+  isLatest?: boolean
 }
 
+// usedCategories is in save order, so its last entry is the most recently saved score
+export const getLatestCategory = (
+  state: MultiplayerPlayerState
+): ScoreCategory | undefined =>
+  state.usedCategories[state.usedCategories.length - 1]
+
 // saved score, otherwise the preview for the currently selected dice, otherwise a dash
-const ScoreValue: FC<ScoreValueProps> = ({ score, preview }) => {
-  if (score !== null) return <span className={styles.filledScore}>{score}</span>
-  if (preview !== undefined) {
-    return <span className={styles.previewScore}>{preview}</span>
+// distinct keys remount the element, so the arrival animation plays once when a score gets saved
+const ScoreValue: FC<ScoreValueProps> = ({
+  score,
+  preview,
+  isLatest = false
+}) => {
+  if (score !== null) {
+    return (
+      <span
+        key="filled"
+        className={cs(styles.filledScore, styles.receivedScore, {
+          [styles.latestScore]: isLatest
+        })}
+      >
+        {score}
+      </span>
+    )
   }
-  return <span className={styles.emptyScore}>–</span>
+  if (preview !== undefined) {
+    return (
+      <span key="preview" className={styles.previewScore}>
+        {preview}
+      </span>
+    )
+  }
+  return (
+    <span key="empty" className={styles.emptyScore}>
+      –
+    </span>
+  )
 }
 
 // score cells for one participant, aligned with the dice column below/above them
 const renderScoreCells = (
   participant: ScoreCardParticipant,
   previewScores: Partial<Record<ScoreCategory, number>> = {}
-) =>
-  schoolCategories.map((category) => (
+) => {
+  const latestCategory = getLatestCategory(participant.state)
+
+  return schoolCategories.map((category) => (
     <div key={category} className={styles.trainingScoreCell}>
       <ScoreValue
         score={participant.state.scoreCard[category]}
         preview={previewScores[category]}
+        isLatest={category === latestCategory}
       />
     </div>
   ))
+}
 
 // player's scores above the dice, opponent's scores below — dice stay clickable to save a school category
 const TrainingDice: FC<TrainingDiceProps> = ({
@@ -122,7 +161,11 @@ const MultiplayerTrainingScoreCard: FC<MultiplayerTrainingScoreCardProps> = ({
   onCategorySelect
 }) => (
   <section>
-    <ParticipantScoreRow participant={player} isAccent={isMyTurn} />
+    <ParticipantScoreRow
+      participant={player}
+      isAccent={isMyTurn}
+      opponent={opponent}
+    />
     <TrainingDice
       player={player}
       opponent={opponent}
