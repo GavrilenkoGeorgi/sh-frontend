@@ -3,8 +3,10 @@
 $spaceSm: .5rem
 $spaceMd: 1rem
 $spaceLg: 1.75rem
-// the last of 9 pills starts after (1 + 8/6) x duration and takes 1 x duration to finish
-$pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
+// gap between consecutive rows/pills starting to move, roughly the time the drawer takes to uncover one row
+$staggerStep: calc(var(--duration-slow) / 12)
+// the last of 9 pills starts after 8 steps and takes 1 x duration to finish
+$pillsDoneDelay: calc(var(--duration-slow) + #{$staggerStep} * 8)
 
 .gameBoard
   width: 100%
@@ -37,13 +39,13 @@ $pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
   transition: opacity var(--duration-slow) ease, transform var(--duration-slow) ease
   padding: .5rem 0
 
-// stagger each row's entrance so combinations slide/fade in one by one, once the panel has fully expanded
+// stagger each row's entrance so combinations slide/fade in one by one, following the drawer as it opens
 .scoreSection[data-expanded] .tableRow
   opacity: 1
   transform: translateY(0)
   @for $i from 1 through 9
     &:nth-child(#{$i})
-      transition-delay: calc(var(--duration-slow) + var(--duration-slow) * #{$i - 1} / 6)
+      transition-delay: calc(#{$staggerStep} * #{$i - 1})
 
 .scoreSections
   display: flex
@@ -152,14 +154,14 @@ $pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
   will-change: opacity, transform
   transition: opacity var(--duration-slow) ease, transform var(--duration-slow) cubic-bezier(.4, 0, 1, 1)
 
-// fade and slide pills down one by one, in sync with the matching row appearing below, once the panel has fully expanded
+// fade and slide pills down one by one, in sync with the matching row appearing below, as the drawer opens
 .scoreSection[data-expanded] .pill
   opacity: 0
   pointer-events: none
   transform: translateY(2rem) // scale(.9)
   @for $i from 1 through 9
     &:nth-child(#{$i})
-      transition-delay: calc(var(--duration-slow) + var(--duration-slow) * #{$i - 1} / 6)
+      transition-delay: calc(#{$staggerStep} * #{$i - 1})
 
 // drop the pills out of the layout only after they have faded away, so the slide is not clipped
 .scoreSection[data-expanded] .pillList
@@ -172,7 +174,7 @@ $pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
 
 .sectionPanel
   display: flex
-  flex-direction: column-reverse
+  flex-direction: column
   min-height: 0
   overflow: hidden
   opacity: 0
@@ -191,8 +193,10 @@ $pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
   display: flex
   flex-direction: column
 
+// snap to opaque on open so the rows' own stagger is the only fade; closing still fades via the base transition
 .scoreSection[data-expanded] .sectionPanel
   opacity: 1
+  transition: none
 
 .scoreSection[data-expanded] .sectionIcon
   transform: rotate(180deg)
