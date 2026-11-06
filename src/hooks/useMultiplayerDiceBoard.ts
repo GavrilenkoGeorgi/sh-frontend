@@ -33,9 +33,13 @@ export const useMultiplayerDiceBoard = (
       value: dice[idx]
     }))
 
+    // before the first roll keep the empty placeholders, same as single player
     const rollDice: Dice[] = dice
       .map((value, idx) => ({ value, idx }))
-      .filter(({ value, idx }) => !selectedIndices.includes(idx) && value > 0)
+      .filter(
+        ({ value, idx }) =>
+          !selectedIndices.includes(idx) && (value > 0 || rollCount === 0)
+      )
       .map(({ value, idx }) => ({
         id: diceArray[idx].id,
         status: DiceStatus.ROLL,

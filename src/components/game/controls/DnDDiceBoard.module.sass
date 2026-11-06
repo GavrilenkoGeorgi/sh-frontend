@@ -47,14 +47,6 @@
   @media screen and (min-width: variables.$large)
     margin-bottom: .5rem
 
-.controls:not([data-multiplayer]) .boardSections > .board:has(.items:empty)
-  @media screen and (min-width: variables.$medium)
-    flex-grow: 1
-
-.controls:not([data-multiplayer]) .boardSections:has(.board[data-board-section='selected'] .items:not(:empty)) > .board[data-board-section='roll']
-  @media screen and (min-width: variables.$medium)
-    flex-grow: 1
-
 .board
   display: flex
   flex-grow: 1

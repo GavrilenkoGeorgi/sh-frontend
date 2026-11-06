@@ -11,14 +11,15 @@ import * as sharedStyles from './SharedStyles.module.sass'
 import * as inviteStyles from '../features/multiplayer/components/InviteInbox.module.sass'
 import * as styles from './Multiplayer.module.sass'
 import { useSelector } from 'react-redux'
+import { useDebugForceMultiplayerBoard } from '../hooks/useDebugForceMultiplayerBoard'
 import CircleSvg from '../public/img/circle.svg'
-import LoadingIndicator from '../components/layout/LoadingIndicator'
 import InviteInbox from '../features/multiplayer/components/InviteInbox'
 import OutgoingInvitesPanel from '../features/multiplayer/components/OutgoingInvitesPanel'
 import MultiplayerGameBoard from '../features/multiplayer/components/MultiplayerGameBoard'
 import MultiplayerGameEndModal from '../features/multiplayer/components/MultiplayerGameEndModal'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../components/layout/Button/BaseButton'
+import Fallback from '../components/layout/Fallback'
 
 const Multiplayer: FC = () => {
   const { t } = useTranslation()
@@ -27,17 +28,7 @@ const Multiplayer: FC = () => {
   const currentUser = useSelector(selectCurrentUser)
   const activeGame = useSelector(selectActiveGame)
   const gameEndResult = useSelector(selectGameEndResult)
-
-  // dev-only: allow forcing the multiplayer board to be shown for styling/debug.
-  // enable by adding `?forceBoard=1` to the URL or setting `localStorage.setItem('sh.forceMultiplayerBoard','1')`
-  const urlSearch = typeof window !== 'undefined' ? window.location.search : ''
-  const params = new URLSearchParams(urlSearch)
-  const devQueryForce = params.get('forceBoard') === '1'
-  const devLocalForce =
-    typeof window !== 'undefined' &&
-    localStorage.getItem('sh.forceMultiplayerBoard') === '1'
-  const debugForceBoard =
-    process.env.NODE_ENV === 'development' && (devQueryForce || devLocalForce)
+  const debugForceBoard = useDebugForceMultiplayerBoard()
 
   const otherUsers = useMemo(
     () => onlineUsers.filter((user) => user.userId !== currentUser?._id),
@@ -45,7 +36,7 @@ const Multiplayer: FC = () => {
   )
 
   if (!socketConnected && !debugForceBoard) {
-    return <LoadingIndicator />
+    return <Fallback />
   }
 
   if (gameEndResult && !debugForceBoard) {

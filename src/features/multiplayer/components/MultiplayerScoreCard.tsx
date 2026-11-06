@@ -1,25 +1,28 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import {
   Button as AriaButton,
   Disclosure,
   DisclosureGroup,
-  DisclosurePanel
+  DisclosurePanel,
+  type Key
 } from 'react-aria-components'
 import type { MultiplayerPlayerState, ScoreCategory } from '../types'
-import { GameCombinations } from '../../../types'
+import { GameCombinations, SchoolCombinations } from '../../../types'
 import * as styles from './MultiplayerGameBoard.module.sass'
-import LoadingIndicator from '../../../components/layout/LoadingIndicator'
 import { useTranslation } from 'react-i18next'
 import { MAX_SAVES_PER_COMBINATION } from '../../../hooks/useMultiplayerTurn'
 import cs from 'classnames'
 import { Button } from '../../../components/layout/Button/BaseButton'
 import { getCombinationLabel } from '../../../utils/combinationLabels'
 import { Pill } from './Pill'
-import MultiplayerTrainingScoreCard from './MultiplayerTrainingScoreCard'
+import MultiplayerTrainingScoreCard, {
+  getLatestCategory
+} from './MultiplayerTrainingScoreCard'
 import ChevronUpIcon from '../../../assets/svg/icon-chevron-up.svg'
 
 // keep the narrow type so scoreCard[category] is number[], no casts needed
 const gameCategories: GameCombinations[] = Object.values(GameCombinations)
+const schoolCategories: SchoolCombinations[] = Object.values(SchoolCombinations)
 
 interface ScoreCardParticipant {
   state: MultiplayerPlayerState
@@ -64,10 +67,27 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
   } = turnControls
   const { t } = useTranslation()
 
+  const isSchoolComplete = schoolCategories.every(
+    (category) => player.state.scoreCard[category] !== null
+  )
+  const [expandedKeys, setExpandedKeys] = useState<Set<Key>>(
+    () => new Set(isSchoolComplete ? ['game'] : [])
+  )
+  const [wasSchoolComplete, setWasSchoolComplete] = useState(isSchoolComplete)
+
+  // open the game section once, right when the school part gets completed; the user can still close it
+  if (isSchoolComplete !== wasSchoolComplete) {
+    setWasSchoolComplete(isSchoolComplete)
+    if (isSchoolComplete) setExpandedKeys(new Set(['game']))
+  }
+
   const renderRow = (category: GameCombinations) => {
     // game category: up to MAX_SAVES_PER_COMBINATION saves per slot
     const savedScores = player.state.scoreCard[category]
     const opponentSavedScores = opponent.state.scoreCard[category]
+    // usedCategories is in save order, so its last entry is the latest score
+    const playerLatest = getLatestCategory(player.state) === category
+    const opponentLatest = getLatestCategory(opponent.state) === category
     const preview = previewScores[category]
     const isSelected = selectedCategory === category
     const isUsed = savedScores.length >= MAX_SAVES_PER_COMBINATION
@@ -88,11 +108,17 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
         })}
         onClick={canSelect ? () => onCategorySelect(category) : undefined}
       >
-        <div role="cell" className={styles.categoryCell}>
+        <div role="cell" className={cs(styles.categoryCell, styles.playerCell)}>
           {Array.from({ length: MAX_SAVES_PER_COMBINATION }, (_, i) => {
             if (i < savedScores.length) {
               return (
-                <span key={i} className={styles.filledScore}>
+                <span
+                  key={`${i}-filled`}
+                  className={cs(styles.filledScore, styles.receivedScore, {
+                    [styles.latestScore]:
+                      playerLatest && i === savedScores.length - 1
+                  })}
+                >
                   {savedScores[i]}
                 </span>
               )
@@ -123,7 +149,13 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
           {Array.from({ length: MAX_SAVES_PER_COMBINATION }, (_, i) => {
             if (i < opponentSavedScores.length) {
               return (
-                <span key={i} className={styles.filledScore}>
+                <span
+                  key={`${i}-filled`}
+                  className={cs(styles.filledScore, styles.receivedScore, {
+                    [styles.latestScore]:
+                      opponentLatest && i === opponentSavedScores.length - 1
+                  })}
+                >
                   {opponentSavedScores[i]}
                 </span>
               )
@@ -150,14 +182,22 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
         onCategorySelect={onCategorySelect}
       />
 
-      <DisclosureGroup className={styles.scoreSections}>
+      <DisclosureGroup
+        className={styles.scoreSections}
+        expandedKeys={expandedKeys}
+        onExpandedChange={setExpandedKeys}
+      >
         <Disclosure id="game" className={styles.scoreSection}>
           <h3 className={styles.sectionHeading}>
             <AriaButton slot="trigger" className={styles.sectionToggle}>
               <span className={styles.pillList}>
-                {gameCategories.map((category) => (
-                  <Pill key={category}>{getCombinationLabel(category, t)}</Pill>
-                ))}
+                <span className={styles.pillListInner}>
+                  {gameCategories.map((category) => (
+                    <Pill key={category}>
+                      {getCombinationLabel(category, t)}
+                    </Pill>
+                  ))}
+                </span>
               </span>
               {/* rotated via CSS on [data-expanded], keeping one element so the turn animates */}
               <span aria-hidden="true" className={styles.sectionIcon}>
@@ -190,7 +230,7 @@ const MultiplayerScoreCard: FC<MultiplayerScoreCardProps> = ({
           </Button>
         )}
 
-        {!isMyTurn && <LoadingIndicator />}
+        {/* {!isMyTurn && <TurnLoader playerName={opponent.name} />} */}
       </div>
     </div>
   )
