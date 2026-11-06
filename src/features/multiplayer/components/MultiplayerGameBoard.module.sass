@@ -3,8 +3,10 @@
 $spaceSm: .5rem
 $spaceMd: 1rem
 $spaceLg: 1.75rem
-// the last of 9 pills starts after (1 + 8/6) x duration and takes 1 x duration to finish
-$pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
+// the heading is always one pill line tall, so it never changes height on open/close
+$pillHeight: 1.75rem
+// gap between consecutive rows/pills starting to move, roughly the time the drawer takes to uncover one row
+$staggerStep: calc(var(--duration-slow) / 12)
 
 .gameBoard
   width: 100%
@@ -32,28 +34,29 @@ $pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
   display: flex
   justify-content: space-between
   opacity: 0
-  transform: translateY(-.4rem)
-  will-change: opacity, transform
-  transition: opacity var(--duration-slow) ease, transform var(--duration-slow) ease
+  will-change: opacity
+  transition: opacity var(--duration-slow) ease
   padding: .5rem 0
 
-// stagger each row's entrance so combinations slide/fade in one by one, once the panel has fully expanded
+// stagger each row's entrance so combinations fade in one by one, following the drawer as it opens
 .scoreSection[data-expanded] .tableRow
   opacity: 1
-  transform: translateY(0)
   @for $i from 1 through 9
     &:nth-child(#{$i})
-      transition-delay: calc(var(--duration-slow) + var(--duration-slow) * #{$i - 1} / 6)
+      transition-delay: calc(#{$staggerStep} * #{$i - 1})
 
 .scoreSections
   display: flex
   flex-direction: column
   overflow: hidden
   gap: $spaceSm
+  margin: .75rem 0 1rem
 
 .scoreSection
   display: grid
   grid-template-rows: auto 0fr
+  // keep the heading track at its own height, otherwise the free space is stretched into it while the 'fr' track animates
+  align-content: start
   transition: grid-template-rows var(--duration-slow) ease
   &:last-child
     border-bottom: 0
@@ -79,18 +82,13 @@ $pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
   font: inherit
   cursor: pointer
   text-transform: capitalize
-  min-height: 3.75rem
-  transition: color var(--duration-slow), background-color var(--duration-slow), min-height var(--duration-slow) ease
+  min-height: $pillHeight
+  transition: color var(--duration-slow), background-color var(--duration-slow)
   &[data-hovered]
     color: var(--color-accent)
   &[data-focus-visible]
     outline: 2px solid var(--color-accent)
     outline-offset: -2px
-
-// shrink the heading to the chevron once the pills have finished animating away
-.scoreSection[data-expanded] .sectionToggle
-  min-height: 1rem
-  transition: color var(--duration-slow), background-color var(--duration-slow), min-height var(--duration-slow) ease $pillsDoneDelay
 
 .sectionIcon
   color: var(--color-accent)
@@ -129,22 +127,21 @@ $pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
     margin: 0 auto
 
 .pillList
-  display: grid
-  grid-template-columns: minmax(0, 1fr)
-  grid-template-rows: 1fr
-  margin-left: -$spaceSm
-  transition: grid-template-rows var(--duration-slow) ease
+  flex: 1 1 0
+  min-width: 0
 
+// pills that do not fit wrap onto a second line, which is clipped, so only whole pills that fit stay visible
 .pillListInner
   display: flex
   flex-wrap: wrap
-  gap: .25rem
+  gap: .5rem
   row-gap: 0
-  min-height: 0
+  height: $pillHeight
+  overflow: hidden
 
 .pill
-  padding: .15rem $spaceSm
-  border-radius: 1rem
+  line-height: $pillHeight
+  font-size: .9rem
   color: var(--color-primary)
   white-space: nowrap
   opacity: 1
@@ -152,27 +149,22 @@ $pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
   will-change: opacity, transform
   transition: opacity var(--duration-slow) ease, transform var(--duration-slow) cubic-bezier(.4, 0, 1, 1)
 
-// fade and slide pills down one by one, in sync with the matching row appearing below, once the panel has fully expanded
+// fade and slide pills down one by one, in sync with the matching row appearing below, as the drawer opens
+// the slide is clipped by the pill list, so it reads as a fade with a slight drop
 .scoreSection[data-expanded] .pill
   opacity: 0
   pointer-events: none
   transform: translateY(2rem) // scale(.9)
   @for $i from 1 through 9
     &:nth-child(#{$i})
-      transition-delay: calc(var(--duration-slow) + var(--duration-slow) * #{$i - 1} / 6)
-
-// drop the pills out of the layout only after they have faded away, so the slide is not clipped
-.scoreSection[data-expanded] .pillList
-  grid-template-rows: 0fr
-  transition-delay: $pillsDoneDelay
+      transition-delay: calc(#{$staggerStep} * #{$i - 1})
 
 .submitRow
-  margin-top: $spaceMd
   text-align: center
 
 .sectionPanel
   display: flex
-  flex-direction: column-reverse
+  flex-direction: column
   min-height: 0
   overflow: hidden
   opacity: 0
@@ -191,8 +183,10 @@ $pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
   display: flex
   flex-direction: column
 
+// snap to opaque on open so the rows' own stagger is the only fade; closing still fades via the base transition
 .scoreSection[data-expanded] .sectionPanel
   opacity: 1
+  transition: none
 
 .scoreSection[data-expanded] .sectionIcon
   transform: rotate(180deg)
@@ -223,12 +217,13 @@ $pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
     max-height: 1.5rem
 
 .categoryCell
-  text-align: center
-  font-variant-numeric: tabular-nums
   display: flex
-  justify-content: center
+  justify-content: space-around
   span
-    margin: 0 auto
+    display: inline-block
+    min-width: 2ch
+    text-align: center
+
   &:nth-child(3)
     span
       color: var(--color-primary-muted)
@@ -240,15 +235,15 @@ $pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
 
 .filledScore
   color: var(--color-primary)
-  font-weight: 500
+  font-weight: 400
   transition: color var(--duration-slow) ease
 
 // the most recently saved score of each player stays highlighted until the next one arrives
 // the second selector outranks '.categoryCell:nth-child(3) span', which mutes the opponent's values
 .latestScore,
 .categoryCell span.latestScore
-  color: var(--color-accent)
-  font-weight: 500
+  color: var(--color-primary)
+  font-weight: 600
 
 // no 'to' frame, so the score settles on its own colour
 @keyframes scoreArrive
@@ -263,6 +258,7 @@ $pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
 .emptyScore
   color: var(--color-text-dim)
   opacity: .4
+  text-align: right
 
 .totalScore
   text-align: center
@@ -282,7 +278,7 @@ $pillsDoneDelay: calc(var(--duration-slow) * 10 / 3)
 // scorecard interactive rows
 .previewScore
   color: var(--color-accent)
-  font-weight: 400
+  font-weight: 600
   opacity: .7
   display: flex
   align-items: center
