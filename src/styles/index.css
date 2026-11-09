@@ -36,7 +36,7 @@
 
   /* text */
   --color-text-heading: #333333;
-  --color-text-body: #7c7c7c;
+  --color-text-body: #7c7c7c; /*TODO: too light for this, update usage */
   --color-text-dim: #4e4e4e;
 
   /* surfaces */

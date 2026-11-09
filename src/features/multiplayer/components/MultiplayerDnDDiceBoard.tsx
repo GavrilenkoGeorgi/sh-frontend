@@ -19,6 +19,7 @@ interface MultiplayerDnDDiceBoardProps {
   isMyTurn: boolean
   selectDie: (index: number) => void
   deselectDie: (index: number) => void
+  reorderSelectedDice: (orderedIndices: number[]) => void
   roll: () => void
 }
 
@@ -30,6 +31,7 @@ const MultiplayerDnDDiceBoard: FC<MultiplayerDnDDiceBoardProps> = ({
   isMyTurn,
   selectDie,
   deselectDie,
+  reorderSelectedDice,
   roll
 }) => {
   const {
@@ -46,7 +48,8 @@ const MultiplayerDnDDiceBoard: FC<MultiplayerDnDDiceBoardProps> = ({
     selectedIndices,
     rollCount,
     selectDie,
-    deselectDie
+    deselectDie,
+    reorderSelectedDice
   )
 
   const { activeDice, handleDragStart, handleDragOver, handleDragEnd } =
@@ -83,6 +86,7 @@ const MultiplayerDnDDiceBoard: FC<MultiplayerDnDDiceBoardProps> = ({
             <div
               key={boardSectionKey}
               className={styles.board}
+              data-board-section={boardSectionKey}
               style={{
                 color:
                   boardSectionKey === 'selected'
