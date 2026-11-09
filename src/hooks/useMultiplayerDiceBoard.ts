@@ -16,7 +16,8 @@ export const useMultiplayerDiceBoard = (
   selectedIndices: number[],
   rollCount: number,
   selectDie: (index: number) => void,
-  deselectDie: (index: number) => void
+  deselectDie: (index: number) => void,
+  reorderSelectedDice: (orderedIndices: number[]) => void
 ) => {
   const [diceState, setDiceState] = useState<Dice[]>(diceArray)
   const [boardSections, setBoardSections] = useState<BoardSections>(() =>
@@ -54,15 +55,15 @@ export const useMultiplayerDiceBoard = (
     setBoardSections((prev) => {
       if (!isNewRoll) {
         // selection changed: update values in-place to preserve visual order
+        const keptDice = (prev.roll ?? [])
+          .map((d) => rollDice.find((r) => r.id === d.id) || null)
+          .filter(Boolean) as Dice[]
+        // append only dice that aren't in the roll box yet, so ids stay unique
         return {
           selected: selectedDice,
           roll: [
-            ...(prev.roll?.length > 0
-              ? (prev.roll
-                  .map((d) => rollDice.find((r) => r.id === d.id) || null)
-                  .filter(Boolean) as Dice[])
-              : rollDice),
-            ...rollDice.filter((d) => !prev.roll?.some((p) => p.id === d.id))
+            ...keptDice,
+            ...rollDice.filter((d) => !keptDice.some((k) => k.id === d.id))
           ]
         }
       }
@@ -105,8 +106,12 @@ export const useMultiplayerDiceBoard = (
     [deselectDie]
   )
 
-  // visual-only reorder — multiplayer turn state tracks values, not order
-  const handleDiceReorder = useCallback((_orderedIndices: number[]) => {}, [])
+  const handleDiceReorder = useCallback(
+    (orderedIndices: number[]) => {
+      reorderSelectedDice(orderedIndices)
+    },
+    [reorderSelectedDice]
+  )
 
   return {
     diceState,

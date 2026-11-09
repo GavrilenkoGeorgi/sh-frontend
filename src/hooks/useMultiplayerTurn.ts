@@ -147,6 +147,15 @@ export const useMultiplayerTurn = (
     [isMyTurn]
   )
 
+  // selectedIndices keeps the order the user arranged the selected dice in
+  const reorderSelectedDice = useCallback(
+    (orderedIndices: number[]) => {
+      if (!isMyTurn || rollCount === 0) return
+      setSelectedIndices(orderedIndices)
+    },
+    [isMyTurn, rollCount]
+  )
+
   const selectCategory = useCallback(
     (category: ScoreCategory) => {
       if (!isMyTurn || rollCount === 0) return
@@ -234,6 +243,7 @@ export const useMultiplayerTurn = (
     roll,
     selectDie,
     deselectDie,
+    reorderSelectedDice,
     selectCategory,
     submitTurn,
     failSchool,

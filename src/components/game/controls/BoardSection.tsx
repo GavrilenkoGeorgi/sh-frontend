@@ -39,7 +39,7 @@ const BoardSection = ({
           const shouldAnimate = shouldAnimateNewDice && id === DiceStatus.ROLL
           return (
             <SortableDiceItem
-              key={`${item.id}-${index}`}
+              key={`${item.id}-${index}`} // TODO: whether to restore key={item.id}
               id={item.id}
               shouldAnimate={shouldAnimate}
               isDisabled={item.value === 0}

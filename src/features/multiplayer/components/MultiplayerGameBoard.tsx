@@ -95,6 +95,7 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
     roll,
     selectDie,
     deselectDie,
+    reorderSelectedDice,
     selectCategory,
     submitTurn,
     failSchool
@@ -157,6 +158,7 @@ const MultiplayerGameBoard: FC<MultiplayerGameBoardProps> = ({
           isMyTurn={isMyTurn}
           selectDie={selectDie}
           deselectDie={deselectDie}
+          reorderSelectedDice={reorderSelectedDice}
           roll={roll}
         />
       </div>
