@@ -38,8 +38,8 @@ const ParticipantScoreRow: FC<ParticipantScoreRowProps> = ({
   <div className={styles.trainingHeaderRow}>
     <span className={cs(styles.playerHeader, { [styles.accent]: isAccent })}>
       {participant.name}
+      {isAccent && !opponent && <TurnLoader />}
     </span>
-    {!isAccent && opponent && <TurnLoader playerName={opponent.name} />}
     <span className={cs(styles.totalScore, { [styles.accent]: isAccent })}>
       {participant.state.totalScore}
     </span>

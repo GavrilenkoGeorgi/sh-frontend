@@ -3,7 +3,7 @@
 .results
   display: flex
   flex-direction: column
-  justify-content: space-between
+  justify-content: space-around
   flex-grow: 1
   font-weight: 450
   font-size: clamp(1.1rem, 0.7rem + 1.8dvh, 2.2rem) // Slightly larger everywhere: ~1.1rem on small phones, ~1.8rem on iPhone 16, 2.2rem max
@@ -11,6 +11,7 @@
   margin: 1rem 0
   @media screen and (max-width: variables.$small)
     margin: 0
+    justify-content: space-between
   @media screen and (min-width: variables.$large) // desktop: compact fixed size
     font-size: 1.3rem
     margin: 0
