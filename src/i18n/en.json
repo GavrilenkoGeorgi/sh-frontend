@@ -14,6 +14,11 @@
     }
   },
   "ui": {
+    "loader": {
+      "opponents_turn": "Opponent's turn",
+      "player_turn": "{{name}}'s turn",
+      "waiting": "Waiting"
+    },
     "buttonLabels": {
       "login": "Login",
       "logout": "Logout",

@@ -35,13 +35,14 @@ const BoardSection = ({
       strategy={horizontalListSortingStrategy}
     >
       <div ref={setNodeRef} className={styles.items}>
-        {dice.map((item) => {
+        {dice.map((item, index) => {
           const shouldAnimate = shouldAnimateNewDice && id === DiceStatus.ROLL
           return (
             <SortableDiceItem
-              key={item.id}
+              key={`${item.id}-${index}`} // TODO: whether to restore key={item.id}
               id={item.id}
               shouldAnimate={shouldAnimate}
+              isDisabled={item.value === 0}
             >
               <DiceItem
                 dice={item}

@@ -1,40 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
 
-export const SCROLL_DIRECTION = {
-  UP: 'up',
-  DOWN: 'down'
-} as const
-
-export type SCROLL_DIRECTION =
-  (typeof SCROLL_DIRECTION)[keyof typeof SCROLL_DIRECTION]
-
-export function useScrollDirection() {
-  const [scrollDirection, setScrollDirection] = useState('')
-
-  useEffect(() => {
-    let lastScrollY = window.scrollY
-
-    const updateScrollDirection = () => {
-      const scrollY = window.scrollY
-      const direction =
-        scrollY > lastScrollY ? SCROLL_DIRECTION.DOWN : SCROLL_DIRECTION.UP
-      if (
-        direction !== scrollDirection &&
-        (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)
-      ) {
-        setScrollDirection(direction)
-      }
-      lastScrollY = scrollY > 0 ? scrollY : 0
-    }
-    window.addEventListener('scroll', updateScrollDirection)
-    return () => {
-      window.removeEventListener('scroll', updateScrollDirection)
-    }
-  }, [scrollDirection])
-
-  return scrollDirection
-}
-
 export function useComponentVisible(initialIsVisible: boolean) {
   const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible)
   const ref = useRef<HTMLInputElement>(null)

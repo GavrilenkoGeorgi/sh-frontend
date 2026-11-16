@@ -14,10 +14,11 @@ import {
   type Combination
 } from '../types'
 import { schoolCategories, useSchoolPhase } from './useSchoolPhase'
+import { MAX_SAVES_PER_COMBINATION } from '../constants/game'
 
 const DICE_COUNT = 5
 const MAX_ROLLS = 3
-export const MAX_SAVES_PER_COMBINATION = 3
+export { MAX_SAVES_PER_COMBINATION }
 
 const gameCategories = Object.values(GameCombinations)
 
@@ -110,10 +111,6 @@ export const useMultiplayerTurn = (
   const schoolFailed =
     isLocked && isInSchoolPhase && rollCount > 0 && !canScoreFromAllDice
 
-  // true when locked, school phase, but the roll does contain scoreable dice — user hasn't selected them yet
-  const hasUnselectedScoringDice =
-    isLocked && isInSchoolPhase && canScoreFromAllDice
-
   const roll = useCallback(() => {
     if (!isMyTurn || rollCount >= MAX_ROLLS) return
 
@@ -148,6 +145,15 @@ export const useMultiplayerTurn = (
       setSelectedIndices((prev) => prev.filter((i) => i !== index))
     },
     [isMyTurn]
+  )
+
+  // selectedIndices keeps the order the user arranged the selected dice in
+  const reorderSelectedDice = useCallback(
+    (orderedIndices: number[]) => {
+      if (!isMyTurn || rollCount === 0) return
+      setSelectedIndices(orderedIndices)
+    },
+    [isMyTurn, rollCount]
   )
 
   const selectCategory = useCallback(
@@ -233,11 +239,11 @@ export const useMultiplayerTurn = (
     isLocked,
     isInSchoolPhase,
     schoolFailed,
-    hasUnselectedScoringDice,
     canSubmit,
     roll,
     selectDie,
     deselectDie,
+    reorderSelectedDice,
     selectCategory,
     submitTurn,
     failSchool,

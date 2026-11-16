@@ -116,30 +116,34 @@ export const useDragHandlers = ({
         (dice) => dice.id === String(over?.id)
       )
 
-      if (activeIndex !== overIndex) {
-        const reordered = arrayMove(
-          boardSections[overContainer],
-          activeIndex,
-          overIndex
+      const activeDice = getDiceById(diceState, active.id)
+      const hasMoved = activeIndex !== overIndex
+      const hasChangedContainer = activeDice.status !== activeContainer
+
+      const reordered = hasMoved
+        ? arrayMove(boardSections[overContainer], activeIndex, overIndex)
+        : boardSections[overContainer]
+
+      // keep Redux updates outside React state updaters to avoid render-phase warnings
+      // a die dropped into the selected box reports its position before it is selected
+      if (
+        overContainer === DiceStatus.SELECTED &&
+        (hasMoved || hasChangedContainer)
+      ) {
+        const orderedIndices = reordered.map((dice) =>
+          diceArray.findIndex((d) => d.id === dice.id)
         )
+        onDiceReorder(orderedIndices)
+      }
 
-        // keep Redux updates outside React state updaters to avoid render-phase warnings
-        if (overContainer === DiceStatus.SELECTED) {
-          const orderedIndices = reordered.map((dice) =>
-            diceArray.findIndex((d) => d.id === dice.id)
-          )
-          onDiceReorder(orderedIndices)
-        }
-
+      if (hasMoved) {
         setBoardSections((boardSection) => ({
           ...boardSection,
           [overContainer]: reordered
         }))
       }
 
-      const activeDice = getDiceById(diceState, active.id)
-
-      if (activeDice.status !== activeContainer) {
+      if (hasChangedContainer) {
         // immutable update instead of mutation
         const newStatus =
           activeContainer === DiceStatus.SELECTED

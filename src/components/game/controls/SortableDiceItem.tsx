@@ -7,12 +7,14 @@ interface SortableDiceItemProps {
   children: React.ReactNode
   id: UniqueIdentifier
   shouldAnimate?: boolean
+  isDisabled?: boolean
 }
 
 const SortableDiceItem = ({
   children,
   id,
-  shouldAnimate = false
+  shouldAnimate = false,
+  isDisabled = false
 }: SortableDiceItemProps): ReactElement => {
   const {
     attributes,
@@ -21,7 +23,7 @@ const SortableDiceItem = ({
     transform,
     transition,
     isDragging
-  } = useSortable({ id })
+  } = useSortable({ id, disabled: isDisabled })
 
   const style = {
     transform: CSS.Transform.toString(transform),

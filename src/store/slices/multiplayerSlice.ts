@@ -12,7 +12,6 @@ import { GameCombinations } from '../../types'
 interface MultiplayerState {
   socketConnected: boolean
   onlineUsers: OnlineUser[]
-  selectedInviteId: string | null
   lastError: string | null
   activeGame: MultiplayerGameState | null
   opponent: BasicUser | null
@@ -22,7 +21,6 @@ interface MultiplayerState {
 const initialState: MultiplayerState = {
   socketConnected: false,
   onlineUsers: [],
-  selectedInviteId: null,
   lastError: null,
   activeGame: null,
   opponent: null,
@@ -65,9 +63,6 @@ const multiplayerSlice = createSlice({
     ) => {
       state.onlineUsers = action.payload
     },
-    setSelectedInviteId: (state, action: PayloadAction<string | null>) => {
-      state.selectedInviteId = action.payload
-    },
     setMultiplayerError: (state, action: PayloadAction<string | null>) => {
       state.lastError = action.payload
     },
@@ -104,7 +99,6 @@ export const {
   setSocketConnected,
   setSocketDisconnected,
   setOnlineUsers,
-  setSelectedInviteId,
   setMultiplayerError,
   setActiveGame,
   updateGameState,
@@ -120,9 +114,6 @@ export const selectSocketConnected = (state: {
 }) => state.multiplayer.socketConnected
 export const selectOnlineUsers = (state: { multiplayer: MultiplayerState }) =>
   state.multiplayer.onlineUsers
-export const selectSelectedInviteId = (state: {
-  multiplayer: MultiplayerState
-}) => state.multiplayer.selectedInviteId
 export const selectMultiplayerError = (state: {
   multiplayer: MultiplayerState
 }) => state.multiplayer.lastError

@@ -11,6 +11,11 @@ const isLocalhost =
 
 let waitingRegistration: ServiceWorkerRegistration | null = null
 
+// logs SW lifecycle events in non-production builds only
+const devLog = (...args: unknown[]): void => {
+  if (process.env.NODE_ENV !== 'production') console.log(...args)
+}
+
 // sends SKIP_WAITING to the waiting SW so it activates
 export function applyServiceWorkerUpdate(): void {
   const waiting = waitingRegistration?.waiting
@@ -18,7 +23,6 @@ export function applyServiceWorkerUpdate(): void {
   waiting.postMessage({ type: 'SKIP_WAITING' })
 }
 
-// TODO: cleanup debug logs
 export function registerSW(config?: SWConfig): void {
   if (!('serviceWorker' in navigator) || isLocalhost) return
 
@@ -35,7 +39,7 @@ export function registerSW(config?: SWConfig): void {
       const registration =
         await navigator.serviceWorker.register('/service-worker.js')
 
-      console.log('[SW] registered:', registration)
+      devLog('[SW] registered:', registration)
 
       config?.onSuccess?.(registration)
 
@@ -44,17 +48,17 @@ export function registerSW(config?: SWConfig): void {
         if (!installingWorker) return
 
         installingWorker.onstatechange = () => {
-          console.log('[SW] state:', installingWorker.state)
+          devLog('[SW] state:', installingWorker.state)
 
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
               // new SW installed, but old SW still controls the page
-              console.log('[SW] update available')
+              devLog('[SW] update available')
               waitingRegistration = registration
               config?.onUpdate?.(registration)
             } else {
               // first install
-              console.log('[SW] content cached for offline use')
+              devLog('[SW] content cached for offline use')
             }
           }
         }

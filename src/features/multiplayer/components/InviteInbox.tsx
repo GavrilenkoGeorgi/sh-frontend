@@ -1,7 +1,5 @@
 import { FC, useCallback } from 'react'
-import { useDispatch } from 'react-redux'
 import { useGetIncomingInvitesQuery } from '../../../store/api/inviteApi'
-import { setSelectedInviteId } from '../../../store/slices/multiplayerSlice'
 import {
   emitInviteAccept,
   emitInviteDecline
@@ -36,18 +34,15 @@ interface InviteItemProps {
 }
 
 const InviteItem: FC<InviteItemProps> = ({ invite }) => {
-  const dispatch = useDispatch()
   const { t } = useTranslation()
 
   const handleAccept = useCallback(() => {
     emitInviteAccept(invite.inviteId)
-    dispatch(setSelectedInviteId(null))
-  }, [dispatch, invite.inviteId])
+  }, [invite.inviteId])
 
   const handleDecline = useCallback(() => {
     emitInviteDecline(invite.inviteId)
-    dispatch(setSelectedInviteId(null))
-  }, [dispatch, invite.inviteId])
+  }, [invite.inviteId])
 
   return (
     <li className={styles.inviteItem}>
