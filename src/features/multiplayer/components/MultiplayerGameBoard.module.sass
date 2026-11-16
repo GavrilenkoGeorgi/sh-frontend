@@ -25,14 +25,10 @@ $staggerStep: calc(var(--duration-slow) / 12)
   margin-top: calc(var(--navbar-height) + #{$spaceSm})
   display: flex
   flex-direction: column
-  font-size: variables.$smallFontSize
-
-  [role='cell']
-    flex: 1 1 0
+  font-size: variables.$multCombFontSize
 
 .tableRow
-  display: flex
-  justify-content: space-between
+  display: contents
   opacity: 0
   will-change: opacity
   transition: opacity var(--duration-slow) ease
@@ -145,16 +141,21 @@ $staggerStep: calc(var(--duration-slow) / 12)
   color: var(--color-primary)
   white-space: nowrap
   opacity: 1
-  transform: translateY(0) // scale(1)
+  transform: translateY(0)
   will-change: opacity, transform
-  transition: opacity var(--duration-slow) ease, transform var(--duration-slow) cubic-bezier(.4, 0, 1, 1)
+  // closing: pills return one by one from the first, sliding up and fading in (the open animation reversed)
+  transition: opacity var(--duration-slow) ease-out, transform var(--duration-slow) cubic-bezier(0, 0, .6, 1)
+  @for $i from 1 through 9
+    &:nth-child(#{$i})
+      transition-delay: calc(#{$staggerStep} * #{$i - 1})
 
-// fade and slide pills down one by one, in sync with the matching row appearing below, as the drawer opens
+// opening: fade and slide pills down one by one, in sync with the matching row appearing below
 // the slide is clipped by the pill list, so it reads as a fade with a slight drop
 .scoreSection[data-expanded] .pill
   opacity: 0
   pointer-events: none
-  transform: translateY(2rem) // scale(.9)
+  transform: translateY(2rem)
+  transition: opacity var(--duration-slow) ease, transform var(--duration-slow) cubic-bezier(.4, 0, 1, 1)
   @for $i from 1 through 9
     &:nth-child(#{$i})
       transition-delay: calc(#{$staggerStep} * #{$i - 1})
@@ -180,8 +181,11 @@ $staggerStep: calc(var(--duration-slow) / 12)
     content-visibility: visible
 
 .panelInner
-  display: flex
-  flex-direction: column
+  display: grid
+  grid-template-columns: 3fr minmax(max-content, 4fr) 3fr
+  width: 100%
+  align-items: center
+  gap: .75rem
 
 // snap to opaque on open so the rows' own stagger is the only fade; closing still fades via the base transition
 .scoreSection[data-expanded] .sectionPanel
@@ -209,8 +213,7 @@ $staggerStep: calc(var(--duration-slow) / 12)
   text-transform: capitalize
   color: var(--color-primary)
   font-weight: 550
-  display: flex
-  justify-content: center
+  white-space: nowrap
   svg
     color: var(--color-primary)
     width: 100%
@@ -218,11 +221,16 @@ $staggerStep: calc(var(--duration-slow) / 12)
 
 .categoryCell
   display: flex
-  justify-content: space-around
+  justify-content: center
+  gap: .5rem
+  width: 100%
+  border-radius: .3rem
   span
     display: inline-block
     min-width: 2ch
     text-align: center
+  svg
+    padding: .2rem
 
   &:nth-child(3)
     span
