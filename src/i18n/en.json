@@ -35,7 +35,7 @@
       "save": "Save",
       "ok": "OK",
       "cancel": "Cancel",
-      "dismiss": "Dismiss",
+      "close": "Close",
       "restart": "Restart",
       "view": "View",
       "saving": "Saving..."
@@ -88,7 +88,7 @@
       "scoreMsg": "Your score is ",
       "gameOver": "Game over",
       "gameOverMsg": "Better luck next time!",
-      "newVersion": "A new version is available."
+      "newVersion": "New version!"
     },
     "settings": {
       "themeLabel": "Theme",
