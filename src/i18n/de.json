@@ -35,7 +35,7 @@
       "save": "Speichern",
       "ok": "OK",
       "cancel": "Abbrechen",
-      "dismiss": "Schließen",
+      "close": "Schließen",
       "restart": "Neustarten",
       "view": "Ansehen",
       "saving": "Speichern..."
@@ -88,7 +88,7 @@
       "scoreMsg": "Deine Punktzahl ist ",
       "gameOver": "Spiel vorbei",
       "gameOverMsg": "Viel Glück beim nächsten Mal!",
-      "newVersion": "Eine neue Version ist verfügbar."
+      "newVersion": "Neue Version!"
     },
     "settings": {
       "themeLabel": "Design",
