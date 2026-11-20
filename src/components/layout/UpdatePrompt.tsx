@@ -1,10 +1,7 @@
-import { useEffect, useState, type FC } from 'react'
+import { useState, type FC } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { type RootState } from '../../store'
-import {
-  setUpdateAvailable,
-  selectIsAppLoading
-} from '../../store/slices/swUpdateSlice'
+import { setUpdateAvailable } from '../../store/slices/swUpdateSlice'
 import { applyServiceWorkerUpdate } from '../../utils/serviceWorker'
 
 import * as styles from './UpdatePrompt.module.sass'
@@ -18,22 +15,14 @@ import { Tooltip, TooltipTrigger } from './Tooltip'
 const UpdatePrompt: FC = () => {
   const dispatch = useDispatch()
   const { updateAvailable } = useSelector((state: RootState) => state.swUpdate)
-  const isAppLoading = useSelector(selectIsAppLoading)
   const [isUpdating, setIsUpdating] = useState(false)
   const { t } = useTranslation()
-
-  // wait until the loading indicator clears before reloading, so the
-  // update doesn't enlarge the layout mid-load (SH-46)
-  useEffect(() => {
-    if (isUpdating && !isAppLoading) {
-      applyServiceWorkerUpdate()
-    }
-  }, [isUpdating, isAppLoading])
 
   if (!updateAvailable) return null
 
   const handleUpdate = () => {
     setIsUpdating(true)
+    applyServiceWorkerUpdate()
   }
 
   const handleDismiss = () => {
