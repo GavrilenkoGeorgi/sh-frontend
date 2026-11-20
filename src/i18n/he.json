@@ -35,7 +35,7 @@
       "save": "שמור",
       "ok": "אישור",
       "cancel": "ביטול",
-      "close": "סגור",
+      "dismiss": "סגור",
       "restart": "התחל מחדש",
       "view": "צפה",
       "saving": "שומר..."
@@ -88,7 +88,7 @@
       "scoreMsg": "הניקוד שלך הוא ",
       "gameOver": "המשחק נגמר",
       "gameOverMsg": "בהצלחה בפעם הבאה!",
-      "newVersion": "גרסה חדשה!"
+      "newVersion": "גרסה חדשה זמינה."
     },
     "settings": {
       "themeLabel": "ערכת נושא",
