@@ -37,7 +37,8 @@ const TrainingBoard: FC = () => {
             id={key}
             key={key}
             className={cx(styles.qualiResult, {
-              [styles.savable]: hasScore && !game.school[key].final
+              [styles.savable]: hasScore && !game.school[key].final,
+              [styles.scored]: hasScore
             })}
             onClick={canSave(game.school[key]) ? () => save(key) : undefined}
           >
