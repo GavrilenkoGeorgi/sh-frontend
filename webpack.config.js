@@ -85,7 +85,9 @@ module.exports = (_env, argv) => {
     prod &&
       new WorkboxPlugin.InjectManifest({
         swSrc: './src/service-worker.ts',
-        swDest: 'service-worker.js'
+        swDest: 'service-worker.js',
+        // the SW is built in a child compiler, so env vars need their own plugin
+        webpackCompilationPlugins: [new Dotenv({ systemvars: true })]
       })
   ].filter(Boolean)
 

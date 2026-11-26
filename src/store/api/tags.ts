@@ -1,7 +1,8 @@
 export const USER_TAGS = {
   User: 'User',
   IncomingInvites: 'IncomingInvites',
-  OutgoingInvites: 'OutgoingInvites'
+  OutgoingInvites: 'OutgoingInvites',
+  InvitableUsers: 'InvitableUsers'
 } as const
 
 export const GAME_TAGS = {

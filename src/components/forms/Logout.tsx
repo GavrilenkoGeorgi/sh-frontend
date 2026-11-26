@@ -8,6 +8,7 @@ import { userApi, gameApi } from '../../store/api/baseApi'
 import { toPath } from '../../utils'
 import { ToastTypes } from '../../types'
 import { useLogoutMutation } from '../../store/api/userApi'
+import { usePushNotifications } from '../../hooks/usePushNotifications'
 import { ROUTES } from '../../constants/routes'
 import { clearAuthSessionHint } from '../../utils/authSessionHint'
 import { useTranslation } from 'react-i18next'
@@ -18,11 +19,14 @@ const Logout: FC = () => {
   const dispatch = useDispatch()
   const user = useSelector(selectCurrentUser)
   const { t } = useTranslation()
+  const { detach } = usePushNotifications()
 
   const [logoutApiCall, { isLoading }] = useLogoutMutation()
 
   const logoutHandler = async (): Promise<void> => {
     try {
+      // needs the session cookie, so it must run before logout
+      await detach()
       await logoutApiCall().unwrap()
       clearAuthSessionHint()
 

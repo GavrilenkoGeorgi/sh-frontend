@@ -187,7 +187,8 @@ export type GameCombinations =
 export const ToastTypes = {
   ERROR: 'error',
   SUCCESS: 'success',
-  WARNING: 'warning'
+  WARNING: 'warning',
+  INFO: 'info'
 } as const
 
 export type ToastTypes = (typeof ToastTypes)[keyof typeof ToastTypes]

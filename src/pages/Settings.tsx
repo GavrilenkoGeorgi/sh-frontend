@@ -1,8 +1,12 @@
 import { type FC } from 'react'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useColorScheme, type ThemeMode } from '../hooks/useColorScheme'
+import { usePushNotifications } from '../hooks/usePushNotifications'
+import { selectIsAuthenticated } from '../store/slices/authSlice'
 import { supportedLanguages } from '../i18n'
 import AppSelect, { type SelectOption } from '../components/select/CustomSelect'
+import { Button } from '../components/layout/Button/BaseButton'
 
 import * as styles from './Settings.module.sass'
 import * as sharedStyles from './SharedStyles.module.sass'
@@ -12,6 +16,9 @@ const themeModes: ThemeMode[] = ['system', 'dark', 'light']
 const Settings: FC = () => {
   const { t, i18n } = useTranslation()
   const { mode, setThemeMode } = useColorScheme()
+  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const { supported, permission, isSubscribed, enable, disable } =
+    usePushNotifications()
 
   const themeOptions: SelectOption[] = themeModes.map((themeMode) => ({
     value: themeMode,
@@ -68,6 +75,20 @@ const Settings: FC = () => {
             onChange={handleLanguageChange}
           />
         </div>
+
+        {isAuthenticated && supported && (
+          <div className={styles.setting}>
+            <span className={styles.label}>{t('ui.push.settingLabel')}</span>
+            <p className={styles.hint}>{t('ui.push.settingHint')}</p>
+            {permission === 'denied' ? (
+              <p className={styles.hint}>{t('ui.push.deniedHint')}</p>
+            ) : (
+              <Button onPress={isSubscribed ? disable : enable} size="sm">
+                {isSubscribed ? t('ui.push.disable') : t('ui.push.enable')}
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </section>
   )
