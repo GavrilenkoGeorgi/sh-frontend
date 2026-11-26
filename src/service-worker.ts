@@ -46,11 +46,14 @@ const DEFAULT_APP_PATH = '/multiplayer'
 const NOTIFICATION_ICON = '/img/sh-og-img.webp'
 
 interface InvitePushPayload {
-  type: 'GAME_INVITE'
-  inviteId: string
-  senderName: string
+  type?: string
+  inviteId?: string
+  senderName?: string
   url?: string
+  body?: string
 }
+
+const DEFAULT_TITLE = 'Sharlushka'
 
 type InviteNotificationOptions = NotificationOptions & {
   actions: { action: string; title: string }[]
@@ -76,15 +79,27 @@ const openApp = async (url: URL): Promise<void> => {
   })
 
   if (windowClients.length > 0) {
-    const focusedClient = await windowClients[0].focus()
-    await focusedClient.navigate(url.href)
-    return
+    try {
+      const focusedClient = await windowClients[0].focus()
+      await focusedClient.navigate(url.href)
+      return
+    } catch {
+      // focus or navigate can be refused, open a new window instead
+    }
   }
 
   await self.clients.openWindow(url.href)
 }
 
-const declineInvite = async (inviteId: string, url: URL): Promise<void> => {
+const declineInvite = async (
+  inviteId: string | undefined,
+  url: URL
+): Promise<void> => {
+  if (!inviteId) {
+    await openApp(url)
+    return
+  }
+
   try {
     const response = await fetch(
       `${MULTIPLAYER_URL}/invites/${inviteId}/decline`,
@@ -111,27 +126,49 @@ const showInviteNotification = async (
     return
   }
 
+  const isInvite = payload.type === 'GAME_INVITE'
+
   const options: InviteNotificationOptions = {
-    body: `${payload.senderName} invited you to play`,
+    body:
+      payload.body ??
+      (isInvite
+        ? `${payload.senderName ?? 'Someone'} invited you to play`
+        : 'You have a new notification'),
     icon: NOTIFICATION_ICON,
     badge: NOTIFICATION_ICON,
     tag: payload.inviteId,
     data: { inviteId: payload.inviteId, url: payload.url },
-    actions: [
-      { action: 'accept', title: 'Accept' },
-      { action: 'decline', title: 'Decline' }
-    ]
+    // buttons only make sense when there is an invite to answer
+    actions:
+      isInvite && payload.inviteId
+        ? [
+            { action: 'accept', title: 'Accept' },
+            { action: 'decline', title: 'Decline' }
+          ]
+        : []
   }
 
-  await self.registration.showNotification('Sharlushka', options)
+  await self.registration.showNotification(DEFAULT_TITLE, options)
+}
+
+// plain text or malformed payloads must not throw, the browser requires a visible notification per push
+const parsePushPayload = (data: PushMessageData | null): InvitePushPayload => {
+  if (!data) return {}
+
+  const text = data.text()
+  try {
+    const parsed: unknown = JSON.parse(text)
+    return parsed && typeof parsed === 'object'
+      ? (parsed as InvitePushPayload)
+      : { body: String(parsed) }
+  } catch {
+    return text ? { body: text } : {}
+  }
 }
 
 // push notification support
 self.addEventListener('push', (event) => {
-  const payload = event.data?.json() as InvitePushPayload | undefined
-  if (payload?.type !== 'GAME_INVITE') return
-
-  event.waitUntil(showInviteNotification(payload))
+  event.waitUntil(showInviteNotification(parsePushPayload(event.data)))
 })
 
 self.addEventListener('notificationclick', (event) => {
