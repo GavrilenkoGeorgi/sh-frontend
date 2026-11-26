@@ -4,28 +4,31 @@
   display: grid
   grid-template-columns: repeat(6, 1fr)
   gap: .75rem
-  padding-top: 1rem
+  padding-top: .5rem
   @media screen and (min-width: variables.$large)
     grid-template-columns: 1fr
     padding: 0
     min-width: 6rem
 
 .qualiResult
-  min-height: 5.5rem
+  // the space for the score is reserved below the dice with padding derived from the score
+  // font size, so the cell height is constant and the dice slides down into that space
+  --score-font-size: 1.25rem
+  --score-height: calc(var(--score-font-size) * 1.2)
+  position: relative
+  padding-bottom: var(--score-height)
   text-align: center
   display: flex
   justify-content: center
-  @media screen and (min-width: variables.$intermediate)
-    min-height: 7rem
+  @media (min-width: variables.$small)
+    --score-font-size: 1.75rem
+  @media (min-width: variables.$intermediate)
     margin-bottom: .5rem
-  @media (min-width: variables.$tablet) and (min-height: variables.$tabletHeight)
-    min-height: clamp(8rem, 12.5dvh, 10rem) // ~8rem on iPad Mini, ~10rem on iPad Pro
-  @media (max-width: variables.$tablet) and (max-height: variables.$largeHeight)
-    min-height: 4.3rem
-  @media (min-width: variables.$tablet) and (max-width: variables.$medium) and (max-height: variables.$mediumHeight) // Nest Hub
-    min-height: 4.25rem
-  @media screen and (min-width: variables.$large) // desktop
-    min-height: auto
+  @media (min-width: variables.$tablet) // tablet and wider: fluid between Nest Hub low end (1.2rem) and iPad Pro high end (2.5rem)
+    --score-font-size: clamp(1.2rem, 3.5dvh, 2.5rem)
+  @media screen and (min-width: variables.$large) // desktop, score is inline next to the dice
+    --score-font-size: 1.5rem
+    padding-bottom: 0
     justify-content: flex-start
     margin: 0
   div // for the result text  
@@ -37,7 +40,9 @@
     svg
       width: 100%
       max-width: 5rem
+      margin-top: .25rem
       cursor: pointer
+      transition: transform .25s ease
       @media screen and (min-width: variables.$intermediate)
         max-width: 4rem
       @media screen and (min-width: variables.$medium)
@@ -49,34 +54,33 @@
       @media (min-width: variables.$large) // desktop
         max-width: 2.25rem
         margin-left: .5rem
+  &.scored div svg // slide the dice down into the reserved space
+    transform: translateY(var(--score-height))
+    @media (min-width: variables.$large)
+      transform: none
 
 .qualiScore
-  font-size: 1.25rem
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  font-size: var(--score-font-size)
+  height: var(--score-height)
   margin: 0
-  overflow: hidden
   line-height: 1.2
-  transition: max-height .25s ease, opacity .2s ease, transform .2s ease
-  max-height: 0
+  transition: opacity .2s ease, transform .2s ease
   opacity: 0
   transform: translateY(-4px) // TODO: doesn't work for desktop, as the width is changing there
-  @media (min-width: variables.$small)
-    font-size: 1.75rem
-  @media (min-width: variables.$tablet) // tablet and wider: fluid between Nest Hub low end (1.2rem) and iPad Pro high end (2.5rem)
-    font-size: clamp(1.2rem, 3.5dvh, 2.5rem)
-  @media (min-width: variables.$tablet) and (min-height: variables.$tabletHeight)
-    margin-bottom: .75rem
   @media screen and (min-width: variables.$large)
-    margin-bottom: 0
+    position: static
+    height: auto
     text-align: right
-    font-size: 1.5rem
 
 .visible
-  max-height: 2.5rem // slightly above text height
   opacity: 1
   transform: translateY(0)
 
 .hidden
-  max-height: 0
   opacity: 0
   transform: translateY(-4px)
 
