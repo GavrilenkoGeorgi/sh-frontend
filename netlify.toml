@@ -6,11 +6,15 @@
   REACT_APP_USERS_URL = "https://sharlushka-5f463ae1030f.herokuapp.com/users"
   REACT_APP_GAME_URL = "https://sharlushka-5f463ae1030f.herokuapp.com/game"
   REACT_APP_MULTIPLAYER_URL = "https://sharlushka-5f463ae1030f.herokuapp.com/multiplayer"
+  REACT_APP_SOCKET_URL = "https://sharlushka-5f463ae1030f.herokuapp.com/socket.io"
+  REACT_APP_PUSH_URL = "https://sharlushka-5f463ae1030f.herokuapp.com/push"
 
 [context.staging.environment]
   REACT_APP_USERS_URL = "https://sh-staging-9c388a5201a5.herokuapp.com/users"
   REACT_APP_GAME_URL = "https://sh-staging-9c388a5201a5.herokuapp.com/game"
   REACT_APP_MULTIPLAYER_URL = "https://sh-staging-9c388a5201a5.herokuapp.com/multiplayer"
+  REACT_APP_SOCKET_URL = "https://sh-staging-9c388a5201a5.herokuapp.com/socket.io"
+  REACT_APP_PUSH_URL = "https://sh-staging-9c388a5201a5.herokuapp.com/push"
 
 [[redirects]]
   from = "/*"
