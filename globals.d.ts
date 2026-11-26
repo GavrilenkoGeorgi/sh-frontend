@@ -16,5 +16,7 @@ declare const process: {
     REACT_APP_GAME_URL?: string
     REACT_APP_MULTIPLAYER_URL?: string
     REACT_APP_SOCKET_URL?: string
+    REACT_APP_PUSH_URL?: string
+    REACT_APP_VAPID_PUBLIC_KEY?: string
   }
 }

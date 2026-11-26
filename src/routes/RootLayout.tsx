@@ -8,11 +8,13 @@ import Fallback from '../components/layout/Fallback'
 import { selectAuthInitialized } from '../store/slices/authSlice'
 import { useAuthBootstrap } from '../hooks/auth/useAuthBootstrap'
 import { useMultiplayerSocket } from '../hooks/useMultiplayerSocket'
+import { usePushSync } from '../hooks/usePushNotifications'
 import { ColorSchemeProvider } from '../hooks/useColorScheme'
 
 const RootLayout = (): JSX.Element => {
   useAuthBootstrap()
   useMultiplayerSocket()
+  usePushSync()
   const authInitialized = useSelector(selectAuthInitialized)
 
   return (
