@@ -70,7 +70,8 @@
       "saveWarning": "Please select a combination to save your game results.",
       "profileUpdated": "Profile updated successfully!",
       "schoolCheck": "You have dice that can score a school combination.",
-      "schoolFailed": "No school combinations could be scored. Game over!"
+      "schoolFailed": "No school combinations could be scored. Game over!",
+      "inviteReceived": "{{username}} invited you to play"
     },
     "theme": {
       "system": "Theme: system",
@@ -107,6 +108,16 @@
         "he": "עברית"
       },
       "guest": "Guest"
+    },
+    "push": {
+      "settingLabel": "Push notifications",
+      "settingHint": "Get invites even when the app is closed.",
+      "enable": "Enable",
+      "disable": "Disable",
+      "notNow": "Not now",
+      "deniedHint": "Notifications are blocked in your browser settings.",
+      "promptText": "Enable notifications so friends can invite you even when the app is closed.",
+      "enableError": "Could not enable notifications. Please try again."
     },
     "multiplayer": {
       "noPlayersOnline": "No other players online",

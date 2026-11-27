@@ -40,37 +40,170 @@ self.addEventListener('message', (event) => {
   }
 })
 
+const MULTIPLAYER_URL = process.env.REACT_APP_MULTIPLAYER_URL
+const PUSH_URL = process.env.REACT_APP_PUSH_URL
+const DEFAULT_APP_PATH = '/multiplayer'
+const NOTIFICATION_ICON = '/img/sh-og-img.webp'
+
+interface InvitePushPayload {
+  type?: string
+  inviteId?: string
+  senderName?: string
+  url?: string
+  body?: string
+}
+
+const DEFAULT_TITLE = 'Sharlushka'
+
+type InviteNotificationOptions = NotificationOptions & {
+  actions: { action: string; title: string }[]
+}
+
+// accepts only same-origin urls from the push payload
+const resolveAppUrl = (url?: string): URL => {
+  const fallback = new URL(DEFAULT_APP_PATH, self.location.origin)
+  if (!url) return fallback
+
+  try {
+    const resolved = new URL(url, self.location.origin)
+    return resolved.origin === self.location.origin ? resolved : fallback
+  } catch {
+    return fallback
+  }
+}
+
+const openApp = async (url: URL): Promise<void> => {
+  const windowClients = await self.clients.matchAll({
+    type: 'window',
+    includeUncontrolled: true
+  })
+
+  if (windowClients.length > 0) {
+    try {
+      const focusedClient = await windowClients[0].focus()
+      await focusedClient.navigate(url.href)
+      return
+    } catch {
+      // focus or navigate can be refused, open a new window instead
+    }
+  }
+
+  await self.clients.openWindow(url.href)
+}
+
+const declineInvite = async (
+  inviteId: string | undefined,
+  url: URL
+): Promise<void> => {
+  if (!inviteId) {
+    await openApp(url)
+    return
+  }
+
+  try {
+    const response = await fetch(
+      `${MULTIPLAYER_URL}/invites/${inviteId}/decline`,
+      { method: 'POST', credentials: 'include' }
+    )
+    if (response.ok) return
+  } catch {
+    // network error, fall through to opening the app
+  }
+  // expired session or invite, let the user handle it in the app
+  await openApp(url)
+}
+
+const showInviteNotification = async (
+  payload: InvitePushPayload
+): Promise<void> => {
+  const windowClients = await self.clients.matchAll({
+    type: 'window',
+    includeUncontrolled: true
+  })
+
+  // the app is open and already shows the invite itself
+  if (windowClients.some((client) => client.visibilityState === 'visible')) {
+    return
+  }
+
+  const isInvite = payload.type === 'GAME_INVITE'
+
+  const options: InviteNotificationOptions = {
+    body:
+      payload.body ??
+      (isInvite
+        ? `${payload.senderName ?? 'Someone'} invited you to play`
+        : 'You have a new notification'),
+    icon: NOTIFICATION_ICON,
+    badge: NOTIFICATION_ICON,
+    tag: payload.inviteId,
+    data: { inviteId: payload.inviteId, url: payload.url },
+    // buttons only make sense when there is an invite to answer
+    actions:
+      isInvite && payload.inviteId
+        ? [
+            { action: 'accept', title: 'Accept' },
+            { action: 'decline', title: 'Decline' }
+          ]
+        : []
+  }
+
+  await self.registration.showNotification(DEFAULT_TITLE, options)
+}
+
+// plain text or malformed payloads must not throw, the browser requires a visible notification per push
+const parsePushPayload = (data: PushMessageData | null): InvitePushPayload => {
+  if (!data) return {}
+
+  const text = data.text()
+  try {
+    const parsed: unknown = JSON.parse(text)
+    return parsed && typeof parsed === 'object'
+      ? (parsed as InvitePushPayload)
+      : { body: String(parsed) }
+  } catch {
+    return text ? { body: text } : {}
+  }
+}
+
 // push notification support
 self.addEventListener('push', (event) => {
-  const data = event.data?.json() ?? {}
-  const title = data.title || 'Sharlushka'
-  const options = {
-    body: data.body || '',
-    icon: '/img/sh-og-img.webp',
-    badge: '/img/sh-og-img.webp',
-    data: data.url ? { url: data.url } : undefined
-  }
-  console.log('[SW] push received:', data)
-
-  event.waitUntil(self.registration.showNotification(title, options))
+  event.waitUntil(showInviteNotification(parsePushPayload(event.data)))
 })
 
-// open the app when the user taps a notification
 self.addEventListener('notificationclick', (event) => {
   event.notification.close()
 
-  const url = event.notification.data?.url || '/'
-  event.waitUntil(
-    self.clients
-      .matchAll({ type: 'window', includeUncontrolled: true })
-      .then((windowClients) => {
-        // focus an existing tab if one is open
-        for (const client of windowClients) {
-          if (client.url === url && 'focus' in client) {
-            return client.focus()
-          }
-        }
-        return self.clients.openWindow(url)
-      })
-  )
+  const { inviteId, url } = event.notification.data ?? {}
+  const appUrl = resolveAppUrl(url)
+
+  if (event.action === 'decline') {
+    event.waitUntil(declineInvite(inviteId, appUrl))
+    return
+  }
+
+  if (event.action === 'accept') {
+    appUrl.searchParams.set('autoAccept', '1')
+  }
+  event.waitUntil(openApp(appUrl))
+})
+
+// browser rotated the push subscription, so the backend needs the new one
+self.addEventListener('pushsubscriptionchange', (event) => {
+  const resubscribe = async (): Promise<void> => {
+    const subscription =
+      event.newSubscription ??
+      (await self.registration.pushManager.subscribe(
+        event.oldSubscription?.options ?? { userVisibleOnly: true }
+      ))
+
+    await fetch(`${PUSH_URL}/subscribe`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(subscription.toJSON())
+    })
+  }
+
+  event.waitUntil(resubscribe().catch(() => undefined))
 })

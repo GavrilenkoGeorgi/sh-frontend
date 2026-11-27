@@ -80,7 +80,8 @@ const Toast: FC = () => {
         [styles.show]: message,
         [styles.hide]: !open,
         [styles.error]: type === ToastTypes.ERROR,
-        [styles.success]: type === ToastTypes.SUCCESS
+        [styles.success]: type === ToastTypes.SUCCESS,
+        [styles.info]: type === ToastTypes.INFO
       })}
     >
       <div>{message}</div>

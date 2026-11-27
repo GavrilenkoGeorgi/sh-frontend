@@ -1,6 +1,7 @@
 const USERS_URL = process.env.REACT_APP_USERS_URL
 const GAME_URL = process.env.REACT_APP_GAME_URL
 const MULTIPLAYER_URL = process.env.REACT_APP_MULTIPLAYER_URL
+const PUSH_URL = process.env.REACT_APP_PUSH_URL
 
 export const ROUTES = {
   HOME: '/',
@@ -33,7 +34,15 @@ export const API_ROUTES = {
 
 export const INVITE_API_ROUTES = {
   INCOMING: `${MULTIPLAYER_URL}/invites/incoming`,
-  OUTGOING: `${MULTIPLAYER_URL}/invites/outgoing`
+  OUTGOING: `${MULTIPLAYER_URL}/invites/outgoing`,
+  INVITABLE_USERS: `${MULTIPLAYER_URL}/users/invitable`,
+  DECLINE: (inviteId: string) =>
+    `${MULTIPLAYER_URL}/invites/${inviteId}/decline`
+} as const
+
+export const PUSH_API_ROUTES = {
+  SUBSCRIBE: `${PUSH_URL}/subscribe`,
+  UNSUBSCRIBE: `${PUSH_URL}/unsubscribe`
 } as const
 
 export const GAME_API_ROUTES = {

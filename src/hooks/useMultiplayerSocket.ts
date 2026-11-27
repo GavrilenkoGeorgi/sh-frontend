@@ -9,6 +9,7 @@ import type {
   GameEndedPayload,
   GameStartedPayload,
   GameStateUpdatedPayload,
+  InviteErrorPayload,
   InviteReceivedPayload,
   InviteStatusPayload,
   PresenceOnlineUsersPayload
@@ -30,6 +31,9 @@ import {
 import type { AppDispatch } from '../store'
 import { userApi } from '../store/api/baseApi'
 import { USER_TAGS } from '../store/api/tags'
+import { setNotification } from '../store/slices/notificationSlice'
+import { ToastTypes } from '../types'
+import i18n from '../i18n'
 
 export const useMultiplayerSocket = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -67,10 +71,26 @@ export const useMultiplayerSocket = () => {
 
     const handleOnlineUsers = (payload: PresenceOnlineUsersPayload) => {
       dispatch(setOnlineUsers(payload.users))
+      // keeps the online status in the invitable users list fresh
+      dispatch(userApi.util.invalidateTags([USER_TAGS.InvitableUsers]))
     }
 
-    const handleInviteReceived = (_payload: InviteReceivedPayload) => {
+    const handleInviteReceived = (payload: InviteReceivedPayload) => {
       dispatch(userApi.util.invalidateTags([USER_TAGS.IncomingInvites]))
+      dispatch(
+        setNotification({
+          msg: i18n.t('ui.toastMessages.inviteReceived', {
+            username: payload.fromUser.username
+          }),
+          type: ToastTypes.INFO
+        })
+      )
+    }
+
+    const handleInviteError = (payload: InviteErrorPayload) => {
+      dispatch(
+        setNotification({ msg: payload.message, type: ToastTypes.ERROR })
+      )
     }
 
     const handleInviteStatus = (_payload: InviteStatusPayload) => {
@@ -104,6 +124,7 @@ export const useMultiplayerSocket = () => {
     multiplayerSocket.on('presence:online-users', handleOnlineUsers)
     multiplayerSocket.on('invite:received', handleInviteReceived)
     multiplayerSocket.on('invite:status', handleInviteStatus)
+    multiplayerSocket.on('invite:error', handleInviteError)
     multiplayerSocket.on('game:started', handleGameStarted)
     multiplayerSocket.on('game:state-updated', handleGameStateUpdated)
     multiplayerSocket.on('game:ended', handleGameEnded)
@@ -123,6 +144,7 @@ export const useMultiplayerSocket = () => {
       multiplayerSocket.off('presence:online-users', handleOnlineUsers)
       multiplayerSocket.off('invite:received', handleInviteReceived)
       multiplayerSocket.off('invite:status', handleInviteStatus)
+      multiplayerSocket.off('invite:error', handleInviteError)
       multiplayerSocket.off('game:started', handleGameStarted)
       multiplayerSocket.off('game:state-updated', handleGameStateUpdated)
       multiplayerSocket.off('game:ended', handleGameEnded)

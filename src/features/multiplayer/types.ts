@@ -28,9 +28,20 @@ export interface InviteStatusPayload {
   status: 'accepted' | 'declined' | 'cancelled' | 'expired'
 }
 
+export interface InviteErrorPayload {
+  action: string
+  message: string
+}
+
 export interface IncomingInvite {
   inviteId: string
   fromUser: BasicUser
+}
+
+export interface InvitableUser {
+  userId: string
+  username: string
+  online: boolean
 }
 
 export interface OutgoingInvite {

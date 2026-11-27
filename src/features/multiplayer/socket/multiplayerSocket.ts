@@ -27,6 +27,7 @@ export const multiplayerSocket: Socket = io(resolveSocketUrl(), {
 
 export const connectMultiplayerSocket = () => {
   if (!multiplayerSocket.active) {
+    multiplayerSocket.on('connect_error', (error) => console.log(error.message))
     multiplayerSocket.connect()
   }
 }
